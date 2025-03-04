@@ -1,11 +1,13 @@
 import './App.css'
-import {BtnHey} from './components/moleculs/Button'
+import {BtnFilled, BtnHref, BtnOutlined} from './components/moleculs/Button'
 
 function App() {
   return (
     <>
       <h1>Hola</h1>
-      <BtnHey/>
+      <BtnOutlined text='Nuestros servicios'/>
+      <BtnFilled text='Contactanos'/>
+      <BtnHref text='Ir a Google' link='https://www.google.com'/>
     </>
   )
 }
