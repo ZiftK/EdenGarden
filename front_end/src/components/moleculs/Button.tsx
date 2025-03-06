@@ -1,5 +1,5 @@
 import { Button } from "@raul_yael/cleangui";
-import { ReactElement } from "react";
+import { CSSProperties, ReactElement } from "react";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const theme = {
@@ -14,14 +14,17 @@ type ThemeColors = keyof typeof  theme.colors;
 
 
 
-export function BtnOutlined({ text }: { text: string }){
+export function BtnOutlined({ text, style, $bg }: { text: string, style?: CSSProperties, $bg?: string }){
     return  (
         <Button variant="outlined"
                 size="medium"
                 style={{
+                    ...style,
+                    margin:0,
                     color: "var(--green-light)", 
-                    backgroundColor: "var(--green-dark-transparent-100)",
                     fontSize: "14px",
+                    backgroundColor: $bg||"var(--green-dark-transparent-100)",
+                    backdropFilter: 'blur(10px)'
                 }}
                 >
             {text}
