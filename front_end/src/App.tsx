@@ -6,8 +6,8 @@ import Navbar from './components/organisms/Navbar'
 function App() {
   return (
     <>
-      <Navbar />
       <HomePage />
+      <Navbar />
     </>
   )
 }

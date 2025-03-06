@@ -18,8 +18,8 @@ export function HomePage(){
           borderRadius: 0,
           width: '100vw',
           border: 'none',
-          margin: 0,
-          gap: '10px'
+          margin: 0,          
+          gap: '10px',
         }}
         >
     

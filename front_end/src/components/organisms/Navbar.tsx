@@ -15,6 +15,7 @@ export default function Navbar(){
             style={{
                 margin: 0,
                 position: 'fixed',
+                top:0,
                 display: 'flex',
                 border: 'none',
                 boxShadow: 'none',
