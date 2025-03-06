@@ -1,4 +1,5 @@
 import { Button } from "@raul_yael/cleangui";
+import { ReactElement } from "react";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const theme = {
@@ -28,29 +29,47 @@ export function BtnOutlined({ text }: { text: string }){
     )
 }
 
-export function BtnFilled({ text, col }: { text: string, col?: ThemeColors | string  }){
+export function BtnFilled({ text, col, onClick, $bg, children }: 
+    { 
+        text?: string, 
+        col?: ThemeColors | string, 
+        onClick: () => void   
+        $bg?: string
+        children?:ReactElement
+    }){
     return  (
         <Button variant="filled"
+                onClick={onClick}
                 style={{
                     color: col || "var(--green-light)", 
-                    backgroundColor: "var(--background)",
+                    backgroundColor: $bg || 'transparent',
                     fontSize: "14px",
+                    margin: 0                    
                 }}
                 >
-            {text}
+            <span>{text}</span>
+            {children}
         </Button>
     )
 }
 
-export function BtnHref({text, link, weight, sxText}: {text: string, link: string, weight?: number, sxText?: number}){
+export function BtnHref({text, link, weight, sxText}: 
+                        {
+                            text: string, 
+                            link: string, 
+                            weight?: number, 
+                            sxText?: number,                            
+                        }){
     return (
         <a href={link} style={{ textDecoration: 'none' }}>
         <Button variant="text"
+                
                 style={{
-                    color: "var(--green-light)", 
-                    backgroundColor: "var(--background)",
+
+                    color: "#EAF2E7", 
+                    backgroundColor: "transparent",
                     fontSize: sxText ? `${sxText}px` :"14px",
-                    fontWeight: weight ? `${weight}` : "lighter",                    
+                    fontWeight: weight ? `${weight}` : "lighter"                   
                 }}
         >
           {text}
