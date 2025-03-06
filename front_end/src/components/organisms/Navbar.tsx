@@ -14,6 +14,7 @@ export default function Navbar(){
             type='section'
             style={{
                 margin: 0,
+                position: 'fixed',
                 display: 'flex',
                 border: 'none',
                 boxShadow: 'none',
