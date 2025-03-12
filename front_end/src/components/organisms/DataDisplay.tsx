@@ -10,7 +10,7 @@ export function DataShow(){
                     margin:0,
                     display: "flex",
                     flexWrap: 'wrap',
-                    gap: '10px',
+                    gap: '13px',
                     borderRadius:0,
                     backgroundColor: 'var(--green-200)',
                     boxShadow: "none"
