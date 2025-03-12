@@ -4,7 +4,7 @@ import { BtnHref } from "../moleculs/Button";
 export function SidebarMenu({isOpen, close}: {isOpen: boolean, close: () => void}){
 
     return(
-        <>
+        
             <Sidebar  
               anchor="right"  
               $isOpen={isOpen} 
@@ -17,7 +17,7 @@ export function SidebarMenu({isOpen, close}: {isOpen: boolean, close: () => void
 
                 />
             </Sidebar>
-        </>
+      
     )
     
 } 
@@ -39,7 +39,7 @@ interface SidebarProps {
 
 const SidebarWrapper = styled.div<SidebarProps>`
   position: fixed;
-  z-index: 10;
+  z-index: 11;
   transition: transform 0.3s;
   overflow-y: auto;
   display: flex;
@@ -86,13 +86,14 @@ const SidebarWrapper = styled.div<SidebarProps>`
 
 const Overlay = styled.div<{$isOpen: boolean}>`
     display: block;
-    position: absolute;
+    position: fixed;
     width: 100%;
     height: 100%;
     left: 0;
     top: 0;
     backdrop-filter: blur(4px);
-    z-index:9 ; 
+    
+    z-index:10; 
     opacity: ${({$isOpen}) => $isOpen ? 1 : 0};
     visibility: ${({$isOpen}) => $isOpen ? 'visible' : 'hidden'};
     transition: opacity 0.3s, visibility 0.3s;

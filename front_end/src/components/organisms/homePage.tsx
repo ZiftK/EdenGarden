@@ -11,7 +11,7 @@ export function HomePage(){
           flexDirection: 'column-reverse',
           boxShadow: 'none',
           background: `
-          linear-gradient(to right, #000e, #0000),
+          linear-gradient(to right, #000e, #000a ,#0000),
           url(${bgPrimary}) -260px center/cover no-repeat
           `,
           height: '90svh',
@@ -27,14 +27,14 @@ export function HomePage(){
         type="div"
         style={{
             border: 'none',
-            margin: 0,
+            marginTop: 5,
             padding:0,
             display: "flex",
             gap: '10px',
             backgroundColor: 'transparent',
         }}
     >
-        <BtnOutlined text="Nuestro servicio" style={{fontSize: '12px'}}/>
+        <BtnOutlined text="Nuestro servicio" style={{fontSize: 'var(--font-xs)'}}/>
         <BtnFilled text="Contactanos" onClick={() => 1} $bg="#fbfbfb"/> 
     </Box> 
 
@@ -52,10 +52,10 @@ export function HomePage(){
           color='bg'
           variant='h1'
           style={{
-              fontSize: '20px',
+              fontSize: 'var(--font-lg)',
               fontFamily:  "'Montserrat', sans-serif",
-              fontWeight: 'bold'
-              
+              fontWeight: 'bold',
+              width: '300px'
             }}
             />
     </Box>

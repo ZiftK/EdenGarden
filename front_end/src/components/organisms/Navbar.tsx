@@ -12,19 +12,20 @@ export default function Navbar(){
     return(
         <Box 
             type='section'
+            className='navbar'
             style={{
                 margin: 0,
                 position: 'fixed',
-                top:0,
                 display: 'flex',
                 border: 'none',
                 boxShadow: 'none',
                 width: '100vw',
                 justifyContent: 'space-between',
-                height: '65px',
+                height: '55px',
                 borderRadius:0,
-                backgroundColor: 'rgb(56,86,24,.69)'
-                
+                backgroundColor: 'rgb(56,86,24,.69)',
+                top:0,
+       
             }}
         >
             {/* Logo del navbar */}
@@ -34,7 +35,7 @@ export default function Navbar(){
             {/* Botones del navbar */}
             <Box 
                 type='div'
-                style={{
+                style={{                
                     display: 'flex',
                     gap: '20px',
                     justifyContent: 'center',
@@ -43,7 +44,7 @@ export default function Navbar(){
                     boxShadow: 'none',
                     padding: 0,
                     backgroundColor:'transparent',
-                    color: 'transparent'
+                    color: 'transparent',                   
                 }}
             >
                 <BtnFilled onClick={toogleOpen}>

@@ -1,4 +1,6 @@
 import { Box, Typography } from "@raul_yael/cleangui";
+import { InfoCard } from "../atoms/InfoCard";
+import { StoreIcon } from "../atoms/Icons/Icons";
 
 export function AboutUs(){
     return(
@@ -15,7 +17,7 @@ export function AboutUs(){
             {/* Title  */}
             <Typography style={{
                 color: 'var(--father-font)',
-                fontSize:'17px',
+                fontSize:'var(--font-lg)',
 
             }}>
                 Que es Eden Garden
@@ -23,13 +25,21 @@ export function AboutUs(){
 
             {/* Description  */}
 
-            <Typography style={{
-                color: 'var(--children-font)',
-                fontSize:'11.5px',
-                marginTop:'4px'
+            <Typography 
+                variant="h2"
+                style={{
+                    color: 'var(--children-font)',
+                    fontSize:'var(--font-xs)',
+                    marginTop:'4px'
             }}>
             Un equipo de trabajo dedicado a brindarle el servicio en jardinería y cascadas artificiales de excelencia y siempre al mejor precio.
             </Typography>
+
+            <InfoCard 
+                title="Que esperar de nosotros"
+                description="Un equipo de trabajo dedicado a brindarle el servicio en jardinería y cascadas artificiales de excelencia y siempre al mejor precio."
+                icon={StoreIcon({size:[1.25,1.25]})}
+                />
         </Box>
     )
 }
