@@ -11,12 +11,12 @@
   text-rendering: optimizeLegibility;
 
   
-  --font-xs: 0.75rem; 
-  --font-sm: 0.875rem; 
-  --font-md: 1rem;
-  --font-lg: 1.25rem; 
-  --font-xl: 1.5rem; 
-  --font-xxl: 2rem; 
+  --font-xs: 0.75rem; /* 12px */
+  --font-sm: 0.875rem; /* 14px */
+  --font-md: 1rem; /* 16px (base) */
+  --font-lg: 1.25rem; /* 20px */
+  --font-xl: 1.5rem; /* 24px */
+  --font-xxl: 2rem; /* 32px */
   
 
   --background: #EAF2E7;
