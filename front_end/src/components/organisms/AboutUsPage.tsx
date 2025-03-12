@@ -42,14 +42,21 @@ export function AboutUs(){
                 />
 
             <InfoCard 
-                title="Que esperar de nosotros"
-                description="Un equipo de trabajo dedicado a brindarle el servicio en jardinería y cascadas artificiales de excelencia y siempre al mejor precio."
+                title="Nuestro Equipo"
+                description="El equipo de Eden Garden concentra una amplia variedad de habilidades en el manejo de jardines. Cada miembro del equipo sabe que la satisfacción del cliente es lo más importante para lograr un resultado espectacular para usted y sus visitas."
                 icon={StoreIcon({size:[1.25,1.25]})}
                 />
 
             <InfoCard 
                 title="Que esperar de nosotros"
-                description="Un equipo de trabajo dedicado a brindarle el servicio en jardinería y cascadas artificiales de excelencia y siempre al mejor precio."
+                description={
+                    <ul style={{marginLeft: '20px'}}>
+                        <li>Ofrecer un alto estándar de calidad al cliente</li>
+                        <li>Proporcionar productos de calidad en los diseños</li>
+                        <li>Atender todos los puntos de vista del cliente</li>
+                        <li>Brindar precios competitivos por nuestro trabajo</li>
+                    </ul>
+                }
                 icon={StoreIcon({size:[1.25,1.25]})}
                 />
         </Box>

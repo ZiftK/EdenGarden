@@ -55,7 +55,8 @@ export function InfoCard({
             <Typography variant="p"
                 style={{
                     color: "var(--children-font)",
-                    fontSize: "var(--font-xs)"
+                    fontSize: "var(--font-xs)",
+                    width: '95%'
                 }}>
                 {description}
             </Typography>
