@@ -19,6 +19,7 @@ export default function Navbar(){
                 display: 'flex',
                 border: 'none',
                 boxShadow: 'none',
+                padding:0,
                 width: '100vw',
                 justifyContent: 'space-between',
                 height: '55px',
@@ -29,7 +30,7 @@ export default function Navbar(){
             }}
         >
             {/* Logo del navbar */}
-            <img src={logo} style={{ height: '30px', alignSelf:'center'}}/>
+            <img src={logo} style={{ height: '30px', alignSelf:'center', marginLeft:'15px'}}/>
 
 
             {/* Botones del navbar */}

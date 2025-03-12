@@ -1,6 +1,6 @@
 import './App.css'
-import { AboutUs } from './components/organisms/aboutUsPage'
-import { HomePage } from './components/organisms/homePage'
+import { AboutUs } from './components/organisms/AboutUsPage'
+import { HomePage } from './components/organisms/HomePage'
 import Navbar from './components/organisms/Navbar'
 
 

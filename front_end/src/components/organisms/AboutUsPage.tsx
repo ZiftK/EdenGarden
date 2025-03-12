@@ -40,6 +40,18 @@ export function AboutUs(){
                 description="Un equipo de trabajo dedicado a brindarle el servicio en jardinería y cascadas artificiales de excelencia y siempre al mejor precio."
                 icon={StoreIcon({size:[1.25,1.25]})}
                 />
+
+            <InfoCard 
+                title="Que esperar de nosotros"
+                description="Un equipo de trabajo dedicado a brindarle el servicio en jardinería y cascadas artificiales de excelencia y siempre al mejor precio."
+                icon={StoreIcon({size:[1.25,1.25]})}
+                />
+
+            <InfoCard 
+                title="Que esperar de nosotros"
+                description="Un equipo de trabajo dedicado a brindarle el servicio en jardinería y cascadas artificiales de excelencia y siempre al mejor precio."
+                icon={StoreIcon({size:[1.25,1.25]})}
+                />
         </Box>
     )
 }
