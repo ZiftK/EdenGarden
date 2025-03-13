@@ -10,6 +10,8 @@ export function DataShow(){
                     margin:0,
                     display: "flex",
                     flexWrap: 'wrap',
+                    justifyContent: "center",
+                    alignItems: "center",
                     gap: '13px',
                     borderRadius:0,
                     backgroundColor: 'var(--green-200)',

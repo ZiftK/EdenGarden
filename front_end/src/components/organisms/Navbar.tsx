@@ -19,7 +19,7 @@ export default function Navbar(){
                 display: 'flex',
                 border: 'none',
                 boxShadow: 'none',
-                padding:0,
+                padding:'5px',
                 width: '100vw',
                 justifyContent: 'space-between',
                 height: '55px',
