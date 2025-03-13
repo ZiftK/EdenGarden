@@ -1,5 +1,5 @@
 
-py-server/app_venv
-py-server/__pycache__
-py-server/api/routers/__pycache__
+src/app_venv
+src/__pycache__
+src/adapters/api-rest/routers/__pycache__
 .idea
