@@ -58,23 +58,24 @@ export function BtnFilled({ text, col, onClick, $bg, children }:
     )
 }
 
-export function BtnHref({text, link, weight, sxText}: 
+export function BtnHref({text, link, weight, sxText, style}: 
                         {
                             text: string, 
                             link: string, 
                             weight?: number, 
-                            sxText?: number,                            
+                            sxText?: number,  
+                            style?: CSSProperties                          
                         }){
     return (
         <a href={link} style={{ textDecoration: 'none' }}>
         <Button variant="text"
                 
                 style={{
-
                     color: "#EAF2E7", 
                     backgroundColor: "transparent",
                     fontSize: sxText ? `${sxText}px` :"14px",
-                    fontWeight: weight ? `${weight}` : "lighter"                   
+                    fontWeight: weight ? `${weight}` : "100",
+                    ...style,
                 }}
         >
           {text}

@@ -16,8 +16,7 @@ export function Galleryview(){
                 gap: '40px',
                 boxShadow: "none",
                 border: 'none',                    
-                margin:0,
-                marginTop: '20px',
+                margin: '20px 0px',
                 borderRadius:0,
                 background: '#EAF2E7'
             }}
