@@ -22,9 +22,10 @@ export function BtnOutlined({ text, style, $bg }: { text: string, style?: CSSPro
                     ...style,
                     margin:0,
                     color: "var(--green-light)", 
-                    fontSize: "14px",
+                    fontSize: "12px",
                     backgroundColor: $bg||"var(--green-dark-transparent-100)",
-                    backdropFilter: 'blur(10px)'
+                    backdropFilter: 'blur(10px)',
+                    padding: '4px 12px'
                 }}
                 >
             {text}
@@ -46,8 +47,9 @@ export function BtnFilled({ text, col, onClick, $bg, children }:
                 style={{
                     color: col || "var(--green-light)", 
                     backgroundColor: $bg || 'transparent',
-                    fontSize: "14px",
-                    margin: 0                    
+                    fontSize: "12px",
+                    margin: 0,
+                    padding: '4px 12px'               
                 }}
                 >
             <span>{text}</span>
