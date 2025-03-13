@@ -1,3 +1,5 @@
 
 py-server/app_venv
+py-server/__pycache__
+py-server/api/routers/__pycache__
 .idea
