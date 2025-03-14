@@ -220,6 +220,11 @@
 body {
   min-width: 320px;
   min-height: 100svh;
+
+}
+
+html, body{
+  overflow-x: hidden;
 }
 
 .navbar{

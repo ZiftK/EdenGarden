@@ -1,9 +1,9 @@
 import {Typography} from "@raul_yael/cleangui"
 
-export function FrutalTreesTitle(){
+export function FrutalTreesTitle({title}:{title: string}){
     return(
         <Typography 
-            children="NARANJAS"
+            children={title}
             variant="h2"
             style={{
                 color: "var(--orange-title)",

@@ -19,11 +19,14 @@ export function FrutalTrees(){
                 alignItems:"center",
                 gap: "10px",
                 borderRadius: 0,
-                height:"350px"
+                height:"350px",
             }}
         >
-            <FrutalTreesTitle />
-            <CardFrutal />
+            <FrutalTreesTitle title="NARANJAS"/>
+            <CardFrutal 
+                title="Arboles Frutales"
+                description="Un espacio verde no está completo sin árboles frutales. Nos dimos a la tarea de sembrar y cuidar nuestros propios árboles decorativos y frutales para venta a nuestros clientes. Los tenemos ya crecidos o en libre crecimiento para que decoren su hogar o su comercio."
+            />
         </Box>
     )
 }

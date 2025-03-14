@@ -1,6 +1,12 @@
 import { Box, Typography } from "@raul_yael/cleangui";
 
-export function CardFrutal(){
+export function CardFrutal({
+    title,
+    description
+}:{
+    title: string,
+    description: string
+}){
     return(
         <Box type="div"
             style={{
@@ -20,7 +26,7 @@ export function CardFrutal(){
         >
             <Typography 
                 variant="h2"
-                children = "Arboles Frutales"
+                children = {title}
                 style={{
                     color: "var(--background)",
                     fontSize: "var(--font-md)",
@@ -30,7 +36,7 @@ export function CardFrutal(){
 
             <Typography 
                 variant="p"
-                children = "Un espacio verde no está completo sin árboles frutales. Nos dimos a la tarea de sembrar y cuidar nuestros propios árboles decorativos y frutales para venta a nuestros clientes. Los tenemos ya crecidos o en libre crecimiento para que decoren su hogar o su comercio."
+                children = {description}
                 style={{
                     color: "var(--background)",
                     fontSize: "var(--font-xs)",
