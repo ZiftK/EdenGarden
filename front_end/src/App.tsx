@@ -6,18 +6,20 @@ import { FrutalTrees } from './components/organisms/FrutalTrees'
 import { Galleryview } from './components/organisms/GalleryView'
 import { HomePage } from './components/organisms/homePage'
 import Navbar from './components/organisms/Navbar'
+import { ShortFormContact } from './components/organisms/ShortFormContact'
 
 
 function App() {
   return (
     <>
       <HomePage />
-      <Navbar />
       <AboutUs/>
       <DataShow />
       <Galleryview />
       <FlowerPots />
       <FrutalTrees />
+      <ShortFormContact />
+      <Navbar />
     </>
   )
 }

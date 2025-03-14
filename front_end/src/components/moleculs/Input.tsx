@@ -17,6 +17,7 @@ export interface InputProps {
     onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
     className?: string;
     id?: string;
+    $width?: string;
     style?: React.CSSProperties
   }
 
@@ -96,7 +97,7 @@ export const StyledInput = styled.input<Pick<InputProps,"bg"|"lightnessFactor" |
       : `${sxPd}px`};
   width: 100%;
   outline: none;
-  ${({ sxText }) => sxText && `font-size: ${sxText}px;`}
+  ${({ sxText }) => sxText && `font-size: ${sxText}rem;`}
   ${({ sxMn }) => sxMn && `margin: ${sxMn}px;`}
 
 
@@ -104,11 +105,11 @@ export const StyledInput = styled.input<Pick<InputProps,"bg"|"lightnessFactor" |
     const errorColor = theme.colors.error;
     const errorBackground = theme.colors.errorBackground;
     const successColor = theme.colors.success;
+    const textColor = color && hexToRgba(color, -70)
     const bgColor = bg 
       ? `#${bg}`
       : color && hexToRgba(color, lightnessFactor);
     const bgColorNoFocus = colorNoFocus && hexToRgba(colorNoFocus, lightnessFactor)
-    console.log(color)
 
     switch (variant) {
       case 'default':
@@ -118,7 +119,7 @@ export const StyledInput = styled.input<Pick<InputProps,"bg"|"lightnessFactor" |
           color: ${statusError 
             ? errorColor 
             : color 
-            ? color 
+            ? textColor
             : theme.colors.text};
           border-bottom: 1px solid ${statusError 
             ? errorColor 
@@ -135,7 +136,7 @@ export const StyledInput = styled.input<Pick<InputProps,"bg"|"lightnessFactor" |
               color: ${statusError 
                 ? errorColor 
                 : color 
-                ? color
+                ? textColor
                 : theme.colors.text};
               background-color: ${bgColor || theme.colors.transparent};
           }
@@ -215,9 +216,9 @@ export const StyledInput = styled.input<Pick<InputProps,"bg"|"lightnessFactor" |
     const paddingTop = Array.isArray(sxPd) ? sxPd[0] : sxPd || 0;
     const textSize = sxText || 14;
     
-    return `translateY(-${(paddingTop + textSize) / 2}px)`;
+    return `translateY(-${(paddingTop + textSize) / 10}rem)`;
   }};
-  font-size: ${({ sxText }) => sxText ? `${sxText * 0.6}px` : '10px'};
+  font-size: ${({ sxText }) => sxText ? `${sxText * 0.6}rem` : '1rem'};
   }
 
   &:disabled {
@@ -237,7 +238,7 @@ export const StyledLabel = styled.span<{
   lightnessFactor?: number
   bg?: string
 }>`
-  font-size: ${({ sxText }) => sxText ? `${sxText}px` : '14px'};
+  font-size: ${({ sxText }) => sxText ? `${sxText}rem` : '1rem'};
   position: absolute;
   pointer-events: none;
   left: ${({ sxPd }) => {
@@ -246,7 +247,7 @@ export const StyledLabel = styled.span<{
   }};
   top: ${({ sxPd, sxText }) => {
     const paddingTop = Array.isArray(sxPd) ? sxPd[0] : sxPd || 0;
-    const textSize = sxText || 14; 
+    const textSize = sxText || 1; 
 
     return `${paddingTop + textSize * 0}px`; 
   }};
@@ -268,7 +269,9 @@ export const StyledLabel = styled.span<{
     }
     return "transparent";
   }};
-  color: ${({ statusError }) => (statusError ? theme.colors.error : "var(--text-label)")};
+  color: ${({ statusError,color }) => (statusError 
+    ? theme.colors.error 
+    : color && hexToRgba (color, -50))};
   padding: 0px 5px;
 
   ${({ variant, sxPd, sxText, color}) => {
@@ -280,7 +283,7 @@ export const StyledLabel = styled.span<{
         const textSize = sxText || 14;
         return `${(paddingTop + textSize) / 2}px`; 
       }});
-      font-size: ${() => sxText ? `${sxText * 0.6}px` : '10px'};
+      font-size: ${() => sxText ? `${sxText * 0.6}rem` : '1rem'};
       color: ${() => color};
       }`
     }}
@@ -311,6 +314,7 @@ export default function Input({
     statusError = false, 
     value = "",
     bg,
+    $width,
     onChange,
     ...rest
 }: InputProps) {
@@ -331,10 +335,10 @@ export default function Input({
             style={{
                 position: "relative",
                 display: "block",
-                width: '300px',
+                width: $width,
                 background: 'transparent',
                 border: 'none',
-                margin: '20px'
+                padding: 0
             }} 
         >
             <StyledInput
