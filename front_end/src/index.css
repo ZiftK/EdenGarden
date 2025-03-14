@@ -107,6 +107,8 @@
 
   --green-dark-500: #436F13;
   --green-dark: #34570C; 
+
+  --orange-title: #ED6627;
   
   --father-font: #4A4F48;
   --children-font: #7A8077;
@@ -203,12 +205,16 @@
 
         --father-font: #4A4F48;
         --children-font: #7A8077;
+
+        --orange-title: #ED6627;
+
   }
 
 *{
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  /* outline: 1px auto #f00; */
 }
 
 body {
