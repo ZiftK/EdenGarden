@@ -28,7 +28,7 @@ export function ShortFormContact(){
                 children="Mantenganse en Contacto"
                 variant="h2"
                 style={{
-                    fontSize:"var(--font-md)",
+                    fontSize:"var(--font-lg)",
                     color:"var(--father-font)",
                     gridArea: "title",
                     width: "100%",
