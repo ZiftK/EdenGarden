@@ -3,6 +3,7 @@ from enum import Enum
 from domain.employee import Employee
 from domain.team import Team
 from domain.project import Project
+from domain.cv_record import CVRecord, CVStatus
 
 
 class BaseFields(Enum): 
@@ -51,6 +52,16 @@ class Repository(ABC):
         :returns:
         Id de proyecto asignado en la base de datos.
         """
+
+    async def create_cv_record(data: CVRecord)-> int:
+        """
+        Inserta un nuevo cv de prospecto en la base de datos.
+        :param id: Id para el nuevo cv de prospecto.
+        :param data: Información del nuevo cv de prospecto
+
+        :returns:
+        Id de cv de prospecto asignado en la base de datos.
+        """
     
     async def find_employees(identifier: str, search_by: BaseFields | FindEmployeeFields = BaseFields.Id)-> list[Employee]:
         """
@@ -79,45 +90,67 @@ class Repository(ABC):
         Lista de proyectos cuyo campo 'search_by' sea igual a 'identifier'.
         """
 
+    async def find_cv_records(identifier: str, search_by: BaseFields | CVStatus)-> list[CVRecord]:
+        """
+        :param identifier: Parámetro de comparación.
+        :param search_by: Establece sobre que campo se quiere hacer la comparación para la búsqueda.
+
+        :returns: 
+        Lista de cv de prospectos cuyo campo 'search_by' sea igual a 'identifier'.
+        """
+
     async def update_employee_data(id: str, data: Employee)-> None:
         """
         Sobre escribe datos de empleado.
 
-        :param identifier: Parámetro de comparación.
-        :param search_by: Establece sobre que campo se quiere hacer la comparación para la modificación.
+        :param id: Id del empleado a actualizar.
+        :param data: Datos actualizados del empleado
         """
 
     async def update_team_data(id: str, data: Team)-> None:
         """
         Sobre escribe datos del equpo.
 
-        :param identifier: Parámetro de comparación.
-        :param search_by: Establece sobre que campo se quiere hacer la comparación para la modificación.
+        :param id: Id del equipo a actualizar.
+        :param data: Datos actualizados del equipo.
         """
 
     async def update_project_data(id: int, data: Project)-> None:
         """
         Sobre escribe datos del equpo.
 
-        :param identifier: Parámetro de comparación.
-        :param search_by: Establece sobre que campo se quiere hacer la comparación para la modificación.
+        :param id: Id del proyecto a actualizar.
+        :param data: Datos actualizados del proyecto.
+        """
+
+    async def update_cv_record_status(id: int, status: CVStatus)-> None:
+        """
+        Actualiza el estado de un cv de prospecto.
+        
+        :param id: Id del cv de prospecto a actualizar.
+        :param status: Nuevo estado de cv de prospecto.
         """
 
     async def drop_employee_data(id: int)->None:
         """
         Elimina un empleado de la base de datos.
-        :param id: identificador de empleado.
+        :param id: Identificador de empleado.
         """
 
     async def drop_team_data(id: int)->None:
         """
         Elimina un equipo de la base de datos.
-        :param id: identificador del equipo.
+        :param id: Identificador del equipo.
         """
 
     async def drop_project_data(id: int)->None:
         """
         Elimina un proyecto de la base de datos.
-        :param id: identificador del proyect.
+        :param id: Identificador del proyecto.
         """
 
+    async def drop_cv_record(id: int)->None:
+        """
+        Elimina un cv de prospecto de la base de datos.
+        :param id: Identificador del cv de prospecto.
+        """
