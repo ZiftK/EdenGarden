@@ -1,5 +1,5 @@
 import { Button, Typography } from "@raul_yael/cleangui";
-import { CSSProperties, ReactElement } from "react";
+import { CSSProperties, JSX, ReactElement } from "react";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const theme = {
@@ -58,17 +58,19 @@ export function BtnFilled({ text, col, onClick, $bg, children }:
     )
 }
 
-export function BtnHref({text, link, weight, sxText, style}: 
+export function BtnHref({text, link, weight, sxText, style, icon}: 
                         {
                             text: string, 
                             link: string, 
                             weight?: number, 
                             sxText?: string,  
-                            style?: CSSProperties                          
+                            style?: CSSProperties    
+                            icon?: JSX.Element                      
                         }){
     return (
         <a href={link} style={{ textDecoration: 'none', width: "auto"}}>
         <Button variant="text"
+                icon={icon && icon}
                 style={{
                     color: "#EAF2E7", 
                     backgroundColor: "transparent",
@@ -77,7 +79,7 @@ export function BtnHref({text, link, weight, sxText, style}:
                     ...style,
                 }}
         >
-          <Typography 
+{          <Typography 
             children={text}
             variant="p"
             style={{
@@ -85,7 +87,7 @@ export function BtnHref({text, link, weight, sxText, style}:
                 fontWeight: weight || 100,
                 fontSize: sxText || "1rem"
             }}
-            />
+            />}
         </Button>
       </a>
     )

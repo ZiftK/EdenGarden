@@ -1,3 +1,4 @@
+import { Divider } from '@raul_yael/cleangui'
 import './App.css'
 import { AboutUs } from './components/organisms/AboutUsPage'
 import { DataShow } from './components/organisms/DataDisplay'
@@ -8,6 +9,7 @@ import { HomePage } from './components/organisms/homePage'
 import { Location } from './components/organisms/Location'
 import Navbar from './components/organisms/Navbar'
 import { ShortFormContact } from './components/organisms/ShortFormContact'
+import { Footer } from './components/organisms/Footer'
 
 
 function App() {
@@ -20,7 +22,9 @@ function App() {
       <FlowerPots />
       <FrutalTrees />
       <ShortFormContact />
-      <Location />
+      <Divider variant='middle'/>
+      <Location/>
+      <Footer />
       <Navbar />
     </>
   )
