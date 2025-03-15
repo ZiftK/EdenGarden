@@ -2,7 +2,7 @@ import logo from '/Logo_Eden.png'
 import icon from '../../assets/icons/menu.svg'
 import { Box } from '@raul_yael/cleangui'
 import { SidebarMenu } from '../atoms/Sidebar'
-import { BtnFilled } from '../moleculs/Button'
+import { BtnFilled, BtnMoon } from '../moleculs/Button'
 import { useState } from 'react'
 
 export default function Navbar(){
@@ -38,7 +38,7 @@ export default function Navbar(){
                 type='div'
                 style={{                
                     display: 'flex',
-                    gap: '20px',
+                    gap: '0px',
                     justifyContent: 'center',
                     alignItems:'center',
                     border:'none',
@@ -48,6 +48,8 @@ export default function Navbar(){
                     color: 'transparent',                   
                 }}
             >
+                <BtnMoon />
+
                 <BtnFilled onClick={toogleOpen}>
                     <img src={icon} alt="Menu_Icon" style={{
                         color: "#fbfbfb",
