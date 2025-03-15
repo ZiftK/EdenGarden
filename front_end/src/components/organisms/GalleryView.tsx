@@ -18,7 +18,7 @@ export function Galleryview(){
                 border: 'none',                    
                 margin: '20px 0px',
                 borderRadius:0,
-                background: '#EAF2E7'
+                background: 'var(--background)'
             }}
         >
             <CardImage 
@@ -69,7 +69,7 @@ const CardImage = ({
                 margin:0,
                 width: "clamp(300px, 90%, 1008px)",
                 height: '160px',
-                background: `linear-gradient(to bottom, #EAF2E700 0%, #EAF2E7 80%), url(${img}) center/cover no-repeat`,
+                background: `linear-gradient(to bottom, transparent 0%, var(--background) 80%), url(${img}) center / cover no-repeat`,
                 ...style
             }}
             
