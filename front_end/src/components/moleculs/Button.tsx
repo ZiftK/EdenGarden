@@ -1,4 +1,4 @@
-import { Button } from "@raul_yael/cleangui";
+import { Button, Typography } from "@raul_yael/cleangui";
 import { CSSProperties, ReactElement } from "react";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -63,22 +63,29 @@ export function BtnHref({text, link, weight, sxText, style}:
                             text: string, 
                             link: string, 
                             weight?: number, 
-                            sxText?: number,  
+                            sxText?: string,  
                             style?: CSSProperties                          
                         }){
     return (
-        <a href={link} style={{ textDecoration: 'none' }}>
+        <a href={link} style={{ textDecoration: 'none', width: "auto"}}>
         <Button variant="text"
-                
                 style={{
                     color: "#EAF2E7", 
                     backgroundColor: "transparent",
-                    fontSize: sxText ? `${sxText}px` :"14px",
-                    fontWeight: weight ? `${weight}` : "100",
+                    margin:0,
+                    padding:0,
                     ...style,
                 }}
         >
-          {text}
+          <Typography 
+            children={text}
+            variant="p"
+            style={{
+                fontFamily:"Montserrat",
+                fontWeight: weight || 100,
+                fontSize: sxText || "1rem"
+            }}
+            />
         </Button>
       </a>
     )
