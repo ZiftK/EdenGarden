@@ -30,9 +30,9 @@ export function DataShow(){
                     
                     <Typography 
                         children='570'
-                        color='bg'
                         variant='h2'
                         style={{
+                            color: "var(--white-peristance-color)",
                             fontSize: 'var(--font-xl)',
                             fontFamily:  "'Montserrat', sans-serif",
                             fontWeight: 'normal',
@@ -41,10 +41,10 @@ export function DataShow(){
                         />
 
                     <Typography 
-                        children='Proyectos residenciales'
-                        color='bg'                        
+                        children='Proyectos residenciales'                        
                         variant='p'
                         style={{
+                            color: "var(--white-peristance-color)",
                             fontSize: 'var(--font-xs)',
                             fontFamily:  "'Montserrat', sans-serif",
                             fontWeight: 'lighter',          
@@ -65,9 +65,9 @@ export function DataShow(){
                     
                     <Typography 
                         children='20'
-                        color='bg'
                         variant='h2'
                         style={{
+                            color: "var(--white-peristance-color)",
                             fontSize: 'var(--font-xl)',
                             fontFamily:  "'Montserrat', sans-serif",
                             fontWeight: 'normal',
@@ -76,10 +76,10 @@ export function DataShow(){
                         />
 
                     <Typography 
-                        children='Proyectos residenciales'
-                        color='bg'                        
+                        children='Proyectos residenciales'                        
                         variant='p'
                         style={{
+                            color: "var(--white-peristance-color)",
                             fontSize: 'var(--font-xs)',
                             fontFamily:  "'Montserrat', sans-serif",
                             fontWeight: 'lighter',          
@@ -101,9 +101,9 @@ export function DataShow(){
                     
                     <Typography 
                         children='964'
-                        color='bg'
                         variant='h2'
                         style={{
+                            color: "var(--white-peristance-color)",
                             fontSize: 'var(--font-xl)',
                             fontFamily:  "'Montserrat', sans-serif",
                             fontWeight: 'normal',
@@ -112,10 +112,10 @@ export function DataShow(){
                         />
 
                     <Typography 
-                        children='Proyectos residenciales'
-                        color='bg'                        
+                        children='Proyectos residenciales'                        
                         variant='p'
                         style={{
+                            color: "var(--white-peristance-color)",
                             fontSize: 'var(--font-xs)',
                             fontFamily:  "'Montserrat', sans-serif",
                             fontWeight: 'lighter',          
@@ -136,9 +136,9 @@ export function DataShow(){
                     
                     <Typography 
                         children='63'
-                        color='bg'
                         variant='h2'
                         style={{
+                            color: "var(--white-peristance-color)",
                             fontSize: 'var(--font-xl)',
                             fontFamily:  "'Montserrat', sans-serif",
                             fontWeight: 'normal',
@@ -147,10 +147,10 @@ export function DataShow(){
                         />
 
                     <Typography 
-                        children='Proyectos residenciales'
-                        color='bg'                        
+                        children='Proyectos residenciales'                        
                         variant='p'
                         style={{
+                            color: "var(--white-peristance-color)",
                             fontSize: 'var(--font-xs)',
                             fontFamily:  "'Montserrat', sans-serif",
                             fontWeight: 'lighter',          

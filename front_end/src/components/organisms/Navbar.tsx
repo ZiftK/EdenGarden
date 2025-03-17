@@ -52,7 +52,7 @@ export default function Navbar(){
 
                 <BtnFilled onClick={toogleOpen}>
                     <img src={icon} alt="Menu_Icon" style={{
-                        color: "#fbfbfb",
+                        color: "var(--white-peristance-color)",
                         width: '20px',
                         height: '20px',
                         }} />

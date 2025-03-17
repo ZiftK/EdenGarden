@@ -20,14 +20,14 @@ export function DescriptionPots(){
         >
             <Typography children="MACETAS" 
                         style={{
-                            color: "var(--background)",
+                            color: "var(--white-peristance-color)",
                             fontSize: "var(--font-md)"
                         }}
             />
 
             <Typography children="En nuestra jardinería, sabemos que las macetas no solo sirven para cuidar tus plantas, sino también para embellecer tus espacios. Contamos con una amplia variedad de macetas en distintos materiales, tamaños y estilos, ideales para darle un toque natural y armonioso a tu hogar." 
                         style={{
-                            color: "var(--background)",
+                            color: "var(--white-peristance-color)",
                             fontSize: "var(--font-xs)"
                         }}
             />
@@ -47,17 +47,14 @@ export function DescriptionPots(){
 
                 <BtnHref link="#" text="Ver más"
                         weight={100}
-                        style={{
-                            padding:0,
-                            margin: 0
-                        }}
+                        sxText="var(--font-sm)"
                 />
                 <BtnHref link="#" text="Compra una maceta" 
                     weight={600} 
+                    sxText="var(--font-xs)"
                     style={{
                         color:"var(--green)",
-                        padding:0,
-                        margin: 0
+
                     }}
                     />
             </Box> 

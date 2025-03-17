@@ -12,7 +12,7 @@ export function CardFrutal({
             style={{
                 border: "10px solid var(--background)",
                 boxShadow: "none",
-                background: "#000000c9",
+                background: "var(--background-transparent)",
                 borderRadius:"20px",
                 margin: "130px 60px 0px 0px",
                 padding: "18px 50px 18px 18px",
@@ -20,7 +20,7 @@ export function CardFrutal({
                 flexDirection: "column",
                 gap: "10px",
                 width:"250px",
-                backdropFilter: "blur(5px)",
+                backdropFilter: "blur(50px)",
                 
             }}
         >
@@ -28,7 +28,7 @@ export function CardFrutal({
                 variant="h2"
                 children = {title}
                 style={{
-                    color: "var(--background)",
+                    color: "var(--white-peristance-color)",
                     fontSize: "var(--font-md)",
                     fontWeight: "600"
                 }}
@@ -38,9 +38,9 @@ export function CardFrutal({
                 variant="p"
                 children = {description}
                 style={{
-                    color: "var(--background)",
+                    color: "var(--white-peristance-color)",
                     fontSize: "var(--font-xs)",
-                    fontWeight: "200"
+                    fontWeight: "300"
                 }}
             />
         </Box>

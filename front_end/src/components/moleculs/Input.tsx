@@ -6,10 +6,10 @@ export interface InputProps {
     $sxText?: number; 
     $sxMn?: [number, number, number, number] | number
     $sxPd?: [number, number, number, number] | number
-    $colorNoFocus?: string
+    colorNoFocus?: string
     color?: string
     bg?: string;
-    $lightnessFactor?: number
+    lightnessFactor?: number
     $sx?: 'small' | 'medium' | 'large';
     label?: string; 
     value?: string; 
@@ -56,10 +56,13 @@ export const theme = {
 };
 
 const hexToRgba = (hex: string, percent: number = 20): string => {
+  // Eliminar el símbolo '#' si está presente
   hex = hex.replace(/^#/, "");
 
-  let r: number, g: number, b: number;
+  // Variables para los componentes de color
+  let r: number, g: number, b: number, a: number = 1;
 
+  // Verificar la longitud del hex y procesar los valores
   if (hex.length === 3) {
     r = parseInt(hex[0] + hex[0], 16);
     g = parseInt(hex[1] + hex[1], 16);
@@ -68,8 +71,18 @@ const hexToRgba = (hex: string, percent: number = 20): string => {
     r = parseInt(hex.substring(0, 2), 16);
     g = parseInt(hex.substring(2, 4), 16);
     b = parseInt(hex.substring(4, 6), 16);
+  } else if (hex.length === 8) {
+    r = parseInt(hex.substring(0, 2), 16);
+    g = parseInt(hex.substring(2, 4), 16);
+    b = parseInt(hex.substring(4, 6), 16);
+    a = parseInt(hex.substring(6, 8), 16) / 255; // Canal alfa (0 a 1)
   } else {
     throw new Error("Formato de color no válido");
+  }
+
+  // Si el color es completamente transparente, no se modifica
+  if (a === 0) {
+    return `rgba(${r}, ${g}, ${b}, ${a})`;
   }
 
   // Calcular el aclaramiento hacia el blanco
@@ -83,13 +96,14 @@ const hexToRgba = (hex: string, percent: number = 20): string => {
   g = Math.min(g, 255);
   b = Math.min(b, 255);
 
-  // Convertir de vuelta a hex
-  return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+  // Devolver el color en formato RGBA
+  return `rgba(${r}, ${g}, ${b}, ${a})`;
 };
 
 
 
-export const StyledInput = styled.input<Pick<InputProps,"bg"|"$lightnessFactor" |"color" |"$colorNoFocus"| "$sxText" |'$sx' | "$sxMn" | "$sxPd" | "variant" | "$statusError">>`
+
+export const StyledInput = styled.input<Pick<InputProps,"bg"|"lightnessFactor" |"color" |"colorNoFocus"| "$sxText" |'$sx' | "$sxMn" | "$sxPd" | "variant" | "$statusError">>`
   transition: border 200ms, color 200ms, background-color 200ms;
   padding: ${({ $sxPd }) =>
     Array.isArray($sxPd)
@@ -101,15 +115,16 @@ export const StyledInput = styled.input<Pick<InputProps,"bg"|"$lightnessFactor" 
   ${({ $sxMn }) => $sxMn && `margin: ${$sxMn}px;`}
 
 
-  ${({ variant, $statusError, color, $colorNoFocus,$lightnessFactor,bg }) => {
+  ${({ variant, $statusError, color, colorNoFocus,lightnessFactor,bg }) => {
     const errorColor = theme.colors.error;
     const errorBackground = theme.colors.errorBackground;
     const successColor = theme.colors.success;
     const textColor = color && hexToRgba(color, -70)
     const bgColor = bg 
-      ? `#${bg}`
-      : color && hexToRgba(color, $lightnessFactor);
-    const bgColorNoFocus = $colorNoFocus && hexToRgba($colorNoFocus, $lightnessFactor)
+      ? `${bg}`
+      : color && hexToRgba(color, lightnessFactor);
+      
+    const bgColorNoFocus = colorNoFocus && hexToRgba(colorNoFocus, lightnessFactor)
 
     switch (variant) {
       case 'default':
@@ -124,7 +139,7 @@ export const StyledInput = styled.input<Pick<InputProps,"bg"|"$lightnessFactor" 
           border-bottom: 1px solid ${$statusError 
             ? errorColor 
             : color
-            ? $colorNoFocus
+            ? textColor
             : theme.colors.text};
           &:focus, &:not([value=""]) {
               border-bottom: 1px solid ${$statusError 
@@ -143,11 +158,12 @@ export const StyledInput = styled.input<Pick<InputProps,"bg"|"$lightnessFactor" 
         `;
       case 'outlined':
         return css`
+          padding-top: 20px;
           background-color: ${theme.colors.background};
           border: 1px solid ${$statusError 
             ? errorColor 
             : color
-            ? $colorNoFocus
+            ? colorNoFocus
             : theme.colors.outlined
             };
           border-radius: 10px;
@@ -182,7 +198,7 @@ export const StyledInput = styled.input<Pick<InputProps,"bg"|"$lightnessFactor" 
           border-bottom: 1px solid ${$statusError 
             ? errorColor 
             : color 
-            ? $colorNoFocus
+            ? color
             : theme.colors.text};
           color: ${$statusError 
             ? errorColor 
@@ -234,8 +250,8 @@ export const StyledLabel = styled.span<{
   $statusError: boolean
   variant: 'outlined' | 'filled' | 'default'
   color?: string
-  $colorNoFocus?: string
-  $lightnessFactor?: number
+  colorNoFocus?: string
+  lightnessFactor?: number
   bg?: string
 }>`
   font-size: ${({ $sxText }) => $sxText ? `${$sxText}rem` : '1rem'};
@@ -253,16 +269,16 @@ export const StyledLabel = styled.span<{
   }};
   border-radius: 5px;
   transition: all 200ms;
-  background-color: ${({ variant, $statusError, color, $lightnessFactor, bg}) => {
+  background-color: ${({ variant, $statusError, color, lightnessFactor, bg}) => {
     const bgColor = bg 
       ? `#${bg}`
-      : color && hexToRgba(color, $lightnessFactor);
+      : color && hexToRgba(color, lightnessFactor);
     if (variant === 'filled') {
       return $statusError 
         ? "transparent" 
         : color
-        ? bgColor
-        : "var(--background-transparent)";
+          ? bgColor
+          : "var(--background-transparent)";
     }
     if (variant === "outlined") {
       return "var(--background)";
@@ -288,11 +304,11 @@ export const StyledLabel = styled.span<{
       }`
     }}
 
-  ${({variant, color, $lightnessFactor, bg}) => {
+  ${({variant, color, lightnessFactor, bg}) => {
     const bgColor = bg
-      ?`#${bg}`
-      : color && hexToRgba(color, $lightnessFactor);
-    if(variant === 'default') return css `
+      ?`${bg}`
+      : color && hexToRgba(color, lightnessFactor);
+    if(variant === 'default'|| variant === "filled") return css `
       input:not(:placeholder-shown) + &,
       input:focus + & {
         background-color: ${bgColor};
@@ -305,12 +321,12 @@ export default function Input({
     $sx = 'small', 
     $sxMn = [4, 7, 4, 7],
     $sxPd = [10, 15, 10, 15],
-    $sxText = 14, 
+    $sxText = .75, 
     variant = 'outlined', 
-    $lightnessFactor = 60,
+    lightnessFactor = 60,
     label, 
     color,
-    $colorNoFocus = '#727272',
+    colorNoFocus = '#727272',
     $statusError = false, 
     value = "",
     bg,
@@ -351,10 +367,10 @@ export default function Input({
                 value={val}
                 color={color}
                 placeholder=" "
-                $colorNoFocus={$colorNoFocus}
+                colorNoFocus={colorNoFocus}
                 id={idInput}
                 bg = {bg}
-                $lightnessFactor={$lightnessFactor}
+                lightnessFactor={lightnessFactor}
                 {...rest}
             />
             {label && (
@@ -364,7 +380,7 @@ export default function Input({
                     $sxPd={$sxPd}
                     variant={variant} 
                     $statusError={$statusError}
-                    $lightnessFactor={$lightnessFactor}
+                    lightnessFactor={lightnessFactor}
                     color={color}
                     bg = {bg}
                 >

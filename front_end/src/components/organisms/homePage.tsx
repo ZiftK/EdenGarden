@@ -35,7 +35,7 @@ export function HomePage(){
         }}
     >
         <BtnOutlined text="Nuestro servicio" style={{fontSize: 'var(--font-xs)'}}/>
-        <BtnFilled text="Contactanos" onClick={() => 1} $bg="#fbfbfb"/> 
+        <BtnFilled text="Contactanos" onClick={() => 1} $bg="var(--white-peristance-color)" col="#557C2B"/> 
     </Box> 
 
     
@@ -43,7 +43,9 @@ export function HomePage(){
     <Typography 
           children='+52 (55) 45034455'
           variant='p'
-          color='default'
+          style={{
+            color: "var(--white-peristance-color)"
+          }}
           />
 
     {/* Title Home Page */}
@@ -55,7 +57,8 @@ export function HomePage(){
               fontSize: 'var(--font-lg)',
               fontFamily:  "'Montserrat', sans-serif",
               fontWeight: 'bold',
-              width: '300px'
+              width: '300px',
+              color: "var(--white-peristance-color)"
             }}
             />
     </Box>

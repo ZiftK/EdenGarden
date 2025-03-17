@@ -78,7 +78,7 @@ const CardImage = ({
                 children={letter}           
                 style={{
                     fontWeight:'800',
-                    color: '#0003',
+                    color: 'var(--secondary-color)',
                     fontSize: "var(--font-xxl)",
                    
                 }}

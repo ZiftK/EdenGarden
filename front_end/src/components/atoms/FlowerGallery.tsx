@@ -14,7 +14,8 @@ export function FlowersGallery(){
                 gap: '10px',
                 padding: 0,
                 margin: 0,
-                border: "none"
+                border: "none",
+                background: "var(--background)"
              }}
             >
             <div 

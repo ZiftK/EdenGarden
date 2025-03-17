@@ -18,7 +18,7 @@ export function Location(){
                 variant="h2"
                 style={{
                     fontSize: "var(--font-lg)",
-                    color: "var(--father-font)"
+                    color: "var(--white-peristance-color)"
                 }}
                 />
             <Typography  

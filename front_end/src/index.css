@@ -22,10 +22,10 @@
   
 
   --background: #EAF2E7;
-  --background-transparent: #dedede ;
+  --background-transparent: #23222b8a ;
 
   --text-label: #a3a3a3;
-
+  
   --primary-color-lighter: #e6f7ff; 
   --primary-color-100: #bae7ff; 
   --primary-color-200: #91d5ff; 
@@ -43,7 +43,7 @@
   --secondary-color-200: #f0f0f0; 
   --secondary-color-light: #d9d9d9; 
   --secondary-color-400: #bfbfbf; 
-  --secondary-color: #8c8c8c; 
+  --secondary-color: #8c8c8c66; 
   --secondary-color-600: #595959; 
   --secondary-color-dark: #262626; 
   --secondary-color-800: #141414; 
@@ -76,7 +76,7 @@
 
   /* Text Colors */
   --text-color: #ECECEC;
-  --text-color-hover: rgba(0, 0, 0, 0.481);
+  --text-color-hover: #0000007b;
 
   /* Contained Colors */
   --contained-color: #7e3eb3;
@@ -84,7 +84,7 @@
 
   /* Outlined Colors */
   --outlined-color: #a0a0a0;
-  --outlined-color-hover: rgba(51, 51, 51, 0.829);
+  --outlined-color-hover: #333333d3;
 
   /* Divider */
   --color-divider: #e0e0e0;
@@ -112,12 +112,16 @@
   
   --father-font: #4A4F48;
   --children-font: #7A8077;
+
+  --white-peristance-color: #fbfbfb;
+
+  --color-no-focus: #E5ECE2;
   }
   
   [data-theme="dark"] {
         /* Backgrounds */
         --background: #0A1506;
-        --background-transparent: #23222b;
+        --background-transparent: #dedede3d;
     
         /* Text Colors */
         --text-label: #a5a5a5;
@@ -142,7 +146,7 @@
         --secondary-color-200: #242436; 
         --secondary-color-light: #1f1f30; 
         --secondary-color-400: #1b1b28; 
-        --secondary-color: #171722; 
+        --secondary-color: #82828233; 
         --secondary-color-600: #13131d; 
         --secondary-color-dark: #16161e;
         --secondary-color-800: #0b0b12; 
@@ -194,13 +198,13 @@
         --green-light-dark: #73896A;
         
         --green: #5FB600;
-        --green-200: #4F7F1C;
+        --green-200: #2D4E0A;
         
         --green-dark-transparent-100:#38561830;
         --green-dark-transparent-400: #416d1263;
         --green-dark-transparent-500: #395819b0;
 
-        --green-dark-500: #2D4E0A;
+        --green-dark-500: #436F13;
         --green-dark: #34570C; 
 
         --father-font: #4A4F48;
@@ -208,6 +212,9 @@
 
         --orange-title: #ED6627;
 
+        --white-peristance-color: #B8C0B5;
+
+        --color-no-focus: #0A1506;
   }
 
 *{
