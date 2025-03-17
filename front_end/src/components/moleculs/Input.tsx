@@ -3,17 +3,17 @@ import { useId, useState } from "react";
 
 export interface InputProps {
     variant: 'outlined' | 'filled' | 'default'; 
-    sxText?: number; 
-    sxMn?: [number, number, number, number] | number
-    sxPd?: [number, number, number, number] | number
-    colorNoFocus?: string
+    $sxText?: number; 
+    $sxMn?: [number, number, number, number] | number
+    $sxPd?: [number, number, number, number] | number
+    $colorNoFocus?: string
     color?: string
     bg?: string;
-    lightnessFactor?: number
-    sx?: 'small' | 'medium' | 'large';
+    $lightnessFactor?: number
+    $sx?: 'small' | 'medium' | 'large';
     label?: string; 
     value?: string; 
-    statusError?: boolean;
+    $statusError?: boolean;
     onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
     className?: string;
     id?: string;
@@ -89,51 +89,51 @@ const hexToRgba = (hex: string, percent: number = 20): string => {
 
 
 
-export const StyledInput = styled.input<Pick<InputProps,"bg"|"lightnessFactor" |"color" |"colorNoFocus"| "sxText" |'sx' | "sxMn" | "sxPd" | "variant" | "statusError">>`
+export const StyledInput = styled.input<Pick<InputProps,"bg"|"$lightnessFactor" |"color" |"$colorNoFocus"| "$sxText" |'$sx' | "$sxMn" | "$sxPd" | "variant" | "$statusError">>`
   transition: border 200ms, color 200ms, background-color 200ms;
-  padding: ${({ sxPd }) =>
-    Array.isArray(sxPd)
-      ? `${sxPd[0]}px ${sxPd[1]}px ${sxPd[2]}px ${sxPd[3]}px`
-      : `${sxPd}px`};
+  padding: ${({ $sxPd }) =>
+    Array.isArray($sxPd)
+      ? `${$sxPd[0]}px ${$sxPd[1]}px ${$sxPd[2]}px ${$sxPd[3]}px`
+      : `${$sxPd}px`};
   width: 100%;
   outline: none;
-  ${({ sxText }) => sxText && `font-size: ${sxText}rem;`}
-  ${({ sxMn }) => sxMn && `margin: ${sxMn}px;`}
+  ${({ $sxText }) => $sxText && `font-size: ${$sxText}rem;`}
+  ${({ $sxMn }) => $sxMn && `margin: ${$sxMn}px;`}
 
 
-  ${({ variant, statusError, color, colorNoFocus,lightnessFactor,bg }) => {
+  ${({ variant, $statusError, color, $colorNoFocus,$lightnessFactor,bg }) => {
     const errorColor = theme.colors.error;
     const errorBackground = theme.colors.errorBackground;
     const successColor = theme.colors.success;
     const textColor = color && hexToRgba(color, -70)
     const bgColor = bg 
       ? `#${bg}`
-      : color && hexToRgba(color, lightnessFactor);
-    const bgColorNoFocus = colorNoFocus && hexToRgba(colorNoFocus, lightnessFactor)
+      : color && hexToRgba(color, $lightnessFactor);
+    const bgColorNoFocus = $colorNoFocus && hexToRgba($colorNoFocus, $lightnessFactor)
 
     switch (variant) {
       case 'default':
         return css`
           background-color: ${bgColorNoFocus || theme.colors.transparent};
           border: none;
-          color: ${statusError 
+          color: ${$statusError 
             ? errorColor 
             : color 
             ? textColor
             : theme.colors.text};
-          border-bottom: 1px solid ${statusError 
+          border-bottom: 1px solid ${$statusError 
             ? errorColor 
             : color
-            ? colorNoFocus
+            ? $colorNoFocus
             : theme.colors.text};
           &:focus, &:not([value=""]) {
-              border-bottom: 1px solid ${statusError 
+              border-bottom: 1px solid ${$statusError 
                 ? errorColor 
                 : color
                 ? color
                 : successColor
                 };
-              color: ${statusError 
+              color: ${$statusError 
                 ? errorColor 
                 : color 
                 ? textColor
@@ -144,27 +144,27 @@ export const StyledInput = styled.input<Pick<InputProps,"bg"|"lightnessFactor" |
       case 'outlined':
         return css`
           background-color: ${theme.colors.background};
-          border: 1px solid ${statusError 
+          border: 1px solid ${$statusError 
             ? errorColor 
             : color
-            ? colorNoFocus
+            ? $colorNoFocus
             : theme.colors.outlined
             };
           border-radius: 10px;
-          color: ${statusError
+          color: ${$statusError
             ? errorColor 
             : color
             ? color
             : theme.colors.outlined
             };
           &:focus, &:not([value=""]) {
-            border-color: ${statusError 
+            border-color: ${$statusError 
               ? errorColor 
               : color
               ? color
               : successColor
               };
-            color: ${statusError             
+            color: ${$statusError             
               ? errorColor 
               : color
               ? color
@@ -172,25 +172,25 @@ export const StyledInput = styled.input<Pick<InputProps,"bg"|"lightnessFactor" |
             }`;
       case 'filled':
         return css`
-          background-color: ${statusError 
+          background-color: ${$statusError 
             ? errorBackground 
             : color
             ? bgColor
             : theme.colors.transparent
             };
           border: none;
-          border-bottom: 1px solid ${statusError 
+          border-bottom: 1px solid ${$statusError 
             ? errorColor 
             : color 
-            ? colorNoFocus
+            ? $colorNoFocus
             : theme.colors.text};
-          color: ${statusError 
+          color: ${$statusError 
             ? errorColor 
             : color 
             ? color
             : theme.colors.text};
           &:focus, &:not([value=""]){
-            border-color: ${statusError 
+            border-color: ${$statusError 
               ? errorColor 
               : color
               ? color
@@ -206,19 +206,19 @@ export const StyledInput = styled.input<Pick<InputProps,"bg"|"lightnessFactor" |
 
   &:not([value=""]) + span,
   &:focus + span {
-    color: ${({ statusError, color }) => (statusError 
+    color: ${({ $statusError, color }) => ($statusError 
       ? 'var(--error-color)' 
       : color
       ? color
       : 'var(--success-color)'
     )};
-  transform: ${({ sxText, sxPd }) => {
-    const paddingTop = Array.isArray(sxPd) ? sxPd[0] : sxPd || 0;
-    const textSize = sxText || 14;
+  transform: ${({ $sxText, $sxPd }) => {
+    const paddingTop = Array.isArray($sxPd) ? $sxPd[0] : $sxPd || 0;
+    const textSize = $sxText || 14;
     
     return `translateY(-${(paddingTop + textSize) / 10}rem)`;
   }};
-  font-size: ${({ sxText }) => sxText ? `${sxText * 0.6}rem` : '1rem'};
+  font-size: ${({ $sxText }) => $sxText ? `${$sxText * 0.6}rem` : '1rem'};
   }
 
   &:disabled {
@@ -228,37 +228,37 @@ export const StyledInput = styled.input<Pick<InputProps,"bg"|"lightnessFactor" |
 `;
 
 export const StyledLabel = styled.span<{
-  sxPd : [number, number, number, number] | number
-  sxText : number
-  sx : 'small' | 'medium' | 'large'
-  statusError: boolean
+  $sxPd : [number, number, number, number] | number
+  $sxText : number
+  $sx : 'small' | 'medium' | 'large'
+  $statusError: boolean
   variant: 'outlined' | 'filled' | 'default'
   color?: string
-  colorNoFocus?: string
-  lightnessFactor?: number
+  $colorNoFocus?: string
+  $lightnessFactor?: number
   bg?: string
 }>`
-  font-size: ${({ sxText }) => sxText ? `${sxText}rem` : '1rem'};
+  font-size: ${({ $sxText }) => $sxText ? `${$sxText}rem` : '1rem'};
   position: absolute;
   pointer-events: none;
-  left: ${({ sxPd }) => {
-  const paddingLeft = Array.isArray(sxPd) ? sxPd[3] : 20; 
+  left: ${({ $sxPd }) => {
+  const paddingLeft = Array.isArray($sxPd) ? $sxPd[3] : 20; 
   return `${paddingLeft}px`;
   }};
-  top: ${({ sxPd, sxText }) => {
-    const paddingTop = Array.isArray(sxPd) ? sxPd[0] : sxPd || 0;
-    const textSize = sxText || 1; 
+  top: ${({ $sxPd, $sxText }) => {
+    const paddingTop = Array.isArray($sxPd) ? $sxPd[0] : $sxPd || 0;
+    const textSize = $sxText || 1; 
 
     return `${paddingTop + textSize * 0}px`; 
   }};
   border-radius: 5px;
   transition: all 200ms;
-  background-color: ${({ variant, statusError, color, lightnessFactor, bg}) => {
+  background-color: ${({ variant, $statusError, color, $lightnessFactor, bg}) => {
     const bgColor = bg 
       ? `#${bg}`
-      : color && hexToRgba(color, lightnessFactor);
+      : color && hexToRgba(color, $lightnessFactor);
     if (variant === 'filled') {
-      return statusError 
+      return $statusError 
         ? "transparent" 
         : color
         ? bgColor
@@ -269,29 +269,29 @@ export const StyledLabel = styled.span<{
     }
     return "transparent";
   }};
-  color: ${({ statusError,color }) => (statusError 
+  color: ${({ $statusError,color }) => ($statusError 
     ? theme.colors.error 
     : color && hexToRgba (color, -50))};
   padding: 0px 5px;
 
-  ${({ variant, sxPd, sxText, color}) => {
+  ${({ variant, $sxPd, $sxText, color}) => {
     if (variant === 'outlined') return css`
       input:not(:placeholder-shown) + &,
       input:focus + & {
       transform: translateY(-${() => {
-        const paddingTop = Array.isArray(sxPd) ? sxPd[0] : sxPd || 0;
-        const textSize = sxText || 14;
+        const paddingTop = Array.isArray($sxPd) ? $sxPd[0] : $sxPd || 0;
+        const textSize = $sxText || 14;
         return `${(paddingTop + textSize) / 2}px`; 
       }});
-      font-size: ${() => sxText ? `${sxText * 0.6}rem` : '1rem'};
+      font-size: ${() => $sxText ? `${$sxText * 0.6}rem` : '1rem'};
       color: ${() => color};
       }`
     }}
 
-  ${({variant, color, lightnessFactor, bg}) => {
+  ${({variant, color, $lightnessFactor, bg}) => {
     const bgColor = bg
       ?`#${bg}`
-      : color && hexToRgba(color, lightnessFactor);
+      : color && hexToRgba(color, $lightnessFactor);
     if(variant === 'default') return css `
       input:not(:placeholder-shown) + &,
       input:focus + & {
@@ -302,16 +302,16 @@ export const StyledLabel = styled.span<{
 `;
 
 export default function Input({ 
-    sx = 'small', 
-    sxMn = [4, 7, 4, 7],
-    sxPd = [10, 15, 10, 15],
-    sxText = 14, 
+    $sx = 'small', 
+    $sxMn = [4, 7, 4, 7],
+    $sxPd = [10, 15, 10, 15],
+    $sxText = 14, 
     variant = 'outlined', 
-    lightnessFactor = 60,
+    $lightnessFactor = 60,
     label, 
     color,
-    colorNoFocus = '#727272',
-    statusError = false, 
+    $colorNoFocus = '#727272',
+    $statusError = false, 
     value = "",
     bg,
     $width,
@@ -331,7 +331,7 @@ export default function Input({
     return (
         <Box
             type="span"   
-            size={sx}
+            size={$sx}
             style={{
                 position: "relative",
                 display: "block",
@@ -342,29 +342,29 @@ export default function Input({
             }} 
         >
             <StyledInput
-                sx = {sx}
-                sxText={sxText}
-                sxMn={sxMn}
-                sxPd={sxPd}
+                $sx = {$sx}
+                $sxText={$sxText}
+                $sxMn={$sxMn}
+                $sxPd={$sxPd}
                 onChange={handleChange}
                 variant={variant}
                 value={val}
                 color={color}
                 placeholder=" "
-                colorNoFocus={colorNoFocus}
+                $colorNoFocus={$colorNoFocus}
                 id={idInput}
                 bg = {bg}
-                lightnessFactor={lightnessFactor}
+                $lightnessFactor={$lightnessFactor}
                 {...rest}
             />
             {label && (
                 <StyledLabel 
-                    sx={sx} 
-                    sxText={sxText}
-                    sxPd={sxPd}
+                    $sx={$sx} 
+                    $sxText={$sxText}
+                    $sxPd={$sxPd}
                     variant={variant} 
-                    statusError={statusError}
-                    lightnessFactor={lightnessFactor}
+                    $statusError={$statusError}
+                    $lightnessFactor={$lightnessFactor}
                     color={color}
                     bg = {bg}
                 >

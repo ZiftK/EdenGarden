@@ -40,11 +40,11 @@ export function ShortFormContact(){
                 variant="default"
                 bg="#E5ECE2"
                 color="#BBC3B8"
-                colorNoFocus="#E5ECE2"
-                lightnessFactor={30}
+                $colorNoFocus="#E5ECE2"
+                $lightnessFactor={30}
                 label="Nombre"
                 $width="100%"
-                sxText={0.875}
+                $sxText={0.875}
                 style={{
                     gridArea: "name",
                     margin: 0,
@@ -55,11 +55,11 @@ export function ShortFormContact(){
                 bg="#E5ECE2"
                 color="#bbb" 
                 variant="default"            
-                colorNoFocus="#CADEC2"
-                lightnessFactor={60}
+                $colorNoFocus="#CADEC2"
+                $lightnessFactor={60}
                 label="Telefono"
                 $width="100%"
-                sxText={0.875}
+                $sxText={0.875}
                 style={{
                     gridArea: "phone",
                     margin: 0,
@@ -70,11 +70,11 @@ export function ShortFormContact(){
                 bg="#E5ECE2"
                 color="#bbb"
                 variant="default"
-                colorNoFocus="#CADEC2"
-                lightnessFactor={60}
+                $colorNoFocus="#CADEC2"
+                $lightnessFactor={60}
                 label="Email"
                 $width="100%"
-                sxText={0.875}
+                $sxText={0.875}
                 style={{
                     gridArea: "email",
                     margin: 0,
@@ -85,11 +85,11 @@ export function ShortFormContact(){
                 bg="#E5ECE2"
                 color="#bbb"
                 variant="default"
-                colorNoFocus="#CADEC2"
-                lightnessFactor={60}
+                $colorNoFocus="#CADEC2"
+                $lightnessFactor={60}
                 label="Tipo de servicio"
                 $width="100%"
-                sxText={0.875}
+                $sxText={0.875}
                 style={{
                     gridArea: "service",
                     margin: 0,
@@ -100,11 +100,11 @@ export function ShortFormContact(){
                 bg="#E5ECE2"
                 color="#bbb"
                 variant="default"
-                colorNoFocus="#CADEC2"
-                lightnessFactor={60}
+                $colorNoFocus="#CADEC2"
+                $lightnessFactor={60}
                 label="Mensaje..."
                 $width="200%"
-                sxText={0.875}
+                $sxText={0.875}
                 style={{
                     gridArea: "message",
                     margin: 0,
