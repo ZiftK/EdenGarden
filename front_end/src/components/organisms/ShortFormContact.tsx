@@ -16,7 +16,7 @@ export function ShortFormContact(){
                 "message message"
                 "button button"
             `,
-            gridTemplateColumns: "140px 140px",
+            gridTemplateColumns: "repeat(2,1fr)",
             gridTemplateRows: "repeat(3, 1fr) 2fr auto",
             gridColumnGap: "10px",
             gridRowGap: "10px",

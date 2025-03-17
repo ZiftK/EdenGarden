@@ -9,19 +9,20 @@ export function CardFrutal({
 }){
     return(
         <Box type="div"
+            className=""
             style={{
                 border: "10px solid var(--background)",
                 boxShadow: "none",
                 background: "var(--background-transparent)",
                 borderRadius:"20px",
-                margin: "130px 60px 0px 0px",
+                margin: `130px 0px 0px 20px`,
                 padding: "18px 50px 18px 18px",
                 display: "flex",
                 flexDirection: "column",
                 gap: "10px",
                 width:"250px",
                 backdropFilter: "blur(50px)",
-                
+                alignSelf: "start"
             }}
         >
             <Typography 

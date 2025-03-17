@@ -11,7 +11,8 @@ export function Location(){
                 backgroundColor: "var(--background)",
                 display: "flex",
                 flexDirection: "column",
-                gap: "8px"
+                gap: "8px",
+                width: "100%"
             }}
         >
             <Typography children="Donde ubicarnos"
@@ -71,8 +72,9 @@ export function Location(){
                     fontSize: "var(--font-xs)",
                     color: "var(--green-200)",
                     alignSelf: "end",
-                    width: "50%",
-                    marginTop: "10px"
+                    width: "clamp(120px,40%,200px)",
+                    marginTop: "10px",
+                    padding: 0
                 }}
                 />
         </Box>

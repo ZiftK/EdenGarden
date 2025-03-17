@@ -26,7 +26,6 @@ export default function Navbar(){
                 borderRadius:0,
                 backgroundColor: 'rgb(56,86,24,.69)',
                 top:0,
-       
             }}
         >
             {/* Logo del navbar */}

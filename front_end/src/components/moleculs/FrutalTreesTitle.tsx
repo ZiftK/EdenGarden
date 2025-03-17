@@ -8,13 +8,13 @@ export function FrutalTreesTitle({title}:{title: string}){
             style={{
                 color: "var(--orange-title)",
                 fontWeight: 500,
-                padding: "10px 70px",
-                borderRadius:"50px",
+                padding: "10px 20px 10px 70px",
+                borderRadius:"0px 0px 0px 50px",
                 backgroundColor:"var(--background)",
                 marginTop:"70px",
-                marginLeft:"190px",
                 placeSelf: "center",
-                fontSize: "var(--font-md)"
+                fontSize: "var(--font-md)",
+                alignSelf: "end",
             }}
         />
     )

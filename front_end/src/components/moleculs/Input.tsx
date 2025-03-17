@@ -108,7 +108,8 @@ const hexToRgba = (hex: string, percent: number = 20): string => {
 
 
 
-export const StyledInput = styled.input<Pick<InputProps,"bg"|"$lightnessFactor" |"color" |"$colorNoFocus"| "$sxText" |'$sx' | "$sxMn" | "$sxPd" | "variant" | "$statusError">>`
+export const StyledInput = styled.input.attrs({autoComplete: "off"})<Pick<InputProps,"bg"|"$lightnessFactor" |"color" |"$colorNoFocus"| "$sxText" |'$sx' | "$sxMn" | "$sxPd" | "variant" | "$statusError">>`
+  appearance: none;
   transition: border 200ms, color 200ms, background-color 200ms;
   padding: ${({ $sxPd }) =>
     Array.isArray($sxPd)
@@ -325,7 +326,7 @@ export const StyledLabel = styled.span<{
 export default function Input({ 
     $sx = 'small', 
     $sxMn = [4, 7, 4, 7],
-    $sxPd = [10, 15, 10, 15],
+    $sxPd = [10, 15, 10, 4],
     $sxText = .75, 
     variant = 'outlined', 
     $lightnessFactor = 60,
