@@ -1,7 +1,7 @@
 import { Box, Typography } from "@raul_yael/cleangui";
-import imgRiver from "../../assets/river.jpg"
-import imgHouse_2 from "../../assets/house_2.jpg"
-import pots from "../../assets/garden_pots.jpg"
+import imgRiver from "../../assets/river.webp"
+import imgHouse_2 from "../../assets/house_2.webp"
+import pots from "../../assets/garden_pots.webp"
 import { CSSProperties } from "react";
 
 export function Galleryview(){
@@ -101,6 +101,7 @@ const CardImage = ({
                     <Typography 
                         children={title}        
                         style={{
+                            fontWeight: "500",
                             fontSize:"var(--font-md)",
                             color: 'var(--green-200)'
                         }}

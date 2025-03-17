@@ -1,5 +1,5 @@
 import { Box, Typography } from "@raul_yael/cleangui";
-import bgPrimary from '../../assets/river.jpg'
+import bgPrimary from '../../assets/river.webp'
 import { BtnFilled, BtnOutlined } from "../moleculs/Button";
 
 

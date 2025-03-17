@@ -1,7 +1,7 @@
 import { Box } from "@raul_yael/cleangui"
-import flowerPink from "../../assets/flower_pot_2.jpg"
-import flower from "../../assets/flower_pot.jpg"
-import flowerWhite from "../../assets/flower_pot_3.jpg"
+import flowerPink from "../../assets/flower_pot_2.webp"
+import flower from "../../assets/flower_pot.webp"
+import flowerWhite from "../../assets/flower_pot_3.webp"
 
 export function FlowersGallery(){
     return(
