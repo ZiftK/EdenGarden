@@ -110,7 +110,7 @@
 
   --orange-title: #ED6627;
   
-  --father-font: #4A4F48;
+  --father-font: #686e66;
   --children-font: #7A8077;
 
   --white-peristance-color: #fbfbfb;
@@ -207,10 +207,10 @@
         --green-dark-500: #436F13;
         --green-dark: #34570C; 
 
-        --father-font: #4A4F48;
+        --father-font: #b8c2b4;
         --children-font: #7A8077;
 
-        --orange-title: #ED6627;
+        --orange-title: #9a4219;
 
         --white-peristance-color: #B8C0B5;
 
@@ -246,4 +246,8 @@ html, body{
     z-index: -1;
     backdrop-filter: blur(6px);
   }
+}
+
+.btn_{
+  border: 1px solid #f00;
 }

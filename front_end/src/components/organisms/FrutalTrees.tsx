@@ -1,7 +1,7 @@
 import { CardFrutal } from "../moleculs/CardFrutal";
 import { FrutalTreesTitle } from "../moleculs/FrutalTreesTitle";
 import { Box } from "@raul_yael/cleangui";
-import imgTree from "../../assets/fruit_trees.jpg"
+import imgTree from "../../assets/fruit_trees.webp"
 
 
 export function FrutalTrees(){

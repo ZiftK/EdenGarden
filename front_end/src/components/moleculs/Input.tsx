@@ -6,10 +6,10 @@ export interface InputProps {
     $sxText?: number; 
     $sxMn?: [number, number, number, number] | number
     $sxPd?: [number, number, number, number] | number
-    colorNoFocus?: string
+    $colorNoFocus?: string
     color?: string
     bg?: string;
-    lightnessFactor?: number
+    $lightnessFactor?: number
     $sx?: 'small' | 'medium' | 'large';
     label?: string; 
     value?: string; 
@@ -71,6 +71,11 @@ const hexToRgba = (hex: string, percent: number = 20): string => {
     r = parseInt(hex.substring(0, 2), 16);
     g = parseInt(hex.substring(2, 4), 16);
     b = parseInt(hex.substring(4, 6), 16);
+  } else if (hex.length === 4) {
+    r = parseInt(hex.substring(0, 1), 16);
+    g = parseInt(hex.substring(1, 2), 16);
+    b = parseInt(hex.substring(2, 3), 16);
+    a = parseInt(hex.substring(3, 4), 16) / 255; // Canal alfa (0 a 1)
   } else if (hex.length === 8) {
     r = parseInt(hex.substring(0, 2), 16);
     g = parseInt(hex.substring(2, 4), 16);
@@ -103,7 +108,7 @@ const hexToRgba = (hex: string, percent: number = 20): string => {
 
 
 
-export const StyledInput = styled.input<Pick<InputProps,"bg"|"lightnessFactor" |"color" |"colorNoFocus"| "$sxText" |'$sx' | "$sxMn" | "$sxPd" | "variant" | "$statusError">>`
+export const StyledInput = styled.input<Pick<InputProps,"bg"|"$lightnessFactor" |"color" |"$colorNoFocus"| "$sxText" |'$sx' | "$sxMn" | "$sxPd" | "variant" | "$statusError">>`
   transition: border 200ms, color 200ms, background-color 200ms;
   padding: ${({ $sxPd }) =>
     Array.isArray($sxPd)
@@ -115,16 +120,16 @@ export const StyledInput = styled.input<Pick<InputProps,"bg"|"lightnessFactor" |
   ${({ $sxMn }) => $sxMn && `margin: ${$sxMn}px;`}
 
 
-  ${({ variant, $statusError, color, colorNoFocus,lightnessFactor,bg }) => {
+  ${({ variant, $statusError, color, $colorNoFocus,$lightnessFactor,bg }) => {
     const errorColor = theme.colors.error;
     const errorBackground = theme.colors.errorBackground;
     const successColor = theme.colors.success;
     const textColor = color && hexToRgba(color, -70)
     const bgColor = bg 
       ? `${bg}`
-      : color && hexToRgba(color, lightnessFactor);
+      : color && hexToRgba(color, $lightnessFactor);
       
-    const bgColorNoFocus = colorNoFocus && hexToRgba(colorNoFocus, lightnessFactor)
+    const bgColorNoFocus = $colorNoFocus && hexToRgba($colorNoFocus, $lightnessFactor)
 
     switch (variant) {
       case 'default':
@@ -163,7 +168,7 @@ export const StyledInput = styled.input<Pick<InputProps,"bg"|"lightnessFactor" |
           border: 1px solid ${$statusError 
             ? errorColor 
             : color
-            ? colorNoFocus
+            ? $colorNoFocus
             : theme.colors.outlined
             };
           border-radius: 10px;
@@ -250,8 +255,8 @@ export const StyledLabel = styled.span<{
   $statusError: boolean
   variant: 'outlined' | 'filled' | 'default'
   color?: string
-  colorNoFocus?: string
-  lightnessFactor?: number
+  $colorNoFocus?: string
+  $lightnessFactor?: number
   bg?: string
 }>`
   font-size: ${({ $sxText }) => $sxText ? `${$sxText}rem` : '1rem'};
@@ -269,10 +274,10 @@ export const StyledLabel = styled.span<{
   }};
   border-radius: 5px;
   transition: all 200ms;
-  background-color: ${({ variant, $statusError, color, lightnessFactor, bg}) => {
+  background-color: ${({ variant, $statusError, color, $lightnessFactor, bg}) => {
     const bgColor = bg 
       ? `#${bg}`
-      : color && hexToRgba(color, lightnessFactor);
+      : color && hexToRgba(color, $lightnessFactor);
     if (variant === 'filled') {
       return $statusError 
         ? "transparent" 
@@ -304,10 +309,10 @@ export const StyledLabel = styled.span<{
       }`
     }}
 
-  ${({variant, color, lightnessFactor, bg}) => {
+  ${({variant, color, $lightnessFactor, bg}) => {
     const bgColor = bg
       ?`${bg}`
-      : color && hexToRgba(color, lightnessFactor);
+      : color && hexToRgba(color, $lightnessFactor);
     if(variant === 'default'|| variant === "filled") return css `
       input:not(:placeholder-shown) + &,
       input:focus + & {
@@ -323,10 +328,10 @@ export default function Input({
     $sxPd = [10, 15, 10, 15],
     $sxText = .75, 
     variant = 'outlined', 
-    lightnessFactor = 60,
+    $lightnessFactor = 60,
     label, 
     color,
-    colorNoFocus = '#727272',
+    $colorNoFocus = '#727272',
     $statusError = false, 
     value = "",
     bg,
@@ -367,10 +372,10 @@ export default function Input({
                 value={val}
                 color={color}
                 placeholder=" "
-                colorNoFocus={colorNoFocus}
+                $colorNoFocus={$colorNoFocus}
                 id={idInput}
                 bg = {bg}
-                lightnessFactor={lightnessFactor}
+                $lightnessFactor={$lightnessFactor}
                 {...rest}
             />
             {label && (
@@ -380,7 +385,7 @@ export default function Input({
                     $sxPd={$sxPd}
                     variant={variant} 
                     $statusError={$statusError}
-                    lightnessFactor={lightnessFactor}
+                    $lightnessFactor={$lightnessFactor}
                     color={color}
                     bg = {bg}
                 >

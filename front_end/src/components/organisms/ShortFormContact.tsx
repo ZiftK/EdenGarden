@@ -39,9 +39,9 @@ export function ShortFormContact(){
             <Input 
                 variant="default"
                 bg="#00000000"
-                colorNoFocus="#00000000"
-                color="#BBC3B8"
-                lightnessFactor={30}
+                $colorNoFocus="#00000000"
+                color="#BBC3B885"
+                $lightnessFactor={100}
                 label="Nombre"
                 $width="100%"
                 $sxText={0.875}
@@ -52,11 +52,11 @@ export function ShortFormContact(){
             />
 
             <Input
-                color="#BBC3B8"
+                color="#BBC3B885"
                 bg="#00000000"
-                colorNoFocus="#00000000"
+                $colorNoFocus="#00000000"
                 variant="default"            
-                lightnessFactor={40}
+                $lightnessFactor={40}
                 label="Telefono"
                 $width="100%"
                 $sxText={0.875}
@@ -67,11 +67,11 @@ export function ShortFormContact(){
             />
 
             <Input 
-                color="#BBC3B8"
+                color="#BBC3B885"
                 variant="default"
                 bg="#00000000"
-                colorNoFocus="#00000000"
-                lightnessFactor={40}
+                $colorNoFocus="#00000000"
+                $lightnessFactor={40}
                 label="Email"
                 $width="100%"
                 $sxText={0.875}
@@ -82,11 +82,11 @@ export function ShortFormContact(){
             />
 
             <Input 
-                color="#bbb"
+                color="#BBC3B885"
                 variant="default"
                 bg="#00000000"
-                colorNoFocus="#00000000"
-                lightnessFactor={60}
+                $colorNoFocus="#00000000"
+                $lightnessFactor={60}
                 label="Tipo de servicio"
                 $width="100%"
                 $sxText={0.875}
@@ -98,10 +98,10 @@ export function ShortFormContact(){
 
             <Input 
                 variant="default"
-                color="#BBC3B8"
+                color="#BBC3B885"
                 bg="#00000000"
-                colorNoFocus="#00000000"
-                lightnessFactor={0}
+                $colorNoFocus="#00000000"
+                $lightnessFactor={0}
                 label="Mensaje..."
                 $width="200%"
                 $sxText={0.875}
