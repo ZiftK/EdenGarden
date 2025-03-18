@@ -85,7 +85,8 @@ export function BtnHref({text, link, weight, sxText, style, icon}:
             style={{
                 fontFamily:"Montserrat",
                 fontWeight: weight || 100,
-                fontSize: sxText || "1rem"
+                fontSize: sxText || "1rem",
+                ...style
             }}
             />
         </Button>

@@ -5,7 +5,7 @@ import { BtnSocial } from "../atoms/BtnSocial";
 
 export function Footer(){
     return(
-        <Box type="section"
+        <Box type="footer"
             style={{
                 backgroundColor: "var(--green-200)",
                 borderRadius: 0,
