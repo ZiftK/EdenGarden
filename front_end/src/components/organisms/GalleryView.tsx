@@ -79,8 +79,7 @@ const CardImage = ({
                 style={{
                     fontWeight:'800',
                     color: 'var(--secondary-color)',
-                    fontSize: "var(--font-xxl)",
-                   
+                    fontSize: "var(--font-xxl)",                   
                 }}
                 />
 
