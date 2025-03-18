@@ -1,10 +1,10 @@
 import { Box, Typography } from "@raul_yael/cleangui";
-import { BtnHref } from "../moleculs/Button";
+import { BtnHref } from "../../moleculs/Button";
 
 export function DescriptionPots(){
     return(
         <Box type="div"
-             style={{
+            style={{
                 width:"100%",
                 border: "none",
                 boxShadow: "none",
@@ -13,15 +13,16 @@ export function DescriptionPots(){
                 padding: "20px 40px",
                 display: "flex",
                 flexDirection: "column",
-                justifyContent: "center",
+                justifyContent: "space-between",
                 alignItems: "center",
                 gap:"20px"
-             }}
+            }}
         >
             <Typography children="MACETAS" 
                         style={{
                             color: "var(--white-peristance-color)",
-                            fontSize: "var(--font-md)"
+                            fontSize: "var(--font-md)",
+                            justifySelf: "start",
                         }}
             />
 
@@ -33,28 +34,18 @@ export function DescriptionPots(){
             />
 
             <Box type="div"
-                style={{
-                    border: "none",
-                    boxShadow: "none",
-                    background: "var(--green-200)",
-                    margin: 0,
-                    padding: 0,
-                    display: "flex",
-                    alignSelf: "end",
-                    gap: '20px'
-             }}
+                id="Btn_container"
             >  
 
                 <BtnHref link="#" text="Ver más"
                         weight={100}
-                        sxText="var(--font-sm)"
+                        sxText="var(--font-xs)"
                 />
                 <BtnHref link="#" text="Compra una maceta" 
                     weight={600} 
                     sxText="var(--font-xs)"
                     style={{
                         color:"var(--green)",
-
                     }}
                     />
             </Box> 
