@@ -4,23 +4,24 @@ import { BtnHref } from "../moleculs/Button";
 export function CommercialServices(){
     return(
         <Box type="div"
+            id="comercial_services_box"
             style={{
                 border: 0,
                 margin: 0,
                 padding:0,
                 boxShadow: "none",
-                backgroundColor: "var(--backfground)",
+                backgroundColor: "transparent",
                 display: "flex",
                 flexDirection: "column",
                 width: "55%",
-                gap: "6px"
+                gap: "6px",                
             }}
         >
             <Typography children="Servicios Comerciales" 
                         size="var(--font-sm)"
                         style={{ 
                             letterSpacing:"1px",
-                            lineHeight: "100%"
+                            lineHeight: "100%",
                         }}
             />
             <BtnHref link="#"
