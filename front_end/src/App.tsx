@@ -7,7 +7,7 @@ import { FrutalTrees } from './components/organisms/FrutalTrees/FrutalTrees'
 import { Galleryview } from './components/organisms/GalleryView'
 import { HomePage } from './components/organisms/homePage'
 import { Location } from './components/organisms/Contact/Location'
-import Navbar from './components/organisms/Navbar'
+import Navbar from './components/organisms/Navbar/Navbar'
 import { ShortFormContact } from './components/organisms/Contact/ShortFormContact'
 import { Footer } from './components/organisms/footer/Footer'
 
