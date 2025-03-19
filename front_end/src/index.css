@@ -183,7 +183,7 @@
     
         /* Outlined Colors */
         --outlined-color: #b6b6b6;
-        --outlined-color-hover: rgba(255, 255, 255, 0.17);
+        --outlined-color-hover: rgba(234, 13, 13, 0.525);
     
         /* Divider */
         --color-divider: #3c3c3c;
@@ -252,14 +252,14 @@ html, body{
   border: 1px solid #f00;
 }
 
-@media screen and (min-width: 1200px) {
+@media screen and (min-width: 1000px) {
   :root{
     --font-xxs: 0.6rem;
     --font-xs: .75rem; /* 12px */
-    --font-sm: 0.875rem; /* 14px */
-    --font-md: 1rem; /* 16px (base) */
-    --font-lg: 1.25rem; /* 20px */
-    --font-xl: 1.5rem; /* 24px */
-    --font-xxl: 2rem; /* 32px */
+    --font-sm: 0.975rem; /* 14px */
+    --font-md: 1.1rem; /* 16px (base) */
+    --font-lg: 1.35rem; /* 20px */
+    --font-xl: 1.6rem; /* 24px */
+    --font-xxl: 2.1rem; /* 32px */
   }
 }
