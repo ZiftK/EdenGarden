@@ -6,9 +6,9 @@ import { FlowerPots } from './components/organisms/FlowerPots/FlowerPots'
 import { FrutalTrees } from './components/organisms/FrutalTrees'
 import { Galleryview } from './components/organisms/GalleryView'
 import { HomePage } from './components/organisms/homePage'
-import { Location } from './components/organisms/Location'
+import { Location } from './components/organisms/Contact/Location'
 import Navbar from './components/organisms/Navbar'
-import { ShortFormContact } from './components/organisms/ShortFormContact'
+import { ShortFormContact } from './components/organisms/Contact/ShortFormContact'
 import { Footer } from './components/organisms/Footer'
 
 

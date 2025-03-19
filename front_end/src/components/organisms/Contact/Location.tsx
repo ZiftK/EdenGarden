@@ -1,19 +1,10 @@
 import { Box, Typography } from "@raul_yael/cleangui";
+import "./Location.css"
 
 export function Location(){
     return(
         <Box type="section"
-            style={{
-                border: "none",
-                margin: 0,
-                padding: "20px",
-                boxShadow: "none",
-                backgroundColor: "var(--background)",
-                display: "flex",
-                flexDirection: "column",
-                gap: "8px",
-                width: "100%"
-            }}
+            id="location_box"
         >
             <Typography children="Donde ubicarnos"
                 variant="h2"

@@ -1,29 +1,13 @@
 import { Typography } from "@raul_yael/cleangui";
-import Input from "../moleculs/Input";
-import {  BtnOutlined } from "../moleculs/Button";
+import Input from "../../moleculs/Input";
+import {  BtnOutlined } from "../../moleculs/Button";
+import "./ShortFormContact.css"
 
 export function ShortFormContact(){
     return (
-        <section             
-        style={{
-            marginTop: "100px",
-            backgroundColor: "var(--background)",
-            display: "grid",
-            gridTemplateAreas:`
-                "title title"
-                "name phone"
-                "email service"
-                "message message"
-                "button button"
-            `,
-            gridTemplateColumns: "repeat(2,1fr)",
-            gridTemplateRows: "repeat(3, 1fr) 2fr auto",
-            gridColumnGap: "10px",
-            gridRowGap: "10px",
-            padding:"20px",   
-            placeContent: "center",
-            height:"320px"
-        }}>
+        <section       
+            id="contact_form"
+        >
             <Typography 
                 children="Mantenganse en Contacto"
                 variant="h2"
@@ -40,7 +24,7 @@ export function ShortFormContact(){
                 variant="default"
                 bg="#00000000"
                 $colorNoFocus="#00000000"
-                color="#BBC3B885"
+                color="#8e988a98"
                 $lightnessFactor={100}
                 label="Nombre"
                 $width="100%"
@@ -52,7 +36,7 @@ export function ShortFormContact(){
             />
 
             <Input
-                color="#BBC3B885"
+                color="#8e988a98"
                 bg="#00000000"
                 $colorNoFocus="#00000000"
                 variant="default"            
@@ -67,7 +51,7 @@ export function ShortFormContact(){
             />
 
             <Input 
-                color="#BBC3B885"
+                color="#8e988a98"
                 variant="default"
                 bg="#00000000"
                 $colorNoFocus="#00000000"
@@ -82,7 +66,7 @@ export function ShortFormContact(){
             />
 
             <Input 
-                color="#BBC3B885"
+                color="#8e988a98"
                 variant="default"
                 bg="#00000000"
                 $colorNoFocus="#00000000"
@@ -98,7 +82,7 @@ export function ShortFormContact(){
 
             <Input 
                 variant="default"
-                color="#BBC3B885"
+                color="#8e988a98"
                 bg="#00000000"
                 $colorNoFocus="#00000000"
                 $lightnessFactor={0}
