@@ -252,6 +252,7 @@ html, body{
   border: 1px solid #f00;
 }
 
+
 @media screen and (min-width: 1000px) {
   :root{
     --font-xxs: 0.6rem;

@@ -67,7 +67,7 @@ const CardImage = ({
                 gap: '5px',                
                 boxShadow: "none",
                 margin:0,
-                width: "clamp(300px, 90%, 1008px)",
+                width: "clamp(300px, 100%, 800px)",
                 height: '160px',
                 background: `linear-gradient(to bottom, transparent 0%, var(--background) 80%), url(${img}) center / cover no-repeat`,
                 ...style

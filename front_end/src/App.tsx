@@ -15,6 +15,7 @@ import { Footer } from './components/organisms/footer/Footer'
 function App() {
   return (
     <>
+    <main>
       <HomePage />
       <AboutUs/>
       <DataShow />
@@ -24,6 +25,7 @@ function App() {
       <ShortFormContact />
       <Divider variant='middle'/>
       <Location/>
+    </main>
       <Footer />
       <Navbar />
     </>
