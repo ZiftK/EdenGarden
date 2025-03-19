@@ -27,7 +27,8 @@ export function HomePage(){
                 flexDirection: 'column-reverse',
                 height: '100%',
                 width: 'clamp(320px, 100%, 800px)',
-                justifySelf: 'center'
+                justifySelf: 'center',
+                padding: "20px"
             }}
         >
 
