@@ -10,7 +10,11 @@ export function AboutUs(){
                 margin:0,
                 backgroundColor: "transparent",
                 boxShadow:"none",
-                border: 'none'
+                border: 'none',
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "flex-end",
+                gap: '20px'
             }}
         >
 
@@ -18,7 +22,9 @@ export function AboutUs(){
             <Typography style={{
                 color: 'var(--father-font)',
                 fontSize:'var(--font-lg)',
-
+                width: 'clamp(320px, 100%, 800px)',
+                margin: '0 auto',
+                textAlign: 'start'
             }}>
                 Que es Eden Garden
             </Typography>
@@ -30,7 +36,9 @@ export function AboutUs(){
                 style={{
                     color: 'var(--children-font)',
                     fontSize:'var(--font-xs)',
-                    marginTop:'4px'
+                    margin: '0 auto',
+                    marginTop:'4px',
+                    width: 'clamp(320px, 100%, 800px)'
             }}>
             Un equipo de trabajo dedicado a brindarle el servicio en jardinería y cascadas artificiales de excelencia y siempre al mejor precio.
             </Typography>

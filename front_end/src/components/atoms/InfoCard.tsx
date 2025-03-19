@@ -16,12 +16,13 @@ export function InfoCard({
                 border: 'none',
                 boxShadow: "none",
                 backgroundColor: "transparent",
-                margin: 0,
+                margin: '0 auto',
                 marginTop:'1rem',
                 padding: 0,
                 display: "flex",
                 alignItems: "start",
-                gap: '0.5rem'
+                gap: '0.5rem',
+                width: 'clamp(320px, 100%, 800px)'
             }}>
         
         {icon}
