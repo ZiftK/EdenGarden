@@ -22,7 +22,7 @@ export function InfoCard({
                 display: "flex",
                 alignItems: "start",
                 gap: '0.5rem',
-                width: 'clamp(320px, 100%, 800px)'
+                width: 'clamp(300px, 100%, 800px)'
             }}>
         
         {icon}

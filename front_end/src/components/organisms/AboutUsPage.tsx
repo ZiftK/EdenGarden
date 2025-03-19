@@ -22,7 +22,7 @@ export function AboutUs(){
             <Typography style={{
                 color: 'var(--father-font)',
                 fontSize:'var(--font-lg)',
-                width: 'clamp(320px, 100%, 800px)',
+                width: 'clamp(300px, 100%, 800px)',
                 margin: '0 auto',
                 textAlign: 'start'
             }}>
@@ -38,7 +38,7 @@ export function AboutUs(){
                     fontSize:'var(--font-xs)',
                     margin: '0 auto',
                     marginTop:'4px',
-                    width: 'clamp(320px, 100%, 800px)'
+                    width: 'clamp(300px, 100%, 800px)'
             }}>
             Un equipo de trabajo dedicado a brindarle el servicio en jardinería y cascadas artificiales de excelencia y siempre al mejor precio.
             </Typography>

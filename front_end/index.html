@@ -5,7 +5,14 @@
     <link rel="icon" type="image/svg+xml" href="/Logo_Eden_Icon.png" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#436F13" />
+    <meta name="color-scheme" content="light dark">
+    <script>
+      const systemPrefer = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+
+      document.documentElement.setAttribute('data-theme', systemPrefer);
+      document.querySelector('meta[name="color-scheme"]').setAttribute('content', systemPrefer)
+    </script>
+    
     <title>Eden Garden</title>
   </head>
   <body>
