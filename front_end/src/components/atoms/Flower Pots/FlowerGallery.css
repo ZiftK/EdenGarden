@@ -1,4 +1,4 @@
-.FlowerGallery_Box{
+#FlowerGallery_Box{
     display: grid;
     grid-template-columns: repeat(3,1fr);
     height: 250px;
@@ -8,10 +8,11 @@
     margin: 0;
     border: none;
     background: var(--background);
+    box-shadow: none;
 }
 
 @media screen and (min-width: 900px) {
-    .FlowerGallery_Box { 
+    #FlowerGallery_Box { 
         gap: 20px;
         height: 400px;
     }

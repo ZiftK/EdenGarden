@@ -1,24 +1,12 @@
 import { Box, Typography } from "@raul_yael/cleangui";
+import "./DataDisplay.css"
 
 export function DataShow(){
     return(
             <Box
                 type="section"
-                style={{
-                    border: 'none',                    
-                    padding:'20px',
-                    margin:0,
-                    display: "flex",
-                    flexWrap: 'wrap',
-                    justifyContent: "center",
-                    alignItems: "center",
-                    gap: '13px',
-                    borderRadius:0,
-                    backgroundColor: 'var(--green-200)',
-                    boxShadow: "none"
-                }}
+                id="DataShow_Box"
             >
-
                 <div
                     style={{
                         display: "flex",

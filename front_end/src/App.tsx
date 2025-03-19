@@ -1,7 +1,7 @@
 import { Divider } from '@raul_yael/cleangui'
 import './App.css'
 import { AboutUs } from './components/organisms/AboutUsPage'
-import { DataShow } from './components/organisms/DataDisplay'
+import { DataShow } from './components/organisms/DataDisplay/DataDisplay'
 import { FlowerPots } from './components/organisms/FlowerPots/FlowerPots'
 import { FrutalTrees } from './components/organisms/FrutalTrees'
 import { Galleryview } from './components/organisms/GalleryView'

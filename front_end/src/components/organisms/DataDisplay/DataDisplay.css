@@ -1,0 +1,23 @@
+#DataShow_Box{
+    border: none;                             
+    padding:20px;
+    margin:0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 13px;
+    border-radius:0;
+    background-color: var(--green-200);
+    box-shadow: none;
+}
+
+@media screen and (min-width: 700px) {
+    #DataShow_Box{
+        flex-wrap: nowrap;
+        gap: 60px;
+        & div{
+            max-width: 120px;
+        }
+    }
+}

@@ -7,7 +7,7 @@ import "./FlowerGallery.css"
 export function FlowersGallery(){
     return(
         <Box type="div"
-            className="FlowerGallery_Box"
+            id="FlowerGallery_Box"
             >
             <div 
                 style={{
