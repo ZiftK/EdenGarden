@@ -9,3 +9,4 @@ class CVStatus(Enum):
 class CVRecord(BaseModel):
     id: int
     status: CVStatus
+    buffer: str
