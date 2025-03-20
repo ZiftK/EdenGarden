@@ -26,11 +26,13 @@ class DaySchedule(BaseModel):
     is_working_day: bool
     schedule_data: Optional[ScheduleData]
 
-class WeekSchedule(BaseModel):
-    week_schedule: list[DaySchedule]
+class SprintSchedule(BaseModel):
+    initial_date: Date
+    final_date: Date
 
 class ProjectCalendar(BaseModel):
     initial_date: Date
     final_date: Date
     non_working_days: Optional[list[Date]]
-    week_schedule: WeekSchedule
+    current_sprint: SprintSchedule
+    
