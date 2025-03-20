@@ -1,5 +1,5 @@
 
-src/app_venv
+app_venv
 
 *.pyc
 .idea
