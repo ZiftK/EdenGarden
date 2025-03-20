@@ -1,0 +1,19 @@
+#navbar_box{
+    margin: 0;
+    position: fixed;
+    border: none;
+    box-shadow: none;
+    padding: 5px;
+    height: 55px;
+    width: 100vw;
+    border-radius: 0;
+    background-color: rgba(56, 86, 24, 0.69);
+    top: 0;
+}
+
+.navbar_container{
+    display: flex;
+    justify-content: space-between;
+    width: clamp(320px, 100%, 800px);
+    justify-self: center;
+}
