@@ -1,6 +1,7 @@
 from typing import Optional
 from pydantic import BaseModel
-from employee import Employee
+from .employee import Employee
+
 
 class Team(BaseModel):
     name: str

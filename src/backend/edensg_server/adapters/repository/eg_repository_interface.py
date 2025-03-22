@@ -1,9 +1,9 @@
 from abc import ABC
 from enum import Enum
-from edensg_server.domain.entities.employee import Employee
-from edensg_server.domain.entities.team import Team
-from edensg_server.domain.entities.project import Project
-from edensg_server.domain.entities.cv_record import CVRecord, CVStatus
+from backend.edensg_server.domain.entities.employee import Employee
+from backend.edensg_server.domain.entities.team import Team
+from backend.edensg_server.domain.entities.project import Project
+from backend.edensg_server.domain.entities.cv_record import CVRecord, CVStatus
 
 
 class BaseFields(Enum):

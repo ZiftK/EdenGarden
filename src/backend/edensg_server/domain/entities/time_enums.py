@@ -1,13 +1,15 @@
 from enum import Enum
 
+
 class EnumDays(Enum):
     MONDAY = 1
     TUESDAY = 2
     WEDNESDAY = 3
     THURSDAY = 4
-    FREEDAY = 5
+    FRIDAY = 5
     SATURDAY = 6
-    MONDAY = 7
+    SUNDAY = 7
+
 
 class EnumMonths(Enum):
     JANUARY = 1
