@@ -26,32 +26,23 @@ class DayTemplate(BaseModel):
     schedule_data: ScheduleData
 
 
-class DaySchedule(BaseModel):
-    date: Date
-    is_working_day: bool
-    schedule_data: Optional[ScheduleData]
-
-
-class SprintSchedule(BaseModel):
-    initial_date: Date
-    final_date: Date
-
 class DateTemplate(BaseModel):
     date: Date
-    initial_time: Time
-    final_time: Time
+    schedule: ScheduleData
 
-class DayTemplate(BaseModel):
-    day: EnumDays
-    initial_time: Time
-    final_time: Time
 
 class ScheduleTemplates(BaseModel):
     by_date: Optional[DateTemplate]
     by_day: Optional[DayTemplate]
 
+
+class SprintDates(BaseModel):
+    initial_date: Date
+    final_date: Date
+
+
 class ProjectCalendar(BaseModel):
     initial_date: Date
     final_date: Date
-    not_working_days: Optional[list[Date]]
-    current_sprint: SprintSchedule
+    schedule_templates: Optional[ScheduleTemplates]
+    current_sprint: SprintDates
