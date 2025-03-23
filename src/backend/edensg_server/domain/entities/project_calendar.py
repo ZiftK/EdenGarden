@@ -45,5 +45,5 @@ class SprintDates(BaseModel):
 class ProjectCalendar(BaseModel):
     initial_date: Date
     final_date: Date
-    schedule_templates: Optional[ScheduleTemplates]
+    schedule_templates: ScheduleTemplates
     current_sprint: SprintDates
