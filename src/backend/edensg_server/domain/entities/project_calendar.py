@@ -34,7 +34,7 @@ class DateTemplate(BaseModel):
 
 class ScheduleTemplates(BaseModel):
     by_date: Optional[list[DateTemplate]]
-    by_day: Optional[list[DateTemplate]]
+    by_day: Optional[list[DayTemplate]]
 
 
 class SprintDates(BaseModel):
