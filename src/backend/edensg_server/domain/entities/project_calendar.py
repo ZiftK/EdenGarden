@@ -36,6 +36,19 @@ class SprintSchedule(BaseModel):
     initial_date: Date
     final_date: Date
 
+class DateTemplate(BaseModel):
+    date: Date
+    initial_time: Time
+    final_time: Time
+
+class DayTemplate(BaseModel):
+    day: EnumDays
+    initial_time: Time
+    final_time: Time
+
+class ScheduleTemplates(BaseModel):
+    by_date: Optional[DateTemplate]
+    by_day: Optional[DayTemplate]
 
 class ProjectCalendar(BaseModel):
     initial_date: Date
