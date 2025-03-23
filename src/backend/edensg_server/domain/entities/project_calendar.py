@@ -24,7 +24,7 @@ class ScheduleData(BaseModel):
 
 class DayTemplate(BaseModel):
     day: EnumDays
-    schedule_data: ScheduleData
+    schedule: ScheduleData
 
 
 class DateTemplate(BaseModel):
