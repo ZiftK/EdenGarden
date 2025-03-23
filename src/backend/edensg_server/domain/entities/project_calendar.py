@@ -16,8 +16,9 @@ class Date(BaseModel):
 
 
 class ScheduleData(BaseModel):
-    initial_time: Time
-    final_time: Time
+    is_working_day: bool
+    initial_time: Optional[Time]
+    final_time: Optional[Time]
     location: str
 
 
