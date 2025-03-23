@@ -40,5 +40,5 @@ class SprintSchedule(BaseModel):
 class ProjectCalendar(BaseModel):
     initial_date: Date
     final_date: Date
-    non_working_days: Optional[list[Date]]
+    not_working_days: Optional[list[Date]]
     current_sprint: SprintSchedule
