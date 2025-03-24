@@ -14,6 +14,9 @@ class Date(BaseModel):
     month: EnumMonths
     year: int
 
+    def __hash__(self):
+        return hash((self.day, self.month, self.year))
+
 
 class ScheduleData(BaseModel):
     is_working_day: bool
@@ -26,10 +29,22 @@ class DayTemplate(BaseModel):
     day: EnumDays
     schedule: ScheduleData
 
+    def __hash__(self):
+        return hash((self.day.value))
+
 
 class DateTemplate(BaseModel):
     date: Date
     schedule: ScheduleData
+
+    def __hash__(self):
+        return self.date.__hash__()
+
+class DateSchedule(BaseModel):
+    date: Date
+    initial_time: Time
+    final_time: Time
+    location: str
 
 
 class ScheduleTemplates(BaseModel):
