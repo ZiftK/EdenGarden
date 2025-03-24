@@ -19,7 +19,7 @@ class ScheduleData(BaseModel):
     is_working_day: bool
     initial_time: Optional[Time]
     final_time: Optional[Time]
-    location: str
+    location: Optional[str]
 
 
 class DayTemplate(BaseModel):
