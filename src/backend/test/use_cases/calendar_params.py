@@ -1,4 +1,4 @@
-from backend.edensg_server.domain.entities.time_enums import EnumMonths
+from backend.edensg_server.domain.entities.time_enums import EnumMonths, EnumDays
 
 get_working_days_params = [
     (
@@ -10,7 +10,10 @@ get_working_days_params = [
         "final_date": 
             {"day": 30, "month": EnumMonths(3), "year": 2_000},
         
-        "not_working_days": None,
+        "schedule_templates": {
+            "by_date": None,
+            "by_day": None
+        },
         
         "current_sprint":
             {
@@ -39,7 +42,10 @@ get_working_days_params = [
         "final_date": 
             {"day": 3, "month": EnumMonths(3), "year": 2_000},
 
-        "not_working_days": None,
+        "schedule_templates": {
+            "by_date": None,
+            "by_day": None
+        },
         
         "current_sprint":
             {
@@ -63,7 +69,12 @@ get_working_days_params = [
         {
             "initial_date": {"day": 15, "month": EnumMonths(4), "year": 2023},
             "final_date": {"day": 15, "month": EnumMonths(4), "year": 2023},
-            "not_working_days": None,
+
+            "schedule_templates": {
+                "by_date": None,
+                "by_day": None
+            },
+            
             "current_sprint": {
                 "initial_date": {"day": 15, "month": EnumMonths(4), "year": 2023},
                 "final_date": {"day": 15, "month": EnumMonths(4), "year": 2023},
@@ -77,25 +88,75 @@ get_working_days_params = [
         {
             "initial_date": {"day": 10, "month": EnumMonths(5), "year": 2023},
             "final_date": {"day": 20, "month": EnumMonths(5), "year": 2023},
-            "not_working_days": [
-                {"day": 13, "month": EnumMonths(5), "year": 2023},
-                {"day": 14, "month": EnumMonths(5), "year": 2023}
-            ],
+            
+            #? TEMPLATES
+            "schedule_templates": {
+
+                "by_date": [
+                    #? SIN LABORAR LOS DÍAS 11 Y 15
+                    {
+                        "date": {
+                            "day": 11,
+                            "month": EnumMonths(5),
+                            "year": 2023
+                        },
+                        "schedule": {
+                            "is_working_day": False,
+                            "initial_time": None,
+                            "final_time": None,
+                            "location": None
+                        }
+                    },
+                    {
+                        "date": {
+                            "day": 15,
+                            "month": EnumMonths(5),
+                            "year": 2023
+                        },
+                        "schedule": {
+                            "is_working_day": False,
+                            "initial_time": None,
+                            "final_time": None,
+                            "location": None
+                        }
+                    },
+                ],
+                
+                "by_day": [
+                    #? SIN LABORAR DOMINGOS NI SÁBADOS
+                    {
+                        "day": EnumDays(6),
+                        "schedule": {
+                            "is_working_day": False,
+                            "initial_time": None,
+                            "final_time": None,
+                            "location": None
+                        }
+                    },
+                    {
+                        "day": EnumDays(7),
+                        "schedule": {
+                            "is_working_day": False,
+                            "initial_time": None,
+                            "final_time": None,
+                            "location": None
+                        }
+                    }
+                ]
+            },
+
             "current_sprint": {
                 "initial_date": {"day": 10, "month": EnumMonths(5), "year": 2023},
                 "final_date": {"day": 20, "month": EnumMonths(5), "year": 2023},
             }
         },
         [
-            {"day": 10, "month": EnumMonths(5), "year": 2023},
-            {"day": 11, "month": EnumMonths(5), "year": 2023},
-            {"day": 12, "month": EnumMonths(5), "year": 2023},
-            {"day": 15, "month": EnumMonths(5), "year": 2023},
-            {"day": 16, "month": EnumMonths(5), "year": 2023},
-            {"day": 17, "month": EnumMonths(5), "year": 2023},
-            {"day": 18, "month": EnumMonths(5), "year": 2023},
-            {"day": 19, "month": EnumMonths(5), "year": 2023},
-            {"day": 20, "month": EnumMonths(5), "year": 2023}
+            {"day": 10, "month": EnumMonths(5), "year": 2023}, # mie
+            {"day": 12, "month": EnumMonths(5), "year": 2023}, # vie
+            {"day": 16, "month": EnumMonths(5), "year": 2023}, # mart
+            {"day": 17, "month": EnumMonths(5), "year": 2023}, # mier
+            {"day": 18, "month": EnumMonths(5), "year": 2023}, # jue
+            {"day": 19, "month": EnumMonths(5), "year": 2023}, # vie
         ]
     ),
     
@@ -104,7 +165,12 @@ get_working_days_params = [
         {
             "initial_date": {"day": 29, "month": EnumMonths(12), "year": 2023},
             "final_date": {"day": 3, "month": EnumMonths(1), "year": 2024},
-            "not_working_days": None,
+            
+            "schedule_templates": {
+                "by_date": None,
+                "by_day": None
+            },
+
             "current_sprint": {
                 "initial_date": {"day": 29, "month": EnumMonths(12), "year": 2023},
                 "final_date": {"day": 3, "month": EnumMonths(1), "year": 2024},
