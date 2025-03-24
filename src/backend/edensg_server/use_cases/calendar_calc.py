@@ -64,8 +64,6 @@ def run_through_dates(*,
             auxiliar_date += difference
             continue
         
-        # TODO: se debe excluir las plantillas de días no laborables. Esa lógica
-        # todo: debe aplicarese en todas las funciones pertintentes de este script y en los tests
         between_dates.append(new_date)
         auxiliar_date += difference
 
