@@ -83,7 +83,7 @@ get_working_days_params = [
         [{"day": 15, "month": EnumMonths(4), "year": 2023}]
     ),
     
-    #* CASO 3: PERIODO CON DÍAS NO LABORABLES
+    #* CASO 4: PERIODO CON DÍAS NO LABORABLES
     (
         {
             "initial_date": {"day": 10, "month": EnumMonths(5), "year": 2023},
@@ -160,7 +160,7 @@ get_working_days_params = [
         ]
     ),
     
-    #* CASO 4: PERIODO QUE CRUZA DE UN AÑO A OTRO
+    #* CASO 5: PERIODO QUE CRUZA DE UN AÑO A OTRO
     (
         {
             "initial_date": {"day": 29, "month": EnumMonths(12), "year": 2023},
