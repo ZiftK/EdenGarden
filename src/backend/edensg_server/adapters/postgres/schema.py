@@ -15,7 +15,7 @@ Base = declarative_base()
 
 
 
-#models
+# models
 class Employee(Base):
 
     __tablename__ = "TEmployee"
@@ -72,6 +72,25 @@ class EmployeeLicensesMid(Base):
         ForeignKey("admin.TEmployeeLicense.idLicense", ondelete="SET NULL", onupdate="CASCADE"),
         primary_key=True
     )
+
+class Team(Base):
+    __tablename__ = "TTeam"
+    __table_args__ = {
+        "schema": "admin"
+    }
+
+    id_team = Column("idTeam", Integer, autoincrement=True, primary_key=True)
+    name = Column(VARCHAR(30), nullable=False)
+    leader = Column(Integer, ForeignKey("admin.TEmployee.idEmployee", ondelete="SET NULL", onupdate="CASCADE"))
+
+class EmployeeTeamMid(Base):
+    __tablename__ = "TEmployeeTeamMid"
+    __table_args__ = {
+        "schema":"admin"
+    }
+
+    id_team = Column("idTeam", Integer, ForeignKey("admin.TTeam.idTeam", ondelete="SET NULL", onupdate="CASCADE"), primary_key=True)
+    id_employee = Column("idEmployee", Integer, ForeignKey("admin.TEmployee.idEmployee", ondelete="SET NULL", onupdate="CASCADE"), primary_key=True)
 
 if __name__ == "__main__":
     Base.metadata.create_all(engine)
