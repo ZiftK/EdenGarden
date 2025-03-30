@@ -2,6 +2,8 @@
 venv
 src/backend/EdensGarden_Backend.egg-info
 
+alembic_versions
+
 *.pyc
 .idea
 .env
