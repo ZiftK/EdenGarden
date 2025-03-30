@@ -5,3 +5,4 @@ src/backend/EdensGarden_Backend.egg-info
 *.pyc
 .idea
 .env
+*.ini
