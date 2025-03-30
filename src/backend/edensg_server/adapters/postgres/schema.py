@@ -29,7 +29,7 @@ class Employee(Base):
     phone_number = Column("phoneNumber", VARCHAR(10))
     email = Column(VARCHAR(30))
     hire_date = Column("hireDate", sqlaDate, nullable=False)
-    role = Column(Integer, nullable=False)
+    role = Column(Integer, ForeignKey("admin.TEmployeeRole.idRole", ondelete="SET NULL", onupdate="CASCADE"), nullable=False)
     salary = Column(Float, nullable=False)
     in_date = Column("inDate", sqlaDate)
     out_date = Column("outDate", sqlaDate)
@@ -91,6 +91,7 @@ class EmployeeTeamMid(Base):
 
     id_team = Column("idTeam", Integer, ForeignKey("admin.TTeam.idTeam", ondelete="SET NULL", onupdate="CASCADE"), primary_key=True)
     id_employee = Column("idEmployee", Integer, ForeignKey("admin.TEmployee.idEmployee", ondelete="SET NULL", onupdate="CASCADE"), primary_key=True)
+
 
 if __name__ == "__main__":
     Base.metadata.create_all(engine)
