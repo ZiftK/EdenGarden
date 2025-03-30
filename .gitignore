@@ -1,9 +1,9 @@
 
+# carpetas
 venv
 src/backend/EdensGarden_Backend.egg-info
 
-alembic_versions
-
+# cache
 *.pyc
 .idea
 .env
