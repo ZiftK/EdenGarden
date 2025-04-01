@@ -1,4 +1,4 @@
-from backend.edensg_server.domain.entities.project_calendar import ProjectCalendar, Date, DateSchedule, DateTemplate, DayTemplate, ScheduleTemplates
+from backend.edensg_server.domain.entities.project_calendar import ProjectCalendar, Date, DateSchedule, DateTemplate, DayTemplate, ScheduleTemplates, ScheduleData
 from datetime import date, timedelta
 from backend.edensg_server.domain.entities.time_enums import EnumDays
 
@@ -107,13 +107,36 @@ def run_through_dates(*,
 def apply_schedule_templates(
         working_days: list[Date], 
         day_templates: list[DayTemplate], 
-        date_templates: list[DateTemplate])-> list[DateSchedule]:
+        date_templates: list[DateTemplate],
+        default_template: ScheduleData)-> list[DateSchedule]:
+    """
     
+    """
+
+    # schedules to return
     schedules: list[DateSchedule] = []
+
+    # run throught working days
     for wd in working_days:
+        
+        # schedule template selection
+        schedule_template = default_template
+
+        if wd in day_templates:# if is a day template
+            schedule_template = day_templates[day_templates.index(wd)]
+
+        elif wd in date_templates:# if is a date template
+            schedule_template = date_templates[date_templates.index(wd)]
+
+        
         new_date_schedule = DateSchedule(
             date=wd,
+            schedule=schedule_template
         )
+
+        schedules.append(new_date_schedule)
+
+    return schedules
 
 def get_working_days_on_sprint(project_calendar: ProjectCalendar) -> list[DateSchedule]:
     """
@@ -135,7 +158,8 @@ def get_working_days_on_sprint(project_calendar: ProjectCalendar) -> list[DateSc
         exclude_days=n_working_days
     )
 
+
+
     return working_days
 
     #TODO: ajustar cambias para devolver el nuevo tipo DateSchedule
-
