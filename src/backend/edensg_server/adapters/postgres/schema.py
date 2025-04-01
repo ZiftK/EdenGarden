@@ -1,3 +1,8 @@
+"""
+En este archivo se definen las bases de datos como esquema sqlalchemy.
+Se utiliza junto a alembic para versionar las migraciones del esquema.
+"""
+
 from dotenv import load_dotenv
 import os
 
@@ -92,6 +97,43 @@ class EmployeeTeamMid(Base):
     id_team = Column("idTeam", Integer, ForeignKey("admin.TTeam.idTeam", ondelete="SET NULL", onupdate="CASCADE"), primary_key=True)
     id_employee = Column("idEmployee", Integer, ForeignKey("admin.TEmployee.idEmployee", ondelete="SET NULL", onupdate="CASCADE"), primary_key=True)
 
+class Project(Base):
+    __tablename__ = "TProject"
+    __table_args__ = {
+        "schema": "admin"
+    }
+
+    id_project = Column("idProject", Integer, primary_key=True, autoincrement=True)
+    name = Column(VARCHAR(50), nullable=False)
+
+class CurrentProjectTeams(Base):
+    __tablename__ = "TCurrentProjectTeams"
+    __table_args__ = {
+        "schema":"admin"
+    }
+
+    id_project = Column(
+        "idProject",
+        Integer, 
+        ForeignKey(
+            "admin.TProject.idProject", 
+            onupdate="CASCADE", 
+            ondelete="SET NULL"
+            ), 
+        primary_key=True
+    )
+    
+    id_team = Column(
+        "idTeam",
+        Integer,
+        ForeignKey(
+            "admin.TTeam.idTeam",
+            onupdate="CASCADE",
+            ondelete="SET NULL"
+        ),
+        primary_key=True
+    )
 
 if __name__ == "__main__":
     Base.metadata.create_all(engine)
+    #TODO: revisar la ruta de la base de datos en alembic
