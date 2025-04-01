@@ -42,14 +42,12 @@ class DateTemplate(BaseModel):
 
 class DateSchedule(BaseModel):
     date: Date
-    initial_time: Time
-    final_time: Time
-    location: str
-
+    schedule: ScheduleData
 
 class ScheduleTemplates(BaseModel):
     by_date: Optional[list[DateTemplate]]
     by_day: Optional[list[DayTemplate]]
+    default: ScheduleData
 
 
 class SprintDates(BaseModel):
