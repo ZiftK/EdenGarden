@@ -1,4 +1,8 @@
 from backend.edensg_server.domain.entities.time_enums import EnumMonths, EnumDays
+from backend.edensg_server.domain.entities.project_calendar import Date
+
+from datetime import date, timedelta
+
 
 get_working_days_params = [
     (
@@ -183,6 +187,70 @@ get_working_days_params = [
             {"day": 1, "month": EnumMonths(1), "year": 2024},
             {"day": 2, "month": EnumMonths(1), "year": 2024},
             {"day": 3, "month": EnumMonths(1), "year": 2024}
+        ]
+    )
+]
+
+
+"""
+input signature
+---------------
+initial_date: datetime.date
+final_date: datetime.date
+difference: datetime.timedelta
+exclude_dates: set[datetime.date] = None
+exclude_days: set[EnumDays] = None
+
+returns -> list[Date]
+"""
+run_throught_dates_params = [
+    (
+        (
+            {
+                "initial_date": date(day=1, month=1, year=2_000),
+                "final_date": date(day=10, month=1, year=2_000),
+                "difference": timedelta(days=1),
+                "exclude_dates": None,
+                "exclude_days": None
+            }
+        )
+        ,
+        [
+            Date(day=1, month=EnumMonths(1), year=2_000),
+            Date(day=2, month=EnumMonths(1), year=2_000),
+            Date(day=3, month=EnumMonths(1), year=2_000),
+            Date(day=4, month=EnumMonths(1), year=2_000),
+            Date(day=5, month=EnumMonths(1), year=2_000),
+            Date(day=6, month=EnumMonths(1), year=2_000),
+            Date(day=7, month=EnumMonths(1), year=2_000),
+            Date(day=8, month=EnumMonths(1), year=2_000),
+            Date(day=9, month=EnumMonths(1), year=2_000),
+            Date(day=10, month=EnumMonths(1), year=2_000)
+        ]
+    ),
+    (
+        (
+            {
+                "initial_date": date(day=1, month=1, year=2_000), # initial date,
+                "final_date": date(day=10, month=1, year=2_000), # final date,
+                "difference": timedelta(days=1), # difference
+                "exclude_dates": [
+                    date(day=1, month=1, year=2_000),
+                    date(day=10, month=1, year=2_000),
+                    date(day=7, month=1, year=2_000)
+                ],
+                "exclude_days": None
+                
+            }
+        ),
+        [
+            Date(day=2, month=EnumMonths(1), year=2_000),
+            Date(day=3, month=EnumMonths(1), year=2_000),
+            Date(day=4, month=EnumMonths(1), year=2_000),
+            Date(day=5, month=EnumMonths(1), year=2_000),
+            Date(day=6, month=EnumMonths(1), year=2_000),
+            Date(day=8, month=EnumMonths(1), year=2_000),
+            Date(day=9, month=EnumMonths(1), year=2_000),
         ]
     )
 ]
