@@ -133,7 +133,8 @@ def apply_schedule_templates(
 
     # schedules to return
     schedules: list[DateSchedule] = []
-
+    day_templates_as_ints = set(x.day.value for x in day_templates)
+    
     # run throught working days
     for wd in working_days:
         
@@ -143,8 +144,11 @@ def apply_schedule_templates(
         if wd in date_templates:# if is a date template
             schedule_template = date_templates[date_templates.index(wd)]
 
-        elif wd in day_templates:# if is a day template
-            schedule_template = day_templates[day_templates.index(wd)]
+        elif convert_to_operational_date(wd).weekday() in day_templates_as_ints:# if is a day template
+            schedule_template = list(filter(
+                lambda x: x if x.day.value == convert_to_operational_date(wd).weekday() else None,
+                day_templates
+                ))[0].schedule
 
         
         new_date_schedule = DateSchedule(
