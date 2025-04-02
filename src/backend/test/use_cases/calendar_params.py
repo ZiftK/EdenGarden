@@ -1,5 +1,10 @@
 from backend.edensg_server.domain.entities.time_enums import EnumMonths, EnumDays
-from backend.edensg_server.domain.entities.project_calendar import Date
+from backend.edensg_server.domain.entities.project_calendar import Date,\
+    ScheduleTemplates,\
+    DateTemplate,\
+    DayTemplate,\
+    ScheduleData,\
+    Time
 
 from datetime import date, timedelta
 
@@ -129,7 +134,7 @@ get_working_days_params = [
                 "by_day": [
                     #? SIN LABORAR DOMINGOS NI SÁBADOS
                     {
-                        "day": EnumDays(6),
+                        "day": EnumDays(5),
                         "schedule": {
                             "is_working_day": False,
                             "initial_time": None,
@@ -138,7 +143,7 @@ get_working_days_params = [
                         }
                     },
                     {
-                        "day": EnumDays(7),
+                        "day": EnumDays(6),
                         "schedule": {
                             "is_working_day": False,
                             "initial_time": None,
@@ -254,3 +259,118 @@ run_throught_dates_params = [
         ]
     )
 ]
+
+
+
+"""
+Input signature
+----------------
+schedule_tempaltes: ScheduleTemplates
+
+returns -> {
+    "day_templates": list[DayTemplate],
+    "date_templates": list[DateTemplate],
+    "not_working_days": list[EnumDays]
+    "not_working_dates": list[datetime.date]
+}
+"""
+substract_not_working_dates_params = [
+    (
+        ScheduleTemplates(
+            by_date=[
+                DateTemplate(
+                    date=Date(day=1, month=EnumMonths(1), year=2024),
+                    schedule=ScheduleData(
+                        is_working_day=True,
+                        initial_time=Time(hours=7, minutes=0, seconds=0),
+                        final_time=Time(hours=15, minutes=0, seconds=0),
+                        location=None
+                    )
+                ),
+                DateTemplate(
+                    date=Date(day=2, month=EnumMonths(1), year=2024),
+                    schedule=ScheduleData(
+                        is_working_day=True,
+                        initial_time=Time(hours=8, minutes=0, seconds=0),
+                        final_time=Time(hours=13, minutes=0, seconds=0),
+                        location=None
+                    )
+                )
+            ],
+
+            by_day=[
+                DayTemplate(
+                    day=EnumDays(5),
+                    schedule=ScheduleData(
+                        is_working_day=True,
+                        initial_time=Time(hours=8, minutes=0, seconds=0),
+                        final_time=Time(hours=12, minutes=30, seconds=0),
+                        location=None
+                    )
+                ),
+                DayTemplate(
+                    day=EnumDays(6),
+                    schedule=ScheduleData(
+                        is_working_day=True,
+                        initial_time=Time(hours=13, minutes=30, seconds=0),
+                        final_time=Time(hours=19, minutes=30, seconds=0),
+                        location=None
+                    )
+                )
+            ],
+
+            default=ScheduleData(
+                is_working_day=True,
+                initial_time=Time(hours=10, minutes=0, seconds=0),
+                final_time=Time(hours=19, minutes=0, seconds=0),
+                location=None
+            )
+        ),
+
+        {
+            "day_templates": set([
+                DayTemplate(
+                    day=EnumDays(5),
+                    schedule=ScheduleData(
+                        is_working_day=True,
+                        initial_time=Time(hours=8, minutes=0, seconds=0),
+                        final_time=Time(hours=12, minutes=30, seconds=0),
+                        location=None
+                    )
+                ),
+                DayTemplate(
+                    day=EnumDays(6),
+                    schedule=ScheduleData(
+                        is_working_day=True,
+                        initial_time=Time(hours=13, minutes=30, seconds=0),
+                        final_time=Time(hours=19, minutes=30, seconds=0),
+                        location=None
+                    )
+                )
+            ]),
+            "date_templates": set([
+                DateTemplate(
+                    date=Date(day=1, month=EnumMonths(1), year=2024),
+                    schedule=ScheduleData(
+                        is_working_day=True,
+                        initial_time=Time(hours=7, minutes=0, seconds=0),
+                        final_time=Time(hours=15, minutes=0, seconds=0),
+                        location=None
+                    )
+                ),
+                DateTemplate(
+                    date=Date(day=2, month=EnumMonths(1), year=2024),
+                    schedule=ScheduleData(
+                        is_working_day=True,
+                        initial_time=Time(hours=8, minutes=0, seconds=0),
+                        final_time=Time(hours=13, minutes=0, seconds=0),
+                        location=None
+                    )
+                )
+            ]),
+            "not_working_days": set([]),
+            "not_working_dates": set([])
+        }
+    )
+]
+
