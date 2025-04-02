@@ -4,7 +4,8 @@ from backend.edensg_server.domain.entities.project_calendar import Date,\
     DateTemplate,\
     DayTemplate,\
     ScheduleData,\
-    Time
+    Time,\
+    DateSchedule
 
 from datetime import date, timedelta
 
@@ -374,3 +375,136 @@ substract_not_working_dates_params = [
     )
 ]
 
+
+
+"""
+    Input signature
+    ---------------
+    working_days: list[Date]
+    day_template: list[DayTemplate]
+    date_templates: list[DateTemplate]
+    default_template: ScheduleData
+
+    returns -> 
+    list[DateSchedule]
+
+"""
+apply_schedule_templates_params = [
+    (# case 1
+        (# args
+            # working dates
+            [
+                Date(day=1, month=1, year=2024),
+                Date(day=2, month=1, year=2024),
+                Date(day=3, month=1, year=2024),
+                Date(day=4, month=1, year=2024),
+                Date(day=5, month=1, year=2024),
+                Date(day=6, month=1, year=2024),
+                Date(day=7, month=1, year=2024),
+            ],
+            [# day_templates
+                DayTemplate(
+                    day=EnumDays(6),
+                    schedule=ScheduleData(
+                        initial_time=Time(hours=7, minutes=0, seconds=0),
+                        final_time=Time(hours=12, minutes=30, seconds=0),
+                        is_working_day=True,
+                        location=None
+                    )
+                ),
+                DayTemplate(
+                    day=EnumDays(5),
+                    schedule=ScheduleData(
+                        initial_time=Time(hours=7, minutes=0, seconds=0),
+                        final_time=Time(hours=12, minutes=30, seconds=0),
+                        is_working_day=True,
+                        location=None
+                    )
+                ),
+            ],
+            [# date templates
+                DateTemplate(
+                    date=Date(day=5, month=1, year=2024),
+                    schedule=ScheduleData(
+                        is_working_day=True,
+                        initial_time=Time(hours=7, minutes=30, seconds=0),
+                        final_time=Time(hours=12, minutes=30, seconds=0),
+                        location=None
+                    )
+                ),
+            ],
+            # default template
+            ScheduleData(
+                is_working_day=True,
+                initial_time=Time(hours=7, minutes=0, seconds=0),
+                final_time=Time(hours=16, minutes=0, seconds=0),
+                location=None
+            )
+        ),
+        [# return expected
+            DateSchedule(
+                date=Date(day=1, month=1, year=2024),
+                schedule=ScheduleData(
+                    is_working_day=True,
+                    initial_time=Time(hours=7, minutes=0, seconds=0),
+                    final_time=Time(hours=16, minutes=0, seconds=0),
+                    location=None
+                )
+            ),
+            DateSchedule(
+                date=Date(day=2, month=1, year=2024),
+                schedule=ScheduleData(
+                    is_working_day=True,
+                    initial_time=Time(hours=7, minutes=0, seconds=0),
+                    final_time=Time(hours=16, minutes=0, seconds=0),
+                    location=None
+                )
+            ),
+            DateSchedule(
+                date=Date(day=3, month=1, year=2024),
+                schedule=ScheduleData(
+                    is_working_day=True,
+                    initial_time=Time(hours=7, minutes=0, seconds=0),
+                    final_time=Time(hours=16, minutes=0, seconds=0),
+                    location=None
+                )
+            ),
+            DateSchedule(
+                date=Date(day=4, month=1, year=2024),
+                schedule=ScheduleData(
+                    is_working_day=True,
+                    initial_time=Time(hours=7, minutes=0, seconds=0),
+                    final_time=Time(hours=16, minutes=0, seconds=0),
+                    location=None
+                )
+            ),
+            DateSchedule(
+                date=Date(day=5, month=1, year=2024),
+                schedule=ScheduleData(
+                    is_working_day=True,
+                    initial_time=Time(hours=7, minutes=0, seconds=0),
+                    final_time=Time(hours=16, minutes=0, seconds=0),
+                    location=None
+                )
+            ),
+            DateSchedule(
+                date=Date(day=6, month=1, year=2024),
+                schedule=ScheduleData(
+                    initial_time=Time(hours=7, minutes=0, seconds=0),
+                    final_time=Time(hours=12, minutes=30, seconds=0),
+                    is_working_day=True,
+                    location=None
+                )
+            ),
+            DateSchedule(
+                date=Date(day=7, month=1, year=2024),
+                schedule=ScheduleData(
+                    initial_time=Time(hours=7, minutes=0, seconds=0),
+                    final_time=Time(hours=12, minutes=30, seconds=0),
+                    is_working_day=True,
+                    location=None
+                )
+            ),
+        ]
+    )
+]
