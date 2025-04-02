@@ -18,21 +18,21 @@ def convert_to_operational_date(date_entity: Date)-> date:
             date_entity.day
         )
 
-def substract_not_working_days(schedule_templates: ScheduleTemplates)->tuple[
-    set[DayTemplate],
-    set[DateTemplate],
-    set[EnumDays],
-    set[date]
-    ]:
+def substract_not_working_days(schedule_templates: ScheduleTemplates)->dict:
     """
-    Toma las plantillas de horario de un proyecto y las separa en
-    días laborables, fechas laborables, días no laborables y fechas no laborables.
 
-    :param schedule_templates: plantillas de horarios de proyecto
+    :param schedule_templates: 
+    Plantillas de horario 
 
     :returns:
-    Tupla con plantillas de días laborables, plantillas de fechas laborables, días no laborables, fechas no laborables; en ese orden.
+    Retorna un diccionario con la siguiente estructura
+
+    day_templates -> plantillas de día (laborables)
+    date_templates -> plantillas de fecha (laborables)
+    not_working_days -> días no laborables
+    not_working_dates -> fechas no laborables
     """
+    res = dict()
 
     day_templates: list[DayTemplate] = schedule_templates.by_day
     date_templates: list[DateTemplate] = schedule_templates.by_date
@@ -51,10 +51,16 @@ def substract_not_working_days(schedule_templates: ScheduleTemplates)->tuple[
     day_templates -= not_working_days
     date_templates -= not_working_dates
 
-    not_working_days = set(x.day.value -1 for x in not_working_days)
+    not_working_days = set(EnumDays(x.day.value) for x in not_working_days)
     not_working_dates = set(convert_to_operational_date(x.date) for x in not_working_dates)
 
-    return day_templates, date_templates, not_working_days, not_working_dates
+    res = {
+        "day_templates": day_templates,
+        "date_templates": date_templates,
+        "not_working_days": not_working_days,
+        "not_working_dates": not_working_dates
+    }
+    return res
 
 def run_through_dates(*, 
     initial_date: date,
@@ -111,6 +117,18 @@ def apply_schedule_templates(
         default_template: ScheduleData)-> list[DateSchedule]:
     """
     
+    :param working_days: lista de fechas laborables
+    :param day_template: lista de plantillas de día
+    :param date_templates: lista de plantillas de fecha
+    :param default_template: plantilla por defecto
+
+    :returns: 
+    fechas laborables (`working_days`) con plantillas de días o fechas aplicadas
+
+    Note
+    -------
+    Las plantillas se aplican en orden de prioridad, dando prioridad a las plantillas de
+    fecha y en segundo lugar a las plantillas de día
     """
 
     # schedules to return
@@ -122,11 +140,11 @@ def apply_schedule_templates(
         # schedule template selection
         schedule_template = default_template
 
-        if wd in day_templates:# if is a day template
-            schedule_template = day_templates[day_templates.index(wd)]
-
-        elif wd in date_templates:# if is a date template
+        if wd in date_templates:# if is a date template
             schedule_template = date_templates[date_templates.index(wd)]
+
+        elif wd in day_templates:# if is a day template
+            schedule_template = day_templates[day_templates.index(wd)]
 
         
         new_date_schedule = DateSchedule(
