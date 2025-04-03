@@ -84,7 +84,7 @@ def run_through_dates(*,
     auxiliar_date = initial_date
     between_dates: list[Date] = []
 
-    while not auxiliar_date == final_date + difference:
+    while auxiliar_date <= final_date:
 
         new_date = Date(**
             {
