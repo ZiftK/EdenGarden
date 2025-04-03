@@ -209,7 +209,8 @@ exclude_days: set[EnumDays] = None
 
 returns -> list[Date]
 """
-run_throught_dates_params = [
+run_through_dates_params = [
+    # Caso base: Sin exclusiones, con diferencia de 1 día.
     (
         (
             {
@@ -219,48 +220,113 @@ run_throught_dates_params = [
                 "exclude_dates": None,
                 "exclude_days": None
             }
-        )
-        ,
-        [
-            Date(day=1, month=EnumMonths(1), year=2_000),
-            Date(day=2, month=EnumMonths(1), year=2_000),
-            Date(day=3, month=EnumMonths(1), year=2_000),
-            Date(day=4, month=EnumMonths(1), year=2_000),
-            Date(day=5, month=EnumMonths(1), year=2_000),
-            Date(day=6, month=EnumMonths(1), year=2_000),
-            Date(day=7, month=EnumMonths(1), year=2_000),
-            Date(day=8, month=EnumMonths(1), year=2_000),
-            Date(day=9, month=EnumMonths(1), year=2_000),
-            Date(day=10, month=EnumMonths(1), year=2_000)
-        ]
+        ),
+        [Date(day=d, month=EnumMonths(1), year=2_000) for d in range(1, 11)]
     ),
+
+    # Exclusión de fechas específicas.
     (
         (
             {
-                "initial_date": date(day=1, month=1, year=2_000), # initial date,
-                "final_date": date(day=10, month=1, year=2_000), # final date,
-                "difference": timedelta(days=1), # difference
+                "initial_date": date(day=1, month=1, year=2_000),
+                "final_date": date(day=10, month=1, year=2_000),
+                "difference": timedelta(days=1),
                 "exclude_dates": [
                     date(day=1, month=1, year=2_000),
                     date(day=10, month=1, year=2_000),
                     date(day=7, month=1, year=2_000)
                 ],
                 "exclude_days": None
-                
             }
         ),
-        [
-            Date(day=2, month=EnumMonths(1), year=2_000),
-            Date(day=3, month=EnumMonths(1), year=2_000),
-            Date(day=4, month=EnumMonths(1), year=2_000),
-            Date(day=5, month=EnumMonths(1), year=2_000),
-            Date(day=6, month=EnumMonths(1), year=2_000),
-            Date(day=8, month=EnumMonths(1), year=2_000),
-            Date(day=9, month=EnumMonths(1), year=2_000),
-        ]
+        [Date(day=d, month=EnumMonths(1), year=2_000) for d in [2, 3, 4, 5, 6, 8, 9]]
+    ),
+
+    # Nueva prueba: Diferencia de 2 días.
+    (
+        (
+            {
+                "initial_date": date(day=1, month=1, year=2_000),
+                "final_date": date(day=10, month=1, year=2_000),
+                "difference": timedelta(days=2),
+                "exclude_dates": None,
+                "exclude_days": None
+            }
+        ),
+        [Date(day=d, month=EnumMonths(1), year=2_000) for d in [1, 3, 5, 7, 9]]
+    ),
+
+    # Nueva prueba: Exclusión de sábados y domingos.
+    (
+        (
+            {
+                "initial_date": date(day=1, month=1, year=2_000),
+                "final_date": date(day=10, month=1, year=2_000),
+                "difference": timedelta(days=1),
+                "exclude_dates": None,
+                "exclude_days": {5, 6}  # Sábado y domingo
+            }
+        ),
+        [Date(day=d, month=EnumMonths(1), year=2_000) for d in [3, 4, 5, 6, 7, 10]]  # Solo días hábiles
+    ),
+
+    # Nueva prueba: Intervalo más largo con diferencia de 3 días.
+    (
+        (
+            {
+                "initial_date": date(day=1, month=1, year=2_000),
+                "final_date": date(day=1, month=2, year=2_000),
+                "difference": timedelta(days=3),
+                "exclude_dates": None,
+                "exclude_days": None
+            }
+        ),
+        [Date(day=d.day, month=EnumMonths(d.month), year=d.year)
+        for d in [date(2000, 1, 1) + timedelta(days=i) for i in range(0, 32, 3)]]
+    ),
+
+    # Nueva prueba: Fecha final antes de la inicial (debe devolver lista vacía).
+    (
+        (
+            {
+                "initial_date": date(day=10, month=1, year=2_000),
+                "final_date": date(day=1, month=1, year=2_000),
+                "difference": timedelta(days=1),
+                "exclude_dates": None,
+                "exclude_days": None
+            }
+        ),
+        []
+    ),
+
+    # Nueva prueba: Mismo día inicial y final.
+    (
+        (
+            {
+                "initial_date": date(day=5, month=1, year=2_000),
+                "final_date": date(day=5, month=1, year=2_000),
+                "difference": timedelta(days=1),
+                "exclude_dates": None,
+                "exclude_days": None
+            }
+        ),
+        [Date(day=5, month=EnumMonths(1), year=2_000)]
+    ),
+
+    # Nueva prueba: Mismo día inicial y final, pero excluido.
+    (
+        (
+            {
+                "initial_date": date(day=5, month=1, year=2_000),
+                "final_date": date(day=5, month=1, year=2_000),
+                "difference": timedelta(days=1),
+                "exclude_dates": [date(day=5, month=1, year=2_000)],
+                "exclude_days": None
+            }
+        ),
+        []
     )
 ]
-
 
 
 """
@@ -372,7 +438,67 @@ substract_not_working_dates_params = [
             "not_working_days": set([]),
             "not_working_dates": set([])
         }
-    )
+    ),
+    # Caso con un día no laborable
+    (
+        ScheduleTemplates(
+            by_date=[],
+            by_day=[
+                DayTemplate(
+                    day=EnumDays(1),  # Lunes
+                    schedule=ScheduleData(
+                        is_working_day=False,
+                        initial_time=None,
+                        final_time=None,
+                        location=None
+                    )
+                )
+            ],
+            default=ScheduleData(
+                is_working_day=True,
+                initial_time=Time(hours=9, minutes=0, seconds=0),
+                final_time=Time(hours=18, minutes=0, seconds=0),
+                location=None
+            )
+        ),
+        {
+            "day_templates": set([]),
+            "date_templates": set([]),
+            "not_working_days": set([EnumDays(1)]),
+            "not_working_dates": set([])
+        }
+    ),
+    # Caso con una fecha específica no laborable
+    (
+        ScheduleTemplates(
+            by_date=[
+                DateTemplate(
+                    date=Date(day=25, month=EnumMonths(12), year=2024),
+                    schedule=ScheduleData(
+                        is_working_day=False,
+                        initial_time=None,
+                        final_time=None,
+                        location=None
+                    )
+                )
+            ],
+            by_day=[],
+            default=ScheduleData(
+                is_working_day=True,
+                initial_time=Time(hours=9, minutes=0, seconds=0),
+                final_time=Time(hours=17, minutes=0, seconds=0),
+                location=None
+            )
+        ),
+        {
+            "day_templates": set([]),
+            "date_templates": set([]),
+            "not_working_days": set([]),
+            "not_working_dates": set([
+                date(day=25, month=12, year=2024)
+            ])
+        }
+    ),
 ]
 
 

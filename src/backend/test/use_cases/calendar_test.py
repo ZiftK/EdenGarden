@@ -9,7 +9,7 @@ from backend.edensg_server.domain.entities.project_calendar import Date, Project
 
 from backend.test.use_cases.calendar_params import\
     get_working_days_params,\
-    run_throught_dates_params,\
+    run_through_dates_params,\
     substract_not_working_dates_params,\
     apply_schedule_templates_params
 
@@ -23,7 +23,7 @@ from backend.test.use_cases.calendar_params import\
 #     assert models == expected
 
 
-@pytest.mark.parametrize("params, expected", run_throught_dates_params)
+@pytest.mark.parametrize("params, expected", run_through_dates_params)
 def test_run_throught_dates(params: dict, expected)-> None:
     assert run_through_dates(**params) == expected
 
