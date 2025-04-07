@@ -1,5 +1,5 @@
 #Frutal_trees_box{
-    background: url('../../../assets/fruit_trees.webp') center/cover;
+    background: url('../../../../public/assets/fruit_trees.webp') center/cover;
     height: 350px;
     margin: 60px 0px;
     display: flex;

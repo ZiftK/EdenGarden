@@ -1,3 +1,5 @@
+"use client"
+
 import { Box } from "@raul_yael/cleangui";
 import { DescriptionPots } from "../../atoms/Flower Pots/DescriptionPots";
 import { FlowersGallery } from "../../atoms/Flower Pots/FlowerGallery";

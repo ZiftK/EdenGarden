@@ -1,3 +1,5 @@
+"use client"
+
 import { Box, Typography } from "@raul_yael/cleangui";
 import { InfoCard } from "../atoms/InfoCard";
 import { StoreIcon } from "../atoms/Icons/Icons";

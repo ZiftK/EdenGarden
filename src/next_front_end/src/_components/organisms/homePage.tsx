@@ -1,5 +1,6 @@
+"use client"
 import { Box, Typography } from "@raul_yael/cleangui";
-import bgPrimary from '../../assets/river.webp'
+import bgPrimary from '../../../public/assets/river.webp'
 import { BtnFilled, BtnOutlined } from "../moleculs/Button";
 
 
@@ -10,7 +11,7 @@ export function HomePage(){
             boxShadow: 'none',
             background: `
             linear-gradient(to right, #000e, #000a ,#0000),
-            url(${bgPrimary})  center/cover no-repeat
+            url(${bgPrimary.src})  center/cover no-repeat
             `,
             height: '90svh',
             borderRadius: 0,

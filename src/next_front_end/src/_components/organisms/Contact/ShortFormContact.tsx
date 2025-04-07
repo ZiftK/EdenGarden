@@ -1,3 +1,5 @@
+"use client"
+
 import { Typography } from "@raul_yael/cleangui";
 import Input from "../../moleculs/Input";
 import {  BtnOutlined } from "../../moleculs/Button";

@@ -1,3 +1,5 @@
+  "use client"
+
 import { Box } from "@raul_yael/cleangui";
 import { useId, useState } from "react";
 
@@ -340,6 +342,7 @@ export default function Input({
     onChange,
     ...rest
 }: InputProps) {
+
     const [val, setValue] = useState<string>(value || "");
     const idInput = useId();
 

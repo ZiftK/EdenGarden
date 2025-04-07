@@ -1,3 +1,5 @@
+"use client"
+
 import { Box, Typography } from "@raul_yael/cleangui";
 import { BtnHref } from "../moleculs/Button";
 
