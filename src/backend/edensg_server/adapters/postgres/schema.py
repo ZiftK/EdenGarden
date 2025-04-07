@@ -6,7 +6,7 @@ Se utiliza junto a alembic para versionar las migraciones del esquema.
 from dotenv import load_dotenv
 import os
 
-from sqlalchemy import create_engine, Column, Integer, VARCHAR, Date as sqlaDate, Float, ForeignKey, VARCHAR
+from sqlalchemy import create_engine, Column, Integer, VARCHAR, Date as sqlaDate, Float, ForeignKey, VARCHAR, DateTime, func
 from sqlalchemy.orm import declarative_base
 
 load_dotenv()
@@ -97,6 +97,15 @@ class EmployeeTeamMid(Base):
     id_team = Column("idTeam", Integer, ForeignKey("admin.TTeam.idTeam", ondelete="SET NULL", onupdate="CASCADE"), primary_key=True)
     id_employee = Column("idEmployee", Integer, ForeignKey("admin.TEmployee.idEmployee", ondelete="SET NULL", onupdate="CASCADE"), primary_key=True)
 
+class ProjectStatus(Base):
+    __tablename__ = "TProjectStatus"
+    __table_args__ = {
+        "schema": "admin"
+    }
+
+    id_project_status = Column("idProjectStatus", Integer, primary_key=True, autoincrement=True)
+    status = Column(VARCHAR(50), nullable=False)
+
 class Project(Base):
     __tablename__ = "TProject"
     __table_args__ = {
@@ -105,6 +114,7 @@ class Project(Base):
 
     id_project = Column("idProject", Integer, primary_key=True, autoincrement=True)
     name = Column(VARCHAR(50), nullable=False)
+    status = Column(Integer, ForeignKey("admin.TProjectStatus.idProjectStatus", ondelete="SET NULL", onupdate="CASCADE"))
 
 class CurrentProjectTeams(Base):
     __tablename__ = "TCurrentProjectTeams"
@@ -133,6 +143,18 @@ class CurrentProjectTeams(Base):
         ),
         primary_key=True
     )
+
+class Attendance(Base):
+    __tablename__ = "TAttendance"
+    __table_args__ = {
+        "schema": "admin"
+    }
+
+    id_employee = Column("idEmployee", Integer, ForeignKey("admin.TEmployee.idEmployee", ondelete="SET NULL", onupdate="CASCADE"), primary_key=True)
+    in_time = Column("inTime", DateTime, server_default=func.now(), primary_key=True)
+    out_time = Column("outTime", DateTime, nullable=True)
+    id_project = Column("idProject", Integer, ForeignKey("admin.TProject.idProject", ondelete="SET NULL", onupdate="CASCADE"))
+
 
 if __name__ == "__main__":
     Base.metadata.create_all(engine)
