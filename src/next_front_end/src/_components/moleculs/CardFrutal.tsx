@@ -26,24 +26,26 @@ export function CardFrutal({
             }}
         >
             <Typography 
-                variant="h2"
-                children = {title}
+                variant="h2"        
                 style={{
                     color: "var(--white-peristance-color)",
                     fontSize: "var(--font-md)",
                     fontWeight: "600"
                 }}
-            />
+            > 
+                {title}
+            </Typography>
 
             <Typography 
-                variant="p"
-                children = {description}
+                variant="p"            
                 style={{
                     color: "var(--white-peristance-color)",
                     fontSize: "var(--font-xs)",
                     fontWeight: "300"
                 }}
-            />
+            > 
+                {description}
+            </Typography>
         </Box>
     )
 }

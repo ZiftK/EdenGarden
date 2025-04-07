@@ -8,8 +8,7 @@ export function ShortFormContact(){
         <section       
             id="contact_form"
         >
-            <Typography 
-                children="Mantenganse en Contacto"
+            <Typography                 
                 variant="h2"
                 style={{
                     fontSize:"var(--font-lg)",
@@ -18,7 +17,9 @@ export function ShortFormContact(){
                     width: "100%",
                     placeSelf: "center"
                 }}
-                />
+            > 
+                <span>Contáctenos</span>
+            </Typography>
 
             <Input 
                 variant="default"

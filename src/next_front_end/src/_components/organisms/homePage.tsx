@@ -49,17 +49,17 @@ export function HomePage(){
 
     
         {/* Number home page */}
-        <Typography 
-                children='+52 (55) 45034455'
+        <Typography                 
                 variant='p'
                 style={{
                     color: "var(--white-peristance-color)"
                 }}
-        />
+        > 
+            +52 (55) 45034455
+        </Typography>
 
         {/* Title Home Page */}
         <Typography 
-                children='CREAMOS AMBIENTES NATURALES & ELEGANTES'
                 color='bg'
                 variant='h1'
                 style={{
@@ -69,7 +69,9 @@ export function HomePage(){
                     width: '300px',
                     color: "var(--white-peristance-color)"
                 }}
-                />
+        > 
+            CREAMOS AMBIENTES NATURALES & ELEGANTES
+        </Typography>
         </div>
     </Box>
     )

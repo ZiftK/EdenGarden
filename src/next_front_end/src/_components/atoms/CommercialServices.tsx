@@ -17,13 +17,16 @@ export function CommercialServices(){
                 gap: "6px",                
             }}
         >
-            <Typography children="Servicios Comerciales" 
+            <Typography 
                         size="var(--font-sm)"
                         style={{ 
                             letterSpacing:"1px",
                             lineHeight: "100%",
                         }}
-            />
+            >
+                Servicios Comerciales
+            </Typography>
+
             <BtnHref link="#"
                 text="Mantenimiento de Cesped"
                 sxText="var(--font-xxs)"

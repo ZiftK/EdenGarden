@@ -2,8 +2,7 @@ import {Typography} from "@raul_yael/cleangui"
 
 export function FrutalTreesTitle({title}:{title: string}){
     return(
-        <Typography 
-            children={title}
+        <Typography             
             variant="h2"
             style={{
                 color: "var(--orange-title)",
@@ -16,6 +15,8 @@ export function FrutalTreesTitle({title}:{title: string}){
                 fontSize: "var(--font-md)",
                 alignSelf: "end",
             }}
-        />
+        > 
+            {title}
+        </Typography>
     )
 }

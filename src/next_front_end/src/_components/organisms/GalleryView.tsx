@@ -25,19 +25,19 @@ export function Galleryview(){
                 letter="A/"
                 title="Nuestros objetivos"
                 description="Nos desempeñamos como expertos en el diseño y fabricación de cascadas artificales."
-                img={imgRiver}
+                imgUrl={imgRiver.src}
             />
             <CardImage 
                 letter="B/"
                 title="Nuestros objetivos"
                 description="Nos desempeñamos como expertos en el diseño y fabricación de cascadas artificales."
-                img={imgHouse_2}
+                imgUrl={imgHouse_2.src}
             />
             <CardImage 
                 letter="C/"
                 title="Nuestros objetivos"
                 description="Nos desempeñamos como expertos en el diseño y fabricación de cascadas artificales."
-                img={pots}
+                imgUrl={pots.src}
                 style={{ backgroundPosition: "center center"}}
             />
         </Box>
@@ -48,13 +48,13 @@ const CardImage = ({
     letter,
     title,
     description,
-    img,
+    imgUrl,
     style
 }:{
     letter:string,
     title: string,
     description: string,
-    img: string,
+    imgUrl: string,
     style?: CSSProperties
 }) => {
     return(
@@ -69,19 +69,20 @@ const CardImage = ({
                 margin:0,
                 width: "clamp(300px, 100%, 800px)",
                 height: '160px',
-                background: `linear-gradient(to bottom, transparent 0%, var(--background) 80%), url(${img}) center / cover no-repeat`,
+                background: `linear-gradient(to bottom, transparent 0%, var(--background) 80%), url(${imgUrl}) center / cover no-repeat`,
                 ...style
             }}
             
         >
-            <Typography 
-                children={letter}           
+            <Typography                      
                 style={{
                     fontWeight:'800',
                     color: 'var(--secondary-color)',
                     fontSize: "var(--font-xxl)",                   
                 }}
-                />
+            > 
+                {letter}
+            </Typography>
 
                 <Box
                     type="section"
@@ -97,23 +98,25 @@ const CardImage = ({
                         backgroundColor: "#0000"                
                     }}
                 >
-                    <Typography 
-                        children={title}        
+                    <Typography                       
                         style={{
                             fontWeight: "500",
                             fontSize:"var(--font-md)",
                             color: 'var(--green-200)'
                         }}
-                        />
+                    > 
+                        {title}
+                    </Typography>
 
-                    <Typography 
-                        children={description}
+                    <Typography                         
                         style={{
                             fontSize: "var(--font-xs)",     
                             color: "var(--father-font)"
                             
                         }}
-                        />
+                    > 
+                        {description}
+                    </Typography>
                     </Box>
             
         </Box>

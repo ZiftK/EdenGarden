@@ -6,13 +6,16 @@ export function Location(){
         <Box type="section"
             id="location_box"
         >
-            <Typography children="Donde ubicarnos"
+            <Typography 
                 variant="h2"
                 style={{
                     fontSize: "var(--font-lg)",
                     color: "var(--father-font)"
                 }}
-                />
+            > 
+                <span>Ubicación</span>
+            </Typography>
+
             <Typography  
                 variant="p"
                 style={{
@@ -57,7 +60,7 @@ export function Location(){
                     Disponibles por Email y por telefono
                 </span>
             </Typography>
-            <Typography children="Atendemos en toda la republica."
+            <Typography 
                 variant="p"
                 style={{
                     fontSize: "var(--font-xs)",
@@ -67,7 +70,9 @@ export function Location(){
                     marginTop: "10px",
                     padding: 0
                 }}
-                />
+            >
+                <span>Atendemos en toda la republica.</span>
+            </Typography>
         </Box>
     )
 }

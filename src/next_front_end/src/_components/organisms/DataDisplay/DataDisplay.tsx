@@ -17,7 +17,6 @@ export function DataShow(){
                     >
                     
                     <Typography 
-                        children='570'
                         variant='h2'
                         style={{
                             color: "var(--white-peristance-color)",
@@ -26,10 +25,11 @@ export function DataShow(){
                             fontWeight: 'normal',
 
                         }}
-                        />
+                    >
+                        570
+                    </Typography>
 
-                    <Typography 
-                        children='Proyectos residenciales'                        
+                    <Typography                              
                         variant='p'
                         style={{
                             color: "var(--white-peristance-color)",
@@ -40,7 +40,9 @@ export function DataShow(){
                             lineHeight: "12px",
                             letterSpacing:'1px'
                         }}
-                        />
+                        >
+                        Proyectos residenciales
+                        </Typography>
                 </div>
 
                 <div
@@ -51,8 +53,7 @@ export function DataShow(){
                     }}
                     >
                     
-                    <Typography 
-                        children='20'
+                    <Typography                         
                         variant='h2'
                         style={{
                             color: "var(--white-peristance-color)",
@@ -61,10 +62,11 @@ export function DataShow(){
                             fontWeight: 'normal',
 
                         }}
-                        />
+                        >
+                        20
+                    </Typography>
 
-                    <Typography 
-                        children='Proyectos residenciales'                        
+                    <Typography                                        
                         variant='p'
                         style={{
                             color: "var(--white-peristance-color)",
@@ -75,7 +77,9 @@ export function DataShow(){
                             lineHeight: "12px",
                             letterSpacing:'1px'
                         }}
-                        />
+                        > 
+                        Proyectos residenciales    
+                    </Typography>
                 </div>
 
                 <div
@@ -87,8 +91,7 @@ export function DataShow(){
                     }}
                     >
                     
-                    <Typography 
-                        children='964'
+                    <Typography                     
                         variant='h2'
                         style={{
                             color: "var(--white-peristance-color)",
@@ -97,10 +100,9 @@ export function DataShow(){
                             fontWeight: 'normal',
 
                         }}
-                        />
+                        > 964</Typography>
 
-                    <Typography 
-                        children='Proyectos residenciales'                        
+                    <Typography                                         
                         variant='p'
                         style={{
                             color: "var(--white-peristance-color)",
@@ -111,7 +113,9 @@ export function DataShow(){
                             lineHeight: "12px",
                             letterSpacing:'1px'
                         }}
-                        />
+                        > 
+                            Proyectos residenciales
+                        </Typography>
                 </div>
 
                 <div
@@ -122,20 +126,19 @@ export function DataShow(){
                     }}
                     >
                     
-                    <Typography 
-                        children='63'
+                    <Typography                 
                         variant='h2'
                         style={{
                             color: "var(--white-peristance-color)",
                             fontSize: 'var(--font-xl)',
                             fontFamily:  "'Montserrat', sans-serif",
                             fontWeight: 'normal',
-
                         }}
-                        />
+                    >
+                        63
+                    </Typography>
 
-                    <Typography 
-                        children='Proyectos residenciales'                        
+                    <Typography                                          
                         variant='p'
                         style={{
                             color: "var(--white-peristance-color)",
@@ -146,7 +149,9 @@ export function DataShow(){
                             lineHeight: "12px",
                             letterSpacing:'1px'
                         }}
-                        />
+                    > 
+                        Proyectos residenciales
+                    </Typography>
                 </div>
             </Box>
     )

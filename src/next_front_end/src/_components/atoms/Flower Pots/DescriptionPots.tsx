@@ -18,20 +18,24 @@ export function DescriptionPots(){
                 gap:"20px"
             }}
         >
-            <Typography children="MACETAS" 
+            <Typography 
                         style={{
                             color: "var(--white-peristance-color)",
                             fontSize: "var(--font-md)",
                             justifySelf: "start",
                         }}
-            />
+            >
+                MACETAS
+            </Typography>
 
-            <Typography children="En nuestra jardinería, sabemos que las macetas no solo sirven para cuidar tus plantas, sino también para embellecer tus espacios. Contamos con una amplia variedad de macetas en distintos materiales, tamaños y estilos, ideales para darle un toque natural y armonioso a tu hogar." 
+            <Typography 
                         style={{
                             color: "var(--white-peristance-color)",
                             fontSize: "var(--font-xs)"
                         }}
-            />
+            >
+                En nuestra jardinería, sabemos que las macetas no solo sirven para cuidar tus plantas, sino también para embellecer tus espacios. Contamos con una amplia variedad de macetas en distintos materiales, tamaños y estilos, ideales para darle un toque natural y armonioso a tu hogar.
+            </Typography>
 
             <Box type="div"
                 id="Btn_container"

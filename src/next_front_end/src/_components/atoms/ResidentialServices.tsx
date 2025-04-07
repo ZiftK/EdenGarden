@@ -17,13 +17,15 @@ export function ResidentialeServices(){
                 gap: "6px"
             }}
         >
-            <Typography children="Servicios Residenciales" 
+            <Typography 
                         size="var(--font-sm)"
                         style={{ 
                             letterSpacing:"1px",
                             lineHeight: "100%"
                         }}
-            />
+            >
+                Servicios Residenciales
+            </Typography>
             <BtnHref link="#"
                 text="Paisajismo y Decoracion"
                 sxText="var(--font-xxs)"

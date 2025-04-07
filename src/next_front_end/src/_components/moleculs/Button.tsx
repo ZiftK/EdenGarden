@@ -79,16 +79,17 @@ export function BtnHref({text, link, weight, sxText, style, icon}:
                     ...style,
                 }}
         >
-        <Typography 
-            children={text}
-            variant="p"
-            style={{
-                fontFamily:"Montserrat",
-                fontWeight: weight || 100,
-                fontSize: sxText || "1rem",
-                ...style
-            }}
-            />
+            <Typography         
+                variant="p"
+                style={{
+                    fontFamily:"Montserrat",
+                    fontWeight: weight || 100,
+                    fontSize: sxText || "1rem",
+                    ...style
+                }}
+            >
+                {text}    
+            </Typography>
         </Button>
         </a>
     )
