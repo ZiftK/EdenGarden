@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { Montserrat} from "next/font/google";
 import "./globals.css";
-import Script from "next/script"
-
+import ThemeScript from "./ThemeScript"
 
 const montSains = Montserrat({
   variable: "--font-mont-sains",
@@ -24,20 +23,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" >
+    <html lang="es" suppressHydrationWarning={true} >
       <head>
         <link rel="icon" href="/Logo_Eden_Icon.png" />
         <meta name="color-scheme" content="light dark" />
-        {/* Script para aplicar el tema según el sistema */}
-        <Script id="theme-detect" strategy="beforeInteractive">
-          {`
-            const systemPrefer = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-            document.documentElement.setAttribute('data-theme', systemPrefer);
-            document.querySelector('meta[name="color-scheme"]').setAttribute('content', systemPrefer);
-          `}
-        </Script>
       </head>
       <body className={montSains.className}>
+        <ThemeScript />
         {children}
       </body>
     </html>
