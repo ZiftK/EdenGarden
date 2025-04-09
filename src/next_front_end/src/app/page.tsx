@@ -9,7 +9,6 @@ import { Footer } from "@/_components/organisms/footer/Footer"
 import { FrutalTrees } from "@/_components/organisms/FrutalTrees/FrutalTrees"
 import { Galleryview } from "@/_components/organisms/GalleryView"
 import { HomePage } from "@/_components/organisms/homePage"
-import Navbar from "@/_components/organisms/Navbar/Navbar"
 import { Divider } from "@raul_yael/cleangui"
 
 
@@ -28,7 +27,7 @@ export default function Home() {
       <Location /> 
       </main>
       <Footer />
-      <Navbar />
+
     </>
   );
 }
