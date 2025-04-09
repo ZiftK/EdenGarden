@@ -4,10 +4,11 @@ import imgHouse_2 from "../../../public/assets/house_2.webp"
 import pots from "../../../public/assets/garden_pots.webp"
 import { CSSProperties } from "react";
 
+
 export function Galleryview(){
     return (
         <Box
-            type="section"
+            as="section"
             style={{
                 display: "flex",
                 flexWrap: 'wrap',
@@ -18,7 +19,8 @@ export function Galleryview(){
                 border: 'none',                    
                 margin: '20px 0px',
                 borderRadius:0,
-                background: 'var(--background)'
+                background: 'var(--background)',
+                padding: '20px'
             }}
         >
             <CardImage 
@@ -59,7 +61,7 @@ const CardImage = ({
 }) => {
     return(
         <Box
-            type="section"
+            as="section"
             style={{
                 border: 'none',                    
                 padding:'100px 5px 0px 20px',
@@ -85,7 +87,7 @@ const CardImage = ({
             </Typography>
 
                 <Box
-                    type="section"
+                    as="section"
                     style={{
                         display: "flex",
                         flexDirection: "column",

@@ -1,3 +1,5 @@
+'use client'
+
 import { AboutUs } from "@/_components/organisms/AboutUsPage"
 import { Location } from "@/_components/organisms/Contact/Location"
 import { ShortFormContact } from "@/_components/organisms/Contact/ShortFormContact"
@@ -18,8 +20,8 @@ export default function Home() {
       <HomePage />
       <AboutUs />
       <DataShow />
-      {/*<Galleryview />
-      <FlowerPots />
+      <Galleryview />
+      {/*<FlowerPots />
       <FrutalTrees />
       <ShortFormContact />
       <Divider variant="middle"/>

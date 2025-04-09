@@ -6,10 +6,10 @@
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    gap: 13px;
     border-radius:0;
     background-color: var(--green-200);
     box-shadow: none;
+    width: 100%;
 }
 
 @media screen and (min-width: 700px) {
