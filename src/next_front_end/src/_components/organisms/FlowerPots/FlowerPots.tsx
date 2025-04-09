@@ -7,7 +7,7 @@ import "./FlowerPots.css"
 
 export function FlowerPots(){
     return(
-        <Box type="section"
+        <Box as="section"
             id="FlowerPots_Box"
             >
             <DescriptionPots />

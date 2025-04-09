@@ -21,10 +21,10 @@ export default function Home() {
       <AboutUs />
       <DataShow />
       <Galleryview />
-      {/*<FlowerPots />
+      <FlowerPots />
       <FrutalTrees />
       <ShortFormContact />
-      <Divider variant="middle"/>
+      {/*<Divider variant="middle"/>
       <Location /> */}
       </main>
       {/* <Footer /> */}

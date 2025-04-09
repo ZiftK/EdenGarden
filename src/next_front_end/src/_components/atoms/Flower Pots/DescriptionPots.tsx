@@ -3,7 +3,7 @@ import { BtnHref } from "../../moleculs/Button";
 
 export function DescriptionPots(){
     return(
-        <Box type="div"
+        <Box aria-description="div"
             style={{
                 width:"100%",
                 border: "none",
@@ -37,7 +37,7 @@ export function DescriptionPots(){
                 En nuestra jardinería, sabemos que las macetas no solo sirven para cuidar tus plantas, sino también para embellecer tus espacios. Contamos con una amplia variedad de macetas en distintos materiales, tamaños y estilos, ideales para darle un toque natural y armonioso a tu hogar.
             </Typography>
 
-            <Box type="div"
+            <Box as="div"
                 id="Btn_container"
             >  
 

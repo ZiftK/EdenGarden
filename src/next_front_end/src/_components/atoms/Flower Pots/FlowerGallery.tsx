@@ -6,7 +6,7 @@ import "./FlowerGallery.css"
 
 export function FlowersGallery(){
     return(
-        <Box type="div"
+        <Box as="div"
             id="FlowerGallery_Box"
             >
             <div 
