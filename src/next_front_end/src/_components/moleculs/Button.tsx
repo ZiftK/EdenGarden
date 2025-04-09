@@ -80,7 +80,7 @@ export function BtnHref({text, link, weight, sxText, style, icon}:
                 }}
         >
             <Typography         
-                variant="p"
+                as="p"
                 style={{
                     fontFamily:"Montserrat",
                     fontWeight: weight || 100,

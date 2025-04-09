@@ -3,7 +3,7 @@ import { BtnHref } from "../moleculs/Button";
 
 export function ResidentialeServices(){
     return(
-        <Box type="div"
+        <Box as="div"
             id="residential_services_box"
             style={{
                 border: 0,

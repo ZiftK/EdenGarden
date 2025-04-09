@@ -5,11 +5,11 @@ import "./Location.css"
 
 export function Location(){
     return(
-        <Box type="section"
+        <Box as="section"
             id="location_box"
         >
             <Typography 
-                variant="h2"
+                as="h2"
                 style={{
                     fontSize: "var(--font-lg)",
                     color: "var(--father-font)"
@@ -19,12 +19,12 @@ export function Location(){
             </Typography>
 
             <Typography  
-                variant="p"
+                as="p"
                 style={{
                     fontSize: "var(--font-xs)",
                     color: "var(--green-200)",                  
                 }}
-                >
+                >``
                     <span>
                         Mercado de plantas & flores<br/>
                         “Cuemanco”<br/>
@@ -35,7 +35,7 @@ export function Location(){
 
             <Typography
                 weight={"bold"}
-                variant="p"
+                as="p"
                 style={{
                     fontSize: "var(--font-xs)",
                     color: "var(--text-label)"
@@ -51,7 +51,7 @@ export function Location(){
             </Typography>
 
             <Typography 
-                variant="p"
+                as="p"
                 style={{
                     fontSize: "var(--font-xs)",
                     color: "var(--text-label)"
@@ -63,7 +63,7 @@ export function Location(){
                 </span>
             </Typography>
             <Typography 
-                variant="p"
+                as="p"
                 style={{
                     fontSize: "var(--font-xs)",
                     color: "var(--green-200)",

@@ -8,7 +8,7 @@ import "./Footer.css"
 
 export function Footer(){
     return(
-        <Box type="footer"
+        <Box as="footer"
             id="footer_box"
         >
             <section

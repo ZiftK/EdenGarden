@@ -4,9 +4,32 @@ import bgPrimary from '../../../public/assets/river.webp'
 import { BtnFilled, BtnOutlined } from "../moleculs/Button";
 
 
+/**
+ * The `HomePage` component represents the main section of the homepage.
+ * It features a visually appealing design with a gradient background and 
+ * a responsive layout. The component includes a title, contact information, 
+ * and two buttons for user interaction.
+ *
+ * @returns {JSX.Element} A JSX element representing the homepage section.
+ *
+ * @remarks
+ * - The background is styled with a linear gradient and an image.
+ * - The layout is responsive, with a flexible column-reverse structure.
+ * - Includes two buttons: "Nuestro servicio" and "Contactanos".
+ * - Displays a title and a contact phone number.
+ *
+ * @example
+ * ```tsx
+ * import { HomePage } from './homePage';
+ * 
+ * function App() {
+ *   return <HomePage />;
+ * }
+ * ```
+ */
 export function HomePage(){
     return(
-    <Box type='section'
+    <Box as="section"
         style={{
             boxShadow: 'none',
             background: `
@@ -34,24 +57,25 @@ export function HomePage(){
         >
 
         <Box
-            type="div"
+            as="div"
             style={{
                 border: 'none',
                 marginTop: 5,
                 padding:0,
                 display: "flex",
+                flexDirection: 'row',
                 gap: '10px',
                 backgroundColor: 'transparent',
             }}
         >
-            <BtnOutlined text="Nuestro servicio" style={{fontSize: 'var(--font-xs)'}}/>
+            <BtnOutlined text="Nuestro servicio" style={{fontSize: 'var(--font-xs)', outline: '.7px solid var(--"var(--green-dark-transparent-100))'}}/>
             <BtnFilled text="Contactanos" onClick={() => 1} $bg="var(--white-peristance-color)" col="#557C2B"/> 
         </Box> 
 
     
         {/* Number home page */}
         <Typography                 
-                variant='p'
+                as='p'
                 style={{
                     color: "var(--white-peristance-color)"
                 }}
@@ -62,7 +86,7 @@ export function HomePage(){
         {/* Title Home Page */}
         <Typography 
                 color='bg'
-                variant='h1'
+                as='h1'
                 style={{
                     fontSize: 'var(--font-lg)',
                     fontFamily:  "'Montserrat', sans-serif",
