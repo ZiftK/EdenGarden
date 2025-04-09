@@ -42,6 +42,7 @@ export function HomePage(){
             border: 'none',
             margin: 0,          
             gap: '10px',
+            padding: '0'
         }}
         >
     
@@ -52,7 +53,7 @@ export function HomePage(){
                 height: '100%',
                 width: 'clamp(320px, 100%, 800px)',
                 justifySelf: 'center',
-                padding: "20px"
+                padding: '20px'
             }}
         >
 

@@ -54,14 +54,16 @@ export function InfoCard({
 
 
 
-            <Typography as="p"
+            <Box as="span"
                 style={{
+                    backgroundColor: "transparent",
+                    border: 'none',
                     color: "var(--children-font)",
                     fontSize: "var(--font-xs)",
                     width: '95%',
                 }}>
                 {description}
-            </Typography>
+            </Box>
 
             </Box>
 

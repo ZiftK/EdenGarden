@@ -20,7 +20,7 @@ export default function Navbar(){
             className='navbar'
             id='navbar_box'
         >
-            <div className='navbar_container'>
+            <div id='navbar_container'>
                 <Image 
                     src={logo} 
                     alt="Eden Garden Logo" 

@@ -6,7 +6,7 @@ import "./DataDisplay.css"
 export function DataShow(){
     return(
             <Box
-                type="section"
+                as="section"
                 id="DataShow_Box"
             >
                 <div
@@ -19,7 +19,7 @@ export function DataShow(){
                     >
                     
                     <Typography 
-                        variant='h2'
+                        as='h2'
                         style={{
                             color: "var(--white-peristance-color)",
                             fontSize: 'var(--font-xl)',
@@ -32,7 +32,7 @@ export function DataShow(){
                     </Typography>
 
                     <Typography                              
-                        variant='p'
+                        as='p'
                         style={{
                             color: "var(--white-peristance-color)",
                             fontSize: 'var(--font-xs)',
@@ -56,7 +56,7 @@ export function DataShow(){
                     >
                     
                     <Typography                         
-                        variant='h2'
+                        as='h2'
                         style={{
                             color: "var(--white-peristance-color)",
                             fontSize: 'var(--font-xl)',
@@ -69,7 +69,7 @@ export function DataShow(){
                     </Typography>
 
                     <Typography                                        
-                        variant='p'
+                        as='p'
                         style={{
                             color: "var(--white-peristance-color)",
                             fontSize: 'var(--font-xs)',
@@ -94,7 +94,7 @@ export function DataShow(){
                     >
                     
                     <Typography                     
-                        variant='h2'
+                        as='h2'
                         style={{
                             color: "var(--white-peristance-color)",
                             fontSize: 'var(--font-xl)',
@@ -105,7 +105,7 @@ export function DataShow(){
                         > 964</Typography>
 
                     <Typography                                         
-                        variant='p'
+                        as='p'
                         style={{
                             color: "var(--white-peristance-color)",
                             fontSize: 'var(--font-xs)',
@@ -129,7 +129,7 @@ export function DataShow(){
                     >
                     
                     <Typography                 
-                        variant='h2'
+                        as='h2'
                         style={{
                             color: "var(--white-peristance-color)",
                             fontSize: 'var(--font-xl)',
@@ -141,7 +141,7 @@ export function DataShow(){
                     </Typography>
 
                     <Typography                                          
-                        variant='p'
+                        as='p'
                         style={{
                             color: "var(--white-peristance-color)",
                             fontSize: 'var(--font-xs)',

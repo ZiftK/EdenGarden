@@ -10,11 +10,11 @@
     border-radius: 0;
     background-color: rgba(56, 86, 24, 0.69);
     top: 0;
-    display: grid;
-    place-content: center;
+    display: flex;
+    justify-content: center;
 }
 
-.navbar_container{
+#navbar_container{
     display: flex;
     justify-content: space-between;
     width: clamp(320px, 100%, 800px);
