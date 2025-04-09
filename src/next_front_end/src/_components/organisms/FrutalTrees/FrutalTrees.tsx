@@ -5,7 +5,7 @@ import "./FrutalTrees.css"
 
 export function FrutalTrees(){
     return(
-        <Box type="section"
+        <Box as="section"
             id="Frutal_trees_box"
         >
             <div className="FurtalTrees">

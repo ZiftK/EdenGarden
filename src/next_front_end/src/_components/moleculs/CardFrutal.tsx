@@ -8,7 +8,7 @@ export function CardFrutal({
     description: string
 }){
     return(
-        <Box type="div"
+        <Box as="div"
             className=""
             style={{
                 border: "10px solid var(--background)",
@@ -26,7 +26,7 @@ export function CardFrutal({
             }}
         >
             <Typography 
-                variant="h2"        
+                as="h2"        
                 style={{
                     color: "var(--white-peristance-color)",
                     fontSize: "var(--font-md)",
@@ -37,7 +37,7 @@ export function CardFrutal({
             </Typography>
 
             <Typography 
-                variant="p"            
+                as="p"            
                 style={{
                     color: "var(--white-peristance-color)",
                     fontSize: "var(--font-xs)",

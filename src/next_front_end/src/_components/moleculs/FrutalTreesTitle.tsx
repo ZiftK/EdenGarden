@@ -3,7 +3,7 @@ import {Typography} from "@raul_yael/cleangui"
 export function FrutalTreesTitle({title}:{title: string}){
     return(
         <Typography             
-            variant="h2"
+            as="h2"
             style={{
                 color: "var(--orange-title)",
                 fontWeight: 500,
