@@ -14,7 +14,6 @@ import { Divider } from "@raul_yael/cleangui"
 export default function Home() {
   return (
     <>
-    {/* <Navbar /> */}
      {/* <main className="flex min-h-screen flex-col items-center justify-between p-24">  */}
       <HomePage />
       {/*<AboutUs />
@@ -25,8 +24,9 @@ export default function Home() {
       <ShortFormContact />
       <Divider variant="middle"/>
       <Location />
-    </main>
-    <Footer /> */}
+      </main>
+      <Footer /> */}
+      <Navbar />
     </>
   );
 }

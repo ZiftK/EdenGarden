@@ -16,7 +16,7 @@ export default function Navbar(){
 
     return(
         <Box 
-            type='section'
+            as='section'
             className='navbar'
             id='navbar_box'
         >
@@ -29,15 +29,17 @@ export default function Navbar(){
                 />
                 {/* Botones del navbar */}
                 <Box 
-                    type='div'
+                    as='div'
                     style={{                
                         display: 'flex',
+                        flexDirection: 'row',
                         gap: '0px',
                         justifyContent: 'center',
                         alignItems:'center',
                         border:'none',
                         boxShadow: 'none',
                         padding: 0,
+                        margin: 0,
                         backgroundColor:'transparent',
                         color: 'transparent',                   
                     }}

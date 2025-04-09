@@ -1,5 +1,6 @@
 #navbar_box{
     margin: 0;
+    padding: 0;
     position: fixed;
     border: none;
     box-shadow: none;
@@ -9,6 +10,8 @@
     border-radius: 0;
     background-color: rgba(56, 86, 24, 0.69);
     top: 0;
+    display: grid;
+    place-content: center;
 }
 
 .navbar_container{
