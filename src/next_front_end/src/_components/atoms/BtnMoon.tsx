@@ -15,9 +15,9 @@ export function BtnMoon() {
       icon={MoonIcon}
       variant="text"
       onClick={() => {
-        const theme = document.documentElement.getAttribute("color-scheme");
+        const theme = document.documentElement.getAttribute("data-theme");
         const newTheme = theme === "light" ? "dark" : "light";
-        document.documentElement.setAttribute("color-scheme", newTheme);
+        document.documentElement.setAttribute("data-theme", newTheme);
       }}
     >
       _

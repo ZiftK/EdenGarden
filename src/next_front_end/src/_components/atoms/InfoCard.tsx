@@ -11,15 +11,16 @@ export function InfoCard({
     icon: JSX.Element
 }){
     return(
-        <Box type="div"
+        <Box as="div"
             style={{
                 border: 'none',
                 boxShadow: "none",
                 backgroundColor: "transparent",
                 margin: '0 auto',
-                marginTop:'1rem',
+                marginTop:'1.5rem',
                 padding: 0,
                 display: "flex",
+                flexDirection: "row",
                 alignItems: "start",
                 gap: '0.5rem',
                 width: 'clamp(300px, 100%, 800px)'
@@ -27,7 +28,7 @@ export function InfoCard({
         
         {icon}
 
-        <Box type="div"
+        <Box as="div"
             style={{
                 border: 'none',
                 boxShadow: "none",
@@ -40,7 +41,7 @@ export function InfoCard({
             }}>
 
 
-            <Typography variant="h3"
+            <Typography as="h3"
                 style={{
                     color: "var(--father-font)",
                     fontSize: "var(--font-md)",
@@ -53,11 +54,11 @@ export function InfoCard({
 
 
 
-            <Typography variant="p"
+            <Typography as="p"
                 style={{
                     color: "var(--children-font)",
                     fontSize: "var(--font-xs)",
-                    width: '95%'
+                    width: '95%',
                 }}>
                 {description}
             </Typography>

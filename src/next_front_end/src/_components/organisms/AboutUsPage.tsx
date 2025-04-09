@@ -6,7 +6,7 @@ import { StoreIcon } from "../atoms/Icons/Icons";
 
 export function AboutUs(){
     return(
-        <Box type="section"
+        <Box as="section"
             style={{
                 padding:'20px',
                 margin:0,
@@ -16,7 +16,7 @@ export function AboutUs(){
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "flex-end",
-                gap: '20px'
+                
             }}
         >
 
@@ -34,7 +34,7 @@ export function AboutUs(){
             {/* Description  */}
 
             <Typography 
-                variant="h2"
+                as="h2"
                 style={{
                     color: 'var(--children-font)',
                     fontSize:'var(--font-xs)',
@@ -60,7 +60,7 @@ export function AboutUs(){
             <InfoCard 
                 title="Que esperar de nosotros"
                 description={
-                    <ul style={{marginLeft: '20px'}}>
+                    <ul style={{marginLeft: '20px', listStyle: 'disc', marginBottom: '5px'}}>
                         <li>Ofrecer un alto estándar de calidad al cliente</li>
                         <li>Proporcionar productos de calidad en los diseños</li>
                         <li>Atender todos los puntos de vista del cliente</li>

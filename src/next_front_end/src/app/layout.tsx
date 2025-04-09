@@ -24,7 +24,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" data-theme="light">
+    <html lang="es" >
       <head>
         <link rel="icon" href="/Logo_Eden_Icon.png" />
         <meta name="color-scheme" content="light dark" />
