@@ -1,14 +1,15 @@
 'use client'
 
-import { AboutUs } from "@/_components/organisms/AboutUsPage"
-import { Location } from "@/_components/organisms/Contact/Location"
-import { ShortFormContact } from "@/_components/organisms/Contact/ShortFormContact"
-import { DataShow } from "@/_components/organisms/DataDisplay/DataDisplay"
-import { FlowerPots } from "@/_components/organisms/FlowerPots/FlowerPots"
-import { Footer } from "@/_components/organisms/footer/Footer"
-import { FrutalTrees } from "@/_components/organisms/FrutalTrees/FrutalTrees"
-import { Galleryview } from "@/_components/organisms/GalleryView"
-import { HomePage } from "@/_components/organisms/homePage"
+import { AboutUs } from "@/components/landing/organisms/AboutUsPage"
+import { Location } from "@/components/landing/organisms/Contact/Location"
+import { ShortFormContact } from "@/components/landing/organisms/Contact/ShortFormContact"
+import { DataShow } from "@/components/landing/organisms/DataDisplay/DataDisplay"
+import { FlowerPots } from "@/components/landing/organisms/FlowerPots/FlowerPots"
+import { Footer } from "@/components/landing/organisms/footer/Footer"
+import { FrutalTrees } from "@/components/landing/organisms/FrutalTrees/FrutalTrees"
+import { Galleryview } from "@/components/landing/organisms/GalleryView"
+import { HomePage } from "@/components/landing/organisms/homePage"
+import Navbar from "@/components/landing/organisms/Navbar/Navbar"
 import { Divider } from "@raul_yael/cleangui"
 
 
@@ -27,7 +28,7 @@ export default function Home() {
       <Location /> 
       </main>
       <Footer />
-
+      <Navbar />
     </>
   );
 }

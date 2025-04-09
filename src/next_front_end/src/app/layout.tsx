@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Montserrat} from "next/font/google";
 import "./globals.css";
 import ThemeScript from "./ThemeScript"
-import Navbar from "@/_components/organisms/Navbar/Navbar"
 
 const montSains = Montserrat({
   variable: "--font-mont-sains",
@@ -32,7 +31,6 @@ export default function RootLayout({
       <body className={montSains.className}>
         <ThemeScript />
         {children}
-        <Navbar />
       </body>
     </html>
   );
