@@ -24,7 +24,7 @@ export function Location(){
                     fontSize: "var(--font-xs)",
                     color: "var(--green-200)",                  
                 }}
-                >``
+                >
                     <span>
                         Mercado de plantas & flores<br/>
                         “Cuemanco”<br/>

@@ -1,6 +1,6 @@
 
 
-import { Box, Typography } from "@raul_yael/cleangui";
+import { Box } from "@raul_yael/cleangui";
 import { CommercialServices } from "../../atoms/CommercialServices";
 import { ResidentialeServices } from "../../atoms/ResidentialServices";
 import { BtnSocial } from "../../atoms/BtnSocial";
@@ -30,8 +30,10 @@ export function Footer(){
                 </div>
                 
                 <BtnSocial />
-                <Typography 
+                <div 
                     style={{
+                        display: "flex",
+                        justifyContent: "start",
                         fontSize: "var(--font-xxs)",
                         alignSelf: "center"
                     }}
@@ -42,7 +44,7 @@ export function Footer(){
                             © 2025. Todos los Derechos Reservados
                         </span>
                     </p>
-                </Typography>
+                </div>
             </section>
         </Box>
     )

@@ -24,10 +24,10 @@ export default function Home() {
       <FlowerPots />
       <FrutalTrees />
       <ShortFormContact />
-      {/*<Divider variant="middle"/>
-      <Location /> */}
+      <Divider variant="middle"/>
+      <Location /> 
       </main>
-      {/* <Footer /> */}
+      <Footer />
       <Navbar />
     </>
   );

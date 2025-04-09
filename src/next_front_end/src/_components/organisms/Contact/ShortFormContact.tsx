@@ -1,7 +1,7 @@
 "use client"
 
 import { Typography } from "@raul_yael/cleangui";
-import Input from "../../moleculs/Input";
+import {Input} from "@raul_yael/cleangui";
 import {  BtnOutlined } from "../../moleculs/Button";
 import "./ShortFormContact.css"
 
@@ -11,7 +11,7 @@ export function ShortFormContact(){
             id="contact_form"
         >
             <Typography                 
-                variant="h2"
+                as="h2"
                 style={{
                     fontSize:"var(--font-lg)",
                     color:"var(--father-font)",
