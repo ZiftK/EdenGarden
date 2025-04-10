@@ -1,5 +1,5 @@
 import { Box, Typography } from "@raul_yael/cleangui";
-import { BtnHref } from "../../moleculs/Button";
+import { BtnHref } from "../../../shared/atoms/Button";
 
 export function DescriptionPots(){
     return(

@@ -1,11 +1,11 @@
 "use client"
 
 import { Box, Typography } from "@raul_yael/cleangui";
-import { BtnHref } from "../moleculs/Button";
+import { BtnHref } from "../../shared/atoms/Button";
 
 export function CommercialServices(){
     return(
-        <Box type="div"
+        <Box as="div"
             id="comercial_services_box"
             style={{
                 border: 0,

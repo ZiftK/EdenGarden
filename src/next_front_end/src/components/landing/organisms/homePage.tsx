@@ -1,7 +1,7 @@
 "use client"
 import { Box, Typography } from "@raul_yael/cleangui";
 import bgPrimary from '@/public/assets/river.webp'
-import { BtnFilled, BtnOutlined } from "../moleculs/Button";
+import { BtnFilled, BtnOutlined } from "../../shared/atoms/Button";
 
 
 /**
