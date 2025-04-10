@@ -1,7 +1,7 @@
 import { Box, Typography } from "@raul_yael/cleangui";
-import imgRiver from "../../../public/assets/river.webp"
-import imgHouse_2 from "../../../public/assets/house_2.webp"
-import pots from "../../../public/assets/garden_pots.webp"
+import imgRiver from "@/public/assets/river.webp"
+import imgHouse_2 from "@/public/assets/house_2.webp"
+import pots from "@/public/assets/garden_pots.webp"
 import { CSSProperties } from "react";
 
 

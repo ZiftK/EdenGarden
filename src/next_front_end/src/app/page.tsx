@@ -1,15 +1,15 @@
 'use client'
 
-import { AboutUs } from "@/components/landing/organisms/AboutUsPage"
-import { Location } from "@/components/landing/organisms/Contact/Location"
-import { ShortFormContact } from "@/components/landing/organisms/Contact/ShortFormContact"
-import { DataShow } from "@/components/landing/organisms/DataDisplay/DataDisplay"
-import { FlowerPots } from "@/components/landing/organisms/FlowerPots/FlowerPots"
-import { Footer } from "@/components/landing/organisms/footer/Footer"
-import { FrutalTrees } from "@/components/landing/organisms/FrutalTrees/FrutalTrees"
-import { Galleryview } from "@/components/landing/organisms/GalleryView"
-import { HomePage } from "@/components/landing/organisms/homePage"
-import Navbar from "@/components/landing/organisms/Navbar/Navbar"
+import { AboutUs } from "@src/components/landing/organisms/AboutUsPage"
+import { Location } from "@src/components/landing/organisms/Contact/Location"
+import { ShortFormContact } from "@src/components/landing/organisms/Contact/ShortFormContact"
+import { DataShow } from "@src/components/landing/organisms/DataDisplay/DataDisplay"
+import { FlowerPots } from "@src/components/landing/organisms/FlowerPots/FlowerPots"
+import { Footer } from "@src/components/landing/organisms/footer/Footer"
+import { FrutalTrees } from "@src/components/landing/organisms/FrutalTrees/FrutalTrees"
+import { Galleryview } from "@src/components/landing/organisms/GalleryView"
+import { HomePage } from "@src/components/landing/organisms/homePage"
+import Navbar from "@src/components/landing/organisms/Navbar/Navbar"
 import { Divider } from "@raul_yael/cleangui"
 
 

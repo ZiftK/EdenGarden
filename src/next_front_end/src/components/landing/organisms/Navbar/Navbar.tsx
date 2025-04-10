@@ -1,8 +1,8 @@
 "use client"
 
 import Image from 'next/image'
-import logo from '../../../../public/assets/icons/Logo_Eden.png'
-import icon from '../../../../public/assets/icons/menu.svg'
+import logo from '@/public/assets/icons/Logo_Eden.png'
+import icon from '@/public/assets/icons/menu.svg'
 import { Box } from '@raul_yael/cleangui'
 import { SidebarMenu } from '../../atoms/Sidebar'
 import { BtnFilled } from '../../moleculs/Button'
