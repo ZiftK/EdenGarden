@@ -2,7 +2,7 @@
 
 import { Typography } from "@raul_yael/cleangui";
 import {Input} from "@raul_yael/cleangui";
-import {  BtnOutlined } from "../../moleculs/Button";
+import {  BtnOutlined } from "../../../shared/atoms/Button";
 import "./ShortFormContact.css"
 
 export function ShortFormContact(){

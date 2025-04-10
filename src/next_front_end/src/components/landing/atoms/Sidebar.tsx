@@ -1,5 +1,5 @@
 import { CSSProperties } from "react";
-import { BtnHref } from "../moleculs/Button";
+import { BtnHref } from "../../shared/atoms/Button";
 
 export function SidebarMenu({isOpen, close}: {isOpen: boolean, close: () => void}){
 
