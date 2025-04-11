@@ -5,7 +5,8 @@ from backend.edensg_server.domain.entities.project_calendar import Date,\
     DayTemplate,\
     ScheduleData,\
     Time,\
-    DateSchedule
+    DateSchedule,\
+    ProjectCalendar
 
 from datetime import date, timedelta
 
@@ -504,15 +505,15 @@ substract_not_working_dates_params = [
 
 
 """
-    Input signature
-    ---------------
-    working_days: list[Date]
-    day_template: list[DayTemplate]
-    date_templates: list[DateTemplate]
-    default_template: ScheduleData
+Input signature
+---------------
+working_days: list[Date]
+day_template: list[DayTemplate]
+date_templates: list[DateTemplate]
+default_template: ScheduleData
 
-    returns -> 
-    list[DateSchedule]
+returns -> 
+list[DateSchedule]
 
 """
 apply_schedule_templates_params = [
@@ -632,5 +633,43 @@ apply_schedule_templates_params = [
                 )
             ),
         ]
+    )
+]
+
+
+"""
+Input signature
+---------------
+
+project_calendar: ProjectCalendar
+
+returns -> list[DateSchedule]
+"""
+get_working_days_on_sprint_params = [
+    (#  case
+        ProjectCalendar(
+            initial_date=Date(day=1, month=EnumMonths(12), year=2024),
+            final_date=Date(day=1, month=EnumMonths(12), year=2024),
+            schedule_templates=ScheduleTemplates(
+                default=ScheduleData(
+                    is_working_day=True,
+                    initial_time=Time(hours=8, minutes=0, seconds=0),
+                    final_time=Time(hours=16, minutes=0, seconds=0),
+                    location=None
+                ),
+                by_date=None,
+                by_day=[
+                    DayTemplate(
+                        day=EnumDays(5),
+                        schedule=ScheduleData(
+                            is_working_day=False,
+                            initial_time=None,
+                            final_time=None,
+                            location=None
+                        ),
+                    )
+                ]
+            )
+        )
     )
 ]
