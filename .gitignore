@@ -8,3 +8,5 @@ src/backend/EdensGarden_Backend.egg-info
 .idea
 .env
 *.ini
+edensg/
+py-server/app_venv
