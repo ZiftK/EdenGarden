@@ -1,0 +1,46 @@
+#FlowerPots_Box{
+    width: clamp(320px, 100%, 800px);
+    background: var(--background) ;
+    display: grid;
+    grid-template-columns: 1fr;
+    box-shadow: none;
+    margin: 0;
+    padding: 0 ;
+    border: none;
+    justify-self: center;
+}
+
+@media screen and (min-width: 700px) {
+    #FlowerPots_Box {
+        grid-template-columns: 1fr 1fr; 
+        gap: 10px;
+    }
+}
+
+@media screen and (min-width: 900px) {
+    #FlowerPots_Box {
+        grid-template-columns: 300px 2fr; 
+        gap: 20px;
+    }
+}
+
+#Btn_container{
+    border: none;
+    box-shadow: none;
+    background: var(--green-200);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-self: end;
+    justify-items:self-end;               
+    gap: 20px;
+}
+
+@media screen and (min-width: 900px) {
+    #Btn_container {
+        align-self: self-start;
+        flex-direction: column-reverse;
+        padding-bottom: 10px;
+        gap: 30px;
+    }
+}

@@ -1,3 +1,14 @@
 
 edensg/
 py-server/app_venv
+# carpetas
+venv
+src/backend/EdensGarden_Backend.egg-info
+
+# cache
+*.pyc
+.idea
+.env
+*.ini
+edensg/
+py-server/app_venv
