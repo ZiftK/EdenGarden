@@ -195,6 +195,77 @@ get_working_days_params = [
             {"day": 2, "month": EnumMonths(1), "year": 2024},
             {"day": 3, "month": EnumMonths(1), "year": 2024}
         ]
+    ),
+    (
+        #* CASO 6: PERIODO QUE CRUZA DE UN AÑO A OTRO CON DÍAS NO LABORABLES
+        {
+            "initial_date": {"day": 29, "month": EnumMonths(12), "year": 2023},
+            "final_date": {"day": 3, "month": EnumMonths(1), "year": 2024},
+            #? TEMPLATES
+            "schedule_templates": {
+                "by_date": [
+                    #? SIN LABORAR LOS DÍAS 30 Y 1
+                    {
+                        "date": {
+                            "day": 30,
+                            "month": EnumMonths(12),
+                            "year": 2023
+                        },
+                        "schedule": {
+                            "is_working_day": False,
+                            "initial_time": None,
+                            "final_time": None,
+                            "location": None
+                        }
+                    },
+                    {
+                        "date": {
+                            "day": 1,
+                            "month": EnumMonths(1),
+                            "year": 2024
+                        },
+                        "schedule": {
+                            "is_working_day": False,
+                            "initial_time": None,
+                            "final_time": None,
+                            "location": None
+                        }
+                    },
+                ],
+                
+                "by_day": [
+                    #? SIN LABORAR DOMINGOS NI SÁBADOS
+                    {
+                        "day": EnumDays(5),
+                        "schedule": {
+                            "is_working_day": False,
+                            "initial_time": None,
+                            "final_time": None,
+                            "location": None
+                        }
+                    },
+                    {
+                        "day": EnumDays(6),
+                        "schedule": {
+                            "is_working_day": False,
+                            "initial_time": None,
+                            "final_time": None,
+                            "location": None
+                        }
+                    }
+                ]
+            },
+            "current_sprint": {
+                "initial_date": {"day": 29, "month": EnumMonths(12), "year": 2023},
+                "final_date": {"day": 3, "month": EnumMonths(1), "year": 2024},
+            }
+        },
+        [
+            {"day": 29, "month": EnumMonths(12), "year": 2023},
+            {"day": 31, "month": EnumMonths(12), "year": 2023},
+            {"day": 2, "month": EnumMonths(1), "year": 2024},
+            {"day": 3, "month": EnumMonths(1), "year": 2024}
+        ]
     )
 ]
 
