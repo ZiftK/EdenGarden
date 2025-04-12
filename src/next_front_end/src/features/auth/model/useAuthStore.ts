@@ -1,5 +1,4 @@
 import {create} from 'zustand';
-// import { persist } from 'zustand/middleware';
 import { fetcher } from '@/src/shared/api/httpClient';
 import { AuthState, User } from '@/src/shared/types'
 import { loginUser } from '../login/model'
@@ -9,8 +8,9 @@ export const useAuthStore = create<AuthState>((set) => ({
     user: null,
     loading: false,
     error: null,
+    setUser: (user: User) => set({ user }),
     validateSession: async () => {
-        set({ loading: true });
+        set({ loading: true, error: null });
         try {
             const user = await fetcher.get<User>('/auth/session');
             set({ user, loading: false });

@@ -4,6 +4,7 @@ import { useAuthStore } from "@/src/features/auth/model/useAuthStore"
 import { useHydrate } from "@/src/shared/lib/auth/zustand-hydration"
 
 import { User } from "@/src/shared/types"
+import { useEffect } from "react"
 
 
 export default function DashboardShell({
@@ -11,9 +12,14 @@ export default function DashboardShell({
 }: {
     dehydratedState: {user: User}
 }){
-    const {validateSession} = useAuthStore()
     useHydrate(useAuthStore, dehydratedState)
-    validateSession()
+
+    const {user,validateSession} = useAuthStore()
+
+    useEffect(() => {
+        if(!user) validateSession()
+    },[user, validateSession])
+
 
     return (
         <div className="flex flex-col gap-4">

@@ -1,5 +1,7 @@
+import { LoginForm } from "@/src/features/auth/login/ui"
+
 export default function Login(){
     return(
-        <h1>jajaaj</h1>
+        <LoginForm />
     )
 }
