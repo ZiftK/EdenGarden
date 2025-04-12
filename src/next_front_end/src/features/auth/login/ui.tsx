@@ -1,36 +1,55 @@
 'use client'
 
-import { useState } from "react"
-import { loginUser } from "./model"
+import { useEffect } from "react"
 import { useAuthStore } from "../model/useAuthStore"
+import { useRouter } from "next/navigation"
 
 export function LoginForm() {
-    const [expedient, setExpedient] = useState("")
-    const [password, setPassword] = useState("")
-    const {login, loading, error} = useAuthStore()
+    const {login, loading, error, user} = useAuthStore()
     const router = useRouter()
 
-    const handleSubmit = async(e: React.FormEvent) => {
-        e.preventDefault()
-        try{
-            await login(expedient, password)
+    useEffect(() => {
+        if(user){
             router.push("/dashboard")
-        } catch(err){
-            console.error("Error logging in:", err)
         }
+    },[user])
+
+    const handleLogin = async(e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+        const formData = new FormData(e.currentTarget)
+        const exp = formData.get("expedient") as string
+        const pass = formData.get("password") as string
+        await login(exp, pass)
     }
 
     return (
-        <form action="signup" className="max-w-screen " onSubmit={handleSubmit} >
-            <div>
-                <label htmlFor="expedient">Expediente</label>
-                <input onChange={(e) => setExpedient(e.target.value)} type="text" id="expedient" name="expedient" required />
-            </div>
-            <div>
-                <label htmlFor="password">Contraseña</label>
-                <input onChange={e => setPassword(e.target.value)} type="password" id="password" name="password" required />
-            </div>
-            <button type="submit">Acceder</button>
+        <form 
+            action="signup" 
+            className="max-w-screen " 
+            onSubmit={handleLogin} 
+            >
+                <div>
+                    <label htmlFor="expedient">Expediente</label>
+                    <input                         
+                        type="text"                 
+                        id="expedient" 
+                        name="expedient" 
+                        required
+                        />
+                </div>
+                <div>
+                    <label htmlFor="password">Contraseña</label>
+                    <input                         
+                        type="password"                 
+                        id="password" 
+                        name="password" 
+                        required
+                        />
+                </div>
+                <button type="submit" disabled={loading}>
+                    {loading ? "Cargando..." : "Acceder"}
+                </button>
+                {error && <p className="text-red-500">{error}</p>}
         </form>
     )
 }

@@ -2,6 +2,7 @@ import {create} from 'zustand';
 // import { persist } from 'zustand/middleware';
 import { fetcher } from '@/src/shared/api/httpClient';
 import { AuthState, User } from '@/src/shared/types'
+import { loginUser } from '../login/model'
 
 
 export const useAuthStore = create<AuthState>((set) => ({
@@ -20,7 +21,7 @@ export const useAuthStore = create<AuthState>((set) => ({
     login: async (expedient, password) => {
         set({ loading: true });
         try {
-            const user = await fetcher.post<User>('/auth/login', { expedient, password });
+            const user = await loginUser({ exp: expedient, password });
             set({ user, loading: false });
         } catch {
             set({ error: 'Error logging in', loading: false });
