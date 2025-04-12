@@ -20,3 +20,11 @@ export async function httpFunction<T>(
 
     return response.json()
 }
+
+export const fetcher = {
+    get: <T>(endpoint: string) => httpFunction<T>(endpoint, { method: 'GET' }),
+    post: <T>(endpoint:string, body?: unknown) => httpFunction<T>(endpoint,{method: 'POST', body: JSON.stringify(body)}),
+    put:<T>(endpoint: string, body: unknown) => httpFunction<T>(endpoint, { method: 'PUT', body: JSON.stringify(body) }),
+    delete: <T>(endpoint: string) => httpFunction<T>(endpoint, { method: 'DELETE' }),
+    patch: <T>(endpoint: string, body: unknown) => httpFunction<T>(endpoint, { method: 'PATCH', body: JSON.stringify(body) }),
+}
