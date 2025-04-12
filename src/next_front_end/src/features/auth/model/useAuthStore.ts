@@ -1,5 +1,5 @@
 import {create} from 'zustand';
-import { persist } from 'zustand/middleware';
+// import { persist } from 'zustand/middleware';
 import { fetcher } from '@/src/shared/api/httpClient';
 import { AuthState, User } from '@/src/shared/types'
 
