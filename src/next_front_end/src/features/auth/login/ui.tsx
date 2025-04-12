@@ -1,8 +1,8 @@
 'use client'
 
 import { useState } from "react"
-import { useRouter } from "next/navigation"
-import { useAuthStore } from "../model/authStore"
+import { loginUser } from "./model"
+import { useAuthStore } from "../model/useAuthStore"
 
 export function LoginForm() {
     const [expedient, setExpedient] = useState("")
