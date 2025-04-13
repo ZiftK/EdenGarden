@@ -2,6 +2,7 @@ export const tailwindConfig = {
   darkMode: 'class', 
   content: [
     './src/**/*.{js,ts,jsx,tsx}',
+    './app/**/*.{js,ts,jsx,tsx}',
     './components/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
@@ -15,7 +16,7 @@ export const tailwindConfig = {
         xl: 'var(--font-xl)',
         xxl: 'var(--font-xxl)',
         },
-        colors: {
+      colors: {
         background: 'var(--background)',
         'background-transparent': 'var(--background-transparent)',
 
@@ -106,6 +107,9 @@ export const tailwindConfig = {
           'dark-transparent-500': 'var(--green-dark-transparent-500)',
           'dark-500': 'var(--green-dark-500)',
           dark: 'var(--green-dark)',
+          bg: 'var(--green-bg)',
+          'bg-dark': 'var(--green-bg-1)',
+          'bg-transparent': 'var(--green-bg-0)',
         },
 
         orange: {

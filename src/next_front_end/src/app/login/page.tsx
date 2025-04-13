@@ -1,7 +1,8 @@
-import { LoginForm } from "@/src/features/auth/login/ui"
+import LoginERP from "@/src/components/ERP/organisms/LoginERP"
+
 
 export default function Login(){
     return(
-        <LoginForm />
+        <LoginERP />
     )
 }

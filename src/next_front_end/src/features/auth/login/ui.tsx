@@ -26,14 +26,15 @@ export function LoginForm() {
 
     return (
         <form 
-            action="signup" 
-            className="max-w-screen flex flex-col items-center justify-center h-screen gap-3.5" 
+            action="login" 
+            className="w-full flex flex-col items-center justify-center gap-3.5" 
             >
                 <Input
                     variant="filled"
                     label="Expediente"
                     className="mb-4 bg-transparent"
                     bg="#00000000"
+                    $width="100%"
                     $colorNoFocus="#00000000"
                     color="#8e988a98"
                     $lightnessFactor={100}
@@ -44,6 +45,7 @@ export function LoginForm() {
                     bg="#00000000"
                     $colorNoFocus="#00000000"
                     color="#8e988a98"
+                    $width="100%"
                     $lightnessFactor={100}
                     label="Contraseña"
                     className="mb-4"
