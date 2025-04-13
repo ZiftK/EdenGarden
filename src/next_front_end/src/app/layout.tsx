@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Montserrat} from "next/font/google";
 import "./globals.css";
 import ThemeScript from "./ThemeScript"
+import img from "@/public/assets/icons/Logo_Eden_Icon.png"
 
 const montSains = Montserrat({
   variable: "--font-mont-sains",
@@ -25,7 +26,7 @@ export default function RootLayout({
   return (
     <html lang="es" suppressHydrationWarning={true} >
       <head>
-        <link rel="icon" href="/Logo_Eden_Icon.png" />
+        <link rel="icon" href={img.src} />
         <meta name="color-scheme" content="light dark" />
       </head>
       <body className={montSains.className}>
