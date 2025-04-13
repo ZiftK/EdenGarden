@@ -1,4 +1,4 @@
-import { BtnHref } from "../../shared/atoms/Button";
+import { BtnHref } from "../../../shared/components/atoms/Button";
 
 const faceIcon = (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"

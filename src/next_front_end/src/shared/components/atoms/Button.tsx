@@ -14,9 +14,20 @@ type ThemeColors = keyof typeof  theme.colors;
 
 
 
-export function BtnOutlined({ text, style, $bg }: { text: string, style?: CSSProperties, $bg?: string }){
+export function BtnOutlined({ 
+        text, 
+        style, 
+        $bg,
+        onClick
+    } : { 
+        text: string, 
+        style?: CSSProperties, 
+        $bg?: string,
+        onClick?: (e: React.MouseEvent<HTMLButtonElement> ) => void
+    }){
     return  (
         <Button variant="outlined"
+                onClick={onClick}
                 size="medium"
                 style={{
                     margin:0,

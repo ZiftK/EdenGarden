@@ -1,9 +1,10 @@
 'use client'
 
-import { useEffect } from "react"
+import React, { useEffect } from "react"
 import { useAuthStore } from "../model/useAuthStore"
 import { useRouter } from "next/navigation"
-import Input from "@/src/components/ERP/atoms/input"
+import {  Input } from "@raul_yael/cleangui"
+import { BtnOutlined } from "@/src/shared/components/atoms/Button"
 
 export function LoginForm() {
     const {login, loading, error, user} = useAuthStore()
@@ -15,9 +16,9 @@ export function LoginForm() {
         }
     },[user])
 
-    const handleLogin = async(e: React.FormEvent<HTMLFormElement>) => {
+    const handleLogin = async(e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
-        const formData = new FormData(e.currentTarget)
+        const formData = new FormData(e.currentTarget.closest("form") as HTMLFormElement)
         const exp = formData.get("id") as string
         const pass = formData.get("password") as string
         await login(exp, pass)
@@ -26,29 +27,33 @@ export function LoginForm() {
     return (
         <form 
             action="signup" 
-            className="max-w-screen " 
-            onSubmit={handleLogin} 
+            className="max-w-screen flex flex-col items-center justify-center h-screen gap-3.5" 
             >
                 <Input
+                    variant="filled"
                     label="Expediente"
-                    name="id"
-                    type="text"
-                    required
-                    placeholder="Ej: 12345678"
-                    className="mb-4"
+                    className="mb-4 bg-transparent"
+                    bg="#00000000"
+                    $colorNoFocus="#00000000"
+                    color="#8e988a98"
+                    $lightnessFactor={100}
+                    
                 />
                 <Input
+                    variant="filled"
+                    bg="#00000000"
+                    $colorNoFocus="#00000000"
+                    color="#8e988a98"
+                    $lightnessFactor={100}
                     label="Contraseña"
-                    name="password"
-                    type="password"
-                    required
-                    placeholder="Ej: 12345678"
                     className="mb-4"
                 />
-                <button type="submit" disabled={loading}>
-                    {loading ? "Cargando..." : "Acceder"}
-                </button>
-                {error && <p className="text-red-500">{error}</p>}
+
+                <BtnOutlined text={loading ? "Cargando..." : "Iniciar sesión"} 
+                    onClick={handleLogin}
+                    style={{fontSize: 'var(--font-xs)', outline: '.7px solid var(--"var(--green-dark-transparent-100))'}}> 
+                </BtnOutlined>
+                {error && <p className="text-red-500 w-auto text-xs">{error}</p>}
         </form>
     )
 }
