@@ -9,9 +9,7 @@ export default async function DashboardLayout({
 }>){
     const user = await getServerUser()
 
-    if(!user){
-        redirect("auth/login")
-    }
+    if(!user) redirect("auth/login")
 
     return(
         <html lang="es" suppressHydrationWarning >
