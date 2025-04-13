@@ -3,6 +3,7 @@
 import { useEffect } from "react"
 import { useAuthStore } from "../model/useAuthStore"
 import { useRouter } from "next/navigation"
+import Input from "@/src/components/ERP/atoms/input"
 
 export function LoginForm() {
     const {login, loading, error, user} = useAuthStore()
@@ -28,24 +29,22 @@ export function LoginForm() {
             className="max-w-screen " 
             onSubmit={handleLogin} 
             >
-                <div>
-                    <label htmlFor="expedient">Expediente</label>
-                    <input                         
-                        type="text"                 
-                        id="expedient" 
-                        name="expedient" 
-                        required
-                        />
-                </div>
-                <div>
-                    <label htmlFor="password">Contraseña</label>
-                    <input                         
-                        type="password"                 
-                        id="password" 
-                        name="password" 
-                        required
-                        />
-                </div>
+                <Input
+                    label="Expediente"
+                    name="expedient"
+                    type="text"
+                    required
+                    placeholder="Ej: 12345678"
+                    className="mb-4"
+                />
+                <Input
+                    label="Contraseña"
+                    name="password"
+                    type="password"
+                    required
+                    placeholder="Ej: 12345678"
+                    className="mb-4"
+                />
                 <button type="submit" disabled={loading}>
                     {loading ? "Cargando..." : "Acceder"}
                 </button>
