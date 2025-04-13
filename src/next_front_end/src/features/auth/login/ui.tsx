@@ -18,7 +18,7 @@ export function LoginForm() {
     const handleLogin = async(e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         const formData = new FormData(e.currentTarget)
-        const exp = formData.get("expedient") as string
+        const exp = formData.get("id") as string
         const pass = formData.get("password") as string
         await login(exp, pass)
     }
@@ -31,7 +31,7 @@ export function LoginForm() {
             >
                 <Input
                     label="Expediente"
-                    name="expedient"
+                    name="id"
                     type="text"
                     required
                     placeholder="Ej: 12345678"

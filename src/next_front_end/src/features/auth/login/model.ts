@@ -8,7 +8,7 @@ interface LoginResponse{
 
 export async function loginUser(data: {exp: string, password: string}) {
     const {token} = await fetcher.post<LoginResponse>(endpoints.login,{
-        expedient: data.exp,
+        id: data.exp,
         password: data.password
     })
 

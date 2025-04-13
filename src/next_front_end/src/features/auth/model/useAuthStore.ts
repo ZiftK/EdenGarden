@@ -1,6 +1,6 @@
 import {create} from 'zustand';
 import { fetcher } from '@/src/shared/api/httpClient';
-import { AuthState, User } from '@/src/shared/types'
+import { AuthState, Employee } from '@/src/shared/types'
 import { loginUser } from '../login/model'
 
 
@@ -8,20 +8,20 @@ export const useAuthStore = create<AuthState>((set) => ({
     user: null,
     loading: false,
     error: null,
-    setUser: (user: User) => set({ user }),
+    setUser: (user: Employee) => set({ user }),
     validateSession: async () => {
         set({ loading: true, error: null });
         try {
-            const user = await fetcher.get<User>('/auth/session');
+            const user = await fetcher.get<Employee>('/auth/session');
             set({ user, loading: false });
         } catch {
             set({ error: 'Error validating session', loading: false });
         }
     },
-    login: async (expedient, password) => {
+    login: async (id, password) => {
         set({ loading: true });
         try {
-            const user = await loginUser({ exp: expedient, password });
+            const user = await loginUser({ exp: id, password });
             set({ user, loading: false });
         } catch {
             set({ error: 'Error logging in', loading: false });
