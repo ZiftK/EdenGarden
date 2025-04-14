@@ -4,7 +4,7 @@ import bgPrimary from "@/public/assets/river.webp"
 export default function LoginERP() {
     return(
         <section
-            className="flex flex-col items-start h-svh p-20 bg-center bg-cover bg-no-repeat"
+            className="flex flex-col items-start h-svh bg-center bg-cover bg-no-repeat w-lvw justify-between"
             style={{
                 backgroundImage: `
                 linear-gradient(to left, var(--green-bg-0), var(--green-bg), var(--green-bg-1)),
@@ -12,15 +12,15 @@ export default function LoginERP() {
                 `
             }}
         >
-            <h1>Accede con tus credenciales</h1>
+            <h1 className="text-3xl font-bold m-7">Accede con tus credenciales</h1>
             <div
-                className="m-28 w-10/12 self-center "
                 style={{
-                    backgroundColor: "var(--green-bg)"
+                    backgroundColor: "var(--green-bg)",
                 }}
+                className="w-full h-[350px] p-10 flex flex-col gap-2 "
             >
                 <h2
-                    className="text-3xl "
+                    className="text-[1.25rem] mb-6"
                     style={{
                         color: "var(--green-dark-500)",
                         

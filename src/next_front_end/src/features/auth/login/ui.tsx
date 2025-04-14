@@ -27,8 +27,10 @@ export function LoginForm() {
     return (
         <form 
             action="login" 
-            className="w-full flex flex-col items-center justify-center gap-3.5" 
+            className="w-full flex flex-col  h-full justify-between" 
             >
+                <div>
+
                 <Input
                     variant="filled"
                     label="Expediente"
@@ -36,26 +38,28 @@ export function LoginForm() {
                     bg="#00000000"
                     $width="100%"
                     $colorNoFocus="#00000000"
-                    color="#8e988a98"
-                    $lightnessFactor={100}
-                    
-                />
+                    color="#ccc"
+                    $lightnessFactor={50}
+                    />
                 <Input
                     variant="filled"
                     bg="#00000000"
                     $colorNoFocus="#00000000"
-                    color="#8e988a98"
+                    color="#ccc"
                     $width="100%"
                     $lightnessFactor={100}
                     label="Contraseña"
                     className="mb-4"
-                />
+                    />
+                {error && <p className="text-red-500 w-fit text-xs self-end">{error}</p>}
+                </div>
 
                 <BtnOutlined text={loading ? "Cargando..." : "Iniciar sesión"} 
                     onClick={handleLogin}
-                    style={{fontSize: 'var(--font-xs)', outline: '.7px solid var(--"var(--green-dark-transparent-100))'}}> 
+                    style={{fontSize: 'var(--font-xs)', outline: '.7px solid var(--"var(--green-dark-transparent-100))'}}
+                    className="self-end "
+                    > 
                 </BtnOutlined>
-                {error && <p className="text-red-500 w-auto text-xs">{error}</p>}
         </form>
     )
 }

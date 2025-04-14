@@ -18,12 +18,14 @@ export function BtnOutlined({
         text, 
         style, 
         $bg,
-        onClick
+        onClick,
+        className
     } : { 
         text: string, 
         style?: CSSProperties, 
         $bg?: string,
-        onClick?: (e: React.MouseEvent<HTMLButtonElement> ) => void
+        onClick?: (e: React.MouseEvent<HTMLButtonElement> ) => void,
+        className?: string
     }){
     return  (
         <Button variant="outlined"
@@ -38,6 +40,7 @@ export function BtnOutlined({
                     padding: '4px 12px',
                     ...style,
                 }}
+                className={className}
                 >
             {text}
         </Button>
