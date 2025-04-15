@@ -1,5 +1,7 @@
 'use client'
 
+import "./index.css"
+
 import { AboutUs } from "@src/components/landing/organisms/AboutUsPage"
 import { Location } from "@src/components/landing/organisms/Contact/Location"
 import { ShortFormContact } from "@src/components/landing/organisms/Contact/ShortFormContact"

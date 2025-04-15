@@ -236,12 +236,8 @@
         --color-no-focus: #0A1506;
   }
 
-*{
-  /* margin: 0;
-  padding: 0;*/
-  box-sizing: border-box; 
+
   /* outline: 1px auto #f00; */
-}
 
 body {
   min-width: 320px;
@@ -281,5 +277,13 @@ html, body{
     --font-lg: 1.35rem; /* 20px */
     --font-xl: 1.6rem; /* 24px */
     --font-xxl: 2.1rem; /* 32px */
+  }
+}
+
+@layer base{
+  *{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; 
   }
 }
