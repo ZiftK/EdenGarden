@@ -37,7 +37,8 @@ export function BtnOutlined({
                     fontSize: "12px",
                     backgroundColor: $bg||"var(--green-dark-transparent-100)",
                     backdropFilter: 'blur(10px)',
-                    padding: '4px 12px',
+                    padding: '5px 26px',
+                    border: '1px solid var(--green-light)',
                     ...style,
                 }}
                 className={className}

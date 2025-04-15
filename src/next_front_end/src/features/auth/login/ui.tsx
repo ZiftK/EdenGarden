@@ -27,7 +27,7 @@ export function LoginForm() {
     return (
         <form 
             action="login" 
-            className="w-full flex flex-col  h-full justify-between" 
+            className="w-60 flex flex-col  h-full justify-between self-end" 
             >
                 <div>
 
@@ -54,7 +54,7 @@ export function LoginForm() {
                 {error && <p className="text-red-500 w-fit text-xs self-end">{error}</p>}
                 </div>
 
-                <BtnOutlined text={loading ? "Cargando..." : "Iniciar sesión"} 
+                <BtnOutlined text={loading ? "Cargando..." : "Acceder"} 
                     onClick={handleLogin}
                     style={{fontSize: 'var(--font-xs)', outline: '.7px solid var(--"var(--green-dark-transparent-100))'}}
                     className="self-end "
