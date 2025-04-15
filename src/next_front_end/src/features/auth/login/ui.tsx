@@ -21,35 +21,38 @@ export function LoginForm() {
         const formData = new FormData(e.currentTarget.closest("form") as HTMLFormElement)
         const exp = formData.get("id") as string
         const pass = formData.get("password") as string
+        console.log(exp, pass)
         await login(exp, pass)
     }
 
     return (
         <form 
             action="login" 
-            className="w-60 flex flex-col  h-full justify-between self-end" 
+            className="w-60 flex flex-col h-full justify-between self-end" 
             >
                 <div>
 
                 <Input
-                    variant="filled"
+                    $variant="filled"
                     label="Expediente"
                     className="mb-4 bg-transparent"
-                    bg="#00000000"
+                    $bg="#00000000"
                     $width="100%"
                     $colorNoFocus="#00000000"
                     color="#ccc"
                     $lightnessFactor={50}
+                    name="id"
                     />
                 <Input
-                    variant="filled"
-                    bg="#00000000"
+                    $variant="filled"
+                    $bg="#00000000"
                     $colorNoFocus="#00000000"
                     color="#ccc"
                     $width="100%"
                     $lightnessFactor={100}
                     label="Contraseña"
                     className="mb-4"
+                    name="password"
                     />
                 {error && <p className="text-red-500 w-fit text-xs self-end">{error}</p>}
                 </div>
