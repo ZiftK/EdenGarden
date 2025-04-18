@@ -30,6 +30,7 @@ import { BtnFilled, BtnOutlined } from "../../../shared/components/atoms/Button"
 export function HomePage(){
     return(
     <Box as="section"
+        className="bo"
         style={{
             boxShadow: 'none',
             background: `

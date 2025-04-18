@@ -11,7 +11,7 @@ import { Footer } from "@src/components/landing/organisms/footer/Footer"
 import { FrutalTrees } from "@src/components/landing/organisms/FrutalTrees/FrutalTrees"
 import { Galleryview } from "@src/components/landing/organisms/GalleryView"
 import { HomePage } from "@src/components/landing/organisms/homePage"
-import Navbar from "@src/components/landing/organisms/Navbar/Navbar"
+import Navbar from "@/src/components/landing/organisms/Navbar/Navbar"
 import { Divider } from "@raul_yael/cleangui"
 
 

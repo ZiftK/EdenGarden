@@ -4,7 +4,7 @@ import DashboardShell from "@/src/features/auth/dashboard/DashboardShell";
 
 export default async function DashboardPage() {
     const user =  await getServerUser()
-    if (!user) return null
+    // if (!user) return null
     
     return <DashboardShell  dehydratedState={ {user}} />
 }

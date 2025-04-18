@@ -8,9 +8,9 @@ export default function DashboardShell({
 }){
 
     return (
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 pt-20">
             <h1>Dashboard</h1>
-            <p>Bienvenido {dehydratedState.user.id}</p>
+            <p>Bienvenido </p>
         </div>
     )
-}
+}   
