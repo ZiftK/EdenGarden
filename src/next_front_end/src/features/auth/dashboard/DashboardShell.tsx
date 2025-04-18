@@ -1,3 +1,4 @@
+import ResponsiveMenu from "@/src/components/ERP/organisms/ResponsiveMenu"
 import { Employee } from "@/src/shared/types"
 
 
@@ -8,7 +9,8 @@ export default function DashboardShell({
 }){
 
     return (
-        <div className="flex flex-col gap-4 pt-20">
+        <div className="flex flex-col gap-4">
+            <ResponsiveMenu />
             <h1>Dashboard</h1>
             <p>Bienvenido </p>
         </div>

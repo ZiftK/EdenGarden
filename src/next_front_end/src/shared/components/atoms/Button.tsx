@@ -73,14 +73,15 @@ export function BtnFilled({ text, col, onClick, $bg, children }:
     )
 }
 
-export function BtnHref({text, link, weight, sxText, style, icon}: 
+export function BtnHref({text, link, weight, sxText, style, icon, className}: 
                         {
                             text: string, 
                             link: string, 
                             weight?: number, 
                             sxText?: string,  
                             style?: CSSProperties    
-                            icon?: JSX.Element                      
+                            icon?: JSX.Element   ,
+                            className?: string                   
                         }){
     return (
         <a href={link} style={{ textDecoration: 'none', width: "auto"}}>
@@ -93,6 +94,7 @@ export function BtnHref({text, link, weight, sxText, style, icon}:
                     padding:0,
                     ...style,
                 }}
+                className={className}
         >
             <Typography         
                 as="p"
