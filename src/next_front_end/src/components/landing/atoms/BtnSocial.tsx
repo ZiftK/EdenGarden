@@ -52,34 +52,28 @@ export function BtnSocial(){
             <BtnHref 
                 link="#"
                 text="Facebook"
-                icon={faceIcon}
-                style={{
-                    backgroundColor: "#fff3",
-                    borderRadius: "50%",
-                    padding: "5px"
-                }}
+                sxText="var(--font-xxs)"
+                weight={500}
+                $Icon={faceIcon}
+                className=" flex flex-row-reverse items-center gap-1.5"
             />
 
             <BtnHref 
                 link="#"
-                text="Facebook"
-                icon={instIcon}
-                style={{
-                    backgroundColor: "#fff3",
-                    borderRadius: "50%",
-                    padding: "5px"
-                }}
+                sxText="var(--font-xxs)"
+                weight={500}
+                text="Instagram"
+                $Icon={instIcon}
+                className=" flex flex-row-reverse items-center gap-1.5" 
             />
 
             <BtnHref 
                 link="#"
-                text="Facebook"
-                icon={pintIcon}
-                style={{
-                    backgroundColor: "#fff3",
-                    borderRadius: "50%",
-                    padding: "5px"
-                }}
+                text="Pinterest"
+                sxText="var(--font-xxs)"
+                weight={500}
+                $Icon={pintIcon}
+                className=" flex flex-row-reverse items-center gap-1.5 "
             />
         </div>
     )

@@ -86,30 +86,37 @@ export function BtnHref({text, link, weight, sxText, style, $Icon, className}:
                         }){
                         
     return (
-        <a href={link} style={{ textDecoration: 'none', width: "auto"}}>
-            {$Icon && $Icon}
-            <Button variant="text"                    
-                    style={{
-                        color: "#EAF2E7", 
-                        backgroundColor: "transparent",
-                        margin:0,
-                        padding:0,
-                        ...style,
-                    }}
-                    className={className}
-                    >
-                <Typography         
-                    as="p"
-                    style={{
-                        fontFamily:"Montserrat",
-                        fontWeight: weight || 100,
-                        fontSize: sxText || "1rem",
-                        ...style
-                    }}
-                    >
-                    {typeof text === "string" ? text : ""}
-                </Typography>
-            </Button>
+        <a href={link} 
+            className={className}
+            style={{ textDecoration: 'none', width: "auto"}}>
+
+                {$Icon &&
+                <div className="bg-gray-300/20 rounded-full w-[24px] h-[24px] flex items-center justify-center"> 
+                    {$Icon}
+                </div>
+                }
+
+                <Button variant="text"                    
+                        style={{
+                            color: "#EAF2E7", 
+                            backgroundColor: "transparent",
+                            margin:0,
+                            padding:0,
+                            ...style,
+                        }}
+                        >
+                    <Typography         
+                        as="p"
+                        style={{
+                            fontFamily:"Montserrat",
+                            fontWeight: weight || 100,
+                            fontSize: sxText || "1rem",
+                            ...style
+                        }}
+                        >
+                        {typeof text === "string" ? text : ""}
+                    </Typography>
+                </Button>
         </a>
     )
 }
