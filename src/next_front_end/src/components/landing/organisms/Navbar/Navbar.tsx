@@ -7,12 +7,16 @@ import { Box } from '@raul_yael/cleangui'
 import { SidebarMenu } from '../../../shared/atoms/Sidebar'
 import { BtnFilled } from '../../../../shared/components/atoms/Button'
 import { BtnMoon } from '../../atoms/BtnMoon'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './Navbar.css'
 
 export default function Navbar(){
     const [isOpen, setIsOpen] = useState(false)
     const toogleOpen = () => setIsOpen(!isOpen)
+
+    const [hasMounted, setHasMounted] = useState(false)
+
+    useEffect(() => {setHasMounted(true)},[])
 
     return(
         <Box 
@@ -20,7 +24,7 @@ export default function Navbar(){
             className='navbar'
             id='navbar_box'
         >
-            <div id='navbar_container'>
+            <div className='flex justify-between w-full max-w-[800px] min-w-[320px] justify-self-center'>   
                 <Image 
                     src={logo} 
                     alt="Eden Garden Logo" 
@@ -54,10 +58,16 @@ export default function Navbar(){
                             style={{ color: "var(--white-peristance-color)" }} 
                         />
                     </BtnFilled>
-                    <SidebarMenu 
+                    {hasMounted && <SidebarMenu 
+                        menuItems={[
+                            { label: 'Inicio', link: '/', icon:icon},
+                            { label: 'Sobre nosotros', link: '/about', icon:icon},
+                            { label: 'Servicios', link: '/services', icon:icon},
+                            { label: 'Contacto', link: '/contact', icon:icon},
+                        ]}
                         isOpen={isOpen}
                         close={() => setIsOpen(false)}
-                    />
+                    />}
 
                 </Box>
             </div>

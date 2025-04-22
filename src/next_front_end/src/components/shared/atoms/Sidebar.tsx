@@ -17,7 +17,7 @@ export function SidebarMenu({ menuItems, isOpen, close }: menuProps) {
               anchor="right"  
               $isOpen={isOpen} 
               onClose={close}
-              $bg="#3D5C1A"
+              $bg="#3D5C1A"            
             >
                 {
                   menuItems.map((item,index) => {
@@ -28,9 +28,7 @@ export function SidebarMenu({ menuItems, isOpen, close }: menuProps) {
                             className="flex gap-2 items-center p-2 text-white"
                             link={item.link}
                             text={item.label}
-                            >
-                    
-                        </BtnHref>
+                            />
                       </div>
                     )
                   })

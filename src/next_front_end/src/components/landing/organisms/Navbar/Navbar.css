@@ -24,10 +24,3 @@
     backdrop-filter: blur(5px);
     z-index: -1;
 }
-
-#navbar_container{
-    display: flex;
-    justify-content: space-between;
-    width: clamp(320px, 100%, 800px);
-    justify-self: center;
-}

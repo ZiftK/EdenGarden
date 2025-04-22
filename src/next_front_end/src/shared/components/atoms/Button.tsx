@@ -1,6 +1,7 @@
 import { Button, Typography } from "@raul_yael/cleangui";
 import { CSSProperties, JSX, ReactElement } from "react";
 
+
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const theme = {
     colors:{
@@ -73,41 +74,42 @@ export function BtnFilled({ text, col, onClick, $bg, children }:
     )
 }
 
-export function BtnHref({text, link, weight, sxText, style, icon, className}: 
+export function BtnHref({text, link, weight, sxText, style, $Icon, className}: 
                         {
                             text: string, 
                             link: string, 
                             weight?: number, 
                             sxText?: string,  
                             style?: CSSProperties    
-                            icon?: JSX.Element   ,
+                            $Icon?: JSX.Element,
                             className?: string                   
                         }){
+                        
     return (
         <a href={link} style={{ textDecoration: 'none', width: "auto"}}>
-        <Button variant="text"
-                icon={icon && icon}
-                style={{
-                    color: "#EAF2E7", 
-                    backgroundColor: "transparent",
-                    margin:0,
-                    padding:0,
-                    ...style,
-                }}
-                className={className}
-        >
-            <Typography         
-                as="p"
-                style={{
-                    fontFamily:"Montserrat",
-                    fontWeight: weight || 100,
-                    fontSize: sxText || "1rem",
-                    ...style
-                }}
-            >
-                {text}    
-            </Typography>
-        </Button>
+            {$Icon && $Icon}
+            <Button variant="text"                    
+                    style={{
+                        color: "#EAF2E7", 
+                        backgroundColor: "transparent",
+                        margin:0,
+                        padding:0,
+                        ...style,
+                    }}
+                    className={className}
+                    >
+                <Typography         
+                    as="p"
+                    style={{
+                        fontFamily:"Montserrat",
+                        fontWeight: weight || 100,
+                        fontSize: sxText || "1rem",
+                        ...style
+                    }}
+                    >
+                    {typeof text === "string" ? text : ""}
+                </Typography>
+            </Button>
         </a>
     )
 }
