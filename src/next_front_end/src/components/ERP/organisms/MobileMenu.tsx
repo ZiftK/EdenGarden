@@ -1,6 +1,6 @@
 'use client'
 
-import { JSX, useState } from "react"
+import { JSX, useEffect, useState } from "react"
 import menuIcon from "@/public/assets/icons/menu.svg"
 import Image from "next/image"
 import imgIcon from "@/public/assets/icons/Logo_Eden_Icon.png"
@@ -16,9 +16,12 @@ export default function MobileMenu({ menuItems }: MenuProps) {
     const toogleOpen = () => {
         setIsOpen((prev) => !prev)
     }
+    
+    const [hasMounted, setHasMounted] = useState(false)
+    useEffect(() => setHasMounted(true),[])
 
     return (
-        <div className="relative">
+        <div className="relative m-0.5">
             <nav className="flex w-full justify-between items-center
                 pl-4 pr-2 py-3 bg-[rgba(56,86,24,0.69)]">
                 <Image src={imgIcon.src} alt="Logo" width={30} height={30}/>    
@@ -34,11 +37,13 @@ export default function MobileMenu({ menuItems }: MenuProps) {
                     </BtnFilled>
                     
             </nav>
-            <SidebarMenu
+            { hasMounted &&
+                <SidebarMenu
                 menuItems={menuItems}
                 isOpen={isOpen}
                 close={toogleOpen}
-            />
+                />
+            }
         </div>
     )
 }
