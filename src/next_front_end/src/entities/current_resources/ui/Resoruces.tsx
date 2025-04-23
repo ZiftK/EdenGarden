@@ -27,10 +27,10 @@ const data =[
 export default function Resources(){
     return(
         <section aria-labelledby="dashboard-section-title" className="mt-4">
-            <h2 className="text-md font-bold">Recursos y Proyectos Actuales</h2>
+            <h2 className="text-md font-bold mb-4">Recursos y Proyectos Actuales</h2>
 
             <article className="bg-[var(--bg-card-obscure)] rounded-lg p-4 ">
-                <div className="flex justify-between  items-center mb-4">
+                <div className="flex justify-between items-center mb-10">
                     <div>
                         <p className="text-sm">Proyectos</p>
                         <h3 className="text-xl font-bold leading-2.5">9 en curso</h3>
