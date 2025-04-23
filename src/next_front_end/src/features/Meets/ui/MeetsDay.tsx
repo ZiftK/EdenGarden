@@ -16,7 +16,7 @@ export default function MeetsDay() {
             </div>
 
             <div className="mt-3">
-                <h4>Meet con Alejandro</h4>
+                <h4 className="text-lg">Meet con Alejandro</h4>
                 <div className="flex items-center gap-3">
                     <div className="flex items-center gap-2">
                         <GroupIcon size={[1, 1]} color="#e2e2e270" />
