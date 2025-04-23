@@ -131,6 +131,8 @@
   --white-peristance-color: #EAF2E7;
 
   --color-no-focus: #E5ECE2;
+
+  --bg-card-obscure: #192012;
   }
   
   [data-theme="dark"] {
@@ -234,6 +236,8 @@
         --white-peristance-color: #EAF2E7;
 
         --color-no-focus: #0A1506;
+      
+        --bg-card-obscure: #192012;
   }
 
 

@@ -3,6 +3,7 @@ import InfoUser from "@/src/components/ERP/moleculs/InfoUser"
 import ResponsiveMenu from "@/src/components/ERP/organisms/ResponsiveMenu"
 import { Employee } from "@/src/shared/types"
 import MeetsDay from "../../Meets/ui/MeetsDay"
+import Resources from "@/src/entities/current_resources/ui/Resoruces"
 
 
 export default function DashboardShell({
@@ -18,6 +19,7 @@ export default function DashboardShell({
             <InfoUser user={dehydratedState.user} />
             <Calendar />
             <MeetsDay />
+            <Resources />
         </div>
         </>
     )
