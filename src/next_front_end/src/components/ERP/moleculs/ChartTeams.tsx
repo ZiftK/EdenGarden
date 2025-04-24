@@ -11,12 +11,12 @@ export default function ChartTeams() {
             </span>
 
             <div className="bg-transparent flex flex-col items-center h-[140px] w-10/12 m-auto">
-                <div className="relative w-full max-w-xl border-l border-b border-gray-500 flex items-end gap-4 justify-center h-full">
+                <div className="relative w-full max-w-xl border-l border-b border-[var(--father-font-transparent)] flex items-end gap-4 justify-center h-full">
                     {data.map((value, index) => (
                         <div
                             key={index}
                             className={`flex items-end justify-center w-1/12 ${
-                                index === 4 ? 'bg-[var(--green-dark-500)]' : 'bg-[#EAF2E779]'
+                                index === 4 ? 'bg-[var(--green-dark-500)]' : 'bg-[var(--father-font-transparent)]'
                             }`}  
                             style={{
                                 height: `${(value / max) * 100}%`,
@@ -28,7 +28,7 @@ export default function ChartTeams() {
                     {/* Líneas horizontales  */}
                     <div className="absolute left-0 right-0 top-0 h-full flex flex-col justify-between pointer-events-none">
                         {[...Array(max)].map((_, i) => (
-                            <div key={i} className="border-t border-dashed border-gray-600 w-full" />
+                            <div key={i} className="border-t border-dashed border-[var(--father-font-transparent)] w-full" />
                         ))}
                     </div>
                 </div>
