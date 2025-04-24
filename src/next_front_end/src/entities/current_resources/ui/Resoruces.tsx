@@ -1,5 +1,6 @@
 import DataProyectContract from "@/src/components/ERP/moleculs/DataProyectContract"
 import ChartTeams from "@/src/components/ERP/moleculs/ChartTeams"
+import TableEmployees from "@/src/components/ERP/moleculs/TableEmployees"
 
 const data =[
     {
@@ -45,15 +46,22 @@ export default function Resources(){
                     <DataProyectContract data={data}/>
                 </article>
 
-                <article className="bg-[var(--bg-card-obscure)] rounded-lg p-4 inline-block w-full max-h-[235px] h-[235px] flex-shrink-0">
-                    <div className="flex justify-between items-center mb-2">
-                        <div>
+                <article className="bg-[var(--bg-card-obscure)] rounded-lg p-4 inline-block w-full h-[235px] flex-shrink-0 mr-4">
+                    <div className="flex flex-col mb-2">                        
                             <p className="text-sm">Equipos</p>
                             <h3 className="text-xl font-bold leading-2.5">6 en operacion</h3>
-                        </div>
                     </div>
 
                     <ChartTeams />
+                </article>
+
+                <article className="bg-[var(--bg-card-obscure)] rounded-lg p-4 inline-block w-full h-[235px] flex-shrink-0">
+                    <div className="flex justify-between flex-col  mb-2">                        
+                            <p className="text-sm">Empleados</p>
+                            <h3 className="text-xl font-bold leading-2.5 ">30 en plantilla</h3>                        
+                    </div>
+
+                    <TableEmployees />
                 </article>
             </div>
         </section>

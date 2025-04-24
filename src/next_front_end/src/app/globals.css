@@ -230,6 +230,8 @@
 
         --father-font: #b8c2b4;
         --father-font-transparent: #b8c2b4a1;
+        --father-font-transparent-200: rgba(184, 194, 180, 0.123);
+
         --children-font: #7A8077;
 
         --orange-title: #9a4219;
