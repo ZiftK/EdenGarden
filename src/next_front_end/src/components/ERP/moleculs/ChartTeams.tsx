@@ -6,8 +6,8 @@ export default function ChartTeams() {
     return (
         <>
             <span className="flex justify-between items-center mb-2">
-                <p>Empleados por equipo</p>
-                <p className="relative after:content-[''] after:absolute after:-left-3.5 after:top-1/2 after:-translate-y-1/2 after:rounded-full after:bg-[var(--green-dark-500)] after:w-2 after:h-2">Destacado</p>
+                <p className="text-sm">Empleados por equipo</p>
+                <p className="relative text-xs md:text-sm after:content-[''] after:absolute after:-left-2.5 after:top-1/2 after:-translate-y-1/2 after:rounded-full after:bg-[var(--green-dark-500)] after:w-1.5 after:h-1.5">Destacado</p>
             </span>
 
             <div className="bg-transparent flex flex-col items-center h-[140px] w-10/12 m-auto">

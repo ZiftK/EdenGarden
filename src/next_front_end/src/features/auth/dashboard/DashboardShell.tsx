@@ -15,7 +15,7 @@ export default function DashboardShell({
     return (
         <>
         <ResponsiveMenu />
-        <div className="flex flex-col gap-4 p-5">
+        <div className="grid grid-cols-1 gap-4 p-5 pt-16    ">
             <InfoUser user={dehydratedState.user} />
             <Calendar />
             <MeetsDay />

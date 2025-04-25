@@ -10,11 +10,6 @@ const menuItems = [
 
 export default function ResponsiveMenu() {
     return (
-        <div className="relative">
-            <div>
-                <MobileMenu menuItems={menuItems}/>
-            </div>
-
-        </div>
+        <MobileMenu menuItems={menuItems}/>
     )
 }
