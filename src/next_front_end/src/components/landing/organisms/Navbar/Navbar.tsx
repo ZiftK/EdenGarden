@@ -1,22 +1,11 @@
-"use client"
-
 import Image from 'next/image'
 import logo from '@/public/assets/icons/Logo_Eden.png'
-import icon from '@/public/assets/icons/menu.svg'
 import { Box } from '@raul_yael/cleangui'
-import { SidebarMenu } from '../../../shared/atoms/Sidebar'
-import { BtnFilled } from '../../../../shared/components/atoms/Button'
 import { BtnMoon } from '../../atoms/BtnMoon'
-import { useEffect, useState } from 'react'
 import './Navbar.css'
 
 export default function Navbar(){
-    const [isOpen, setIsOpen] = useState(false)
-    const toogleOpen = () => setIsOpen(!isOpen)
 
-    const [hasMounted, setHasMounted] = useState(false)
-
-    useEffect(() => {setHasMounted(true)},[])
 
     return(
         <Box 
@@ -49,26 +38,6 @@ export default function Navbar(){
                     }}
                 >
                     <BtnMoon />
-                    <BtnFilled onClick={toogleOpen}>
-                        <Image 
-                            src={icon} 
-                            alt="Menu_Icon" 
-                            width={20} 
-                            height={20} 
-                            style={{ color: "var(--white-peristance-color)" }} 
-                        />
-                    </BtnFilled>
-                    {hasMounted && <SidebarMenu 
-                        menuItems={[
-                            { label: 'Inicio', link: '/', icon:icon},
-                            { label: 'Sobre nosotros', link: '/about', icon:icon},
-                            { label: 'Servicios', link: '/services', icon:icon},
-                            { label: 'Contacto', link: '/contact', icon:icon},
-                        ]}
-                        isOpen={isOpen}
-                        close={() => setIsOpen(false)}
-                    />}
-
                 </Box>
             </div>
         </Box>
