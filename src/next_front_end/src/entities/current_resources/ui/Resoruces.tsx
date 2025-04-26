@@ -28,42 +28,41 @@ const data =[
 
 export default function Resources(){
     return(
-        <section aria-labelledby="dashboard-section-title" className="mt-4 text-[var(--father-font)]">
+    <section aria-labelledby="dashboard-section-title" className="mt-4 text-[var(--father-font)] md:row-start-2 md:row-end-4 lg:col-start-2">
             <h2 className="text-md font-bold mb-4">Recursos y Proyectos Actuales</h2>
 
-            <div className="overflow-x-auto whitespace-nowrap items-center flex flex-nowrap py-2 lg:w-full">
-    <article className="bg-[var(--bg-card-obscure)] rounded-lg p-4 inline-block w-full max-w-[335px] mr-4 h-[235px] flex-shrink-0">
-        <div className="flex justify-between items-center mb-10">
-            <div>
-                <p className="text-sm">Proyectos</p>
-                <h3 className="text-xl font-bold leading-2.5">9 en curso</h3>
-            </div>
+        <div className="overflow-x-auto lg:overflow-x-hidde whitespace-nowrap items-center flex flex-nowrap py-2 lg:w-full lg:justify-between">
+            <article className="card-base mr-4 pl-4 ">
+                <div className="flex justify-between items-center mb-10">
+                    <div>
+                        <p className="text-sm">Proyectos</p>
+                        <h3 className="text-lg font-bold leading-2.5">9 en curso</h3>
+                    </div>
+                    <p className="text-sm font-light">Proximos a concluir</p>
+                </div>
 
-            <p className="text-sm font-light">Proximos a concluir</p>
+                <DataProyectContract data={data}/>
+            </article>
+
+            <article className="card-base mr-4">
+                <div className="flex flex-col mb-2">                        
+                    <p className="text-sm">Equipos</p>
+                    <h3 className="text-lg font-bold leading-2.5">6 en operacion</h3>
+                </div>
+
+                <ChartTeams />
+            </article>
+
+            <article className="card-base">
+                <div className="flex justify-between flex-col mb-2">                        
+                    <p className="text-sm">Empleados</p>
+                    <h3 className="text-lg font-bold leading-2.5 ">30 en plantilla</h3>                        
+                </div>
+
+                <TableEmployees />
+            </article>
         </div>
 
-        <DataProyectContract data={data}/>
-    </article>
-
-    <article className="bg-[var(--bg-card-obscure)] rounded-lg p-4 inline-block w-full max-w-[335px] h-[235px] flex-shrink-0 mr-4">
-        <div className="flex flex-col mb-2">                        
-            <p className="text-sm">Equipos</p>
-            <h3 className="text-xl font-bold leading-2.5">6 en operacion</h3>
-        </div>
-
-        <ChartTeams />
-    </article>
-
-    <article className="bg-[var(--bg-card-obscure)] rounded-lg p-4 inline-block w-full max-w-[335px] h-[235px] flex-shrink-0">
-        <div className="flex justify-between flex-col mb-2">                        
-            <p className="text-sm">Empleados</p>
-            <h3 className="text-xl font-bold leading-2.5 ">30 en plantilla</h3>                        
-        </div>
-
-        <TableEmployees />
-    </article>
-</div>
-
-        </section>
+    </section>
     )
 } 

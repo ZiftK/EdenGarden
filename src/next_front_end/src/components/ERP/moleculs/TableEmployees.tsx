@@ -11,14 +11,14 @@ export default function TableEmployees() {
         <div className="w-full font-light text-sm">
 
         {/* Header */}
-        <div className="grid grid-cols-[4fr_3fr_1fr] bg-transparent px-4 py-2 mb-2 font-medium border-b border-[#bec8a6]">
-          <span>Nombre</span>
-          <span>Expediente</span>
-          <span>Estado</span>
+        <div className="grid grid-cols-[4fr_3fr_1fr] bg-transparent px-4 pr-7 py-2 mb-2 font-medium border-b border-[#bec8a6]">
+          <span className="text-xs">Nombre</span>
+          <span className="text-xs">Expediente</span>
+          <span className="text-xs">Estado</span>
         </div>
   
         {/* Body */}
-        <div className="divide-y divide-[#2b2f22] h-[120px] overflow-y-auto text-xs">
+        <div className="divide-y divide-[#2b2f22] h-[100px] overflow-y-auto text-xs">
           {data.map((usuario, index) => (
             <div
               key={index}

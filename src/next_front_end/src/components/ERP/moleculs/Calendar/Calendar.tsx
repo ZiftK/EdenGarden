@@ -9,9 +9,8 @@ export default function Calendar() {
         <div className="hidden lg:block">
             <CalendarDesktop />
         </div>
-        <div className="block lg:hidden">
-            <CalendarMobile date={date}/>
-        </div>
+        <CalendarMobile date={date}/>
+
     </>
     )
 }

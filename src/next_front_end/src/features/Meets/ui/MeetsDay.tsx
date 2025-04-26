@@ -5,10 +5,10 @@ export default function MeetsDay() {
     const date = new Date()
 
     return (
-        <section className="w-full max-w-[450px] bg-[rgba(56,86,24,0.69)] p-4 rounded-lg flex flex-col  mt-2">
+        <section className="w-full max-w-[350px]  md:col-start-2 md:row-start-3 lg:row-start-3 lg:col-start-3 lg:max-w-[250px] bg-[rgba(56,86,24,0.69)] p-4 rounded-lg flex flex-col  mt-2">
             <div className="flex items-center justify-between">
                 <div className="flex flex-col ">
-                    <h3 className="font-bold text-xl">Juntas del día</h3>
+                    <h3 className="font-bold text-lg">Juntas del día</h3>
                     <p className="text-sm">{format(date, 'dd / MM / yyyy')}</p>
                 </div>
 
@@ -16,11 +16,11 @@ export default function MeetsDay() {
             </div>
 
             <div className="mt-3">
-                <h4 className="text-lg">Meet con Alejandro</h4>
+                <h4 className="text-md">Meet con Alejandro</h4>
                 <div className="flex items-center gap-3">
                     <div className="flex items-center gap-2">
                         <GroupIcon size={[1, 1]} color="#e2e2e270" />
-                        <p className="text-blue-300 text-xs ">https://meet/avs#...</p>
+                        <p className="text-blue-300 text-xs">https://meet/avs#...</p>
                     </div>
 
                     <div className="flex items-center gap-2">

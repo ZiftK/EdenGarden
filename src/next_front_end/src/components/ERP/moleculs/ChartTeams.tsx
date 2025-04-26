@@ -10,7 +10,7 @@ export default function ChartTeams() {
                 <p className="relative text-xs md:text-sm after:content-[''] after:absolute after:-left-2.5 after:top-1/2 after:-translate-y-1/2 after:rounded-full after:bg-[var(--green-dark-500)] after:w-1.5 after:h-1.5">Destacado</p>
             </span>
 
-            <div className="bg-transparent flex flex-col items-center h-[140px] w-10/12 m-auto">
+            <div className="bg-transparent flex flex-col items-center h-[110px] w-10/12 m-auto">
                 <div className="relative w-full max-w-xl border-l border-b border-[var(--father-font-transparent)] flex items-end gap-4 justify-center h-full">
                     {data.map((value, index) => (
                         <div
