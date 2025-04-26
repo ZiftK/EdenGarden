@@ -1,4 +1,4 @@
-export const tailwindConfig = {
+module.exports = {
   darkMode: 'class', 
   content: [
     './src/**/*.{js,ts,jsx,tsx}',
@@ -8,13 +8,7 @@ export const tailwindConfig = {
   theme: {
     extend: {
       fontSize: {
-        xxs: 'var(--font-xxs)',
-        xs: 'var(--font-xs)',
-        sm: 'var(--font-sm)',
-        md: 'var(--font-md)',
-        lg: 'var(--font-lg)',
-        xl: 'var(--font-xl)',
-        xxl: 'var(--font-xxl)',
+        xxs: '0.625rem',
         },
       colors: {
         background: 'var(--background)',

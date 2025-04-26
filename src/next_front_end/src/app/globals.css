@@ -1,10 +1,13 @@
 @import "tailwindcss";
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+@theme {
+  --theme-xxs: 0.4rem;
+  --text-xs: 0.6rem;
+  --text-sm: 0.75rem; /* 12px */
+  --text-md: 0.875rem; /* 14px */
+  --text-lg: 1rem; /* 16px (base) */
+  --text-xl: 1.25rem; /* 20px */
+  --text-2xl: 1.5rem; /* 24px */
 }
 
 @media (prefers-color-scheme: dark) {
@@ -275,22 +278,14 @@ html, body{
 }
 
 
-@media screen and (min-width: 1000px) {
-  :root{
-    --font-xxs: 0.6rem;
-    --font-xs: .75rem; /* 12px */
-    --font-sm: 0.975rem; /* 14px */
-    --font-md: 1.1rem; /* 16px (base) */
-    --font-lg: 1.35rem; /* 20px */
-    --font-xl: 1.6rem; /* 24px */
-    --font-xxl: 2.1rem; /* 32px */
-  }
-}
-
 @layer base{
   *{
     margin: 0;
     padding: 0;
     box-sizing: border-box; 
   }
+}
+
+.card-base {
+  @apply aspect-[13/11] bg-[var(--bg-card-obscure)] rounded-lg p-2.5 inline-block w-full max-w-[335px] h-[205px] flex-shrink-0 lg:flex-1 ;
 }
