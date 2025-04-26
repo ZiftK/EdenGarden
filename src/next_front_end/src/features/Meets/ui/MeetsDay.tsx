@@ -5,7 +5,7 @@ export default function MeetsDay() {
     const date = new Date()
 
     return (
-        <section className="w-full max-w-[350px]  md:col-start-2 md:row-start-3 lg:row-start-3 lg:col-start-3 lg:max-w-[250px] bg-[rgba(56,86,24,0.69)] p-4 rounded-lg flex flex-col  mt-2">
+        <section className="w-full max-w-[350px]  md:col-start-2 md:row-start-3 lg:row-start-3 lg:col-start-3 lg:max-w-[250px] bg-[rgba(24,44,2)] p-4 rounded-lg flex flex-col  mt-2">
             <div className="flex items-center justify-between">
                 <div className="flex flex-col ">
                     <h3 className="font-bold text-lg">Juntas del día</h3>

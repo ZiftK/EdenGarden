@@ -140,7 +140,7 @@
   
   [data-theme="dark"] {
         /* Backgrounds */
-        --background: #0A1506;
+        --background: #091101;
         --background-transparent: #dedede3d;
     
         /* Text Colors */
@@ -252,11 +252,11 @@
 body {
   min-width: 320px;
   min-height: 100svh;
-
 }
 
 html, body{
   overflow-x: hidden;
+  height: 100%;
 }
 
   /* .navbar{

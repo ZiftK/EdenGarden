@@ -13,14 +13,12 @@ export default function DashboardShell({
 }){
 
     return (
-        <>
-        <ResponsiveMenu />
-        <div className="grid grid-cols-1 md:grid-cols-[1fr, 350px] lg:grid-cols-[250px, 1fr, 250px] lg:pt-5 pt-20  gap-4 p-5">
+        <div className="grid grid-cols-1 md:grid-cols-[1fr_350px] lg:grid-cols-[200px_1fr_250px] lg:grid-rows-[55px_250px_1fr]  min-h-full lg:pt-2 pt-20  gap-4 pr-5 pl-2 py-4">
+            <ResponsiveMenu />
             <InfoUser user={dehydratedState.user} />
             <Calendar />
             <MeetsDay />
             <Resources />
         </div>
-        </>
     )
 }   
