@@ -2,6 +2,7 @@
 
 import { ShortTeam } from "@/src/shared/types"
 import { EmailIcon, PhoneIcon } from "../../landing/atoms/Icons/Icons"
+import Link from "next/link"
 
 export default function TeamsCard(
     // {data}: {data: ShortTeam[]}
@@ -18,7 +19,7 @@ export default function TeamsCard(
             ]
         },
         {
-            name: "Equipo 1",
+            name: "Equipo 4",
             leaderName: { name: "Ruth Viveros" },
             members: [
                 {role: "leader", name: "Ruth Viveros", id: "123456", email: "ruth@gmail.com", phone_number: "12344567", position: "lider", salary: 2000},
@@ -28,7 +29,7 @@ export default function TeamsCard(
             ]
         },
         {
-            name: "Equipo 1",
+            name: "Equipo 2",
             leaderName: { name: "Ruth Viveros" },
             members: [
                 {role: "leader", name: "Ruth Viveros", id: "123456", email: "ruth@gmail.com", phone_number: "12344567", position: "lider", salary: 2000},
@@ -56,7 +57,7 @@ export default function TeamsCard(
             <article className="w-full bg-[var(--bg-card-obscure)] rounded-lg px-4 py-2 flex flex-col gap-2 xl:h-56" key={index}>
                 <div>
                     <p className="text-sm">{team.name}</p>
-                    <h3 className="text-lg font-bold leading-2.5">{team.leaderName.name}</h3>
+                    <Link href={`/dashboard/equipos/${team.name}`} className="text-lg font-bold leading-2.5">{team.leaderName.name}</Link>
                 </div>
                 
                 <div className="w-full font-light text-sm">
@@ -91,7 +92,7 @@ export default function TeamsCard(
 
                                 <span    
                                     className="cursor-pointer "
-                                    title={usuario.email}
+                                    title={usuario.phone_number}
                                     onClick={() => copyToClipboard(usuario.phone_number)}
                                 >
                                         {PhoneIcon({color: "var(--father-font)", size:[.75,.75]})}
