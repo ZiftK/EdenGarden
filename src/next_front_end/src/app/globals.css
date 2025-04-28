@@ -289,3 +289,21 @@ html, body{
 .card-base {
   @apply aspect-[13/11] bg-[var(--bg-card-obscure)] rounded-lg p-2.5 inline-block w-full max-w-[335px] h-[205px] flex-shrink-0 lg:flex-1 ;
 }
+
+@layer utilities {
+  .scrollbar-thin-custom {
+    scrollbar-width: thin;
+    scrollbar-color: #8888887d transparent;
+  }
+  .scrollbar-thin-custom::-webkit-scrollbar {
+    width: 6px;
+  }
+  .scrollbar-thin-custom::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 3px;
+  }
+  .scrollbar-thin-custom::-webkit-scrollbar-button {
+    display: none;
+    opacity: 0;
+  }
+}
