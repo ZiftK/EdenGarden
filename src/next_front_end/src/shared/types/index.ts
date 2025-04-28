@@ -11,6 +11,7 @@ export type Employee = {
     out_time: string;
     password: string;
     role: 'user' | 'admin' | 'leader';
+    position: string;
 }
 
 export type AuthState = {
@@ -26,6 +27,12 @@ export type Team = {
     name: string;
     leader: Employee;
     members: Employee[];
+}
+
+export type ShortTeam ={
+    name: string;
+    leaderName: Pick<Employee, 'name'>;
+    members: Pick<Employee, 'email' | 'id' | 'name' | 'phone_number' | 'role' | 'position' | 'salary'>[];
 }
 
 export type Project = {
