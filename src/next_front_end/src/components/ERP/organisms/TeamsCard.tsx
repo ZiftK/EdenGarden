@@ -51,9 +51,9 @@ export default function TeamsCard(
 };
 
     return(
-        <div className="w-full flex flex-col gap-4">
+        <div className="scrollbar-thin-custom w-full flex flex-col gap-4 md:max-h-[calc(100vh-14rem)] md:overflow-y-auto xl:grid xl:grid-cols-2">
         {data.map((team, index) => (
-            <article className="w-full bg-[var(--bg-card-obscure)] rounded-lg px-4 py-2 flex flex-col gap-2" key={index}>
+            <article className="w-full bg-[var(--bg-card-obscure)] rounded-lg px-4 py-2 flex flex-col gap-2 xl:h-56" key={index}>
                 <div>
                     <p className="text-sm">{team.name}</p>
                     <h3 className="text-lg font-bold leading-2.5">{team.leaderName.name}</h3>
@@ -70,7 +70,7 @@ export default function TeamsCard(
                 </div>
 
                 {/* Body */}
-                <div className="divide-y divide-[#2b2f22] h-[100px] overflow-y-auto text-xs scrollbar-thin-custom">
+                <div className="divide-y divide-[#2b2f22] h-[100px] overflow-y-auto text-xs scrollbar-thin-custom xl:h-48">
                     {team.members.map((usuario, i) => (
                         <div
                             key={i}
