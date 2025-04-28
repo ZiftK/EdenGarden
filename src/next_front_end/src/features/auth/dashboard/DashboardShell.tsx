@@ -32,7 +32,7 @@ export default function DashboardShell(){
         <section aria-labelledby="dashboard-section-title" className="mt-4 text-[var(--father-font)] md:row-start-2 md:row-span-3   md:row-end-4  xl:col-start-2">
             <h2 className="text-md font-bold mb-4">Recursos y Proyectos Actuales</h2>
     
-            <div className="overflow-x-auto  md:overflow-y-auto md:max-h-[400px] md:max-w-[335px] md:mx-auto md:flex-col md:gap-2 xl:flex-row xl:overflow-x-hidden whitespace-nowrap items-center flex flex-nowrap py-2 xl:w-full xl:justify-between scrollbar-thin-custom">
+            <div className="overflow-x-auto  md:overflow-y-auto md:max-h-[400px] md:max-w-[335px] md:mx-auto md:flex-col md:gap-2 xl:max-w-full xl:flex-row xl:overflow-x-hidden whitespace-nowrap items-center flex flex-nowrap py-2 xl:w-full xl:justify-between scrollbar-thin-custom">
                 <article className="card-base mr-4 pl-4 md:mr-0">
                     <div className="flex justify-between items-center mb-10">
                         <div>
