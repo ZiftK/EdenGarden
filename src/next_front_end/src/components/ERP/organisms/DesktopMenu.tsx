@@ -10,6 +10,7 @@ type MenuProps = {
 }
 
 export default function DesktopMenu({ menuItems }: MenuProps) {
+
     return(
         <nav className="hidden lg:flex flex-col bg-[rgba(24,44,2)] rounded-sm min-w-full max-w-[200px] py-4 row-span-3">
             <Image src={imgIcon.src} alt="Logo" width={130} height={30} className="mx-auto"/>
