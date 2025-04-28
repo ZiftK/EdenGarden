@@ -10,7 +10,7 @@ export default function InfoUser({user}: {user: Employee}) {
                 <p className="text-sm">Cuenta Administrador</p>
             </div>
 
-            <Image src={imgIcon} alt="Foto de perfil" className="rounded-full object-cover" width={55} height={55}/>
+            <Image src={imgIcon} alt="Foto de perfil" className="rounded-full object-cover" width={50} height={55}/>
         </section>
     )
 }
