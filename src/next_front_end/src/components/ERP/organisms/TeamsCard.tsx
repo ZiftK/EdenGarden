@@ -40,7 +40,7 @@ export default function TeamsCard(
         },
 
     ]
-
+console.log(JSON.stringify(data[1].name))
     const copyToClipboard = (text: string) => {
         navigator.clipboard.writeText(text)
             .then(() => {
@@ -49,7 +49,7 @@ export default function TeamsCard(
             .catch((err) => {
                 console.error('Error al copiar:', err);
             });
-};
+        };
 
     return(
         <div className="scrollbar-thin-custom w-full flex flex-col gap-4 md:max-h-[calc(100vh-14rem)] md:overflow-y-auto xl:grid xl:grid-cols-2">
@@ -57,7 +57,7 @@ export default function TeamsCard(
             <article className="w-full bg-[var(--bg-card-obscure)] rounded-lg px-4 py-2 flex flex-col gap-2 xl:h-56" key={index}>
                 <div>
                     <p className="text-sm">{team.name}</p>
-                    <Link href={`/dashboard/equipos/${team.name}`} className="text-lg font-bold leading-2.5">{team.leaderName.name}</Link>
+                    <Link href={`/dashboard/equipos/${JSON.stringify(team.name)}`} className="text-lg font-bold leading-2.5">{team.leaderName.name}</Link>
                 </div>
                 
                 <div className="w-full font-light text-sm">
