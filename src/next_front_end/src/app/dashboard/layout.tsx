@@ -1,7 +1,10 @@
 import { getServerUser } from '@/src/shared/lib/auth/getServerUser'
 import HydrateZustandProvider from '@/src/shared/providers/HydrateZustandProvider'
+import Calendar from "@/src/components/ERP/moleculs/Calendar/Calendar"
+import ResponsiveMenu from "@/src/components/ERP/organisms/ResponsiveMenu"
 import { redirect } from 'next/navigation';
 import img from "@/public/assets/icons/Logo_Eden_Icon.png"
+import MeetsDay from '@/src/features/Meets/ui/MeetsDay'
 
 export default async function DashboardLayout({
     children
@@ -20,7 +23,12 @@ export default async function DashboardLayout({
             </head>
             <body>
                 <HydrateZustandProvider user={user}> 
-                    {children}
+                    <div className="grid grid-cols-1 md:grid-cols-[1fr_350px] lg:grid-cols-[200px_1fr_250px] lg:grid-rows-[55px_250px_1fr]  min-h-full lg:pt-2 pt-20  gap-4 pr-5 pl-2 py-4">
+                        <ResponsiveMenu />
+                            {children}
+                        <Calendar />
+                        <MeetsDay />
+                    </div>
                 </HydrateZustandProvider>            
             </body>
         </html>
