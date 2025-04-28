@@ -24,7 +24,7 @@ export default async function DashboardLayout({
             </head>
             <body>
                 <HydrateZustandProvider user={user}> 
-                    <div className="grid grid-cols-1 md:grid-cols-[1fr_350px] lg:grid-cols-[200px_1fr_250px] lg:grid-rows-[55px_250px_1fr]  min-h-full lg:pt-2 pt-20 px-2  gap-4 py-4">
+                    <div className="grid grid-cols-1 md:h-dvh md:grid-cols-[1fr_350px] md:grid-rows-[55px_100px_125px_1fr] xl:grid-cols-[200px_1fr_250px] xl:grid-rows-[55px_250px_1fr]  min-h-full xl:pt-2 pt-20 px-2  gap-4 py-4">
                         <ResponsiveMenu />
                         <InfoUser user={user} />
                         <Calendar />

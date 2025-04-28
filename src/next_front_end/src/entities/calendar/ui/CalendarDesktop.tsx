@@ -26,7 +26,7 @@ export default function CalendarButtons() {
   };
 
   return (
-    <div className="hidden lg:flex w-full max-w-[450px] bg-[rgba(24,44,2)] p-4 rounded-lg flex-col items-center mt-2 select-none">
+    <div className="hidden xl:flex w-full max-w-[450px] bg-[rgba(24,44,2)] p-4 rounded-lg flex-col items-center mt-2 select-none">
       
       {/* HEADER: Botones + Mes */}
       <div className="flex items-center justify-around w-full mb-4">

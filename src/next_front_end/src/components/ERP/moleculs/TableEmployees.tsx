@@ -18,7 +18,7 @@ export default function TableEmployees() {
         </div>
   
         {/* Body */}
-        <div className="divide-y divide-[#2b2f22] h-[100px] overflow-y-auto text-xs">
+        <div className="divide-y divide-[#2b2f22] h-[100px] overflow-y-auto text-xs scrollbar-thin-custom">
           {data.map((usuario, index) => (
             <div
               key={index}

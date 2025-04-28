@@ -7,7 +7,7 @@ export default function CalendarDesktop({date}: {date: Date}) {
     const currentDay = currentWeek.find(day => day.getDate() === date.getDate())
 
     return(
-        <div className=" w-full max-w-[350px] md:col-start-2 lg:hidden bg-[rgba(24,44,2)] pt-1.5 pb-2.5 rounded-lg flex flex-col justify-center items-center mt-2">
+        <div className=" w-full max-w-[350px] md:col-start-2 md:row-start-2 xl:hidden bg-[rgba(24,44,2)] pt-1.5 pb-2.5 rounded-lg flex flex-col justify-center items-center mt-2">
             <h3 className="text-lg">{format(date, 'MMMM')}</h3>
 
             <div className="flex flex-col gap-x-5 gap-y-0.5 mt-2 text-center ">

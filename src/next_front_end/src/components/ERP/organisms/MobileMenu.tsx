@@ -21,7 +21,7 @@ export default function MobileMenu({ menuItems }: MenuProps) {
     useEffect(() => setHasMounted(true),[])
 
     return (
-        <div className="sm-0.5 lg:hidden">
+        <div className="sm-0.5 xl:hidden">
             <nav className="fixed top-0 left-0 flex w-full justify-between items-center
                 pl-4 pr-2 py-3 bg-[rgba(56,86,24)]">
                 <Image src={imgIcon.src} alt="Logo" width={30} height={30}/>    
