@@ -6,9 +6,7 @@ export default function Calendar() {
 
     return (
     <>
-        <div className="hidden lg:block">
-            <CalendarDesktop />
-        </div>
+        <CalendarDesktop />
         <CalendarMobile date={date}/>
 
     </>
