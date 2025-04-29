@@ -1,63 +1,19 @@
-'use client'
-
-import { ShortTeam } from "@/src/shared/types"
 import { EmailIcon, PhoneIcon } from "../../landing/atoms/Icons/Icons"
 import Link from "next/link"
+import { ShortTeam } from "@/src/shared/types"
+import CopyButton from "../atoms/CopyButton"
 
-export default function TeamsCard(
-    // {data}: {data: ShortTeam[]}
+
+export default async function TeamsCard(
+    {data}: {data: ShortTeam[]}
 ) {
-    const data: ShortTeam[] = [
-        {
-            name: "Equipo 1",
-            leaderName: { name: "Ruth Viveros" },
-            members: [
-                {role: "leader", name: "Ruth Viveros", id: "123456", email: "ruth@gmail.com", phone_number: "12344567", position: "lider", salary: 2000},
-                {role: "user", name: "Martín Herrera López", id: "12356", email: "martin@gamil.com", phone_number: "1234452567", position:"Diseñador", salary: 2000},
-                {role: "user", name: "Javier López", id: "86344", email: "javier@gmail.com", phone_number: "12314567", position:"Ing. Civil", salary: 2000},
-                {role: "user", name: "Valentina Rojas Martínez", id: "987654", email: "valentina@gmail.com", phone_number: "12344567", position:"Arquitecta", salary: 2000},
-            ]
-        },
-        {
-            name: "Equipo 4",
-            leaderName: { name: "Ruth Viveros" },
-            members: [
-                {role: "leader", name: "Ruth Viveros", id: "123456", email: "ruth@gmail.com", phone_number: "12344567", position: "lider", salary: 2000},
-                {role: "user", name: "Martín Herrera López", id: "12356", email: "martin@gamil.com", phone_number: "1234452567", position:"Diseñador", salary: 2000},
-                {role: "user", name: "Javier López", id: "86344", email: "javier@gmail.com", phone_number: "12314567", position:"Ing. Civil", salary: 2000},
-                {role: "user", name: "Valentina Rojas Martínez", id: "987654", email: "valentina@gmail.com", phone_number: "12344567", position:"Arquitecta", salary: 2000},
-            ]
-        },
-        {
-            name: "Equipo 2",
-            leaderName: { name: "Ruth Viveros" },
-            members: [
-                {role: "leader", name: "Ruth Viveros", id: "123456", email: "ruth@gmail.com", phone_number: "12344567", position: "lider", salary: 2000},
-                {role: "user", name: "Martín Herrera López", id: "12356", email: "martin@gamil.com", phone_number: "1234452567", position:"Diseñador", salary: 2000},
-                {role: "user", name: "Javier López", id: "86344", email: "javier@gmail.com", phone_number: "12314567", position:"Ing. Civil", salary: 2000},
-                {role: "user", name: "Valentina Rojas Martínez", id: "987654", email: "valentina@gmail.com", phone_number: "12344567", position:"Arquitecta", salary: 2000},
-            ]
-        },
-
-    ]
-console.log(JSON.stringify(data[1].name))
-    const copyToClipboard = (text: string) => {
-        navigator.clipboard.writeText(text)
-            .then(() => {
-            console.log('Copiado al portapapeles:', text);
-            })
-            .catch((err) => {
-                console.error('Error al copiar:', err);
-            });
-        };
-
     return(
         <div className="scrollbar-thin-custom w-full flex flex-col gap-4 md:max-h-[calc(100vh-14rem)] md:overflow-y-auto xl:grid xl:grid-cols-2">
         {data.map((team, index) => (
             <article className="w-full bg-[var(--bg-card-obscure)] rounded-lg px-4 py-2 flex flex-col gap-2 xl:h-56" key={index}>
                 <div>
                     <p className="text-sm">{team.name}</p>
-                    <Link href={`/dashboard/equipos/${JSON.stringify(team.name)}`} className="text-lg font-bold leading-2.5">{team.leaderName.name}</Link>
+                    <Link href={`/dashboard/equipos/${team.name}`} className="text-lg font-bold leading-2.5">{team.leaderName.name}</Link>
                 </div>
                 
                 <div className="w-full font-light text-sm">
@@ -82,21 +38,8 @@ console.log(JSON.stringify(data[1].name))
                             <span>{usuario.name}</span>
 
                             <div className="flex items-center justify-center gap-2">
-                                <span    
-                                    className="cursor-pointer "
-                                    title={usuario.email}
-                                    onClick={() => copyToClipboard(usuario.email)}
-                                >
-                                        {EmailIcon({color: "var(--father-font)", size:[.75,.75]})}
-                                </span>
-
-                                <span    
-                                    className="cursor-pointer "
-                                    title={usuario.phone_number}
-                                    onClick={() => copyToClipboard(usuario.phone_number)}
-                                >
-                                        {PhoneIcon({color: "var(--father-font)", size:[.75,.75]})}
-                                </span>
+                                <CopyButton text={usuario.email} icon={EmailIcon({ color: "var(--father-font)", size: [.75, .75] })} />
+                                <CopyButton text={usuario.phone_number} icon={PhoneIcon({ color: "var(--father-font)", size: [.75, .75] })} />
                             </div>
 
 

@@ -23,12 +23,6 @@ export type AuthState = {
     logout: () => Promise<void>
 }
 
-export type Team = {
-    name: string;
-    leader: Employee;
-    members: Employee[];
-}
-
 export type ShortTeam ={
     name: string;
     leaderName: Pick<Employee, 'name'>;
@@ -37,7 +31,7 @@ export type ShortTeam ={
 
 export type Project = {
     name: string;
-    teams: Team[];
+    teams: ShortTeam[];
     calendar: string;
 }
 
