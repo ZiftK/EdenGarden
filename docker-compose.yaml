@@ -1,0 +1,13 @@
+version: "3"
+
+services:
+  fastapi:
+    image: im-fastapi
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    container_name: fastapi-app
+    ports:
+      - "8000:8000"
+      
