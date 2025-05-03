@@ -8,33 +8,44 @@ export async function getTeams(): Promise<ShortTeam[]> {
     return [
             {
                 name: "Equipo 1",
-                leaderName: { name: "Ruth Viveros" },
+                leaderName: {
+                    id: 'EMP003',
+                    name: 'Jorge Ramírez',                        
+                    phone_number: '555-345-6789',
+                    email: 'jorge.ramirez@empresa.com',                        
+                    salary: 42000,                 
+                    role: 'leader',
+                    position: 'UI/UX Designer',
+                },
                 members: [
-                    {role: "leader", name: "Ruth Viveros", id: "123456", email: "ruth@gmail.com", phone_number: "12344567", position: "lider", salary: 2000},
-                    {role: "user", name: "Martín Herrera López", id: "12356", email: "martin@gamil.com", phone_number: "1234452567", position:"Diseñador", salary: 2000},
-                    {role: "user", name: "Javier López", id: "86344", email: "javier@gmail.com", phone_number: "12314567", position:"Ing. Civil", salary: 2000},
-                    {role: "user", name: "Valentina Rojas Martínez", id: "987654", email: "valentina@gmail.com", phone_number: "12344567", position:"Arquitecta", salary: 2000},
+                    {
+                        id: 'EMP004',
+                        name: 'Elena Ruiz',                        
+                        phone_number: '555-456-7890',
+                        email: 'elena.ruiz@empresa.com',
+                        salary: 50000,
+                        role: 'user',
+                        position: 'Fullstack Developer',
+                    },
+                    {
+                        id: 'EMP005',
+                        name: 'Carlos Méndez',
+                        phone_number: '555-567-8901',
+                        email: 'carlos.mendez@empresa.com',
+                        salary: 38000,
+                        role: 'user',
+                        position: 'QA Analyst',
+                    },
+                    {
+                        id: 'EMP006',
+                        name: 'María Fernández',                      
+                        phone_number: '555-678-9012',
+                        email: 'maria.fernandez@empresa.com',
+                        salary: 53000,
+                        role: 'admin',
+                        position: 'Product Owner',
+                    }
                 ]
-            },
-            {
-                name: "Equipo 4",
-                leaderName: { name: "Ruth Viveros" },
-                members: [
-                    {role: "leader", name: "Ruth Viveros", id: "123456", email: "ruth@gmail.com", phone_number: "12344567", position: "lider", salary: 2000},
-                    {role: "user", name: "Martín Herrera López", id: "12356", email: "martin@gamil.com", phone_number: "1234452567", position:"Diseñador", salary: 2000},
-                    {role: "user", name: "Javier López", id: "86344", email: "javier@gmail.com", phone_number: "12314567", position:"Ing. Civil", salary: 2000},
-                    {role: "user", name: "Valentina Rojas Martínez", id: "987654", email: "valentina@gmail.com", phone_number: "12344567", position:"Arquitecta", salary: 2000},
-                ]
-            },
-            {
-                name: "Equipo 2",
-                leaderName: { name: "Ruth Viveros" },
-                members: [
-                    {role: "leader", name: "Ruth Viveros", id: "123456", email: "ruth@gmail.com", phone_number: "12344567", position: "lider", salary: 2000},
-                    {role: "user", name: "Martín Herrera López", id: "12356", email: "martin@gamil.com", phone_number: "1234452567", position:"Diseñador", salary: 2000},
-                    {role: "user", name: "Javier López", id: "86344", email: "javier@gmail.com", phone_number: "12314567", position:"Ing. Civil", salary: 2000},
-                    {role: "user", name: "Valentina Rojas Martínez", id: "987654", email: "valentina@gmail.com", phone_number: "12344567", position:"Arquitecta", salary: 2000},
-                ]
-        },
+            }
     ]
 }

@@ -3,4 +3,5 @@ export const endpoints ={
     logout: '/auth/logout',
     
     teams: '/api/teams',
+    employees: '/api/employees',
 }
