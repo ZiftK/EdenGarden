@@ -93,7 +93,7 @@ def run_through_dates(*,
                 "year": auxiliar_date.year
             }
         )
-        
+    
 
 
         if exclude_dates and auxiliar_date in exclude_dates:
