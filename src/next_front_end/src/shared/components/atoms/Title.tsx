@@ -1,3 +1,5 @@
+import Link from "next/link"
+
 export default function Title(
     {
         title,
@@ -15,9 +17,9 @@ export default function Title(
         <>
             <h2 className="text-md font-bold mb-4 inline-block mr-3">{title}</h2>
             {btn.active && 
-                <button className="bg-[var(--bg-card-obscure)] w-6 h-6 items-center rounded-full justify-center text-center place-items-center cursor-pointer">
+                <Link href={btn.path} className="bg-[var(--bg-card-obscure)] py-0.5 px-2 aspect-[1:1] items-center rounded-full justify-center text-center place-items-center cursor-pointer">
                     +
-                </button>
+                </Link>
             }
         </>
     )
