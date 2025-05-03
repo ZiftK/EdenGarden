@@ -4,5 +4,5 @@ export interface dataTeam  {
     isEditing : boolean
     currentTeam: ShortTeam
     teamShowed: ShortTeam
-    teamChanged?: ShortTeam["members"]
+    teamChanged?: ShortTeam
 }
