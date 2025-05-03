@@ -307,3 +307,10 @@ html, body{
     opacity: 0;
   }
 }
+
+#check_box{
+  aspect-ratio: 1/1;
+  width: 25px;
+  margin:auto;
+  fill: var(--father-font);
+}
