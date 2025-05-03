@@ -1,5 +1,5 @@
 import TableEditable from "@/src/components/ERP/moleculs/TablesTeam/TableEditable"
-import { getTeams } from "@/src/features/Teams/lib/getTeams"
+import { getTeams } from "@/src/features/Teams/api/getTeams"
 import Link from "next/link"
 
 export default async function  TeamPage({ params }: { params: { team: string } }) {

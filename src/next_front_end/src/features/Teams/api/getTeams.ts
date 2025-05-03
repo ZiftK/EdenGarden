@@ -1,14 +1,9 @@
+import { endpoints } from "@/src/shared/api/endpoints"
+import { fetcher } from "@/src/shared/api/httpClient"
 import { ShortTeam } from "@/src/shared/types"; 
 
 export async function getTeams(): Promise<ShortTeam[]> {
-    // const res = await fetch('https://tu-api.com/teams', {
-    //     cache: 'force-cache', 
-    //     next: { revalidate: 3600 }, 
-    // });
-
-    // if (!res.ok) throw new Error('Failed to fetch teams');
-
-    // return res.json();
+    // const res = await fetcher.get(endpoints.teams)
 
     return [
             {

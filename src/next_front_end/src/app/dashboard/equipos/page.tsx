@@ -1,6 +1,6 @@
 import TeamsCard from "@/src/components/ERP/organisms/TeamsCard"
 import Title from "@/src/shared/components/atoms/Title"
-import { getTeams } from "@/src/features/Teams/lib/getTeams"
+import { getTeams } from "@/src/features/Teams/api/getTeams"
 
 
 export default async function page(){
