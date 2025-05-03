@@ -1,260 +1,53 @@
 'use client'
 
-import { Autocomplete, AutocompleteItem } from '@heroui/react'
-import { Employee } from '@/src/shared/types'
+import { Input } from '@heroui/react'
+import { ShortTeam } from '@/src/shared/types'
 import { useState } from 'react'
+import LeaderAutocomplete from '../../Employees/ui/moleculs/LeadereAutocomplete'
 
 export default function InputHero({}) {
-	const employees: Employee[] = [
-		{
-			id: 'EMP001',
-			name: 'Luis Torres',
-			address: 'Calle 10 #123, CDMX',
-			phone_number: '555-123-4567',
-			email: 'luis.torres@empresa.com',
-			hire_date: '2021-04-15',
-			salary: 45000,
-			license: ['B', 'C'],
-			in_time: '08:00',
-			out_time: '17:00',
-			password: 'hashedpassword1',
-			role: 'user',
-			position: 'Frontend Developer',
-		},
-		{
-			id: 'EMP002',
-			name: 'Ana Martínez',
-			address: 'Av. Reforma 456, CDMX',
-			phone_number: '555-234-5678',
-			email: 'ana.martinez@empresa.com',
-			hire_date: '2020-08-10',
-			salary: 48000,
-			license: ['A'],
-			in_time: '09:00',
-			out_time: '18:00',
-			password: 'hashedpassword2',
-			role: 'admin',
-			position: 'Backend Developer',
-		},
-		{
-			id: 'EMP003',
-			name: 'Jorge Ramírez',
-			address: 'Calle Sur 789, GDL',
-			phone_number: '555-345-6789',
-			email: 'jorge.ramirez@empresa.com',
-			hire_date: '2019-12-01',
-			salary: 42000,
-			license: [],
-			in_time: '08:30',
-			out_time: '17:30',
-			password: 'hashedpassword3',
+	const [dataTeam, setDataTeam] = useState<ShortTeam>({
+		name: '',
+		leaderName: {
+			name: '',
+			id: '',
+			email: '',
+			phone_number: '',
 			role: 'leader',
-			position: 'UI/UX Designer',
+			position: '',
+			salary: 0,
 		},
-		{
-			id: 'EMP004',
-			name: 'Elena Ruiz',
-			address: 'Calle 8 #888, Monterrey',
-			phone_number: '555-456-7890',
-			email: 'elena.ruiz@empresa.com',
-			hire_date: '2022-03-05',
-			salary: 50000,
-			license: ['C'],
-			in_time: '07:30',
-			out_time: '16:30',
-			password: 'hashedpassword4',
-			role: 'user',
-			position: 'Fullstack Developer',
-		},
-		{
-			id: 'EMP005',
-			name: 'Carlos Méndez',
-			address: 'Col. Centro 303, Puebla',
-			phone_number: '555-567-8901',
-			email: 'carlos.mendez@empresa.com',
-			hire_date: '2021-06-20',
-			salary: 38000,
-			license: [],
-			in_time: '09:00',
-			out_time: '18:00',
-			password: 'hashedpassword5',
-			role: 'user',
-			position: 'QA Analyst',
-		},
-		{
-			id: 'EMP006',
-			name: 'María Fernández',
-			address: 'Calle Reforma 111, León',
-			phone_number: '555-678-9012',
-			email: 'maria.fernandez@empresa.com',
-			hire_date: '2020-11-15',
-			salary: 53000,
-			license: ['A', 'B'],
-			in_time: '08:00',
-			out_time: '17:00',
-			password: 'hashedpassword6',
-			role: 'admin',
-			position: 'Product Owner',
-		},
-		{
-			id: 'EMP007',
-			name: 'Daniel Rojas',
-			address: 'Zona Centro 777, Mérida',
-			phone_number: '555-789-0123',
-			email: 'daniel.rojas@empresa.com',
-			hire_date: '2018-02-01',
-			salary: 47000,
-			license: ['C'],
-			in_time: '08:00',
-			out_time: '17:00',
-			password: 'hashedpassword7',
-			role: 'leader',
-			position: 'Mobile Developer',
-		},
-		{
-			id: 'EMP008',
-			name: 'Laura Castro',
-			address: 'Barrio Antiguo, Monterrey',
-			phone_number: '555-890-1234',
-			email: 'laura.castro@empresa.com',
-			hire_date: '2023-01-10',
-			salary: 40000,
-			license: [],
-			in_time: '10:00',
-			out_time: '19:00',
-			password: 'hashedpassword8',
-			role: 'user',
-			position: 'Graphic Designer',
-		},
-		{
-			id: 'EMP009',
-			name: 'Ricardo Salas',
-			address: 'Col. Industrial 999, CDMX',
-			phone_number: '555-901-2345',
-			email: 'ricardo.salas@empresa.com',
-			hire_date: '2017-07-23',
-			salary: 37000,
-			license: ['A'],
-			in_time: '08:00',
-			out_time: '17:00',
-			password: 'hashedpassword9',
-			role: 'user',
-			position: 'IT Support',
-		},
-		{
-			id: 'EMP010',
-			name: 'Sofía Navarro',
-			address: 'Av. Universidad 456, CDMX',
-			phone_number: '555-012-3456',
-			email: 'sofia.navarro@empresa.com',
-			hire_date: '2021-10-01',
-			salary: 39000,
-			license: [],
-			in_time: '09:30',
-			out_time: '18:30',
-			password: 'hashedpassword10',
-			role: 'user',
-			position: 'Content Strategist',
-		},
-		{
-			id: 'EMP011',
-			name: 'Fernando Díaz',
-			address: 'Col. Jardines 321, Querétaro',
-			phone_number: '555-123-4560',
-			email: 'fernando.diaz@empresa.com',
-			hire_date: '2019-05-19',
-			salary: 52000,
-			license: ['B'],
-			in_time: '08:00',
-			out_time: '17:00',
-			password: 'hashedpassword11',
-			role: 'admin',
-			position: 'Data Engineer',
-		},
-		{
-			id: 'EMP012',
-			name: 'Isabel Romero',
-			address: 'Zona Rosa, CDMX',
-			phone_number: '555-234-5670',
-			email: 'isabel.romero@empresa.com',
-			hire_date: '2022-08-05',
-			salary: 41000,
-			license: [],
-			in_time: '09:00',
-			out_time: '18:00',
-			password: 'hashedpassword12',
-			role: 'user',
-			position: 'Recruiter',
-		},
-		{
-			id: 'EMP013',
-			name: 'Tomás Vargas',
-			address: 'Av. Las Torres, Toluca',
-			phone_number: '555-345-6780',
-			email: 'tomas.vargas@empresa.com',
-			hire_date: '2020-02-14',
-			salary: 46000,
-			license: ['C'],
-			in_time: '08:30',
-			out_time: '17:30',
-			password: 'hashedpassword13',
-			role: 'user',
-			position: 'Accountant',
-		},
-		{
-			id: 'EMP014',
-			name: 'Camila Herrera',
-			address: 'Centro Histórico, Oaxaca',
-			phone_number: '555-456-7891',
-			email: 'camila.herrera@empresa.com',
-			hire_date: '2023-03-01',
-			salary: 39000,
-			license: [],
-			in_time: '10:00',
-			out_time: '19:00',
-			password: 'hashedpassword14',
-			role: 'user',
-			position: 'Office Manager',
-		},
-		{
-			id: 'EMP015',
-			name: 'Mateo Lozano',
-			address: 'Col. Santa Fe, CDMX',
-			phone_number: '555-567-8902',
-			email: 'mateo.lozano@empresa.com',
-			hire_date: '2021-09-09',
-			salary: 55000,
-			license: ['A', 'B'],
-			in_time: '07:00',
-			out_time: '16:00',
-			password: 'hashedpassword15',
-			role: 'leader',
-			position: 'DevOps Engineer',
-		},
-	]
-
-	const leaders = employees.filter((employee) => employee.role === 'leader')
-	const [selectedLeader, setSelectedLeader] = useState<string>()
+		members: [],
+	})
 
 	return (
-		<div>
-			<Autocomplete
-				label='Lider de Equipo'
+		<div className='grid grid-cols-2 gap-4'>
+			<Input
+				label='Nombre del equipo'
 				width={'200px'}
 				color='success'
 				variant='underlined'
-				value={selectedLeader}
-			>
-				{leaders.map((leader) => (
-					<AutocompleteItem
-						textValue={leader.name}
-						key={leader.id}
-						className=' text-stone-800'
-					>
-						{leader.name}
-					</AutocompleteItem>
-				))}
-			</Autocomplete>
+				value={dataTeam.name}
+				onChange={(e) =>
+					setDataTeam((prev) => ({
+						...prev,
+						name: e.target.value,
+					}))
+				}
+			/>
+
+			<LeaderAutocomplete
+				value={dataTeam.leaderName.id}
+				onChange={(leader) => {
+					setDataTeam((prev) => ({
+						...prev,
+						leaderName: {
+							name: leader.name,
+							id: leader.id,
+						},
+					}))
+				}}
+			/>
 		</div>
 	)
 }
