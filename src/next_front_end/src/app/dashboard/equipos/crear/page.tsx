@@ -1,4 +1,4 @@
-import InputHero from '@/src/features/Teams/ui/InputHero'
+import CreateTeam from '@/src/features/Teams/ui/CreateTeam'
 
 export default function page() {
 	return (
@@ -11,7 +11,7 @@ export default function page() {
 				aquel que no esté en otro equipo
 			</p>
 
-			<InputHero />
+			<CreateTeam />
 		</section>
 	)
 }
