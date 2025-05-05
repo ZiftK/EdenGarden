@@ -10,7 +10,7 @@ export default function LeaderAutocomplete({ value, onChange }: Props) {
 		<Autocomplete
 			label='Lider de Equipo'
 			width={'200px'}
-			className='mx-auto col-span-3'
+			className='mx-auto'
 			color='success'
 			variant='underlined'
 			selectedKey={value}
