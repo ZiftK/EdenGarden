@@ -5,10 +5,10 @@ import { ShortTeam } from '@/src/shared/types'
 import { useState } from 'react'
 import LeaderAutocomplete from '../../Employees/ui/moleculs/LeadereAutocomplete'
 
-export default function InputHero({}) {
+export default function CreateTeam({}) {
 	const [dataTeam, setDataTeam] = useState<ShortTeam>({
 		name: '',
-		leaderName: {
+		leader: {
 			name: '',
 			id: '',
 			email: '',
@@ -37,7 +37,7 @@ export default function InputHero({}) {
 			/>
 
 			<LeaderAutocomplete
-				value={dataTeam.leaderName.id}
+				value={dataTeam.leader.id}
 				onChange={(leader) => {
 					setDataTeam((prev) => ({
 						...prev,
