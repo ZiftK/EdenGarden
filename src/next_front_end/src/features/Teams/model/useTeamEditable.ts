@@ -12,7 +12,17 @@ export function useEditableTeam(initialTeam: ShortTeam) {
     currentTeam: initialTeam,
     isEditing: false,
     teamShowed: initialTeam,
-    teamChanged: [],
+    teamChanged: {		name: '',
+      leader: {
+        name: '',
+        id: '',
+        email: '',
+        phone_number: '',
+        role: 'leader',
+        position: '',
+        salary: 0,
+      },
+      members: [],},
   })
 
   const bottomRef = useRef<HTMLDivElement>(null)
@@ -28,7 +38,19 @@ export function useEditableTeam(initialTeam: ShortTeam) {
       ...prev,
       isEditing: false,
       teamShowed: prev.currentTeam,
-      teamChanged: [],
+      teamChanged: {
+        name: '',
+        leader: {
+          name: '',
+          id: '',
+          email: '',
+          phone_number: '',
+          role: 'leader',
+          position: '',
+          salary: 0,
+        },
+        members: [],
+      },
     }))
   }
 
