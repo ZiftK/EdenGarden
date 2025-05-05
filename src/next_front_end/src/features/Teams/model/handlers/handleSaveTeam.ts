@@ -16,6 +16,10 @@ export const handleSaveTeam = async (
     updateTeam(data.currentTeam.name, data.currentTeam.members)
     setData((prev) => ({
         ...prev,
-        
+        currentTeam: {
+            ...prev.currentTeam,
+            members: data.teamShowed.members,
+        }
     }))
+    reset()
 }
