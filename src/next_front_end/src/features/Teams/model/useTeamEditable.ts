@@ -59,6 +59,7 @@ export function useEditableTeam(initialTeam: ShortTeam) {
   }
 
   const handleRemove = () => {
+    if(data.teamChanged?.members.length === 0) return
     const updated = handleToggleRemove(data)
     setData(updated)
   }
