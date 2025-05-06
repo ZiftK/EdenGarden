@@ -13,7 +13,6 @@ export default function LeaderAutocomplete({ value, onChange }: Props) {
 			label='Lider de Equipo'
 			width={'200px'}
 			className='mx-auto'
-			color='success'
 			variant='underlined'
 			selectedKey={isValidSelection ? value : undefined}
 			onSelectionChange={(key) => {
@@ -23,6 +22,10 @@ export default function LeaderAutocomplete({ value, onChange }: Props) {
 
 				if (!selectedLeader) return
 				onChange(selectedLeader)
+			}}
+			classNames={{
+				base: '!text-white label:!text-white value:!text-white',
+				selectorButton: '!text-white',
 			}}
 		>
 			{leaders.map((leader) => (
