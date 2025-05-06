@@ -4,14 +4,14 @@ export type Employee = {
     address: string;
     phone_number: string;
     email: string;
-    hire_date: string;
+    hire_date: string; //fecha de reintegracion
     salary: number;
-    license: string[]
     in_time: string;
     out_time: string;
     password: string;
     role: 'user' | 'admin' | 'leader';
     position: string;
+    teams?: ShortTeam;
 }
 
 export type AuthState = {

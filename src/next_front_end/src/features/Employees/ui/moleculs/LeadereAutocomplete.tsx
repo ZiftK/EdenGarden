@@ -7,7 +7,6 @@ export default function LeaderAutocomplete({ value, onChange }: Props) {
 	const leaders = employees.filter((employee) => employee.role === 'leader')
 
 	const isValidSelection = leaders.some((leader) => leader.id === value)
-	console.log(isValidSelection)
 
 	return (
 		<Autocomplete

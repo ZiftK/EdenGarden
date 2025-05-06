@@ -117,7 +117,33 @@ export default function TableEditableClient({ team }: { team: ShortTeam }) {
 							}}
 						/>
 					))}
-					{data.isEditing && <ModalNewMember />}
+					{data.isEditing && (
+						<ModalNewMember
+							onChange={(employee) => {
+								setData((prev) => ({
+									...prev,
+									teamShowed: {
+										...prev.teamShowed,
+										members: [
+											...prev.teamShowed.members,
+											...(Array.isArray(employee)
+												? employee
+												: [employee]),
+										],
+									},
+									teamChanged: {
+										...prev.teamChanged!,
+										members: [
+											...prev.teamChanged!.members,
+											...(Array.isArray(employee)
+												? employee
+												: [employee]),
+										],
+									},
+								}))
+							}}
+						/>
+					)}
 				</div>
 			</div>
 
