@@ -6,6 +6,9 @@ export default function LeaderAutocomplete({ value, onChange }: Props) {
 	const employees = getLeaders()
 	const leaders = employees.filter((employee) => employee.role === 'leader')
 
+	const isValidSelection = leaders.some((leader) => leader.id === value)
+	console.log(isValidSelection)
+
 	return (
 		<Autocomplete
 			label='Lider de Equipo'
@@ -13,11 +16,12 @@ export default function LeaderAutocomplete({ value, onChange }: Props) {
 			className='mx-auto'
 			color='success'
 			variant='underlined'
-			selectedKey={value}
+			selectedKey={isValidSelection ? value : undefined}
 			onSelectionChange={(key) => {
 				const selectedLeader = leaders.find(
 					(leader) => leader.id === key
 				)
+
 				if (!selectedLeader) return
 				onChange(selectedLeader)
 			}}

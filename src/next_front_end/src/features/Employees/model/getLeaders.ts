@@ -17,7 +17,7 @@ export function getLeaders():Employee[] {
 			in_time: '08:00',
 			out_time: '17:00',
 			password: 'hashedpassword1',
-			role: 'user',
+			role: 'leader',
 			position: 'Frontend Developer',
 		},
 		{
