@@ -1,3 +1,20 @@
+<<<<<<< HEAD
 .idea
 venv/
 py-server/app_venv
+=======
+
+edensg/
+py-server/app_venv
+# carpetas
+venv
+src/backend/EdensGarden_Backend.egg-info
+
+# cache
+*.pyc
+.idea
+.env
+*.ini
+edensg/
+py-server/app_venv
+>>>>>>> e8352c732b995c8fbd4a2a3f8a130a2122f9b9b9
