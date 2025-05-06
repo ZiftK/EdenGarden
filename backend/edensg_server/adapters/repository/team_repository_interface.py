@@ -7,10 +7,10 @@ class TeamRepository(ABC):
     async def create_team(self, data: Team) -> int:
         """Inserta un nuevo equipo en la base de datos."""
 
-    async def find_teams(self, identifier: str, search_by: str = "id") -> list[Team]:
+    async def find_teams(self, identifier: str | int = "all", search_by: str = "id") -> list[Team]:
         """Busca equipos por un campo específico."""
 
-    async def update_team_data(self, id: str, data: Team) -> None:
+    async def update_team_data(self, id: str | int, data: Team) -> None:
         """Actualiza la información de un equipo."""
 
     async def drop_team_data(self, id: int) -> None:
