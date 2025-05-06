@@ -9,13 +9,13 @@ export async function getTeams(): Promise<ShortTeam[]> {
             {
                 name: "Equipo 1",
                 leader: {
-                    id: 'EMP003',
-                    name: 'Jorge Ramírez',                        
-                    phone_number: '555-345-6789',
-                    email: 'jorge.ramirez@empresa.com',                        
-                    salary: 42000,                 
+                    id: 'EMP001',
+                    name: 'Luis Torres',
+                    phone_number: '555-123-4567',
+                    email: 'luis.torres@empresa.com',
+                    salary: 45000,             
                     role: 'leader',
-                    position: 'UI/UX Designer',
+                    position: 'Frontend Developer',
                 },
                 members: [
                     {

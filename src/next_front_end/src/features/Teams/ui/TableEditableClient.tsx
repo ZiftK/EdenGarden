@@ -10,6 +10,7 @@ import {
 	PhoneIcon,
 } from '@/src/components/landing/atoms/Icons/Icons'
 import CopyButton from '@/src/components/ERP/atoms/CopyButton'
+import ModalNewMember from './moleculs/ModalNewMember'
 
 export default function TableEditableClient({ team }: { team: ShortTeam }) {
 	const {
@@ -54,7 +55,7 @@ export default function TableEditableClient({ team }: { team: ShortTeam }) {
 
 						{data.isEditing ? (
 							<LeaderAutocomplete
-								value={currentLeader.id}
+								value={String(currentLeader.id)}
 								onChange={(leader) => {
 									setData((prev) => ({
 										...prev,
@@ -116,14 +117,7 @@ export default function TableEditableClient({ team }: { team: ShortTeam }) {
 							}}
 						/>
 					))}
-					{data.isEditing && (
-						<button
-							onClick={handleAddMember}
-							className='w-full py-4 text-sm h-[20px] cursor-pointer'
-						>
-							Agregar +
-						</button>
-					)}
+					{data.isEditing && <ModalNewMember />}
 				</div>
 			</div>
 
