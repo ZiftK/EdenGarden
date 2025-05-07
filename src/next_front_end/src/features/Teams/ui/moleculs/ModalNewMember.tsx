@@ -1,6 +1,6 @@
 'use client'
 
-import { getLeaders } from '@/src/features/Employees/model/getLeaders'
+import { getEmployees } from '@/src/features/Employees/model/getEmployees'
 import { Employee } from '@/src/shared/types'
 import {
 	Modal,
@@ -21,15 +21,24 @@ export default function ModalNewMember({
 	onChange: (employee: Employee) => void
 }) {
 	const { isOpen, onOpen, onClose } = useDisclosure()
-	const members = getLeaders()
-	const membersWithoutTeam = members.filter((member) => !member.teams)
+	const members = getEmployees()
+	const membersWithoutTeam = members.filter(
+		(member) => !member.teams && member.role !== 'leader'
+	)
 
 	const [idNewMember, setIdNewMember] = useState<string>('')
+	const [alreadyAddedIds, setAlreadyAddedIds] = useState<string[]>([])
+
+	const availableMembers = membersWithoutTeam.filter(
+		(member) => !alreadyAddedIds.includes(member.id)
+	)
+
 	const onSave = (id: string) => {
 		const selectedMember = members.find((member) => member.id === id)
 		if (!selectedMember) return
 
 		onChange(selectedMember)
+		setAlreadyAddedIds([...alreadyAddedIds, selectedMember.id])
 		onClose()
 	}
 
@@ -70,7 +79,7 @@ export default function ModalNewMember({
 									}}
 									variant='underlined'
 								>
-									{membersWithoutTeam.map((member) => (
+									{availableMembers.map((member) => (
 										<AutocompleteItem
 											classNames={{
 												title: 'text-black',
@@ -89,10 +98,10 @@ export default function ModalNewMember({
 									variant='light'
 									onPress={onClose}
 								>
-									Close
+									Cerrar
 								</Button>
 								<Button onPress={() => onSave(idNewMember)}>
-									Action
+									Agregar
 								</Button>
 							</ModalFooter>
 						</>
