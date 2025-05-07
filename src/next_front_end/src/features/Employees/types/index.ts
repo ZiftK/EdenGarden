@@ -1,9 +1,6 @@
-export interface Leader {
-    id: string;
-    name: string;
-}
+import { Employee } from "@/src/shared/types"
 
 export  interface Props {
     value: string;
-    onChange: (leader: Leader) => void;
+    onChange: (leader: Employee) => void;
 }

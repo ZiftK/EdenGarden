@@ -11,7 +11,7 @@ export type Employee = {
     password: string;
     role: 'user' | 'admin' | 'leader';
     position: string;
-    teams?: ShortTeam;
+    teams?: string;
 }
 
 export type AuthState = {
