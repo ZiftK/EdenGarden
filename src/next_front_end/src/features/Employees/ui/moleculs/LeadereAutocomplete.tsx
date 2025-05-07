@@ -24,15 +24,16 @@ export default function LeaderAutocomplete({ value, onChange }: Props) {
 				onChange(selectedLeader)
 			}}
 			classNames={{
-				base: '!text-white label:!text-white value:!text-white',
-				selectorButton: '!text-white',
+				base: 'rounded-xl !text-white hover:!bg-white/30  [&_input]:!text-[var(--father-font)] [&_span]:!text-[var(--father-font)] [&_label]:!text-white/50',
+				selectorButton: 'text-white',
+				clearButton: 'text-white',
 			}}
 		>
 			{leaders.map((leader) => (
 				<AutocompleteItem
 					textValue={leader.name}
 					key={leader.id}
-					className=' text-stone-800'
+					className='text-stone-800'
 				>
 					{leader.name}
 				</AutocompleteItem>
