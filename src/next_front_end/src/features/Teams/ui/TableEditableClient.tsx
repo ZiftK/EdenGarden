@@ -11,17 +11,17 @@ import {
 } from '@/src/components/landing/atoms/Icons/Icons'
 import CopyButton from '@/src/components/ERP/atoms/CopyButton'
 import ModalNewMember from './moleculs/ModalNewMember'
+import { Button } from '@heroui/react'
 
-export default function TableEditableClient({ team }: { team: ShortTeam }) {
-	const {
-		data,
-		setData,
-		bottomRef,
-		reset,
-		handleSave,
-		handleToggleRemove,
-		handleAddMember,
-	} = useEditableTeam(team)
+export default function TableEditableClient({
+	team,
+	isNewTeam = false,
+}: {
+	team: ShortTeam
+	isNewTeam?: boolean
+}) {
+	const { data, setData, bottomRef, reset, handleSave, handleToggleRemove } =
+		useEditableTeam({ initialTeam: team, isNewTeam })
 
 	const currentLeader = data?.currentTeam?.leader
 
@@ -38,7 +38,7 @@ export default function TableEditableClient({ team }: { team: ShortTeam }) {
 					{data.isEditing ? (
 						<button
 							onClick={() => handleToggleRemove()}
-							className='text-sm text-blue-500 cursor-pointer border-b-2 w-fit m-auto'
+							className='text-sm text-blue-400 cursor-pointer border-b-2 w-fit m-auto'
 						>
 							Eliminar
 						</button>
@@ -71,27 +71,29 @@ export default function TableEditableClient({ team }: { team: ShortTeam }) {
 								}}
 							/>
 						) : (
-							<span>{currentLeader.name}</span>
+							<>
+								<span>{currentLeader.name}</span>
+
+								<div className='flex items-center justify-center gap-2'>
+									<CopyButton
+										text={currentLeader.email}
+										icon={EmailIcon({
+											color: 'var(--father-font)',
+											size: [0.75, 0.75],
+										})}
+									/>
+									<CopyButton
+										text={currentLeader.phone_number}
+										icon={PhoneIcon({
+											color: 'var(--father-font)',
+											size: [0.75, 0.75],
+										})}
+									/>
+								</div>
+
+								<span>{currentLeader.salary}</span>
+							</>
 						)}
-
-						<div className='flex items-center justify-center gap-2'>
-							<CopyButton
-								text={currentLeader.email}
-								icon={EmailIcon({
-									color: 'var(--father-font)',
-									size: [0.75, 0.75],
-								})}
-							/>
-							<CopyButton
-								text={currentLeader.phone_number}
-								icon={PhoneIcon({
-									color: 'var(--father-font)',
-									size: [0.75, 0.75],
-								})}
-							/>
-						</div>
-
-						<span>{currentLeader.salary}</span>
 					</div>
 				)}
 
@@ -100,7 +102,7 @@ export default function TableEditableClient({ team }: { team: ShortTeam }) {
 					className='divide-y min-w-[450px] divide-[#2b2f22] h-[100px] overflow-y-auto text-xs scrollbar-thin-custom xl:h-48'
 					ref={bottomRef}
 				>
-					{data.teamShowed.members.map((user, i) => (
+					{data.teamShowed?.members.map((user, i) => (
 						<TeamMemberRow
 							key={i}
 							user={user}
@@ -117,7 +119,7 @@ export default function TableEditableClient({ team }: { team: ShortTeam }) {
 							}}
 						/>
 					))}
-					{data.isEditing && (
+					{(data.isEditing || isNewTeam) && (
 						<ModalNewMember
 							onChange={(employee) => {
 								setData((prev) => ({
@@ -125,7 +127,7 @@ export default function TableEditableClient({ team }: { team: ShortTeam }) {
 									teamShowed: {
 										...prev.teamShowed,
 										members: [
-											...prev.teamShowed.members,
+											...prev.teamShowed?.members,
 											...(Array.isArray(employee)
 												? employee
 												: [employee]),
@@ -148,25 +150,38 @@ export default function TableEditableClient({ team }: { team: ShortTeam }) {
 			</div>
 
 			{/* Botones de acción */}
-			{!data.isEditing ? (
-				<button
-					onClick={() => setData({ ...data, isEditing: true })}
-					className='cursor-pointer text-[var(--green-dark-500)] border-b-2 text-md place-self-end text-center'
-				>
-					Editar
-				</button>
-			) : (
-				<div className='flex gap-2 justify-end mt-4'>
+			{!isNewTeam ? (
+				!data.isEditing ? (
 					<button
-						onClick={handleSave}
-						className='cursor-pointer text-md'
+						onClick={() => setData({ ...data, isEditing: true })}
+						className='cursor-pointer text-[var(--green-dark-500)] border-b-2 text-md place-self-end text-center'
 					>
-						Guardar
+						Editar
 					</button>
-					<button onClick={reset} className='cursor-pointer text-md'>
-						Cancelar
-					</button>
-				</div>
+				) : (
+					<div className='flex gap-2 justify-end mt-4'>
+						<button
+							onClick={handleSave}
+							className='cursor-pointer text-md'
+						>
+							Guardar
+						</button>
+						<button
+							onClick={reset}
+							className='cursor-pointer text-md'
+						>
+							Cancelar
+						</button>
+					</div>
+				)
+			) : (
+				<Button
+					className='bg-green-800/20 text-white mr-auto'
+					onPress={handleSave}
+					size='sm'
+				>
+					Crear nuevo equipo
+				</Button>
 			)}
 		</>
 	)
