@@ -25,8 +25,8 @@ export type AuthState = {
 
 export type ShortTeam ={
     name: string;
-    leader: Pick<Employee, 'email' | 'id' | 'name' | 'phone_number' | 'role' | 'position' | 'salary'>;
-    members: Pick<Employee, 'email' | 'id' | 'name' | 'phone_number' | 'role' | 'position' | 'salary'>[];
+    leader: Pick<Employee, 'email' | 'id' | 'name' | 'phone_number' | 'role' | 'position' | 'salary' | 'teams'>;
+    members: Pick<Employee, 'email' | 'id' | 'name' | 'phone_number' | 'role' | 'position' | 'salary' | 'teams'>[];
 }
 
 export type Project = {
