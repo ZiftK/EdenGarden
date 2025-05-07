@@ -8,6 +8,14 @@ class TeamUseCases:
     def __init__(self, team_repository: TeamRepository):
         self.team_repository = team_repository
 
+    async def create_team(self, team: Team) -> None:
+        """
+        Crea un nuevo equipo de trabajo.
+        Args:
+            team: Equipo de trabajo a crear
+        """
+        await self.team_repository.create_team(team)
+
     async def assign_team_to_project(self, project_id: str, team_id: str) -> None:
         """
         Asigna un equipo a un proyecto, validando existencia y evitando duplicados.
