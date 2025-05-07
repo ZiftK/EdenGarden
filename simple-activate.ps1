@@ -28,9 +28,9 @@ Write-Output "Activando el entorno virtual..."
 if ($env:VIRTUAL_ENV) {
     Write-Output "Entorno virtual activado en $env:VIRTUAL_ENV"
     $BASE_DIR = Split-Path -Parent $MyInvocation.MyCommand.Definition
-    $MOD_DIR = Join-Path $BASE_DIR "src"
-    $env:PYTHONPATH = "$MOD_DIR;$env:PYTHONPATH"
-    Write-Output "Variable de modulos establecida"
+    $env:PYTHONPATH = "$BASE_DIR;$env:PYTHONPATH"
+    Write-Output "Variables de entorno establecidas:"
+    Write-Output "PYTHONPATH = $env:PYTHONPATH"
 } else {
     Write-Output "Error: No se pudo activar el entorno virtual."
     exit 1
