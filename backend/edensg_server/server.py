@@ -1,17 +1,13 @@
 from fastapi import FastAPI
-
 from pydantic import BaseModel
-
-from backend.edensg_server.adapters.api_rest.routers import cv_router
-
+from adapters.api_rest.routers.team_paths import router as team_router
 
 class Message(BaseModel):
     message: str
 
 
 app = FastAPI()
-app.include_router(cv_router)
-
+app.include_router(team_router)
 
 @app.get('/')
 def root():
