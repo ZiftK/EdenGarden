@@ -4,6 +4,7 @@ from .employee import Employee
 
 
 class Team(BaseModel):
-    name: str
-    leader: Employee
-    employees: list[Employee]
+    id_equipo: int
+    nombre: str
+    lider: Employee
+    empleados: Optional[list[Employee]] = None
