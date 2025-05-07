@@ -97,9 +97,11 @@ CREATE TABLE IF NOT EXISTS Proyecto (
     costo NUMERIC(10,2),
     fk_cliente INT NOT NULL,
     fk_calendario INT,
+    fk_equipo INT,
 
     FOREIGN KEY (fk_cliente) REFERENCES Cliente(id_cliente) ON DELETE SET NULL,
-    FOREIGN KEY (fk_calendario) REFERENCES CalendarioProyecto(id_calendario) ON DELETE SET NULL
+    FOREIGN KEY (fk_calendario) REFERENCES CalendarioProyecto(id_calendario) ON DELETE SET NULL,
+    FOREIGN KEY (fk_equipo) REFERENCES Equipo(id_equipo) ON DELETE SET NULL
 );
 
 CREATE TABLE IF NOT EXISTS Asistencia (
