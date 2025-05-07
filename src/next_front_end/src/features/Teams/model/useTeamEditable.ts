@@ -1,16 +1,16 @@
 'use client'
 
-import { useRef, useEffect, useState } from "react"
+import { useState } from "react"
 
 import { ShortTeam } from "@/src/shared/types"
 import { handleSaveTeam } from "./handlers/handleSaveTeam"
 import { handleToggleRemove } from "./handlers/handleToggleRemove"
 import { dataTeam } from "../types/types"
 
-export function useEditableTeam(initialTeam: ShortTeam) {
+export function useEditableTeam({initialTeam, isNewTeam = false}:{initialTeam: ShortTeam, isNewTeam?: boolean}) {
   const [data, setData] = useState<dataTeam>({
     currentTeam: initialTeam,
-    isEditing: false,
+    isEditing: isNewTeam,
     teamShowed: initialTeam,
     teamChanged: {		name: '',
       leader: {
@@ -25,18 +25,10 @@ export function useEditableTeam(initialTeam: ShortTeam) {
       members: [],},
   })
 
-  const bottomRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    if (data.isEditing && bottomRef.current) {
-      bottomRef.current.scrollIntoView({ behavior: "smooth" })
-    }
-  }, [data.isEditing])
-
   const reset = () => {
     setData((prev) => ({
       ...prev,
-      isEditing: false,
+      isEditing: true,
       teamShowed: prev.currentTeam,
       teamChanged: {
         name: '',
@@ -71,7 +63,6 @@ export function useEditableTeam(initialTeam: ShortTeam) {
   return {
     data,
     setData,
-    bottomRef,
     reset,
     handleSave,
     handleToggleRemove: handleRemove,
