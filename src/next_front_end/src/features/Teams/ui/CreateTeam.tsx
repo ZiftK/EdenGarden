@@ -1,41 +1,57 @@
 'use client'
 
-import { Autocomplete, Button, Input } from '@heroui/react'
+import { Button, Input } from '@heroui/react'
+import { ShortTeam } from '@/src/shared/types'
+import { TeamMemberRow } from './moleculs/TeamMemberRow'
 import { useEditableTeam } from '../model/useTeamEditable'
 import LeaderAutocomplete from '../../Employees/ui/moleculs/LeadereAutocomplete'
-import { getEmployees } from '../../Employees/model/getEmployees'
-import { ShortTeam } from '@/src/shared/types'
-import EmployeesAutocomplete from '../../Employees/ui/moleculs/EmployeesAutocomplete'
+import CopyButton from '@/src/components/ERP/atoms/CopyButton'
+import {
+	EmailIcon,
+	PhoneIcon,
+} from '@/src/components/landing/atoms/Icons/Icons'
+import { toggleTeamMember } from '../model/handlers/toogleTeamMember'
+import ModalNewMember from './moleculs/ModalNewMember'
+import { redirect } from 'next/navigation'
 
 export default function CreateTeam({}) {
-	const employees = getEmployees()
-	const employeesWithoutTeam = employees.filter((employee) => !employee.teams)
-
-	const dataTeam: ShortTeam = {
+	const initialTeam: ShortTeam = {
 		name: '',
 		leader: {
 			name: '',
 			id: '',
 			email: '',
 			phone_number: '',
-			role: 'user',
+			role: 'leader',
 			position: '',
 			salary: 0,
+			teams: undefined,
 		},
 		members: [],
 	}
 
-	const { reset, data, setData, handleSave } = useEditableTeam(dataTeam)
+	const { data, setData, reset, handleSave, handleToggleRemove } =
+		useEditableTeam({ initialTeam, isNewTeam: true })
 
-	const handleSubmit = () => {
+	const handleCreateNewTeam = () => {
+		if (data.teamChanged?.members.length === 0) return
+		if (data.teamChanged?.name === '') {
+			alert('El nombre del equipo no puede estar vacio')
+			return
+		}
+		if (data.teamChanged?.leader.id === '') {
+			alert('El lider no puede estar vacio')
+			return
+		}
 		handleSave()
+		redirect(`/dashboard/equipos/${data.currentTeam.name}`)
 	}
 
 	return (
 		<article>
 			<Input
 				isRequired
-				errorMessage='Please enter a valid email'
+				errorMessage='EL nombre del equipo es invalido'
 				label='Nombre del Equipo'
 				labelPlacement='inside'
 				name='TeamName'
@@ -43,7 +59,7 @@ export default function CreateTeam({}) {
 				type='text'
 				classNames={{
 					label: '!text-white/50',
-					input: 'label: text-white bg-transparent !text-white/80 focus:!bg-white/30 active:!bg-white/30',
+					input: 'label:!text-[var(--father-font)] bg-transparent !text-[var(--father-font)] focus:!bg-white/30 active:!bg-white/30',
 					inputWrapper: [
 						'bg-transparent',
 						'hover:!bg-white/30',
@@ -55,42 +71,184 @@ export default function CreateTeam({}) {
 						'focus:border-white/50',
 					],
 				}}
-			/>
-
-			<LeaderAutocomplete
-				value={dataTeam.leader.id}
-				onChange={(leader) => {
+				onChange={(e) => {
 					setData((prev) => ({
 						...prev,
-						leaderName: {
-							name: leader.name,
-							id: leader.id,
+						isEditing: true,
+						teamChanged: {
+							...prev.teamChanged!,
+							name: e.target.value,
+							leader: prev.teamChanged?.leader || {
+								id: '',
+								name: '',
+								role: 'leader',
+								email: '',
+								phone_number: '',
+								position: '',
+								salary: 0,
+								teams: undefined,
+							},
 						},
 					}))
 				}}
 			/>
 
-			{/* <EmployeesAutocomplete value={} /> */}
+			{/* Header y resto del código como estaba */}
+			<div className='w-full font-light text-sm overflow-x-auto'>
+				{/* Header */}
+				<div className='grid grid-cols-[1fr_1fr_2fr_1fr_1fr] min-w-[450px] bg-transparent text-center py-2 mb-2 font-medium border-b border-[#bec8a6]'>
+					<span className='text-sm'>Puesto</span>
+					<span className='text-sm'>Expediente</span>
+					<span className='text-sm'>Nombre</span>
+					<span className='text-sm'>Contacto</span>
+					{data.isEditing ? (
+						<button
+							onClick={() => handleToggleRemove()}
+							className='text-sm text-blue-400 cursor-pointer border-b-2 w-fit m-auto'
+						>
+							Eliminar
+						</button>
+					) : (
+						<span className='text-sm'>Salario</span>
+					)}
+				</div>
 
-			<div className='flex gap-2 ml-auto'>
-				<Button
-					onPress={handleSubmit}
-					size='sm'
-					color='primary'
-					className='bg-[rgba(24,44,2)]'
-				>
-					Submit
-				</Button>
-				<Button
-					size='sm'
-					onPress={reset}
-					variant='flat'
-					color='default'
-					className='text-white bg-amber-50/5'
-				>
-					Reset
-				</Button>
+				{/*Leader*/}
+				{data.currentTeam?.leader && (
+					<div className='grid grid-cols-[1fr_1fr_2fr_1fr_1fr] min-w-[450px] items-center text-center py-2 bg-[var(--father-font-transparent-200)]'>
+						<span>{data.currentTeam.leader.position}</span>
+						<span>{data.currentTeam.leader.id}</span>
+
+						{data.isEditing ? (
+							<LeaderAutocomplete
+								value={String(data.currentTeam.leader.id)}
+								onChange={(leader) => {
+									setData((prev) => ({
+										...prev,
+										teamShowed: {
+											...prev.teamShowed,
+											leader: {
+												...prev.teamShowed.leader,
+												name: leader.name,
+												id: leader.id,
+											},
+										},
+										teamChanged: {
+											...prev.teamChanged!,
+											leader: {
+												...prev.teamChanged?.leader,
+												name: leader.name,
+												id: leader.id,
+												email: leader.email,
+												phone_number:
+													leader.phone_number,
+												role: leader.role,
+												position: leader.position,
+												salary: leader.salary,
+												teams: data.teamChanged?.name,
+											},
+										},
+									}))
+								}}
+							/>
+						) : (
+							<>
+								<span>{data.currentTeam.leader.name}</span>
+
+								<div className='flex items-center justify-center gap-2'>
+									<CopyButton
+										text={data.currentTeam.leader.email}
+										icon={EmailIcon({
+											color: 'var(--father-font)',
+											size: [0.75, 0.75],
+										})}
+									/>
+									<CopyButton
+										text={
+											data.currentTeam.leader.phone_number
+										}
+										icon={PhoneIcon({
+											color: 'var(--father-font)',
+											size: [0.75, 0.75],
+										})}
+									/>
+								</div>
+
+								<span>{data.currentTeam.leader.salary}</span>
+							</>
+						)}
+					</div>
+				)}
+
+				{/* Body */}
+				<div className='divide-y min-w-[450px] divide-[#2b2f22] h-[100px] overflow-y-auto text-xs scrollbar-thin-custom xl:h-48'>
+					{data.teamShowed?.members.map((user, i) => (
+						<TeamMemberRow
+							key={i}
+							user={user}
+							index={i}
+							isEditing={data.isEditing}
+							isIncluded={
+								data.teamChanged?.members.includes(user) ||
+								false
+							}
+							onToggle={(checked) => {
+								setData((prev) =>
+									toggleTeamMember(prev, user, checked)
+								)
+							}}
+						/>
+					))}
+					{data.isEditing && (
+						<ModalNewMember
+							onChange={(employee) => {
+								setData((prev) => ({
+									...prev,
+									teamShowed: {
+										...prev.teamShowed,
+										members: [
+											...prev.teamShowed?.members,
+											...(Array.isArray(employee)
+												? employee
+												: [employee]),
+										],
+									},
+									teamChanged: {
+										...prev.teamChanged!,
+										members: [
+											...prev.teamChanged!.members,
+											...(Array.isArray(employee)
+												? employee
+												: [employee]),
+										],
+									},
+								}))
+							}}
+						/>
+					)}
+				</div>
 			</div>
+
+			{/* Botones de acción */}
+			{data.isEditing && (
+				<div className='flex flex-col ml-auto w-fit items-end gap-2'>
+					<Button
+						className='bg-green-800/20 text-white mr-auto'
+						onPress={() => handleCreateNewTeam()}
+						size='sm'
+					>
+						Crear nuevo equipo
+					</Button>
+
+					<Button
+						className='bg-red-800/20 text-white mr-auto'
+						onPress={reset}
+						size='sm'
+					>
+						Formatear
+					</Button>
+				</div>
+			)}
 		</article>
 	)
 }
