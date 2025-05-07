@@ -3,15 +3,16 @@ from pydantic import BaseModel
 
 
 class Employee(BaseModel):
-    id: int
-    name: str
-    address: str
-    phone_number: str
+    id_empleado: int
+    nombre: str
+    direccion: str
+    telefono: str
     email: Optional[str]
-    hire_date: str
-    role: str
-    salary: float
-    licenses: list[str]
-    in_time: Optional[str]
-    out_time: Optional[str]
+    fecha_contratacion: str
+    fecha_salida: Optional[str]
+    fecha_recontratacion: Optional[str]
+    clave: str
+    rol: str
+    puesto: str
+    salario: float
 
