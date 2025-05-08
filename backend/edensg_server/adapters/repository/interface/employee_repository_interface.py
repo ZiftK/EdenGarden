@@ -15,6 +15,10 @@ class EmployeeRepository(ABC):
     @abstractmethod
     def find_employee_by_id(self, id: int) -> list[Employee]:
         """Busca empleados por id."""
+
+    @abstractmethod
+    def find_employees_by_ids(self, ids: list[int]) -> list[Employee]:
+        """Busca empleados por ids."""
     
     @abstractmethod
     def find_employee_by_name(self, name: str) -> list[Employee]:

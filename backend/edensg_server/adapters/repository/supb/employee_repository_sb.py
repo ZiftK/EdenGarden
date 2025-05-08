@@ -15,7 +15,7 @@ class EmployeeRepositorySB(EmployeeRepository):
         response = self.client.table(self.table).insert(data_dict).execute()
         return response.data[0]['id_empleado']
 
-    def get_all_employees(self) -> list[Employee]:
+    def get_all_employees(self) -> Employee:
         """Obtiene todos los empleados de la base de datos."""
         response = self.client.table(self.table).select('*').execute()
         return [Employee(**employee) for employee in response.data]
@@ -23,6 +23,12 @@ class EmployeeRepositorySB(EmployeeRepository):
     def find_employee_by_id(self, id: int) -> list[Employee]:
         """Busca empleados por id."""
         response = self.client.table(self.table).select('*').eq('id_empleado', id).execute()
+        data = response.data[0]
+        return Employee(**data) 
+    
+    def find_employees_by_ids(self, ids: list[int]) -> list[Employee]:
+        """Busca empleados por ids."""
+        response = self.client.table(self.table).select('*').in_('id_empleado', ids).execute()
         return [Employee(**employee) for employee in response.data]
 
     def find_employee_by_name(self, name: str) -> list[Employee]:
@@ -50,3 +56,6 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
+
+employee_sb_repository = EmployeeRepositorySB()
