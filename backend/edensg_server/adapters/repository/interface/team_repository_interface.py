@@ -9,13 +9,23 @@ class TeamRepository(ABC):
         """Inserta un nuevo equipo en la base de datos."""
 
     @abstractmethod
-    async def find_team(self, identifier: str | int = "all", search_by: str = "id") -> list[Team]:
+    async def get_all_teams(self) -> list[Team]:
+        """Obtiene todos los equipos de la base de datos."""
+    
+    @abstractmethod
+    async def find_team_by_id(self, id: int) -> list[Team]:
         """Busca equipos por un campo específico."""
 
     @abstractmethod
-    async def update_team_data(self, id: str | int, data: Team) -> None:
+    async def find_team_by_name(self, name: str) -> list[Team]:
+        """Busca equipos por un campo específico."""
+
+
+    @abstractmethod
+    async def update_team_data(self, id: int, data: Team) -> None:
         """Actualiza la información de un equipo."""
 
     @abstractmethod
-    async def drop_team_data(self, id: int) -> None:
+    async def delete_team_data(self, id: int) -> None:
         """Elimina un equipo de la base de datos."""
+
