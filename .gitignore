@@ -5,6 +5,7 @@ py-server/app_venv
 =======
 
 edensg/
+linux_venv/
 py-server/app_venv
 # carpetas
 venv
