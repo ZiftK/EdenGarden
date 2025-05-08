@@ -3,7 +3,7 @@ from backend.edensg_server.adapters.repository.employee_repository_interface imp
 from backend.edensg_server.adapters.repository.project_repository_interface import ProjectRepository
 from backend.edensg_server.domain.entities.employee import Employee
 from backend.edensg_server.domain.entities.project_calendar import ProjectCalendar, DateSchedule
-from .calendar_use_cases import get_working_days_on_sprint
+from .calendar_uses_cases import get_working_days_on_sprint
 
 class EmployeeUseCases:
     def __init__(self, employee_repository: EmployeeRepository, project_repository: ProjectRepository):
