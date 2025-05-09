@@ -11,6 +11,7 @@ export type Employee = {
     password: string;
     role: 'user' | 'admin' | 'leader';
     position: string;
+    img?: string
     teams?: string;
 }
 

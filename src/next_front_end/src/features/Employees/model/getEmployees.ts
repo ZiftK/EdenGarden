@@ -15,6 +15,7 @@ export function getEmployees():Employee[]{
 			password: 'hashedpassword1',
 			role: 'leader',
 			position: 'Frontend Developer',
+			img: 'https://i.pravatar.cc/150?u=a042581f4e29026024d'
 		},
 		{
 			id: 'EMP002',
@@ -29,6 +30,7 @@ export function getEmployees():Employee[]{
 			password: 'hashedpassword2',
 			role: 'admin',
 			position: 'Backend Developer',
+			img: 'https://i.pravatar.cc/150?u=a042581f4e29026704d'
 		},
 		{
 			id: 'EMP003',
@@ -43,6 +45,7 @@ export function getEmployees():Employee[]{
 			password: 'hashedpassword3',
 			role: 'leader',
 			position: 'UI/UX Designer',
+				img: 'https://i.pravatar.cc/150?u=15'
 		},
 		{
 			id: 'EMP004',
@@ -57,6 +60,7 @@ export function getEmployees():Employee[]{
 			password: 'hashedpassword4',
 			role: 'user',
 			position: 'Fullstack Developer',
+				img: 'https://i.pravatar.cc/20?u=28'
 		},
 		{
 			id: 'EMP005',
@@ -71,6 +75,7 @@ export function getEmployees():Employee[]{
 			password: 'hashedpassword5',
 			role: 'user',
 			position: 'QA Analyst',
+				img: 'https://i.pravatar.cc/150?u=38'
 		},
 		{
 			id: 'EMP006',
@@ -85,6 +90,7 @@ export function getEmployees():Employee[]{
 			password: 'hashedpassword6',
 			role: 'admin',
 			position: 'Product Owner',
+				img: 'https://i.pravatar.cc/150?u=29'
 		},
 		{
 			id: 'EMP007',
@@ -99,6 +105,7 @@ export function getEmployees():Employee[]{
 			password: 'hashedpassword7',
 			role: 'leader',
 			position: 'Mobile Developer',
+				img: 'https://i.pravatar.cc/150?u=41'
 		},
 		{
 			id: 'EMP008',
@@ -113,6 +120,7 @@ export function getEmployees():Employee[]{
 			password: 'hashedpassword8',
 			role: 'user',
 			position: 'Graphic Designer',
+			img: 'https://i.pravatar.cc/150?u=44'
 		},
 		{
 			id: 'EMP009',
@@ -127,6 +135,7 @@ export function getEmployees():Employee[]{
 			password: 'hashedpassword9',
 			role: 'user',
 			position: 'IT Support',
+			img: 'https://i.pravatar.cc/20'
 		},
 		{
 			id: 'EMP010',
@@ -141,6 +150,7 @@ export function getEmployees():Employee[]{
 			password: 'hashedpassword10',
 			role: 'user',
 			position: 'Content Strategist',
+			img: 'https://i.pravatar.cc/20'
 		},
 		{
 			id: 'EMP011',
@@ -155,6 +165,7 @@ export function getEmployees():Employee[]{
 			password: 'hashedpassword11',
 			role: 'admin',
 			position: 'Data Engineer',
+			img: 'https://i.pravatar.cc/20'
 		},
 		{
 			id: 'EMP012',
@@ -169,6 +180,7 @@ export function getEmployees():Employee[]{
 			password: 'hashedpassword12',
 			role: 'user',
 			position: 'Recruiter',
+			img: 'https://i.pravatar.cc/20'
 		},
 		{
 			id: 'EMP013',
@@ -183,6 +195,7 @@ export function getEmployees():Employee[]{
 			password: 'hashedpassword13',
 			role: 'user',
 			position: 'Accountant',
+			img: 'https://i.pravatar.cc/20'
 		},
 		{
 			id: 'EMP014',
@@ -197,6 +210,7 @@ export function getEmployees():Employee[]{
 			password: 'hashedpassword14',
 			role: 'user',
 			position: 'Office Manager',
+			img: 'https://i.pravatar.cc/20'
 		},
 		{
 			id: 'EMP015',
@@ -211,6 +225,7 @@ export function getEmployees():Employee[]{
 			password: 'hashedpassword15',
 			role: 'leader',
 			position: 'DevOps Engineer',
+			img: 'https://i.pravatar.cc/20' 	
 		},
     ]
 }
