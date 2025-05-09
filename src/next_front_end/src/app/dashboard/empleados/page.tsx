@@ -8,6 +8,7 @@ import {
 } from '@/src/features/Employees/ui/moleculs/Icons'
 import Title from '@/src/shared/components/atoms/Title'
 import {
+	Button,
 	Chip,
 	Table,
 	TableBody,
@@ -75,20 +76,29 @@ export default function Page() {
 			case 'actions':
 				return (
 					<div className='relative flex items-center gap-2'>
-						<Tooltip content='Details'>
-							<span className='text-lg text-default-400 cursor-pointer active:opacity-50'>
+						<Tooltip content='Detalles' color='secondary'>
+							<Button
+								isIconOnly
+								className='text-lg text-default-400 bg-[#0002] cursor-pointer active:opacity-50 rounded-full'
+							>
 								<EyeIcon />
-							</span>
+							</Button>
 						</Tooltip>
-						<Tooltip content='Edit user'>
-							<span className='text-lg text-default-400 cursor-pointer active:opacity-50'>
+						<Tooltip content='Edit user' color='secondary'>
+							<Button
+								isIconOnly
+								className='text-lg text-default-400 bg-[#0002] cursor-pointer active:opacity-50 rounded-full'
+							>
 								<EditIcon />
-							</span>
+							</Button>
 						</Tooltip>
 						<Tooltip color='danger' content='Delete user'>
-							<span className='text-lg text-danger cursor-pointer active:opacity-50'>
+							<Button
+								isIconOnly
+								className='text-lg text-danger bg-[#0002] cursor-pointer active:opacity-50 rounded-full'
+							>
 								<DeleteIcon />
-							</span>
+							</Button>
 						</Tooltip>
 					</div>
 				)
@@ -120,6 +130,7 @@ export default function Page() {
 				<TableHeader columns={columns}>
 					{(column) => (
 						<TableColumn
+							className='!bg-[#0002] text-md text-white'
 							key={column.uid}
 							align={
 								column.uid === 'actions' ? 'center' : 'start'
