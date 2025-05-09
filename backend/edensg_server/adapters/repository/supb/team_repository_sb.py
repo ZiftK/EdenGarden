@@ -13,6 +13,11 @@ class TeamRepositorySB(TeamRepository):
         self.table = 'equipo'
         self.equipoempleado_table = 'equipoempleado'
 
+    def __get_team_employees(self, id: int) -> list[Employee]:
+        """Obtiene los empleados de un equipo."""
+        employee_ids: list[int] = [employee['fk_empleado'] for employee in self.client.table(self.equipoempleado_table).select('fk_empleado').eq('fk_equipo', id).execute().data]
+        return self.employee_repo.find_employees_by_ids(employee_ids)
+
     def create_team(self, team: Team) -> int:
         """Inserta un nuevo equipo en la base de datos."""
         data_dict = team.model_dump(exclude={'id_equipo'})
@@ -32,10 +37,9 @@ class TeamRepositorySB(TeamRepository):
         data = response.data[0]
         # We get the leader of the team using the employee repository that implements the supabase client
         leader: Employee = self.employee_repo.find_employee_by_id(data['fk_lider'])
-        # We get the employees of the team using the supabase client
-        employee_ids: list[int] = [employee['fk_empleado'] for employee in self.client.table(self.equipoempleado_table).select('fk_empleado').eq('fk_equipo', id).execute().data]
+        
         # We get the employees of the team using the employee repository that implements the supabase client
-        employees: list[Employee] = self.employee_repo.find_employees_by_ids(employee_ids)
+        employees: list[Employee] = self.__get_team_employees(data['id_equipo'])
         
         data.pop('fk_lider')
 
@@ -47,7 +51,19 @@ class TeamRepositorySB(TeamRepository):
     def find_team_by_name(self, name: str) -> list[Team]:
         """Busca equipos por nombre."""
         response = self.client.table(self.table).select('*').ilike('nombre', f'%{name}%').execute()
-        return [Team(**team) for team in response.data]
+        response = response.data
+
+        teams: list[Team] = []
+        for team in response:
+            leader = self.employee_repo.find_employee_by_id(team['fk_lider'])
+            employees = self.__get_team_employees(team['id_equipo'])
+
+            team.pop('fk_lider')
+
+            teams.append(Team(
+                **{**team, 'lider': leader, 'empleados': employees}
+            ))
+        return teams
     
     def update_team_data(self, id: int, data: Team) -> None:
         """Actualiza la información de un equipo."""
@@ -61,7 +77,7 @@ repository_sb = TeamRepositorySB()
 
 def main():
     repo = TeamRepositorySB()
-    teams = repo.find_team_by_id(1)
+    teams = repo.find_team_by_name('Equipo Verde')
     print(teams)
 
 if __name__ == "__main__":
