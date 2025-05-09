@@ -1,112 +1,27 @@
 'use client'
 
 import { getEmployees } from '@/src/features/Employees/model/getEmployees'
-import {
-	DeleteIcon,
-	EditIcon,
-	EyeIcon,
-} from '@/src/features/Employees/ui/moleculs/Icons'
+import { renderCell } from '@/src/features/Employees/ui/moleculs/renderCell'
 import Title from '@/src/shared/components/atoms/Title'
 import {
-	Button,
-	Chip,
 	Table,
 	TableBody,
 	TableCell,
 	TableColumn,
 	TableHeader,
 	TableRow,
-	Tooltip,
-	User,
 } from '@heroui/react'
 import { useCallback } from 'react'
 
 export default function Page() {
 	const data = getEmployees()
-
 	const columns = [
 		{ uid: 'name', name: 'Nombre' },
 		{ uid: 'role', name: 'Rol' },
 		{ uid: 'status', name: 'Estado' },
 		{ uid: 'actions', name: 'Acciones' },
 	]
-
-	const statusColorMap = {
-		active: 'success',
-		inactive: 'danger',
-		pending: 'warning',
-	}
-
-	const renderCell = useCallback((user, columnKey) => {
-		const cellValue = user[columnKey]
-
-		switch (columnKey) {
-			case 'name':
-				return (
-					<User
-						avatarProps={{ radius: 'lg', src: user.img }}
-						description={user.email}
-						name={cellValue}
-					>
-						{user.email}
-					</User>
-				)
-			case 'role':
-				return (
-					<div className='flex flex-col'>
-						<p className='text-bold text-sm capitalize'>
-							{cellValue}
-						</p>
-						<p className='text-bold text-sm capitalize text-default-400'>
-							{user.team}
-						</p>
-					</div>
-				)
-			case 'status':
-				return (
-					<Chip
-						className='capitalize'
-						color={statusColorMap[user.status]}
-						size='sm'
-						variant='flat'
-					>
-						{cellValue}
-					</Chip>
-				)
-			case 'actions':
-				return (
-					<div className='relative flex items-center gap-2'>
-						<Tooltip content='Detalles' color='secondary'>
-							<Button
-								isIconOnly
-								className='text-lg text-default-400 bg-[#0002] cursor-pointer active:opacity-50 rounded-full'
-							>
-								<EyeIcon />
-							</Button>
-						</Tooltip>
-						<Tooltip content='Edit user' color='secondary'>
-							<Button
-								isIconOnly
-								className='text-lg text-default-400 bg-[#0002] cursor-pointer active:opacity-50 rounded-full'
-							>
-								<EditIcon />
-							</Button>
-						</Tooltip>
-						<Tooltip color='danger' content='Delete user'>
-							<Button
-								isIconOnly
-								className='text-lg text-danger bg-[#0002] cursor-pointer active:opacity-50 rounded-full'
-							>
-								<DeleteIcon />
-							</Button>
-						</Tooltip>
-					</div>
-				)
-			default:
-				return cellValue
-		}
-	}, [])
-
+	const render = useCallback(renderCell, [])
 	return (
 		<section
 			aria-labelledby='dashboard-section-title'
@@ -114,7 +29,7 @@ export default function Page() {
 		>
 			<Title
 				title='Empleados'
-				btn={{ active: true, path: '/dashboard/equipos/crear' }}
+				btn={{ active: true, path: '/dashboard/empleados/crear' }}
 			/>
 
 			<Table
@@ -144,9 +59,7 @@ export default function Page() {
 					{(item) => (
 						<TableRow key={item.id}>
 							{(columnKey) => (
-								<TableCell>
-									{renderCell(item, columnKey)}
-								</TableCell>
+								<TableCell>{render(item, columnKey)}</TableCell>
 							)}
 						</TableRow>
 					)}
