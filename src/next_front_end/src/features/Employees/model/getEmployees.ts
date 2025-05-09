@@ -15,6 +15,7 @@ export function getEmployees():Employee[]{
 			password: 'hashedpassword1',
 			role: 'leader',
 			position: 'Frontend Developer',
+			status: 'active',
 			img: 'https://i.pravatar.cc/150?u=a042581f4e29026024d'
 		},
 		{
@@ -30,6 +31,7 @@ export function getEmployees():Employee[]{
 			password: 'hashedpassword2',
 			role: 'admin',
 			position: 'Backend Developer',
+						status: 'active',
 			img: 'https://i.pravatar.cc/150?u=a042581f4e29026704d'
 		},
 		{
@@ -45,6 +47,7 @@ export function getEmployees():Employee[]{
 			password: 'hashedpassword3',
 			role: 'leader',
 			position: 'UI/UX Designer',
+			status: 'inactive',
 				img: 'https://i.pravatar.cc/150?u=15'
 		},
 		{
@@ -60,6 +63,7 @@ export function getEmployees():Employee[]{
 			password: 'hashedpassword4',
 			role: 'user',
 			position: 'Fullstack Developer',
+			status: 'active',
 				img: 'https://i.pravatar.cc/20?u=28'
 		},
 		{
@@ -75,6 +79,7 @@ export function getEmployees():Employee[]{
 			password: 'hashedpassword5',
 			role: 'user',
 			position: 'QA Analyst',
+			status: 'active',
 				img: 'https://i.pravatar.cc/150?u=38'
 		},
 		{
@@ -90,6 +95,7 @@ export function getEmployees():Employee[]{
 			password: 'hashedpassword6',
 			role: 'admin',
 			position: 'Product Owner',
+			status: 'inactive',
 				img: 'https://i.pravatar.cc/150?u=29'
 		},
 		{
@@ -105,6 +111,7 @@ export function getEmployees():Employee[]{
 			password: 'hashedpassword7',
 			role: 'leader',
 			position: 'Mobile Developer',
+			status: 'pending',
 				img: 'https://i.pravatar.cc/150?u=41'
 		},
 		{
@@ -120,6 +127,7 @@ export function getEmployees():Employee[]{
 			password: 'hashedpassword8',
 			role: 'user',
 			position: 'Graphic Designer',
+			status: 'pending',
 			img: 'https://i.pravatar.cc/150?u=44'
 		},
 		{
@@ -135,6 +143,7 @@ export function getEmployees():Employee[]{
 			password: 'hashedpassword9',
 			role: 'user',
 			position: 'IT Support',
+			status: 'active',	
 			img: 'https://i.pravatar.cc/20'
 		},
 		{
@@ -150,6 +159,7 @@ export function getEmployees():Employee[]{
 			password: 'hashedpassword10',
 			role: 'user',
 			position: 'Content Strategist',
+			status: 'inactive',
 			img: 'https://i.pravatar.cc/20'
 		},
 		{
@@ -165,6 +175,7 @@ export function getEmployees():Employee[]{
 			password: 'hashedpassword11',
 			role: 'admin',
 			position: 'Data Engineer',
+			status: 'pending',
 			img: 'https://i.pravatar.cc/20'
 		},
 		{
@@ -180,6 +191,7 @@ export function getEmployees():Employee[]{
 			password: 'hashedpassword12',
 			role: 'user',
 			position: 'Recruiter',
+			status: 'pending',
 			img: 'https://i.pravatar.cc/20'
 		},
 		{
@@ -195,6 +207,7 @@ export function getEmployees():Employee[]{
 			password: 'hashedpassword13',
 			role: 'user',
 			position: 'Accountant',
+			status: 'active',
 			img: 'https://i.pravatar.cc/20'
 		},
 		{
@@ -210,6 +223,7 @@ export function getEmployees():Employee[]{
 			password: 'hashedpassword14',
 			role: 'user',
 			position: 'Office Manager',
+			status: 'inactive',
 			img: 'https://i.pravatar.cc/20'
 		},
 		{
@@ -225,6 +239,7 @@ export function getEmployees():Employee[]{
 			password: 'hashedpassword15',
 			role: 'leader',
 			position: 'DevOps Engineer',
+			status: 'active',
 			img: 'https://i.pravatar.cc/20' 	
 		},
     ]

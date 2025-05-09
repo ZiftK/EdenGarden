@@ -100,7 +100,7 @@ export default function Page() {
 	return (
 		<section
 			aria-labelledby='dashboard-section-title'
-			className=' overflow-x-auto max-w-full mt-4 text-[var(--father-font)] mx-auto col-start-1 md:row-start-2  md:!col-start-1 md:row-span-3 xl:!col-start-2'
+			className=' overflow-x-auto w-full lg:max-w-9/12 mt-4 text-[var(--father-font)] mx-auto col-start-1 md:row-start-2  md:!col-start-1 md:row-span-3 xl:!col-start-2'
 		>
 			<Title
 				title='Empleados'
@@ -109,7 +109,7 @@ export default function Page() {
 
 			<Table
 				aria-label='Example table with custom cells'
-				className='max-h-[calc(100%-45px)]  [&>div]:!bg-transparent'
+				className='max-h-[calc(100%-45px)] w-full [&>div]:!bg-transparent'
 				border={10}
 				color='success'
 				classNames={{

@@ -12,6 +12,7 @@ export type Employee = {
     role: 'user' | 'admin' | 'leader';
     position: string;
     img?: string
+    status?: 'active' | 'inactive' | 'pending';
     teams?: string;
 }
 
@@ -26,8 +27,8 @@ export type AuthState = {
 
 export type ShortTeam ={
     name: string;
-    leader: Pick<Employee, 'email' | 'id' | 'name' | 'phone_number' | 'role' | 'position' | 'salary' | 'teams'>;
-    members: Pick<Employee, 'email' | 'id' | 'name' | 'phone_number' | 'role' | 'position' | 'salary' | 'teams'>[];
+    leader: Pick<Employee, 'email' | 'id' | 'name' | 'phone_number' | 'role' | 'position' | 'salary' | 'teams' | 'img' | 'status'>
+    members: Pick<Employee, 'email' | 'id' | 'name' | 'phone_number' | 'role' | 'position' | 'salary' | 'teams' | 'img' | 'status'>[];
 }
 
 export type Project = {
