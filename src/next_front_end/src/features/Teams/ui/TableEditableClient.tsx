@@ -20,7 +20,7 @@ export default function TableEditableClient({
 	team: ShortTeam
 	isNewTeam?: boolean
 }) {
-	const { data, setData, bottomRef, reset, handleSave, handleToggleRemove } =
+	const { data, setData, reset, handleSave, handleToggleRemove } =
 		useEditableTeam({ initialTeam: team, isNewTeam })
 
 	const currentLeader = data?.currentTeam?.leader
@@ -98,10 +98,7 @@ export default function TableEditableClient({
 				)}
 
 				{/* Body */}
-				<div
-					className='divide-y min-w-[450px] divide-[#2b2f22] h-[100px] overflow-y-auto text-xs scrollbar-thin-custom xl:h-48'
-					ref={bottomRef}
-				>
+				<div className='divide-y min-w-[450px] divide-[#2b2f22] h-[100px] overflow-y-auto text-xs scrollbar-thin-custom xl:h-48'>
 					{data.teamShowed?.members.map((user, i) => (
 						<TeamMemberRow
 							key={i}
@@ -176,7 +173,7 @@ export default function TableEditableClient({
 				)
 			) : (
 				<Button
-					className='bg-green-800/20 text-white mr-auto'
+					className='bg-[var(--green-dark-500)] text-white mr-auto'
 					onPress={handleSave}
 					size='sm'
 				>

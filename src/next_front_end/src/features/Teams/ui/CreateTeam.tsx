@@ -231,9 +231,9 @@ export default function CreateTeam({}) {
 
 			{/* Botones de acción */}
 			{data.isEditing && (
-				<div className='flex flex-col ml-auto w-fit items-end gap-2'>
+				<div className='flex flex-row-reverse ml-auto w-fit items-end gap-2'>
 					<Button
-						className='bg-green-800/20 text-white mr-auto'
+						className='bg-[var(--green-dark-500)] text-white mr-auto'
 						onPress={() => handleCreateNewTeam()}
 						size='sm'
 					>
@@ -241,7 +241,7 @@ export default function CreateTeam({}) {
 					</Button>
 
 					<Button
-						className='bg-red-800/20 text-white mr-auto'
+						className='bg-gray-600 text-white mr-auto'
 						onPress={reset}
 						size='sm'
 					>
