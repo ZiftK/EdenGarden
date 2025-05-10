@@ -4,4 +4,6 @@ export const endpoints ={
     
     teams: '/api/teams',
     employees: '/api/employees',
+
+    projects: 'api/projects'
 }
