@@ -31,20 +31,3 @@ export type ShortTeam ={
     members: Pick<Employee, 'email' | 'id' | 'name' | 'phone_number' | 'role' | 'position' | 'salary' | 'teams' | 'img' | 'status'>[];
 }
 
-export type Project = {
-    name: string;
-    teams: ShortTeam[];
-    calendar: string;
-}
-
-export type ProjectCalendar = {
-    intial_date: Date;
-    final_date: Date;
-    non_working_days: Date[];
-    current_sprint: SprintSchedule;
-}
-
-type SprintSchedule = {
-    initial_date: Date;
-    final_date: Date;
-}
