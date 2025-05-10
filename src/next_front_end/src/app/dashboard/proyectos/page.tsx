@@ -8,6 +8,7 @@ import DateProgressBar from '@/src/features/Projets/components/atoms/DateProgres
 import getProjects from '@/src/features/Projets/model/getProjects'
 import Title from '@/src/shared/components/atoms/Title'
 import { Card, CardBody, CardHeader } from '@heroui/react'
+import Link from 'next/link'
 
 export default async function page() {
 	const projects = await getProjects()
@@ -35,9 +36,12 @@ export default async function page() {
 			>
 				<CardHeader className='flex justify-between items-center'>
 					<div className='flex flex-col'>
-						<span className='font-bold text-lg'>
+						<Link
+							href={`/dashboard/proyectos/${projects[0].name}`}
+							className='font-bold text-lg'
+						>
 							{projects[0].name}
-						</span>
+						</Link>
 						<span className='font-normal text-md'>
 							{projects[0].teams.leader.name}
 						</span>
