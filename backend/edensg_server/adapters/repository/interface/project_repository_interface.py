@@ -7,7 +7,7 @@ class ProjectRepository(ABC):
     async def create_project(self, data: Project) -> int:
         """Inserta un nuevo proyecto en la base de datos."""
 
-    async def find_projects(self, identifier: str, search_by: str = "id") -> list[Project]:
+    async def find_projects(self, id: int) -> list[Project]:
         """Busca proyectos por un campo específico."""
 
     async def update_project_data(self, id: int, data: Project) -> None:
