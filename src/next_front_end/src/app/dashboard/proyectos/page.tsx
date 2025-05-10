@@ -13,7 +13,6 @@ import Link from 'next/link'
 export default async function page() {
 	const projects = await getProjects()
 	const colorIcons = 'var(--children-font)'
-	const calendar = projects[0].calendar
 
 	return (
 		<section
@@ -25,64 +24,72 @@ export default async function page() {
 				btn={{ active: true, path: '/dashboard/proyectos/crear' }}
 			/>
 
-			<Card
-				className='z-0 flex flex-col justify-between bg-center bg-cover bg-no-repeat text-[var(--father-font)] xl:w-6/12'
-				style={{
-					background: `linear-gradient(to left, var(--bg-card-obscure-300), var(--bg-card-obscure-200) 20%, var(--bg-card-obscure) 40%), url(${projects[0].image.src}) right center no-repeat`,
-					backgroundSize: 'auto, 40% 100%',
-					backgroundPosition: 'left top, right center',
-					backgroundRepeat: 'no-repeat, no-repeat',
-				}}
-			>
-				<CardHeader className='flex justify-between items-center'>
-					<div className='flex flex-col'>
-						<Link
-							href={`/dashboard/proyectos/${projects[0].name}`}
-							className='font-bold text-lg'
-						>
-							{projects[0].name}
-						</Link>
-						<span className='font-normal text-md'>
-							{projects[0].teams.leader.name}
-						</span>
-						<span className='font-light text-sm text-[var(--children-font)]'>
-							ID 189053
-						</span>
-					</div>
-					<div className='flex mb-auto items-center gap-1 bg-[var(--bg-card-obscure-200)] rounded-md p-1.5 '>
-						<span className='rounded-full w-1.5 h-1.5 bg-[var(--green-light)]' />
-						<span className='text-sm'>${projects[0].price}</span>
-					</div>
-				</CardHeader>
-				<CardBody className='flex flex-row justify-between'>
-					<div className='hidden md:flex flex-col gap-1 text-[var(--children-font)] text-xs'>
-						<span className='flex items-center gap-1'>
-							<GroupIcon size={[15, 15]} color={colorIcons} />
-							Conformado por {
-								projects[0].teams.members.length
-							}{' '}
-							miembros
-						</span>
-						<span className='flex items-center gap-1'>
-							<CalendarIcon h={15} color={colorIcons} />
-							{projects[0].calendar.intial_date.toLocaleDateString()}{' '}
-							-{' '}
-							{projects[0].calendar.final_date.toLocaleDateString()}
-						</span>
-						<span className='flex items-center gap-1'>
-							<TableRowsIcon h={15} color={colorIcons} />
-							<DateProgressBar
-								startDate={calendar.intial_date}
-								endDate={calendar.final_date}
-							/>
-						</span>
-					</div>
-					<div className='flex mt-auto items-center gap-1 bg-[var(--bg-card-obscure-200)] rounded-md p-1.5'>
-						<AlertDiamondIcon h={15} color={colorIcons} />
-						<span className='text-sm'>2 Problemas</span>
-					</div>
-				</CardBody>
-			</Card>
+			<div className='flex flex-col gap-4 xl:grid xl:grid-cols-2'>
+				{projects.map((project) => (
+					<Card
+						key={project.name}
+						className='z-0 flex flex-col justify-between bg-center bg-cover bg-no-repeat text-[var(--father-font)] xl:h-56'
+						style={{
+							background: `linear-gradient(to left, var(--bg-card-obscure-300), var(--bg-card-obscure-200) 20%, var(--bg-card-obscure) 40%), url(${project.image.src}) right center no-repeat`,
+							backgroundSize: 'auto, 40% 100%',
+							backgroundPosition: 'left top, right center',
+							backgroundRepeat: 'no-repeat, no-repeat',
+						}}
+					>
+						<CardHeader className='flex justify-between items-center'>
+							<div className='flex flex-col'>
+								<Link
+									href={`/dashboard/proyectos/${project.name}`}
+									className='font-bold text-lg'
+								>
+									{project.name}
+								</Link>
+								<span className='font-normal text-md'>
+									{project.teams.leader.name}
+								</span>
+								<span className='font-light text-sm text-[var(--children-font)]'>
+									ID 189053
+								</span>
+							</div>
+							<div className='flex mb-auto items-center gap-1 bg-[var(--bg-card-obscure-200)] rounded-md p-1.5 '>
+								<span className='rounded-full w-1.5 h-1.5 bg-[var(--green-light)]' />
+								<span className='text-sm'>
+									${project.price}
+								</span>
+							</div>
+						</CardHeader>
+						<CardBody className='flex flex-row justify-between mb-auto '>
+							<div className='hidden md:flex flex-col gap-1 text-[var(--children-font)] text-xs mt-auto'>
+								<span className='flex items-center gap-1'>
+									<GroupIcon
+										size={[15, 15]}
+										color={colorIcons}
+									/>
+									Conformado por{' '}
+									{project.teams.members.length} miembros
+								</span>
+								<span className='flex items-center gap-1'>
+									<CalendarIcon h={15} color={colorIcons} />
+									{project.calendar.intial_date.toLocaleDateString()}{' '}
+									-{' '}
+									{project.calendar.final_date.toLocaleDateString()}
+								</span>
+								<span className='flex items-center gap-1'>
+									<TableRowsIcon h={15} color={colorIcons} />
+									<DateProgressBar
+										startDate={project.calendar.intial_date}
+										endDate={project.calendar.final_date}
+									/>
+								</span>
+							</div>
+							<div className='flex mt-auto items-center gap-1 bg-[var(--bg-card-obscure-200)] rounded-md p-1.5'>
+								<AlertDiamondIcon h={15} color={colorIcons} />
+								<span className='text-sm'>2 Problemas</span>
+							</div>
+						</CardBody>
+					</Card>
+				))}
+			</div>
 		</section>
 	)
 }
