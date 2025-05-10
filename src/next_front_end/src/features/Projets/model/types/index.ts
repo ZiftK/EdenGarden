@@ -6,7 +6,7 @@ export type Project = {
     teams: ShortTeam
     calendar: ProjectCalendar
     image: StaticImageData;
-    price: number;
+    price: string;
     clientData: {
         name: string;
         addressProject: string;

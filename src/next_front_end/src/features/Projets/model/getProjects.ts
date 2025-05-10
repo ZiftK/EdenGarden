@@ -37,7 +37,7 @@ export default async function getProjects(): Promise<Project[]> {
                 ]
             },
             image: bgHouse1,
-            price: 10000,
+            price: '29,300.00',
             clientData: {
                 name: "Louis Cervantes",
                 addressProject: "Calle Falsa 123",
