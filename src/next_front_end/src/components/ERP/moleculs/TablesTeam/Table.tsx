@@ -18,9 +18,9 @@ export default function TableTeams({ team }: { team: ShortTeam }) {
 
 			{/*Leader*/}
 			<div className='grid grid-cols-[1fr_1fr_2fr_1fr] items-center text-center py-2 bg-[var(--father-font-transparent-200)]'>
-				<span>{team.leader.position}</span>
-				<span>{team.leader.id}</span>
-				<span>{team.leader.name}</span>
+				<span className='text-xs'>{team.leader.position}</span>
+				<span className='text-xs'>{team.leader.id}</span>
+				<span className='text-xs'>{team.leader.name}</span>
 
 				<div className='flex items-center justify-center gap-2'>
 					<CopyButton
@@ -41,7 +41,7 @@ export default function TableTeams({ team }: { team: ShortTeam }) {
 			</div>
 
 			{/* Body */}
-			<div className='divide-y divide-[#2b2f22] h-[100px] overflow-y-auto text-xs scrollbar-thin-custom xl:overflow-y-auto xl:h-48'>
+			<div className='divide-y divide-[#2b2f22] h-[100px]  text-xs scrollbar-thin-custom xl:h-48'>
 				{team.members.map((usuario, i) => (
 					<div
 						key={i}
