@@ -8,6 +8,9 @@ class Time(BaseModel):
     minuto: int
     segundo: int
 
+    def __str__(self):
+        return f"{self.hora}:{self.minuto}:{self.segundo}"
+
 
 class Date(BaseModel):
     dia: int
@@ -16,6 +19,9 @@ class Date(BaseModel):
 
     def __hash__(self):
         return hash((self.dia, self.mes, self.anno))
+    
+    def __str__(self):
+        return f"{self.anno}-{self.mes.value}-{self.dia}"
 
 
 class ScheduleTemplate(BaseModel):
