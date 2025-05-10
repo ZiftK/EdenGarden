@@ -28,8 +28,8 @@ export default async function getProjects(): Promise<Project[]> {
                     initial_date: new Date("2023-10-01"),
                     final_date: new Date("2023-10-15")
                 },
-                intial_date: new Date("2023-09-01"),
-                final_date: new Date("2023-12-01"),
+                intial_date: new Date("2025-03-01"),
+                final_date: new Date("2025-12-01"),
                 non_working_days: [
                     new Date("2023-10-12"),
                     new Date("2023-10-13"),

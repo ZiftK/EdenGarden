@@ -1,4 +1,4 @@
-export const CalendatIcon = ({
+export const CalendarIcon = ({
 	h = 24,
 	color,
 }: {
@@ -33,3 +33,44 @@ export const CalendatIcon = ({
 		</svg>
 	)
 }
+
+export const TableRowsIcon = ({
+	h = 24,
+	color = '#EAF2E7',
+}: {
+	h?: number
+	color?: string
+}) => (
+	<svg
+		xmlns='http://www.w3.org/2000/svg'
+		width={h}
+		height={h}
+		viewBox='0 0 24 24'
+		fill='none'
+	>
+		<mask
+			id='mask0_399_984'
+			maskUnits='userSpaceOnUse'
+			x='0'
+			y='0'
+			width='24'
+			height='24'
+			style={{ maskType: 'alpha' }}
+		>
+			<rect
+				x='24'
+				width='24'
+				height='24'
+				transform='rotate(90 24 0)'
+				fill={color}
+			/>
+		</mask>
+		<g mask='url(#mask0_399_984)'>
+			<path
+				d='M4 16H11L11 20H4L4 16ZM4 10H20V14L4 14V10ZM4 4L15 4V8H4V4Z'
+				fill={color}
+				fillOpacity='0.4'
+			/>
+		</g>
+	</svg>
+)
