@@ -25,41 +25,47 @@ export default async function page() {
 			/>
 
 			<Card
-				className='flex flex-col justify-between bg-center bg-cover bg-no-repeat'
+				className='z-0 flex flex-col justify-between bg-center bg-cover bg-no-repeat text-[var(--father-font)] xl:w-6/12'
 				style={{
 					background: `linear-gradient(to left, var(--bg-card-obscure-300), var(--bg-card-obscure-200) 20%, var(--bg-card-obscure) 40%), url(${projects[0].image.src}) right center no-repeat`,
-					backgroundSize: 'auto, 40% auto',
+					backgroundSize: 'auto, 40% 100%',
 					backgroundPosition: 'left top, right center',
 					backgroundRepeat: 'no-repeat, no-repeat',
 				}}
 			>
-				<CardHeader>
-					<div>
-						<span>{projects[0].name}</span>
-						<span>{projects[0].teams.leader.name}</span>
-						<span>ID 189053</span>
+				<CardHeader className='flex justify-between items-center'>
+					<div className='flex flex-col'>
+						<span className='font-bold text-lg'>
+							{projects[0].name}
+						</span>
+						<span className='font-normal text-md'>
+							{projects[0].teams.leader.name}
+						</span>
+						<span className='font-light text-sm text-[var(--children-font)]'>
+							ID 189053
+						</span>
 					</div>
-					<div>
-						<span />
-						<span>${projects[0].price}</span>
+					<div className='flex mb-auto items-center gap-1 bg-[var(--bg-card-obscure-200)] rounded-md p-1.5 '>
+						<span className='rounded-full w-1.5 h-1.5 bg-[var(--green-light)]' />
+						<span className='text-sm'>${projects[0].price}</span>
 					</div>
 				</CardHeader>
-				<CardBody>
-					<div>
-						<span>
+				<CardBody className='flex flex-row justify-between'>
+					<div className='hidden md:flex flex-col gap-1 text-[var(--children-font)] text-xs'>
+						<span className='flex items-center gap-1'>
 							<GroupIcon size={[15, 15]} color={colorIcons} />
 							Conformado por {
 								projects[0].teams.members.length
 							}{' '}
 							miembros
 						</span>
-						<span>
+						<span className='flex items-center gap-1'>
 							<CalendarIcon h={15} color={colorIcons} />
 							{projects[0].calendar.intial_date.toLocaleDateString()}{' '}
 							-{' '}
 							{projects[0].calendar.final_date.toLocaleDateString()}
 						</span>
-						<span>
+						<span className='flex items-center gap-1'>
 							<TableRowsIcon h={15} color={colorIcons} />
 							<DateProgressBar
 								startDate={calendar.intial_date}
@@ -67,9 +73,9 @@ export default async function page() {
 							/>
 						</span>
 					</div>
-					<div>
+					<div className='flex mt-auto items-center gap-1 bg-[var(--bg-card-obscure-200)] rounded-md p-1.5'>
 						<AlertDiamondIcon h={15} color={colorIcons} />
-						<span>2 Problemas</span>
+						<span className='text-sm'>2 Problemas</span>
 					</div>
 				</CardBody>
 			</Card>

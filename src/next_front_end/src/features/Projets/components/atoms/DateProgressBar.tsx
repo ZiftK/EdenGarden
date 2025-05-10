@@ -11,12 +11,14 @@ export default function DateProgressBar({
 	const progress = Math.min((elapsedDuration / totalDuration) * 100, 100)
 
 	return (
-		<div className='relative w-full h-2 bg-gray-200 rounded'>
-			<div
-				className='absolute top-0 left-0 h-full bg-green-500 rounded'
-				style={{ width: `${progress}%` }}
-			></div>
+		<>
+			<div className='relative w-4/12 h-1 bg-[var(--children-font)] rounded '>
+				<div
+					className='absolute top-0 left-0 h-1 bg-[var(--father-font)] rounded'
+					style={{ width: `${progress}%` }}
+				></div>
+			</div>
 			%{progress.toString().slice(0, 2)}
-		</div>
+		</>
 	)
 }
