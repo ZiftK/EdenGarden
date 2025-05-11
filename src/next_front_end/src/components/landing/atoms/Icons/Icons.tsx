@@ -81,8 +81,8 @@ export const FacebookIcon = ({
 		<svg
 			xmlns='http://www.w3.org/2000/svg'
 			viewBox='0 0 320 512'
-			height={size![0] + 'rem'}
-			width={size![1] + 'rem'}
+			height={size![0]}
+			width={size![1]}
 			style={{
 				flexGrow: 0,
 				flexShrink: 0,
@@ -104,8 +104,8 @@ export const EmailIcon = ({
 	return (
 		<svg
 			xmlns='http://www.w3.org/2000/svg'
-			height={size![0] + 'rem'}
-			width={size![1] + 'rem'}
+			height={size![0]}
+			width={size![1]}
 			viewBox='0 0 20 20'
 			fill='none'
 		>
@@ -141,8 +141,8 @@ export const PhoneIcon = ({
 	return (
 		<svg
 			xmlns='http://www.w3.org/2000/svg'
-			height={size![0] + 'rem'}
-			width={size![1] + 'rem'}
+			height={size![0]}
+			width={size![1]}
 			viewBox='0 0 20 20'
 			fill='none'
 		>
