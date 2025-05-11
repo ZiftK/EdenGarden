@@ -23,6 +23,7 @@ export default async function getProjects(): Promise<Project[]> {
         {
             name: "Jardin Casa Voulsen",
             teams: team[0],
+            id: "1",
             calendar: {
                 current_sprint:{
                     initial_date: new Date("2023-10-01"),
@@ -47,6 +48,7 @@ export default async function getProjects(): Promise<Project[]> {
         },
                 {
             name: "Jardin Casa Voulsen",
+            id: "2",
             teams: team[0],
             calendar: {
                 current_sprint:{
@@ -73,6 +75,7 @@ export default async function getProjects(): Promise<Project[]> {
                 {
             name: "Jardin Casa Voulsen",
             teams: team[0],
+            id: "3",
             calendar: {
                 current_sprint:{
                     initial_date: new Date("2023-10-01"),

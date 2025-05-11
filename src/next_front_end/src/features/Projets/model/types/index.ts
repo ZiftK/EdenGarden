@@ -3,6 +3,7 @@ import { StaticImageData } from "next/image"
 
 export type Project = {
     name: string;
+    id: string
     teams: ShortTeam
     calendar: ProjectCalendar
     image: StaticImageData;
