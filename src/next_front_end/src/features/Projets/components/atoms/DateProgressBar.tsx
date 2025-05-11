@@ -12,7 +12,7 @@ export default function DateProgressBar({
 
 	return (
 		<>
-			<div className='relative w-4/12 h-1 bg-[var(--children-font)] rounded '>
+			<div className='relative w-4/12 h-1 bg-[var(--children-font)] text-xs '>
 				<div
 					className='absolute top-0 left-0 h-1 bg-[var(--father-font)] rounded'
 					style={{ width: `${progress}%` }}

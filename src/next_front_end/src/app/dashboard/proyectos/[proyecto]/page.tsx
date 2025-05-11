@@ -131,18 +131,18 @@ export default async function Page({
 								Datos del cliente
 							</h4>
 
-							<div className='flex flex-col gap-1 text-sm text-[var(--children-font)] mt-3'>
-								<span>
+							<div className='flex flex-col gap-3 text-sm text-[var(--children-font)] mt-3'>
+								<span className='flex items-center gap-1 '>
 									<UserIcon h={15} color={colorIcons} />
 									{project.clientData.name}
 								</span>
 
-								<span>
+								<span className='flex items-center gap-1 '>
 									<InfoHouseIcon h={15} color={colorIcons} />
 									{project.clientData.addressProject}
 								</span>
 
-								<span>
+								<span className='flex items-center gap-1 '>
 									<PhoneIcon
 										size={[15, 15]}
 										color={colorIcons}
@@ -150,7 +150,7 @@ export default async function Page({
 									{project.clientData.phone}
 								</span>
 
-								<span>
+								<span className='flex items-center gap-1 '>
 									<EmailIcon
 										size={[15, 15]}
 										color={colorIcons}

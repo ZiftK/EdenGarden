@@ -5,6 +5,7 @@ import {
 } from '@/src/components/ERP/moleculs/icons/iconst'
 import { GroupIcon } from '@/src/components/landing/atoms/Icons/Icons'
 import DateProgressBar from '@/src/features/Projets/components/atoms/DateProgressBar'
+import PriceChip from '@/src/features/Projets/components/PriceChip'
 import getProjects from '@/src/features/Projets/model/getProjects'
 import Title from '@/src/shared/components/atoms/Title'
 import { Card, CardBody, CardHeader } from '@heroui/react'
@@ -51,12 +52,7 @@ export default async function page() {
 									ID 189053
 								</span>
 							</div>
-							<div className='flex mb-auto items-center gap-1 bg-[var(--bg-card-obscure-200)] rounded-md p-1.5 '>
-								<span className='rounded-full w-1.5 h-1.5 bg-[var(--green-light)]' />
-								<span className='text-sm'>
-									${project.price}
-								</span>
-							</div>
+							<PriceChip price={project.price} />
 						</CardHeader>
 						<CardBody className='flex flex-row justify-between mb-auto '>
 							<div className='hidden md:flex flex-col gap-1 text-[var(--children-font)] text-xs mt-auto'>
