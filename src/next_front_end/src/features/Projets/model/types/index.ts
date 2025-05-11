@@ -6,7 +6,7 @@ export type Project = {
     id: string
     teams: ShortTeam
     calendar: ProjectCalendar
-    image: StaticImageData;
+    image?: StaticImageData;
     price: string;
     clientData: {
         name: string;
@@ -17,10 +17,10 @@ export type Project = {
 }
 
 export type ProjectCalendar = {
-    intial_date: Date;
-    final_date: Date;
-    non_working_days: Date[];
-    current_sprint: SprintSchedule;
+    intial_date?: Date;
+    final_date?: Date;
+    non_working_days?: Date[];
+    current_sprint?: SprintSchedule;
 }
 
 type SprintSchedule = {

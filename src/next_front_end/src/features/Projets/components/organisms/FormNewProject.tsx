@@ -1,6 +1,6 @@
 'use client'
 
-import { Employee } from '@/src/shared/types'
+import { ShortTeam } from '@/src/shared/types'
 import {
 	Input,
 	Button,
@@ -12,55 +12,111 @@ import {
 	CardHeader,
 	CardFooter,
 	Divider,
+	DatePicker,
 } from '@heroui/react'
 import { redirect } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { Project } from '../../model/types'
 
-export default function FormNewEmplooye() {
-	const [newEmployee, setNewEmployee] = useState<Employee>({
+export default function FormNewProject() {
+	const [teams, setTeams] = useState<ShortTeam[]>([])
+	const [newProject, setNewProject] = useState<Project>({
 		id: '',
 		name: '',
-		address: '',
-		phone_number: '',
-		email: '',
-		hire_date: '',
-		salary: 0,
-		in_time: '',
-		out_time: '',
-		password: '',
-		role: 'user',
-		position: '',
-		img: undefined,
-		status: 'active',
-		teams: undefined,
+		teams: {} as ShortTeam,
+		calendar: {
+			intial_date: undefined,
+			final_date: undefined,
+		},
+		image: undefined,
+		price: '',
+		clientData: {
+			name: '',
+			addressProject: '',
+			phone: '',
+			email: '',
+		},
 	})
+
+	// Simulación de carga de equipos disponibles
+	useEffect(() => {
+		// Aquí harías la llamada a tu API para obtener los equipos
+		const fetchTeams = async () => {
+			// Ejemplo de datos, reemplazar con tu lógica real
+			const mockTeams: ShortTeam[] = [
+				{ id: 'team1', name: 'Equipo Alpha', members: 5 },
+				{ id: 'team2', name: 'Equipo Beta', members: 4 },
+				{ id: 'team3', name: 'Equipo Gamma', members: 6 },
+			]
+			setTeams(mockTeams)
+		}
+
+		fetchTeams()
+	}, [])
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = e.target
-		setNewEmployee((prev) => ({
+
+		if (name.includes('.')) {
+			const [parent, child] = name.split('.')
+			setNewProject((prev) => ({
+				...prev,
+				[parent]: {
+					...prev[parent as keyof Project],
+					[child]: value,
+				},
+			}))
+		} else {
+			setNewProject((prev) => ({
+				...prev,
+				[name]: value,
+			}))
+		}
+		console.log(newProject)
+	}
+
+	const handleTeamChange = (teamId: string) => {
+		const selectedTeam = teams.find((team) => team.id === teamId)
+		if (selectedTeam) {
+			setNewProject((prev) => ({
+				...prev,
+				teams: selectedTeam,
+			}))
+		}
+	}
+
+	const handleDateChange = (
+		field: 'startDate' | 'endDate',
+		value: string
+	) => {
+		setNewProject((prev) => ({
 			...prev,
-			[name]: value,
+			calendar: {
+				...prev.calendar,
+				[field]: value,
+			},
 		}))
 	}
 
 	const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const file = e.target.files?.[0]
 		if (file) {
-			const render = new FileReader()
-			render.onload = () => {
-				setNewEmployee((prev) => ({
+			const reader = new FileReader()
+			reader.onload = () => {
+				setNewProject((prev) => ({
 					...prev,
-					img: render.result as string,
+					image: reader.result,
 				}))
 			}
+			reader.readAsDataURL(file)
 		}
 	}
 
 	const handleSubmit = () => {
 		// Aquí puedes manejar el envío del formulario
-		redirect(`/dadashboard/empleados/${newEmployee.id}`)
+		redirect(`/dashboard/proyectos/${newProject.id}`)
 	}
 
 	return (
@@ -68,7 +124,7 @@ export default function FormNewEmplooye() {
 			<CardHeader className='flex gap-3'>
 				<div className='flex flex-col'>
 					<p className='text-xl font-bold text-[var(--father-font)]'>
-						Registrar Nuevo Empleado
+						Registrar Nuevo Proyecto
 					</p>
 					<p className='text-small text-[var(--children-font)]'>
 						Complete todos los campos requeridos
@@ -79,16 +135,124 @@ export default function FormNewEmplooye() {
 			<CardBody>
 				<div className='space-y-4'>
 					<div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-						{/* Información Personal */}
+						{/* Información del Proyecto */}
 						<div className='space-y-2'>
 							<h3 className='text-lg font-medium text-[var(--father-font)]'>
-								Información Personal
+								Información del Proyecto
 							</h3>
 
 							<Input
-								label='Nombre Completo'
+								label='Nombre del Proyecto'
 								name='name'
-								value={newEmployee.name}
+								value={newProject.name}
+								onChange={handleChange}
+								isRequired
+								classNames={{
+									label: '!text-white/50',
+									input: 'label:!text-[var(--father-font)] bg-transparent !text-[var(--father-font)] focus:!bg-white/30 active:!bg-white/30',
+									inputWrapper: [
+										'bg-transparent',
+										'hover:!bg-white/30',
+										'!data-[focused=true]:bg-transparent',
+										'data-[hover=true]:!bg-white/30',
+										'focus-within:!bg-transparent',
+										'focus:!bg-transparent',
+										'active:!bg-transparent',
+										'focus:border-white/50',
+									],
+								}}
+							/>
+
+							<Input
+								label='ID del Proyecto'
+								name='id'
+								value={newProject.id}
+								onChange={handleChange}
+								isRequired
+								classNames={{
+									label: '!text-white/50',
+									input: 'label:!text-[var(--father-font)] bg-transparent !text-[var(--father-font)] focus:!bg-white/30 active:!bg-white/30',
+									inputWrapper: [
+										'bg-transparent',
+										'hover:!bg-white/30',
+										'!data-[focused=true]:bg-transparent',
+										'data-[hover=true]:!bg-white/30',
+										'focus-within:!bg-transparent',
+										'focus:!bg-transparent',
+										'active:!bg-transparent',
+										'focus:border-white/50',
+									],
+								}}
+							/>
+
+							<Input
+								label='Presupuesto'
+								name='price'
+								value={newProject.price}
+								onChange={handleChange}
+								placeholder='$0.00'
+								isRequired
+								classNames={{
+									label: '!text-white/50',
+									input: 'label:!text-[var(--father-font)] bg-transparent !text-[var(--father-font)] focus:!bg-white/30 active:!bg-white/30',
+									inputWrapper: [
+										'bg-transparent',
+										'hover:!bg-white/30',
+										'!data-[focused=true]:bg-transparent',
+										'data-[hover=true]:!bg-white/30',
+										'focus-within:!bg-transparent',
+										'focus:!bg-transparent',
+										'active:!bg-transparent',
+										'focus:border-white/50',
+									],
+								}}
+							/>
+
+							<Select
+								label='Equipo Asignado'
+								selectedKeys={[newProject.teams?.id || '']}
+								onChange={(e) =>
+									handleTeamChange(e.target.value)
+								}
+								className='w-full'
+								classNames={{
+									label: '!text-white/50',
+									value: '!text-[var(--father-font)] ',
+									trigger: [
+										'bg-transparent',
+										'!text-[var(--father-font)]',
+										'focus:!bg-white/30',
+										'active:!bg-white/30',
+										'hover:!bg-white/30',
+										'data-[hover=true]:!bg-white/30',
+									],
+									listbox:
+										'bg-[#222] !text-[var(--father-font)]',
+									popoverContent: 'bg-[#222] border-[#333]',
+								}}
+							>
+								{teams.map((team) => (
+									<SelectItem
+										key={team.id}
+										textValue={team.name}
+									>
+										{team.name} (
+										{`${team.members} miembros`})
+									</SelectItem>
+								))}
+							</Select>
+						</div>
+
+						{/* Información del Cliente */}
+						<div className='space-y-2'>
+							<h3 className='text-lg font-medium text-[var(--father-font)]'>
+								Información del Cliente
+							</h3>
+
+							<Input
+								label='Nombre del Cliente'
+								name='clientData.name'
+								value={newProject.clientData.name}
 								onChange={handleChange}
 								isRequired
 								classNames={{
@@ -109,9 +273,9 @@ export default function FormNewEmplooye() {
 
 							<Input
 								label='Correo Electrónico'
-								name='email'
+								name='clientData.email'
 								type='email'
-								value={newEmployee.email}
+								value={newProject.clientData.email}
 								onChange={handleChange}
 								isRequired
 								classNames={{
@@ -131,9 +295,9 @@ export default function FormNewEmplooye() {
 							/>
 
 							<Input
-								label='Número de Teléfono'
-								name='phone_number'
-								value={newEmployee.phone_number}
+								label='Teléfono'
+								name='clientData.phone'
+								value={newProject.clientData.phone}
 								onChange={handleChange}
 								isRequired
 								classNames={{
@@ -153,9 +317,9 @@ export default function FormNewEmplooye() {
 							/>
 
 							<Textarea
-								label='Dirección'
-								name='address'
-								value={newEmployee.address}
+								label='Dirección del Proyecto'
+								name='clientData.addressProject'
+								value={newProject.clientData.addressProject}
 								onChange={handleChange}
 								minRows={2}
 								maxRows={3}
@@ -175,137 +339,25 @@ export default function FormNewEmplooye() {
 									],
 								}}
 							/>
-
-							<Input
-								label='Contraseña'
-								name='password'
-								type='password'
-								value={newEmployee.password}
-								onChange={handleChange}
-								isRequired
-								classNames={{
-									label: '!text-white/50',
-									input: 'label:!text-[var(--father-font)] bg-transparent !text-[var(--father-font)] focus:!bg-white/30 active:!bg-white/30',
-									inputWrapper: [
-										'bg-transparent',
-										'hover:!bg-white/30',
-										'!data-[focused=true]:bg-transparent',
-										'data-[hover=true]:!bg-white/30',
-										'focus-within:!bg-transparent',
-										'focus:!bg-transparent',
-										'active:!bg-transparent',
-										'focus:border-white/50',
-									],
-								}}
-							/>
 						</div>
+					</div>
 
-						{/* Información Laboral */}
-						<div className='space-y-2'>
-							<h3 className='text-lg font-medium text-[var(--father-font)]'>
-								Información Laboral
-							</h3>
-
+					{/* Calendario del Proyecto */}
+					<div className='space-y-2 mt-4'>
+						<h3 className='text-lg font-medium text-[var(--father-font)]'>
+							Calendario del Proyecto
+						</h3>
+						<div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
 							<Input
-								label='ID de Empleado'
-								name='id'
-								value={newEmployee.id}
-								onChange={handleChange}
-								isRequired
-								classNames={{
-									label: '!text-white/50',
-									input: 'label:!text-[var(--father-font)] bg-transparent !text-[var(--father-font)] focus:!bg-white/30 active:!bg-white/30',
-									inputWrapper: [
-										'bg-transparent',
-										'hover:!bg-white/30',
-										'!data-[focused=true]:bg-transparent',
-										'data-[hover=true]:!bg-white/30',
-										'focus-within:!bg-transparent',
-										'focus:!bg-transparent',
-										'active:!bg-transparent',
-										'focus:border-white/50',
-									],
-								}}
-							/>
-
-							<Input
-								label='Posición'
-								name='position'
-								value={newEmployee.position}
-								onChange={handleChange}
-								isRequired
-								classNames={{
-									label: '!text-white/50',
-									input: 'label:!text-[var(--father-font)] bg-transparent !text-[var(--father-font)] focus:!bg-white/30 active:!bg-white/30',
-									inputWrapper: [
-										'bg-transparent',
-										'hover:!bg-white/30',
-										'!data-[focused=true]:bg-transparent',
-										'data-[hover=true]:!bg-white/30',
-										'focus-within:!bg-transparent',
-										'focus:!bg-transparent',
-										'active:!bg-transparent',
-										'focus:border-white/50',
-									],
-								}}
-							/>
-
-							<Select
-								label='Rol'
-								selectedKeys={[newEmployee.role]}
-								popover='manual'
-								contextMenu='false'
+								type='date'
+								label='Fecha de Inicio'
+								value={newProject.calendar.startDate}
 								onChange={(e) =>
-									setNewEmployee({
-										...newEmployee,
-										role: e.target.value as
-											| 'user'
-											| 'admin'
-											| 'leader',
-									})
+									handleDateChange(
+										'startDate',
+										e.target.value
+									)
 								}
-								classNames={{
-									label: '!text-white/50',
-									value: '!text-[var(--father-font)] ',
-
-									trigger: [
-										'bg-transparent',
-										'!text-[var(--father-font)]',
-										'focus:!bg-white/30',
-										'active:!bg-white/30',
-										'hover:!bg-white/30',
-										'data-[hover=true]:!bg-white/30',
-									],
-									helperWrapper: '!bg-red-400',
-									listbox:
-										'bg-[#222] !text-[var(--father-font)]',
-									popoverContent: 'bg-[#222] border-[#333] ',
-								}}
-								popoverProps={{
-									placement: 'bottom-start',
-									autoFocus: false,
-
-									offset: 0,
-									isOpen: undefined,
-								}}
-							>
-								<SelectItem key='user' textValue='user'>
-									Usuario
-								</SelectItem>
-								<SelectItem key='admin' textValue='admin'>
-									Administrador
-								</SelectItem>
-								<SelectItem key='leader' textValue='leader'>
-									Líder
-								</SelectItem>
-							</Select>
-
-							<Input
-								label='Salario'
-								name='salary'
-								type='number'
-								value={newEmployee.salary.toString()}
-								onChange={handleChange}
 								isRequired
 								classNames={{
 									label: '!text-white/50',
@@ -323,60 +375,42 @@ export default function FormNewEmplooye() {
 								}}
 							/>
 
-							<Select
-								label='Estado'
-								selectedKeys={[newEmployee.status || 'active']}
+							<Input
+								type='date'
+								label='Fecha de Finalización'
+								value={newProject.calendar.endDate}
 								onChange={(e) =>
-									setNewEmployee({
-										...newEmployee,
-										status: e.target.value as
-											| 'active'
-											| 'inactive'
-											| 'pending',
-									})
+									handleDateChange('endDate', e.target.value)
 								}
-								className='w-full'
+								isRequired
 								classNames={{
 									label: '!text-white/50',
-									value: '!text-[var(--father-font)] ',
-
-									trigger: [
+									input: 'label:!text-[var(--father-font)] bg-transparent !text-[var(--father-font)] focus:!bg-white/30 active:!bg-white/30',
+									inputWrapper: [
 										'bg-transparent',
-										'!text-[var(--father-font)]',
-										'focus:!bg-white/30',
-										'active:!bg-white/30',
 										'hover:!bg-white/30',
+										'!data-[focused=true]:bg-transparent',
 										'data-[hover=true]:!bg-white/30',
+										'focus-within:!bg-transparent',
+										'focus:!bg-transparent',
+										'active:!bg-transparent',
+										'focus:border-white/50',
 									],
-									helperWrapper: '!bg-red-400',
-									listbox:
-										'bg-[#222] !text-[var(--father-font)]',
-									popoverContent: 'bg-[#222] border-[#333]',
 								}}
-							>
-								<SelectItem key='active' textValue='active'>
-									Activo
-								</SelectItem>
-								<SelectItem key='inactive' textValue='inactive'>
-									Inactivo
-								</SelectItem>
-								<SelectItem key='pending' textValue='pending'>
-									Pendiente
-								</SelectItem>
-							</Select>
+							/>
 						</div>
 					</div>
 
 					{/* Sección de Imagen */}
 					<div className='mt-4'>
 						<h3 className='text-lg font-medium mb-2 text-[var(--father-font)]'>
-							Foto de Perfil
+							Imagen del Proyecto
 						</h3>
 						<div className='flex items-center gap-4'>
-							{newEmployee.img && (
-								<div className='relative w-24 h-24 rounded-full overflow-hidden'>
+							{newProject.image && (
+								<div className='relative w-32 h-24 rounded overflow-hidden'>
 									<Image
-										src={newEmployee.img}
+										src={newProject.image}
 										alt='Vista previa'
 										className='w-full h-full object-cover'
 									/>
@@ -415,12 +449,12 @@ export default function FormNewEmplooye() {
 					size='sm'
 					onPress={handleSubmit}
 				>
-					Crear nuevo equipo
+					Crear nuevo proyecto
 				</Button>
 
 				<Link
 					className='bg-gray-600 text-white text-sm py-1.5 px-3 rounded-lg flex items-center justify-center hover:bg-gray-700 transition-colors'
-					href={'/dashboard/empleados'}
+					href={'/dashboard/proyectos'}
 				>
 					Cancelar
 				</Link>
