@@ -27,21 +27,21 @@ export default function TableTeams({ team }: { team: ShortTeam }) {
 						text={team.leader.email}
 						icon={EmailIcon({
 							color: 'var(--father-font)',
-							size: [0.75, 0.75],
+							size: [12, 12],
 						})}
 					/>
 					<CopyButton
 						text={team.leader.phone_number}
 						icon={PhoneIcon({
 							color: 'var(--father-font)',
-							size: [0.75, 0.75],
+							size: [12, 12],
 						})}
 					/>
 				</div>
 			</div>
 
 			{/* Body */}
-			<div className='divide-y divide-[#2b2f22] h-[100px]  text-xs scrollbar-thin-custom xl:h-48'>
+			<div className='divide-y divide-[#2b2f22] h-[100px] overflow-y-scroll  text-xs scrollbar-thin-custom xl:max-h-48'>
 				{team.members.map((usuario, i) => (
 					<div
 						key={i}
@@ -56,14 +56,14 @@ export default function TableTeams({ team }: { team: ShortTeam }) {
 								text={usuario.email}
 								icon={EmailIcon({
 									color: 'var(--father-font)',
-									size: [0.75, 0.75],
+									size: [12, 12],
 								})}
 							/>
 							<CopyButton
 								text={usuario.phone_number}
 								icon={PhoneIcon({
 									color: 'var(--father-font)',
-									size: [0.75, 0.75],
+									size: [12, 12],
 								})}
 							/>
 						</div>
