@@ -48,7 +48,7 @@ export default function CreateTeam({}) {
 	}
 
 	return (
-		<article>
+		<article className='mt-10'>
 			<Input
 				isRequired
 				errorMessage='EL nombre del equipo es invalido'
@@ -155,12 +155,12 @@ export default function CreateTeam({}) {
 							<>
 								<span>{data.currentTeam.leader.name}</span>
 
-								<div className='flex items-center justify-center gap-2'>
+								<div className='flex items-center justify-center gap-2 bg-amber-50'>
 									<CopyButton
 										text={data.currentTeam.leader.email}
 										icon={EmailIcon({
 											color: 'var(--father-font)',
-											size: [0.75, 0.75],
+											h: 12,
 										})}
 									/>
 									<CopyButton
@@ -169,7 +169,7 @@ export default function CreateTeam({}) {
 										}
 										icon={PhoneIcon({
 											color: 'var(--father-font)',
-											size: [0.75, 0.75],
+											h: 10,
 										})}
 									/>
 								</div>

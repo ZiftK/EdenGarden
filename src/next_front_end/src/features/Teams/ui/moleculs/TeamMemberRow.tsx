@@ -31,14 +31,14 @@ export const TeamMemberRow: React.FC<TeamMemberRowProps> = ({
 					text={user.email}
 					icon={EmailIcon({
 						color: 'var(--father-font)',
-						size: [0.75, 0.75],
+						h: 12,
 					})}
 				/>
 				<CopyButton
 					text={user.phone_number}
 					icon={PhoneIcon({
 						color: 'var(--father-font)',
-						size: [0.75, 0.75],
+						h: 12,
 					})}
 				/>
 			</div>

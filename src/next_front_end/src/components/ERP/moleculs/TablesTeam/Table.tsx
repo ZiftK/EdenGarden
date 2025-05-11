@@ -27,14 +27,14 @@ export default function TableTeams({ team }: { team: ShortTeam }) {
 						text={team.leader.email}
 						icon={EmailIcon({
 							color: 'var(--father-font)',
-							size: [12, 12],
+							h: 12,
 						})}
 					/>
 					<CopyButton
 						text={team.leader.phone_number}
 						icon={PhoneIcon({
 							color: 'var(--father-font)',
-							size: [12, 12],
+							h: 12,
 						})}
 					/>
 				</div>
@@ -56,14 +56,14 @@ export default function TableTeams({ team }: { team: ShortTeam }) {
 								text={usuario.email}
 								icon={EmailIcon({
 									color: 'var(--father-font)',
-									size: [12, 12],
+									h: 12,
 								})}
 							/>
 							<CopyButton
 								text={usuario.phone_number}
 								icon={PhoneIcon({
 									color: 'var(--father-font)',
-									size: [12, 12],
+									h: 12,
 								})}
 							/>
 						</div>
