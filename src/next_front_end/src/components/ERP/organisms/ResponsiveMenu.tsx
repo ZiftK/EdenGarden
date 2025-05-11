@@ -1,42 +1,45 @@
 import {
-	CertifiedIcon,
+	HouseIcon,
 	GroupIcon,
-	StoreIcon,
+	CertifiedIcon,
 } from '../../landing/atoms/Icons/Icons'
+import { UserIcon } from '../moleculs/icons/iconst'
 import DesktopMenu from './DesktopMenu'
 import MobileMenu from './MobileMenu'
+
+const colorIcons = 'var(--father-font)'
 
 const menuItems = [
 	{
 		label: 'Inicio',
 		link: '/dashboard',
-		icon: StoreIcon({
-			color: 'var(--white-peristance-color)',
-			size: [1.25, 1.25],
+		icon: HouseIcon({
+			color: colorIcons,
+			h: 20,
 		}),
 	},
 	{
 		label: 'Proyectos',
 		link: '/dashboard/proyectos',
-		icon: GroupIcon({
-			color: 'var(--white-peristance-color)',
-			size: [20, 20],
+		icon: CertifiedIcon({
+			color: colorIcons,
+			h: 20,
 		}),
 	},
 	{
 		label: 'Equipos',
 		link: '/dashboard/equipos',
-		icon: CertifiedIcon({
-			color: 'var(--white-peristance-color)',
-			size: [1.25, 1.25],
+		icon: GroupIcon({
+			color: colorIcons,
+			h: 20,
 		}),
 	},
 	{
 		label: 'Empleados',
 		link: '/dashboard/empleados',
-		icon: CertifiedIcon({
-			color: 'var(--white-peristance-color)',
-			size: [1.25, 1.25],
+		icon: UserIcon({
+			color: colorIcons,
+			h: 20,
 		}),
 	},
 ]

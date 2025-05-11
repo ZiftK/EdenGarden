@@ -62,8 +62,8 @@ export default async function Page({
 							>
 								{project.name}
 							</Link>
-							<span className='flex items-center gap-1 text-sm text-[var(--children-font)] mb-3.5'>
-								<GroupIcon size={[15, 15]} color={colorIcons} />
+							<span className='flex items-center gap-1 text-sm text-[var(--father-font)] mb-3.5'>
+								<GroupIcon h={15} color={colorIcons} />
 								Conformado por {
 									project.teams.members.length
 								}{' '}
@@ -77,7 +77,7 @@ export default async function Page({
 							<h3 className='font-medium text-md'>
 								Calendario de proyecto
 							</h3>
-							<span className='flex items-center gap-1 text-sm text-[var(--children-font)] mb-3.5'>
+							<span className='flex items-center gap-1 text-sm text-[var(--father-font)] mb-3.5'>
 								<CalendarIcon h={15} color={colorIcons} />
 								{project.calendar.intial_date.toLocaleDateString()}{' '}
 								-{' '}
@@ -143,18 +143,12 @@ export default async function Page({
 								</span>
 
 								<span className='flex items-center gap-1 '>
-									<PhoneIcon
-										size={[15, 15]}
-										color={colorIcons}
-									/>
+									<PhoneIcon h={15} color={colorIcons} />
 									{project.clientData.phone}
 								</span>
 
 								<span className='flex items-center gap-1 '>
-									<EmailIcon
-										size={[15, 15]}
-										color={colorIcons}
-									/>
+									<EmailIcon h={15} color={colorIcons} />
 									{project.clientData.email}
 								</span>
 							</div>

@@ -24,7 +24,7 @@ export default function MobileMenu({ menuItems }: MenuProps) {
 		<div className='sm-0.5 xl:hidden'>
 			<nav
 				className='fixed top-0 left-0 flex w-full justify-between items-center
-                pl-4 pr-2 py-3 bg-[rgba(24,44,2)]'
+                pl-4 pr-2 py-3 bg-[rgba(24,44,2)] text-[var(--father-font)]'
 			>
 				<Image src={imgIcon.src} alt='Logo' width={30} height={30} />
 
@@ -34,7 +34,7 @@ export default function MobileMenu({ menuItems }: MenuProps) {
 						alt='Menu_Icon'
 						width={20}
 						height={20}
-						style={{ color: 'var(--white-peristance-color)' }}
+						style={{ color: 'var(var(--father-font)' }}
 					/>
 				</BtnFilled>
 			</nav>

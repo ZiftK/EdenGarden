@@ -30,7 +30,7 @@ export function SidebarMenu({ menuItems, isOpen, close }: menuProps) {
 								text={item.label}
 								weight={500}
 								style={{
-									color: 'var(--white-peristance-color)',
+									color: 'var(--father-font)',
 								}}
 							/>
 						</div>
@@ -42,7 +42,7 @@ export function SidebarMenu({ menuItems, isOpen, close }: menuProps) {
 				text='Cerrar Sesion'
 				weight={500}
 				className='mt-auto mb-6'
-				style={{ color: 'var(--white-peristance-color)' }}
+				style={{ color: 'var(--father-font)' }}
 			/>
 		</Sidebar>
 	)

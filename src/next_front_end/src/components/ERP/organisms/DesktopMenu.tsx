@@ -11,7 +11,7 @@ type MenuProps = {
 
 export default function DesktopMenu({ menuItems }: MenuProps) {
 	return (
-		<nav className='hidden xl:flex flex-col bg-[rgba(24,44,2)] rounded-sm min-w-full max-w-[200px] py-4 row-span-3 lg:!row-start-1'>
+		<nav className='hidden xl:flex flex-col text-[var(--children-font)] bg-[rgba(24,44,2)] rounded-sm min-w-full max-w-[200px] py-4 row-span-3 lg:!row-start-1'>
 			<Image
 				src={imgIcon.src}
 				alt='Logo'
