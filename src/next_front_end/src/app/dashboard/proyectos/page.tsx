@@ -57,10 +57,7 @@ export default async function page() {
 						<CardBody className='flex flex-row justify-between mb-auto '>
 							<div className='hidden md:flex flex-col gap-1 text-[var(--children-font)] text-xs mt-auto'>
 								<span className='flex items-center gap-1'>
-									<GroupIcon
-										size={[15, 15]}
-										color={colorIcons}
-									/>
+									<GroupIcon h={15} color={colorIcons} />
 									Conformado por{' '}
 									{project.teams.members.length} miembros
 								</span>
