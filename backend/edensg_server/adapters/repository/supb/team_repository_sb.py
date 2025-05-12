@@ -11,7 +11,7 @@ class TeamRepositorySB(TeamRepository):
         self.client: Client = supabase_client
         self.employee_repo: EmployeeRepository = employee_sb_repository
         self.table = 'equipo'
-        self.equipoempleado_table = 'equipoempleado'
+        self.equipoempleado_table = 'equipo_empleado'
 
     def __get_team_employees(self, id: int) -> list[Employee]:
         """Obtiene los empleados de un equipo."""
@@ -27,7 +27,17 @@ class TeamRepositorySB(TeamRepository):
     def get_all_teams(self) -> list[Team]:
         """Obtiene todos los equipos de la base de datos."""
         response = self.client.table(self.table).select('*').execute()
-        return [Team(**team) for team in response.data]
+        teams = []
+        for team_data in response.data:
+            # Get leader data
+            leader = self.employee_repo.find_employee_by_id(team_data['fk_lider'])
+            # Get team employees
+            employees = self.__get_team_employees(team_data['id_equipo'])
+            # Remove fk_lider from data
+            team_data.pop('fk_lider')
+            # Create team with complete data
+            teams.append(Team(**{**team_data, 'lider': leader, 'empleados': employees}))
+        return teams
     
     def find_team_by_id(self, id: int) -> Team:
         """Busca equipos por id."""
