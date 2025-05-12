@@ -1,4 +1,4 @@
-import { dataTeam } from "../../types/types"
+import { dataTeam } from "../types/types"
 
 
 export const handleToggleRemove = (data: dataTeam): dataTeam => {

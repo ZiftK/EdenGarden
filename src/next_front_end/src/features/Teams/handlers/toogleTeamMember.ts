@@ -1,5 +1,5 @@
 import { Employee } from "@/src/shared/types"
-import { dataTeam } from "../../types/types"
+import { dataTeam } from "../types/types"
 
 export const toggleTeamMember = (
     state: dataTeam,

@@ -1,6 +1,6 @@
 
-import { updateTeam } from "../../api/updateTeams"
-import { dataTeam } from "../../types/types"
+import { updateTeam } from "../api/updateTeams"
+import { dataTeam } from "../types/types"
 
 export const handleSaveTeam = async (
     data: dataTeam,
@@ -11,6 +11,7 @@ export const handleSaveTeam = async (
         alert("Puede borrar el equipo, mas no dejarlo vacio")
         return reset()
     }
+    console.log(data.teamShowed.members)
     if(data.teamShowed.members === data.currentTeam.members) return reset()
 
     updateTeam(data.currentTeam.name, data.currentTeam.members)

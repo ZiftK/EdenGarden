@@ -10,7 +10,7 @@ import {
 	EmailIcon,
 	PhoneIcon,
 } from '@/src/components/landing/atoms/Icons/Icons'
-import { toggleTeamMember } from '../model/handlers/toogleTeamMember'
+import { toggleTeamMember } from '../handlers/toogleTeamMember'
 import ModalNewMember from './moleculs/ModalNewMember'
 import { redirect } from 'next/navigation'
 

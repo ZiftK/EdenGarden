@@ -3,8 +3,8 @@
 import { useState } from "react"
 
 import { ShortTeam } from "@/src/shared/types"
-import { handleSaveTeam } from "./handlers/handleSaveTeam"
-import { handleToggleRemove } from "./handlers/handleToggleRemove"
+import { handleSaveTeam } from "../handlers/handleSaveTeam"
+import { handleToggleRemove } from "../handlers/handleToggleRemove"
 import { dataTeam } from "../types/types"
 
 export function useEditableTeam({initialTeam, isNewTeam = false}:{initialTeam: ShortTeam, isNewTeam?: boolean}) {
@@ -26,10 +26,11 @@ export function useEditableTeam({initialTeam, isNewTeam = false}:{initialTeam: S
   })
 
   const reset = () => {
+    alert('se activo el reset')
     setData((prev) => ({
       ...prev,
       isEditing: true,
-      teamShowed: prev.currentTeam,
+      teamShowed: data.currentTeam,
       teamChanged: {
         name: '',
         leader: {
@@ -43,6 +44,7 @@ export function useEditableTeam({initialTeam, isNewTeam = false}:{initialTeam: S
         },
         members: [],
       },
+      currentTeam: data.currentTeam
     }))
   }
 

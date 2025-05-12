@@ -6,7 +6,6 @@ import {
 	Button,
 	Select,
 	SelectItem,
-	Textarea,
 	Card,
 	CardBody,
 	CardHeader,
@@ -39,6 +38,13 @@ export default function FormNewEmplooye() {
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = e.target
+		setNewEmployee((prev) => ({
+			...prev,
+			[name]: value,
+		}))
+	}
+
+	const handleSelectChange = (name: string, value: unknown) => {
 		setNewEmployee((prev) => ({
 			...prev,
 			[name]: value,
@@ -78,13 +84,13 @@ export default function FormNewEmplooye() {
 			<Divider />
 			<CardBody>
 				<div className='space-y-4'>
-					<div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-						{/* Información Personal */}
-						<div className='space-y-2'>
-							<h3 className='text-lg font-medium text-[var(--father-font)]'>
-								Información Personal
-							</h3>
+					{/* Información Personal */}
+					<div className='space-y-2'>
+						<h3 className='text-lg font-medium text-[var(--father-font)]'>
+							Información Personal
+						</h3>
 
+						<div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
 							<Input
 								label='Nombre Completo'
 								name='name'
@@ -131,7 +137,7 @@ export default function FormNewEmplooye() {
 							/>
 
 							<Input
-								label='Número de Teléfono'
+								label='Teléfono'
 								name='phone_number'
 								value={newEmployee.phone_number}
 								onChange={handleChange}
@@ -152,35 +158,10 @@ export default function FormNewEmplooye() {
 								}}
 							/>
 
-							<Textarea
+							<Input
 								label='Dirección'
 								name='address'
 								value={newEmployee.address}
-								onChange={handleChange}
-								minRows={2}
-								maxRows={3}
-								isRequired
-								classNames={{
-									label: '!text-white/50',
-									input: 'label:!text-[var(--father-font)] bg-transparent !text-[var(--father-font)] focus:!bg-white/30 active:!bg-white/30',
-									inputWrapper: [
-										'bg-transparent',
-										'hover:!bg-white/30',
-										'!data-[focused=true]:bg-transparent',
-										'data-[hover=true]:!bg-white/30',
-										'focus-within:!bg-transparent',
-										'focus:!bg-transparent',
-										'active:!bg-transparent',
-										'focus:border-white/50',
-									],
-								}}
-							/>
-
-							<Input
-								label='Contraseña'
-								name='password'
-								type='password'
-								value={newEmployee.password}
 								onChange={handleChange}
 								isRequired
 								classNames={{
@@ -199,35 +180,14 @@ export default function FormNewEmplooye() {
 								}}
 							/>
 						</div>
+					</div>
 
-						{/* Información Laboral */}
-						<div className='space-y-2'>
-							<h3 className='text-lg font-medium text-[var(--father-font)]'>
-								Información Laboral
-							</h3>
-
-							<Input
-								label='ID de Empleado'
-								name='id'
-								value={newEmployee.id}
-								onChange={handleChange}
-								isRequired
-								classNames={{
-									label: '!text-white/50',
-									input: 'label:!text-[var(--father-font)] bg-transparent !text-[var(--father-font)] focus:!bg-white/30 active:!bg-white/30',
-									inputWrapper: [
-										'bg-transparent',
-										'hover:!bg-white/30',
-										'!data-[focused=true]:bg-transparent',
-										'data-[hover=true]:!bg-white/30',
-										'focus-within:!bg-transparent',
-										'focus:!bg-transparent',
-										'active:!bg-transparent',
-										'focus:border-white/50',
-									],
-								}}
-							/>
-
+					{/* Información Laboral */}
+					<div className='space-y-2 mt-4'>
+						<h3 className='text-lg font-medium text-[var(--father-font)]'>
+							Información Laboral
+						</h3>
+						<div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
 							<Input
 								label='Posición'
 								name='position'
@@ -250,61 +210,35 @@ export default function FormNewEmplooye() {
 								}}
 							/>
 
-							<Select
-								label='Rol'
-								selectedKeys={[newEmployee.role]}
-								popover='manual'
-								contextMenu='false'
-								onChange={(e) =>
-									setNewEmployee({
-										...newEmployee,
-										role: e.target.value as
-											| 'user'
-											| 'admin'
-											| 'leader',
-									})
-								}
-								classNames={{
-									label: '!text-white/50',
-									value: '!text-[var(--father-font)] ',
-
-									trigger: [
-										'bg-transparent',
-										'!text-[var(--father-font)]',
-										'focus:!bg-white/30',
-										'active:!bg-white/30',
-										'hover:!bg-white/30',
-										'data-[hover=true]:!bg-white/30',
-									],
-									helperWrapper: '!bg-red-400',
-									listbox:
-										'bg-[#222] !text-[var(--father-font)]',
-									popoverContent: 'bg-[#222] border-[#333] ',
-								}}
-								popoverProps={{
-									placement: 'bottom-start',
-									autoFocus: false,
-
-									offset: 0,
-									isOpen: undefined,
-								}}
-							>
-								<SelectItem key='user' textValue='user'>
-									Usuario
-								</SelectItem>
-								<SelectItem key='admin' textValue='admin'>
-									Administrador
-								</SelectItem>
-								<SelectItem key='leader' textValue='leader'>
-									Líder
-								</SelectItem>
-							</Select>
-
 							<Input
 								label='Salario'
 								name='salary'
 								type='number'
-								value={newEmployee.salary.toString()}
+								value={newEmployee.salary}
+								onChange={handleNumberChange}
+								placeholder='$0.00'
+								isRequired
+								classNames={{
+									label: '!text-white/50',
+									input: 'label:!text-[var(--father-font)] bg-transparent !text-[var(--father-font)] focus:!bg-white/30 active:!bg-white/30',
+									inputWrapper: [
+										'bg-transparent',
+										'hover:!bg-white/30',
+										'!data-[focused=true]:bg-transparent',
+										'data-[hover=true]:!bg-white/30',
+										'focus-within:!bg-transparent',
+										'focus:!bg-transparent',
+										'active:!bg-transparent',
+										'focus:border-white/50',
+									],
+								}}
+							/>
+
+							<Input
+								type='date'
+								label='Fecha de Contratación'
+								name='hire_date'
+								value={newEmployee.hire_date}
 								onChange={handleChange}
 								isRequired
 								classNames={{
@@ -324,22 +258,15 @@ export default function FormNewEmplooye() {
 							/>
 
 							<Select
-								label='Estado'
-								selectedKeys={[newEmployee.status || 'active']}
+								label='Equipo Asignado'
+								selectedKeys={[newEmployee.teams!]}
 								onChange={(e) =>
-									setNewEmployee({
-										...newEmployee,
-										status: e.target.value as
-											| 'active'
-											| 'inactive'
-											| 'pending',
-									})
+									handleSelectChange('teams', e.target.value)
 								}
 								className='w-full'
 								classNames={{
 									label: '!text-white/50',
 									value: '!text-[var(--father-font)] ',
-
 									trigger: [
 										'bg-transparent',
 										'!text-[var(--father-font)]',
@@ -348,37 +275,197 @@ export default function FormNewEmplooye() {
 										'hover:!bg-white/30',
 										'data-[hover=true]:!bg-white/30',
 									],
-									helperWrapper: '!bg-red-400',
 									listbox:
 										'bg-[#222] !text-[var(--father-font)]',
 									popoverContent: 'bg-[#222] border-[#333]',
 								}}
 							>
-								<SelectItem key='active' textValue='active'>
-									Activo
+								{teams.map((team) => (
+									<SelectItem
+										key={team.id}
+										textValue={team.name}
+									>
+										{team.name}
+									</SelectItem>
+								))}
+							</Select>
+						</div>
+					</div>
+
+					{/* Horario de Trabajo */}
+					<div className='space-y-2 mt-4'>
+						<h3 className='text-lg font-medium text-[var(--father-font)]'>
+							Horario de Trabajo
+						</h3>
+						<div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+							<Input
+								type='time'
+								label='Hora de Entrada'
+								name='in_time'
+								value={newEmployee.in_time}
+								onChange={handleChange}
+								isRequired
+								classNames={{
+									label: '!text-white/50',
+									input: 'label:!text-[var(--father-font)] bg-transparent !text-[var(--father-font)] focus:!bg-white/30 active:!bg-white/30',
+									inputWrapper: [
+										'bg-transparent',
+										'hover:!bg-white/30',
+										'!data-[focused=true]:bg-transparent',
+										'data-[hover=true]:!bg-white/30',
+										'focus-within:!bg-transparent',
+										'focus:!bg-transparent',
+										'active:!bg-transparent',
+										'focus:border-white/50',
+									],
+								}}
+							/>
+
+							<Input
+								type='time'
+								label='Hora de Salida'
+								name='out_time'
+								value={newEmployee.out_time}
+								onChange={handleChange}
+								isRequired
+								classNames={{
+									label: '!text-white/50',
+									input: 'label:!text-[var(--father-font)] bg-transparent !text-[var(--father-font)] focus:!bg-white/30 active:!bg-white/30',
+									inputWrapper: [
+										'bg-transparent',
+										'hover:!bg-white/30',
+										'!data-[focused=true]:bg-transparent',
+										'data-[hover=true]:!bg-white/30',
+										'focus-within:!bg-transparent',
+										'focus:!bg-transparent',
+										'active:!bg-transparent',
+										'focus:border-white/50',
+									],
+								}}
+							/>
+						</div>
+					</div>
+
+					{/* Información de Acceso */}
+					<div className='space-y-2 mt-4'>
+						<h3 className='text-lg font-medium text-[var(--father-font)]'>
+							Información de Acceso
+						</h3>
+						<div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+							<Input
+								label='Contraseña'
+								name='password'
+								type='password'
+								value={newEmployee.password}
+								onChange={handleChange}
+								isRequired
+								classNames={{
+									label: '!text-white/50',
+									input: 'label:!text-[var(--father-font)] bg-transparent !text-[var(--father-font)] focus:!bg-white/30 active:!bg-white/30',
+									inputWrapper: [
+										'bg-transparent',
+										'hover:!bg-white/30',
+										'!data-[focused=true]:bg-transparent',
+										'data-[hover=true]:!bg-white/30',
+										'focus-within:!bg-transparent',
+										'focus:!bg-transparent',
+										'active:!bg-transparent',
+										'focus:border-white/50',
+									],
+								}}
+							/>
+
+							<Select
+								label='Rol'
+								selectedKeys={[newEmployee.role]}
+								onChange={(e) =>
+									handleSelectChange('role', e.target.value)
+								}
+								className='w-full'
+								classNames={{
+									label: '!text-white/50',
+									value: '!text-[var(--father-font)] ',
+									trigger: [
+										'bg-transparent',
+										'!text-[var(--father-font)]',
+										'focus:!bg-white/30',
+										'active:!bg-white/30',
+										'hover:!bg-white/30',
+										'data-[hover=true]:!bg-white/30',
+									],
+									listbox:
+										'bg-[#222] !text-[var(--father-font)]',
+									popoverContent: 'bg-[#222] border-[#333]',
+								}}
+							>
+								<SelectItem key='user' textValue='Usuario'>
+									Usuario
 								</SelectItem>
-								<SelectItem key='inactive' textValue='inactive'>
-									Inactivo
+								<SelectItem key='leader' textValue='Líder'>
+									Líder
 								</SelectItem>
-								<SelectItem key='pending' textValue='pending'>
-									Pendiente
+								<SelectItem
+									key='admin'
+									textValue='Administrador'
+								>
+									Administrador
 								</SelectItem>
 							</Select>
 						</div>
 					</div>
 
+					{/* Estado */}
+					<div className='space-y-2 mt-4'>
+						<h3 className='text-lg font-medium text-[var(--father-font)]'>
+							Estado
+						</h3>
+						<Select
+							label='Estado del Empleado'
+							selectedKeys={[newEmployee.status!]}
+							onChange={(e) =>
+								handleSelectChange('status', e.target.value)
+							}
+							className='w-full md:w-1/2'
+							classNames={{
+								label: '!text-white/50',
+								value: '!text-[var(--father-font)] ',
+								trigger: [
+									'bg-transparent',
+									'!text-[var(--father-font)]',
+									'focus:!bg-white/30',
+									'active:!bg-white/30',
+									'hover:!bg-white/30',
+									'data-[hover=true]:!bg-white/30',
+								],
+								listbox: 'bg-[#222] !text-[var(--father-font)]',
+								popoverContent: 'bg-[#222] border-[#333]',
+							}}
+						>
+							<SelectItem key='active' textValue='Activo'>
+								Activo
+							</SelectItem>
+							<SelectItem key='inactive' textValue='Inactivo'>
+								Inactivo
+							</SelectItem>
+							<SelectItem key='pending' textValue='Pendiente'>
+								Pendiente
+							</SelectItem>
+						</Select>
+					</div>
+
 					{/* Sección de Imagen */}
 					<div className='mt-4'>
 						<h3 className='text-lg font-medium mb-2 text-[var(--father-font)]'>
-							Foto de Perfil
+							Foto del Empleado
 						</h3>
 						<div className='flex items-center gap-4'>
 							{newEmployee.img && (
-								<div className='relative w-24 h-24 rounded-full overflow-hidden'>
+								<div className='relative w-32 h-32 rounded-full overflow-hidden'>
 									<Image
 										src={newEmployee.img}
 										alt='Vista previa'
-										className='w-full h-full object-cover'
+										layout='fill'
+										objectFit='cover'
 									/>
 								</div>
 							)}
@@ -415,7 +502,7 @@ export default function FormNewEmplooye() {
 					size='sm'
 					onPress={handleSubmit}
 				>
-					Crear nuevo equipo
+					Registrar Empleado
 				</Button>
 
 				<Link

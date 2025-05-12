@@ -4,7 +4,7 @@ import { useEditableTeam } from '../model/useTeamEditable'
 import { ShortTeam } from '@/src/shared/types'
 import { TeamMemberRow } from './moleculs/TeamMemberRow'
 import LeaderAutocomplete from '../../Employees/ui/moleculs/LeadereAutocomplete'
-import { toggleTeamMember } from '../model/handlers/toogleTeamMember'
+import { toggleTeamMember } from '../handlers/toogleTeamMember'
 import {
 	EmailIcon,
 	PhoneIcon,
@@ -79,14 +79,14 @@ export default function TableEditableClient({
 										text={currentLeader.email}
 										icon={EmailIcon({
 											color: 'var(--father-font)',
-											size: [0.75, 0.75],
+											h: 12,
 										})}
 									/>
 									<CopyButton
 										text={currentLeader.phone_number}
 										icon={PhoneIcon({
 											color: 'var(--father-font)',
-											size: [0.75, 0.75],
+											h: 12,
 										})}
 									/>
 								</div>
@@ -164,7 +164,13 @@ export default function TableEditableClient({
 							Guardar
 						</button>
 						<button
-							onClick={reset}
+							onClick={() => {
+								reset()
+								setData((prev) => ({
+									...prev,
+									isEditing: false,
+								}))
+							}}
 							className='cursor-pointer text-md'
 						>
 							Cancelar
