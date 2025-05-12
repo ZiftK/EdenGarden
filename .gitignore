@@ -1,5 +1,6 @@
 
 app_venv
+venv/
 src/backend/EdensGarden_Backend.egg-info
 
 *.pyc
