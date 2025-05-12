@@ -21,32 +21,83 @@ class EmployeeRepositorySB(EmployeeRepository):
             "clave": data.clave,
             "rol": data.rol,
             "puesto": data.puesto,
-            "salario": data.salario
+            "salario": data.salario,
+            "fk_equipo": data.equipo
         }
         response = self.client.table(self.table).insert(data_dict).execute()
         return response.data[0]['id_empleado']
 
-    def find_all(self) -> Employee:
+    def find_all(self) -> list[Employee]:
         """Obtiene todos los empleados de la base de datos."""
-        response = self.client.table(self.table).select('*').execute()
+        response = self.client.table(self.table).select('''
+            *,
+            equipo (
+                id_equipo,
+                fk_lider
+            )
+        ''').execute()
 
         employees = []
         for employee in response.data:
             in_date = employee['fecha_contratacion'].split('-')
-            employee['fecha_contratacion'] = {
-                "dia": int(in_date[2]),
-                "mes": EnumMonths(int(in_date[1])),
-                "anno": int(in_date[0])
-            }
+            employee['fecha_contratacion'] = Date(
+                dia=int(in_date[2]),
+                mes=EnumMonths(int(in_date[1])),
+                anno=int(in_date[0])
+            )
+            if employee.get('fecha_salida'):
+                out_date = employee['fecha_salida'].split('-')
+                employee['fecha_salida'] = Date(
+                    dia=int(out_date[2]),
+                    mes=EnumMonths(int(out_date[1])),
+                    anno=int(out_date[0])
+                )
+            if employee.get('fecha_recontratacion'):
+                rehire_date = employee['fecha_recontratacion'].split('-')
+                employee['fecha_recontratacion'] = Date(
+                    dia=int(rehire_date[2]),
+                    mes=EnumMonths(int(rehire_date[1])),
+                    anno=int(rehire_date[0])
+                )
             employees.append(Employee(**employee))
         return employees
 
-    def find_employee_by_id(self, id: int) -> list[Employee]:
+    def find_employee_by_id(self, id: int) -> Employee:
         """Busca empleados por id."""
-        response = self.client.table(self.table).select('*').eq('id_empleado', id).execute()
+        response = self.client.table(self.table).select('''
+            *,
+            equipo (
+                id_equipo,
+                fk_lider
+            )
+        ''').eq('id_empleado', id).execute()
+        
+        if not response.data:
+            raise Exception(f"Empleado con ID {id} no encontrado")
+            
         data = response.data[0]
-        return Employee(**data) 
-    
+        in_date = data['fecha_contratacion'].split('-')
+        data['fecha_contratacion'] = Date(
+            dia=int(in_date[2]),
+            mes=EnumMonths(int(in_date[1])),
+            anno=int(in_date[0])
+        )
+        if data.get('fecha_salida'):
+            out_date = data['fecha_salida'].split('-')
+            data['fecha_salida'] = Date(
+                dia=int(out_date[2]),
+                mes=EnumMonths(int(out_date[1])),
+                anno=int(out_date[0])
+            )
+        if data.get('fecha_recontratacion'):
+            rehire_date = data['fecha_recontratacion'].split('-')
+            data['fecha_recontratacion'] = Date(
+                dia=int(rehire_date[2]),
+                mes=EnumMonths(int(rehire_date[1])),
+                anno=int(rehire_date[0])
+            )
+        return Employee(**data)
+
     def find_employees_by_ids(self, ids: list[int]) -> list[Employee]:
         """Busca empleados por ids."""
         response = self.client.table(self.table).select('*').in_('id_empleado', ids).execute()
@@ -64,11 +115,25 @@ class EmployeeRepositorySB(EmployeeRepository):
 
     def update_employee_data(self, id: int, data: Employee) -> None:
         """Actualiza la información de un empleado."""
-        self.client.table(self.table).update(data.model_dump(exclude={'id_empleado'})).eq('id_empleado', id).execute()
+        update_data = {
+            "nombre": data.nombre,
+            "direccion": data.direccion,
+            "telefono": data.telefono,
+            "email": data.email,
+            "fecha_contratacion": str(data.fecha_contratacion),
+            "fecha_salida": str(data.fecha_salida) if data.fecha_salida else None,
+            "fecha_recontratacion": str(data.fecha_recontratacion) if data.fecha_recontratacion else None,
+            "clave": data.clave,
+            "rol": data.rol,
+            "puesto": data.puesto,
+            "salario": data.salario,
+            "fk_equipo": data.equipo
+        }
+        self.client.table(self.table).update(update_data).eq('id_empleado', id).execute()
 
-    def delete_employee_data(self, id: int) -> None:
+    def delete_employee_data(self, id: int) -> bool:
         """Elimina un empleado de la base de datos."""
-        self.client.table(self.table).delete().eq('id_empleado', id).execute()
+        return self.client.table(self.table).delete().eq('id_empleado', id).execute()
 
     def get_employee_attendance(self, employee_id: int, start_date: Date, end_date: Date) -> list[Attendance]:
         """
