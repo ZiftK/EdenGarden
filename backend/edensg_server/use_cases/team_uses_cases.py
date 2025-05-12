@@ -1,5 +1,5 @@
-from backend.edensg_server.adapters.repository.team_repository_interface import TeamRepository
-from backend.edensg_server.adapters.repository.project_repository_interface import ProjectRepository
+from backend.edensg_server.adapters.repository.interface.team_repository_interface import TeamRepository
+from backend.edensg_server.adapters.repository.interface.project_repository_interface import ProjectRepository
 from backend.edensg_server.domain.entities.project import Project
 from backend.edensg_server.domain.entities.team import Team
 
@@ -30,7 +30,7 @@ class TeamUseCases:
             raise ValueError(f"El proyecto con ID {project_id} no existe.")
         proyecto: Project = proyectos[0]
 
-        equipos = await self.team_repository.find_teams(team_id, search_by="id")
+        equipos = await self.team_repository.find_team(team_id, search_by="id")
         if not equipos:
             raise ValueError(f"El equipo con ID {team_id} no existe.")
         equipo: Team = equipos[0]
@@ -51,7 +51,7 @@ class TeamUseCases:
         Raises:
             ValueError: Si el equipo no existe
         """
-        equipos = await self.team_repository.find_teams(team_id, search_by="id")
+        equipos = await self.team_repository.find_team(team_id, search_by="id")
         if not equipos:
             raise ValueError(f"El equipo con ID {team_id} no existe.")
         await self.team_repository.drop_team_data(team_id) 
@@ -73,7 +73,7 @@ class TeamUseCases:
             raise ValueError(f"El proyecto con ID {project_id} no existe.")
         proyecto: Project = proyectos[0]
 
-        equipos = await self.team_repository.find_teams(team_id, search_by="id")
+        equipos = await self.team_repository.find_team(team_id, search_by="id")
         if not equipos:
             raise ValueError(f"El equipo con ID {team_id} no existe.")
         equipo: Team = equipos[0]
@@ -95,7 +95,7 @@ class TeamUseCases:
         Raises:
             ValueError: Si el equipo no existe
         """
-        equipos = await self.team_repository.find_teams(team_id, search_by="id")
+        equipos = await self.team_repository.find_team(team_id, search_by="id")
         if not equipos:
             raise ValueError(f"El equipo con ID {team_id} no existe.")
         await self.team_repository.update_team_data(team_id, data) 
@@ -106,10 +106,10 @@ class TeamUseCases:
         Returns:
             List[Team]: Lista de equipos de trabajo
         """
-        equipos = await self.team_repository.find_teams("all", search_by="all")
+        equipos = await self.team_repository.find_team("all", search_by="all")
         return equipos 
 
-    async def get_team_by_id(self, team_id: str) -> Team:
+    async def get_team_by_id(self, team_id: int) -> Team:
         """
         Devuelve un equipo de trabajo por su ID.
         Args:
@@ -117,7 +117,7 @@ class TeamUseCases:
         Returns:
             Team: Equipo de trabajo
         """
-        equipos = await self.team_repository.find_teams(team_id, search_by="id")
+        equipos = await self.team_repository.find_team(team_id, search_by="id")
         if not equipos:
             raise ValueError(f"El equipo con ID {team_id} no existe.")
         return equipos[0]
@@ -130,7 +130,7 @@ class TeamUseCases:
         Returns:
             Team: Equipo de trabajo
         """
-        equipos = await self.team_repository.find_teams(team_name, search_by="name")
+        equipos = await self.team_repository.find_team(team_name, search_by="name")
         if not equipos:
             raise ValueError(f"El equipo con nombre {team_name} no existe.")
         return equipos
@@ -145,8 +145,10 @@ class TeamUseCases:
         Raises:
             ValueError: Si no se encuentran equipos con el empleado
         """
-        equipos = await self.team_repository.find_teams(employee_id, search_by="employee_id")
+        equipos = await self.team_repository.find_team(employee_id, search_by="employee_id")
         if not equipos:
             raise ValueError(f"No se encontraron equipos que contengan al empleado con ID {employee_id}.")
         return equipos
         
+    async def get_all_teams(self) -> list[Team]:
+        return await self.team_repository.get_all_teams()

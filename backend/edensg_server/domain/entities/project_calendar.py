@@ -1,69 +1,71 @@
 from pydantic import BaseModel
 from typing import Optional
 from .time_enums import EnumDays, EnumMonths
-
+from .client import Client
 
 class Time(BaseModel):
-    hours: int
-    minutes: int
-    seconds: int
+    hora: int
+    minuto: int
+    segundo: int
+
+    def __str__(self):
+        return f"{self.hora}:{self.minuto}:{self.segundo}"
 
 
 class Date(BaseModel):
-    day: int
-    month: EnumMonths
-    year: int
+    dia: int
+    mes: EnumMonths
+    anno: int
 
     def __hash__(self):
-        return hash((self.day, self.month, self.year))
+        return hash((self.dia, self.mes, self.anno))
+    
+    def __str__(self):
+        return f"{self.anno}-{self.mes.value}-{self.dia}"
 
 
-class ScheduleData(BaseModel):
-    is_working_day: bool
-    initial_time: Optional[Time]
-    final_time: Optional[Time]
-    location: Optional[str]
+class ScheduleTemplate(BaseModel):
+    es_laborable: bool
+    hora_inicial: Optional[Time]
+    hora_final: Optional[Time]
+    locacion: Optional[str]
 
 
 
 class DayTemplate(BaseModel):
-    day: EnumDays
-    schedule: ScheduleData
+    dia: EnumDays
+    horario: ScheduleTemplate
 
 
 class DaySchedule(BaseModel):
     def __hash__(self):
-        return hash((self.day.value))
+        return hash((self.dia.value))
 
 
 class DateTemplate(BaseModel):
-    date: Date
-    schedule: ScheduleData
+    fecha: Date
+    horario: ScheduleTemplate
 
 
 class SprintSchedule(BaseModel):
     def __hash__(self):
-        return self.date.__hash__()
-
-class DateSchedule(BaseModel):
-    date: Date
-    schedule: ScheduleData
+        return self.fecha.__hash__()
 
 class ScheduleTemplates(BaseModel):
-    by_date: Optional[list[DateTemplate]]
-    by_day: Optional[list[DayTemplate]]
-    default: ScheduleData
+    by_date: Optional[list[DateTemplate]] = None
+    by_day: Optional[list[DayTemplate]] = None
+    default: Optional[ScheduleTemplate] = None
 
 
 class SprintDates(BaseModel):
-    initial_date: Date
-    final_date: Date
+    nombre: str
+    fecha_inicial: Date
+    fecha_final: Date
 
 
 class ProjectCalendar(BaseModel):
-    initial_date: Date
-    final_date: Date
-    non_working_days: Optional[list[Date]]
-    current_sprint: SprintSchedule
-    schedule_templates: ScheduleTemplates
-    current_sprint: SprintDates
+    fecha_inicio: Date
+    fecha_fin: Date
+    dias_no_laborables: Optional[list[Date]] = None
+    sprint_actual: Optional[SprintDates] = None
+    plantillas_horario: ScheduleTemplates
