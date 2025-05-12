@@ -1,6 +1,6 @@
 from supabase import Client
 from backend.edensg_server.adapters.repository.supb.client import supabase_client
-from backend.edensg_server.domain.entities.project import Project
+from backend.edensg_server.domain.entities.project import Project, ProjectToCreate
 from backend.edensg_server.adapters.repository.interface.project_repository_interface import ProjectRepository
 from backend.edensg_server.domain.entities.project_calendar import Date
 from backend.edensg_server.domain.entities.project_calendar import EnumDays
@@ -17,77 +17,35 @@ class ProjectRepositorySB(ProjectRepository):
     def __init__(self):
         self.client = supabase_client
         self.table = 'proyecto'
+        self.calendar_table = 'calendario_proyecto'
 
-    def create_project(self, data: Project) -> int:
+    def create_project(self, data: ProjectToCreate) -> int:
         """Inserta un nuevo proyecto en la base de datos."""
-        # Get client data
-        client_repo = ClientRepositorySB()
-        client = client_repo.find_client_by_id(data.cliente)
-        if not client:
-            raise ValueError(f"Client with ID {data.cliente} not found")
 
-        # Prepare project data
-        project_data = {
-            'nombre': data.nombre,
-            'descripcion': data.descripcion,
-            'estado': data.estado,
-            'costo': data.costo,
-            'fk_cliente': client.id_cliente
-        }
-
-        # Create project
-        response = self.client.table('proyecto').insert(project_data).execute()
-        project_id = response.data[0]['id_proyecto']
-
-        # Create calendar
         calendar_data = {
-            'fecha_inicio': f"{data.calendario.fecha_inicio.anno}-{data.calendario.fecha_inicio.mes.value}-{data.calendario.fecha_inicio.dia}",
-            'fecha_fin': f"{data.calendario.fecha_fin.anno}-{data.calendario.fecha_fin.mes.value}-{data.calendario.fecha_fin.dia}"
+            "fecha_inicio": str(data.calendario.fecha_inicio),
+            "fecha_fin": str(data.calendario.fecha_fin)
         }
-        calendar_response = self.client.table('calendario_proyecto').insert(calendar_data).execute()
-        calendar_id = calendar_response.data[0]['id_calendario']
+        response = self.client.table(self.calendar_table).insert(calendar_data).execute()
+        calendar_id = response.data[0]['id_calendario']
 
-        # Update project with calendar ID
-        self.client.table('proyecto').update({'fk_calendario': calendar_id}).eq('id_proyecto', project_id).execute()
+        project_data = {
+            "nombre": data.nombre,
+            "descripcion": data.descripcion,
+            "estado": data.estado,
+            "costo": data.costo,
+            "fk_calendario": calendar_id,
+            "fk_cliente": data.cliente
+        }
 
-        # Create schedule templates
-        for template in data.calendario.plantillas_horario.by_day + data.calendario.plantillas_horario.by_date:
-            schedule_data = {
-                'es_laborable': template.horario.es_laborable,
-                'hora_inicial': f"{template.horario.hora_inicial.hora}:{template.horario.hora_inicial.minuto}:{template.horario.hora_inicial.segundo}",
-                'hora_final': f"{template.horario.hora_final.hora}:{template.horario.hora_final.minuto}:{template.horario.hora_final.segundo}",
-                'locacion': template.horario.locacion
-            }
-            schedule_response = self.client.table('plantilla_horario').insert(schedule_data).execute()
-            schedule_id = schedule_response.data[0]['id_plantilla']
-
-            # Link schedule to calendar
-            self.client.table('calendario_proyecto_plantilla_horario').insert({
-                'fk_calendario_proyecto': calendar_id,
-                'fk_plantilla': schedule_id
-            }).execute()
-
-            # Create day/date templates
-            if isinstance(template, DayTemplate):
-                self.client.table('plantilla_horario_plantilla_dia').insert({
-                    'fk_plantilla_horario': schedule_id,
-                    'fk_plantilla_dia': template.dia.value + 1
-                }).execute()
-            elif isinstance(template, DateTemplate):
-                # Create date template first
-                date_template_response = self.client.table('plantilla_fecha').insert({
-                    'fecha': f"{template.fecha.anno}-{template.fecha.mes.value}-{template.fecha.dia}"
-                }).execute()
-                date_template_id = date_template_response.data[0]['id_plantilla']
-
-                # Then link it to the schedule
-                self.client.table('plantilla_horario_plantilla_fecha').insert({
-                    'fk_plantilla_horario': schedule_id,
-                    'fk_plantilla_fecha': date_template_id
-                }).execute()
+        response = self.client.table(self.table).insert(project_data).execute()
+        project_id = response.data[0]['id_proyecto']
 
         return project_id
 
+
+
+        
     def find_project_by_id(self, id: int) -> list[Project]:
         """Busca proyectos por un campo específico."""
 

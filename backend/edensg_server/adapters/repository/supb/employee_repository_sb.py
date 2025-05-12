@@ -29,7 +29,17 @@ class EmployeeRepositorySB(EmployeeRepository):
     def find_all(self) -> Employee:
         """Obtiene todos los empleados de la base de datos."""
         response = self.client.table(self.table).select('*').execute()
-        return [Employee(**employee) for employee in response.data]
+
+        employees = []
+        for employee in response.data:
+            in_date = employee['fecha_contratacion'].split('-')
+            employee['fecha_contratacion'] = {
+                "dia": int(in_date[2]),
+                "mes": EnumMonths(int(in_date[1])),
+                "anno": int(in_date[0])
+            }
+            employees.append(Employee(**employee))
+        return employees
 
     def find_employee_by_id(self, id: int) -> list[Employee]:
         """Busca empleados por id."""
