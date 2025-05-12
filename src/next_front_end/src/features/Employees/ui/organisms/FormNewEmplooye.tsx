@@ -1,6 +1,6 @@
 'use client'
 
-import { Employee } from '@/src/shared/types'
+import { Employee, ShortTeam } from '@/src/shared/types'
 import {
 	Input,
 	Button,
@@ -18,6 +18,7 @@ import Link from 'next/link'
 import { useState } from 'react'
 
 export default function FormNewEmplooye() {
+	const teams: ShortTeam[] = []
 	const [newEmployee, setNewEmployee] = useState<Employee>({
 		id: '',
 		name: '',
@@ -69,6 +70,37 @@ export default function FormNewEmplooye() {
 		redirect(`/dadashboard/empleados/${newEmployee.id}`)
 	}
 
+	const classNames = {
+		input: {
+			label: '!text-white/50',
+			input: 'label:!text-[var(--father-font)] bg-transparent !text-[var(--father-font)] focus:!bg-white/30 active:!bg-white/30',
+			inputWrapper: [
+				'bg-transparent',
+				'hover:!bg-white/30',
+				'!data-[focused=true]:bg-transparent',
+				'data-[hover=true]:!bg-white/30',
+				'focus-within:!bg-transparent',
+				'focus:!bg-transparent',
+				'active:!bg-transparent',
+				'focus:border-white/50',
+			],
+		},
+		select: {
+			label: '!text-white/50',
+			value: '!text-[var(--father-font)] ',
+			trigger: [
+				'bg-transparent',
+				'!text-[var(--father-font)]',
+				'focus:!bg-white/30',
+				'active:!bg-white/30',
+				'hover:!bg-white/30',
+				'data-[hover=true]:!bg-white/30',
+			],
+			listbox: 'bg-[#222] !text-[var(--father-font)]',
+			popoverContent: 'bg-[#222] border-[#333]',
+		},
+	}
+
 	return (
 		<Card className='!relative z-0 max-w-3xl mx-auto bg-[var(--bg-card-obscure)] overflow-hidden'>
 			<CardHeader className='flex gap-3'>
@@ -97,20 +129,7 @@ export default function FormNewEmplooye() {
 								value={newEmployee.name}
 								onChange={handleChange}
 								isRequired
-								classNames={{
-									label: '!text-white/50',
-									input: 'label:!text-[var(--father-font)] bg-transparent !text-[var(--father-font)] focus:!bg-white/30 active:!bg-white/30',
-									inputWrapper: [
-										'bg-transparent',
-										'hover:!bg-white/30',
-										'!data-[focused=true]:bg-transparent',
-										'data-[hover=true]:!bg-white/30',
-										'focus-within:!bg-transparent',
-										'focus:!bg-transparent',
-										'active:!bg-transparent',
-										'focus:border-white/50',
-									],
-								}}
+								classNames={classNames.input}
 							/>
 
 							<Input
@@ -120,20 +139,7 @@ export default function FormNewEmplooye() {
 								value={newEmployee.email}
 								onChange={handleChange}
 								isRequired
-								classNames={{
-									label: '!text-white/50',
-									input: 'label:!text-[var(--father-font)] bg-transparent !text-[var(--father-font)] focus:!bg-white/30 active:!bg-white/30',
-									inputWrapper: [
-										'bg-transparent',
-										'hover:!bg-white/30',
-										'!data-[focused=true]:bg-transparent',
-										'data-[hover=true]:!bg-white/30',
-										'focus-within:!bg-transparent',
-										'focus:!bg-transparent',
-										'active:!bg-transparent',
-										'focus:border-white/50',
-									],
-								}}
+								classNames={classNames.input}
 							/>
 
 							<Input
@@ -142,20 +148,7 @@ export default function FormNewEmplooye() {
 								value={newEmployee.phone_number}
 								onChange={handleChange}
 								isRequired
-								classNames={{
-									label: '!text-white/50',
-									input: 'label:!text-[var(--father-font)] bg-transparent !text-[var(--father-font)] focus:!bg-white/30 active:!bg-white/30',
-									inputWrapper: [
-										'bg-transparent',
-										'hover:!bg-white/30',
-										'!data-[focused=true]:bg-transparent',
-										'data-[hover=true]:!bg-white/30',
-										'focus-within:!bg-transparent',
-										'focus:!bg-transparent',
-										'active:!bg-transparent',
-										'focus:border-white/50',
-									],
-								}}
+								classNames={classNames.input}
 							/>
 
 							<Input
@@ -164,20 +157,7 @@ export default function FormNewEmplooye() {
 								value={newEmployee.address}
 								onChange={handleChange}
 								isRequired
-								classNames={{
-									label: '!text-white/50',
-									input: 'label:!text-[var(--father-font)] bg-transparent !text-[var(--father-font)] focus:!bg-white/30 active:!bg-white/30',
-									inputWrapper: [
-										'bg-transparent',
-										'hover:!bg-white/30',
-										'!data-[focused=true]:bg-transparent',
-										'data-[hover=true]:!bg-white/30',
-										'focus-within:!bg-transparent',
-										'focus:!bg-transparent',
-										'active:!bg-transparent',
-										'focus:border-white/50',
-									],
-								}}
+								classNames={classNames.input}
 							/>
 						</div>
 					</div>
@@ -194,44 +174,18 @@ export default function FormNewEmplooye() {
 								value={newEmployee.position}
 								onChange={handleChange}
 								isRequired
-								classNames={{
-									label: '!text-white/50',
-									input: 'label:!text-[var(--father-font)] bg-transparent !text-[var(--father-font)] focus:!bg-white/30 active:!bg-white/30',
-									inputWrapper: [
-										'bg-transparent',
-										'hover:!bg-white/30',
-										'!data-[focused=true]:bg-transparent',
-										'data-[hover=true]:!bg-white/30',
-										'focus-within:!bg-transparent',
-										'focus:!bg-transparent',
-										'active:!bg-transparent',
-										'focus:border-white/50',
-									],
-								}}
+								classNames={classNames.input}
 							/>
 
 							<Input
 								label='Salario'
 								name='salary'
 								type='number'
-								value={newEmployee.salary}
-								onChange={handleNumberChange}
+								value={String(newEmployee.salary)}
+								onChange={(e) => handleChange(e)}
 								placeholder='$0.00'
 								isRequired
-								classNames={{
-									label: '!text-white/50',
-									input: 'label:!text-[var(--father-font)] bg-transparent !text-[var(--father-font)] focus:!bg-white/30 active:!bg-white/30',
-									inputWrapper: [
-										'bg-transparent',
-										'hover:!bg-white/30',
-										'!data-[focused=true]:bg-transparent',
-										'data-[hover=true]:!bg-white/30',
-										'focus-within:!bg-transparent',
-										'focus:!bg-transparent',
-										'active:!bg-transparent',
-										'focus:border-white/50',
-									],
-								}}
+								classNames={classNames.input}
 							/>
 
 							<Input
@@ -241,20 +195,7 @@ export default function FormNewEmplooye() {
 								value={newEmployee.hire_date}
 								onChange={handleChange}
 								isRequired
-								classNames={{
-									label: '!text-white/50',
-									input: 'label:!text-[var(--father-font)] bg-transparent !text-[var(--father-font)] focus:!bg-white/30 active:!bg-white/30',
-									inputWrapper: [
-										'bg-transparent',
-										'hover:!bg-white/30',
-										'!data-[focused=true]:bg-transparent',
-										'data-[hover=true]:!bg-white/30',
-										'focus-within:!bg-transparent',
-										'focus:!bg-transparent',
-										'active:!bg-transparent',
-										'focus:border-white/50',
-									],
-								}}
+								classNames={classNames.input}
 							/>
 
 							<Select
@@ -264,21 +205,7 @@ export default function FormNewEmplooye() {
 									handleSelectChange('teams', e.target.value)
 								}
 								className='w-full'
-								classNames={{
-									label: '!text-white/50',
-									value: '!text-[var(--father-font)] ',
-									trigger: [
-										'bg-transparent',
-										'!text-[var(--father-font)]',
-										'focus:!bg-white/30',
-										'active:!bg-white/30',
-										'hover:!bg-white/30',
-										'data-[hover=true]:!bg-white/30',
-									],
-									listbox:
-										'bg-[#222] !text-[var(--father-font)]',
-									popoverContent: 'bg-[#222] border-[#333]',
-								}}
+								classNames={classNames.select}
 							>
 								{teams.map((team) => (
 									<SelectItem
@@ -305,20 +232,7 @@ export default function FormNewEmplooye() {
 								value={newEmployee.in_time}
 								onChange={handleChange}
 								isRequired
-								classNames={{
-									label: '!text-white/50',
-									input: 'label:!text-[var(--father-font)] bg-transparent !text-[var(--father-font)] focus:!bg-white/30 active:!bg-white/30',
-									inputWrapper: [
-										'bg-transparent',
-										'hover:!bg-white/30',
-										'!data-[focused=true]:bg-transparent',
-										'data-[hover=true]:!bg-white/30',
-										'focus-within:!bg-transparent',
-										'focus:!bg-transparent',
-										'active:!bg-transparent',
-										'focus:border-white/50',
-									],
-								}}
+								classNames={classNames.input}
 							/>
 
 							<Input
@@ -328,20 +242,7 @@ export default function FormNewEmplooye() {
 								value={newEmployee.out_time}
 								onChange={handleChange}
 								isRequired
-								classNames={{
-									label: '!text-white/50',
-									input: 'label:!text-[var(--father-font)] bg-transparent !text-[var(--father-font)] focus:!bg-white/30 active:!bg-white/30',
-									inputWrapper: [
-										'bg-transparent',
-										'hover:!bg-white/30',
-										'!data-[focused=true]:bg-transparent',
-										'data-[hover=true]:!bg-white/30',
-										'focus-within:!bg-transparent',
-										'focus:!bg-transparent',
-										'active:!bg-transparent',
-										'focus:border-white/50',
-									],
-								}}
+								classNames={classNames.input}
 							/>
 						</div>
 					</div>
@@ -359,20 +260,7 @@ export default function FormNewEmplooye() {
 								value={newEmployee.password}
 								onChange={handleChange}
 								isRequired
-								classNames={{
-									label: '!text-white/50',
-									input: 'label:!text-[var(--father-font)] bg-transparent !text-[var(--father-font)] focus:!bg-white/30 active:!bg-white/30',
-									inputWrapper: [
-										'bg-transparent',
-										'hover:!bg-white/30',
-										'!data-[focused=true]:bg-transparent',
-										'data-[hover=true]:!bg-white/30',
-										'focus-within:!bg-transparent',
-										'focus:!bg-transparent',
-										'active:!bg-transparent',
-										'focus:border-white/50',
-									],
-								}}
+								classNames={classNames.input}
 							/>
 
 							<Select
@@ -382,21 +270,7 @@ export default function FormNewEmplooye() {
 									handleSelectChange('role', e.target.value)
 								}
 								className='w-full'
-								classNames={{
-									label: '!text-white/50',
-									value: '!text-[var(--father-font)] ',
-									trigger: [
-										'bg-transparent',
-										'!text-[var(--father-font)]',
-										'focus:!bg-white/30',
-										'active:!bg-white/30',
-										'hover:!bg-white/30',
-										'data-[hover=true]:!bg-white/30',
-									],
-									listbox:
-										'bg-[#222] !text-[var(--father-font)]',
-									popoverContent: 'bg-[#222] border-[#333]',
-								}}
+								classNames={classNames.select}
 							>
 								<SelectItem key='user' textValue='Usuario'>
 									Usuario
@@ -426,20 +300,7 @@ export default function FormNewEmplooye() {
 								handleSelectChange('status', e.target.value)
 							}
 							className='w-full md:w-1/2'
-							classNames={{
-								label: '!text-white/50',
-								value: '!text-[var(--father-font)] ',
-								trigger: [
-									'bg-transparent',
-									'!text-[var(--father-font)]',
-									'focus:!bg-white/30',
-									'active:!bg-white/30',
-									'hover:!bg-white/30',
-									'data-[hover=true]:!bg-white/30',
-								],
-								listbox: 'bg-[#222] !text-[var(--father-font)]',
-								popoverContent: 'bg-[#222] border-[#333]',
-							}}
+							classNames={classNames.select}
 						>
 							<SelectItem key='active' textValue='Activo'>
 								Activo
@@ -474,20 +335,7 @@ export default function FormNewEmplooye() {
 								accept='image/*'
 								onChange={handleImageChange}
 								label='Seleccionar imagen'
-								classNames={{
-									label: '!text-white/50',
-									input: 'label:!text-[var(--father-font)] bg-transparent !text-[var(--father-font)] focus:!bg-white/30 active:!bg-white/30',
-									inputWrapper: [
-										'bg-transparent',
-										'hover:!bg-white/30',
-										'!data-[focused=true]:bg-transparent',
-										'data-[hover=true]:!bg-white/30',
-										'focus-within:!bg-transparent',
-										'focus:!bg-transparent',
-										'active:!bg-transparent',
-										'focus:border-white/50',
-									],
-								}}
+								classNames={classNames.input}
 							/>
 						</div>
 					</div>

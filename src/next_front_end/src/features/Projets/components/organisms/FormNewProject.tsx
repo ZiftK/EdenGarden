@@ -40,9 +40,7 @@ export default function FormNewProject() {
 		},
 	})
 
-	// Simulación de carga de equipos disponibles
 	useEffect(() => {
-		// Aquí harías la llamada a tu API para obtener los equipos
 		const fetchTeams = async () => {
 			// Ejemplo de datos, reemplazar con tu lógica real
 			const mockTeams: ShortTeam[] = [
@@ -87,19 +85,6 @@ export default function FormNewProject() {
 		}
 	}
 
-	const handleDateChange = (
-		field: 'startDate' | 'endDate',
-		value: string
-	) => {
-		setNewProject((prev) => ({
-			...prev,
-			calendar: {
-				...prev.calendar,
-				[field]: value,
-			},
-		}))
-	}
-
 	const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const file = e.target.files?.[0]
 		if (file) {
@@ -107,7 +92,7 @@ export default function FormNewProject() {
 			reader.onload = () => {
 				setNewProject((prev) => ({
 					...prev,
-					image: reader.result,
+					image: reader.result as string,
 				}))
 			}
 			reader.readAsDataURL(file)
@@ -117,6 +102,37 @@ export default function FormNewProject() {
 	const handleSubmit = () => {
 		// Aquí puedes manejar el envío del formulario
 		redirect(`/dashboard/proyectos/${newProject.id}`)
+	}
+
+	const classNames = {
+		input: {
+			label: '!text-white/50',
+			input: 'label:!text-[var(--father-font)] bg-transparent !text-[var(--father-font)] focus:!bg-white/30 active:!bg-white/30',
+			inputWrapper: [
+				'bg-transparent',
+				'hover:!bg-white/30',
+				'!data-[focused=true]:bg-transparent',
+				'data-[hover=true]:!bg-white/30',
+				'focus-within:!bg-transparent',
+				'focus:!bg-transparent',
+				'active:!bg-transparent',
+				'focus:border-white/50',
+			],
+		},
+		select: {
+			label: '!text-white/50',
+			value: '!text-[var(--father-font)] ',
+			trigger: [
+				'bg-transparent',
+				'!text-[var(--father-font)]',
+				'focus:!bg-white/30',
+				'active:!bg-white/30',
+				'hover:!bg-white/30',
+				'data-[hover=true]:!bg-white/30',
+			],
+			listbox: 'bg-[#222] !text-[var(--father-font)]',
+			popoverContent: 'bg-[#222] border-[#333]',
+		},
 	}
 
 	return (
@@ -144,23 +160,10 @@ export default function FormNewProject() {
 							<Input
 								label='Nombre del Proyecto'
 								name='name'
-								value={newProject.name}
+								value={newProject.name!}
 								onChange={handleChange}
 								isRequired
-								classNames={{
-									label: '!text-white/50',
-									input: 'label:!text-[var(--father-font)] bg-transparent !text-[var(--father-font)] focus:!bg-white/30 active:!bg-white/30',
-									inputWrapper: [
-										'bg-transparent',
-										'hover:!bg-white/30',
-										'!data-[focused=true]:bg-transparent',
-										'data-[hover=true]:!bg-white/30',
-										'focus-within:!bg-transparent',
-										'focus:!bg-transparent',
-										'active:!bg-transparent',
-										'focus:border-white/50',
-									],
-								}}
+								classNames={classNames.input}
 							/>
 
 							<Input
@@ -169,20 +172,7 @@ export default function FormNewProject() {
 								value={newProject.id}
 								onChange={handleChange}
 								isRequired
-								classNames={{
-									label: '!text-white/50',
-									input: 'label:!text-[var(--father-font)] bg-transparent !text-[var(--father-font)] focus:!bg-white/30 active:!bg-white/30',
-									inputWrapper: [
-										'bg-transparent',
-										'hover:!bg-white/30',
-										'!data-[focused=true]:bg-transparent',
-										'data-[hover=true]:!bg-white/30',
-										'focus-within:!bg-transparent',
-										'focus:!bg-transparent',
-										'active:!bg-transparent',
-										'focus:border-white/50',
-									],
-								}}
+								classNames={classNames.input}
 							/>
 
 							<Input
@@ -192,20 +182,7 @@ export default function FormNewProject() {
 								onChange={handleChange}
 								placeholder='$0.00'
 								isRequired
-								classNames={{
-									label: '!text-white/50',
-									input: 'label:!text-[var(--father-font)] bg-transparent !text-[var(--father-font)] focus:!bg-white/30 active:!bg-white/30',
-									inputWrapper: [
-										'bg-transparent',
-										'hover:!bg-white/30',
-										'!data-[focused=true]:bg-transparent',
-										'data-[hover=true]:!bg-white/30',
-										'focus-within:!bg-transparent',
-										'focus:!bg-transparent',
-										'active:!bg-transparent',
-										'focus:border-white/50',
-									],
-								}}
+								classNames={classNames.input}
 							/>
 
 							<Select
@@ -215,21 +192,7 @@ export default function FormNewProject() {
 									handleTeamChange(e.target.value)
 								}
 								className='w-full'
-								classNames={{
-									label: '!text-white/50',
-									value: '!text-[var(--father-font)] ',
-									trigger: [
-										'bg-transparent',
-										'!text-[var(--father-font)]',
-										'focus:!bg-white/30',
-										'active:!bg-white/30',
-										'hover:!bg-white/30',
-										'data-[hover=true]:!bg-white/30',
-									],
-									listbox:
-										'bg-[#222] !text-[var(--father-font)]',
-									popoverContent: 'bg-[#222] border-[#333]',
-								}}
+								classNames={classNames.select}
 							>
 								{teams.map((team) => (
 									<SelectItem
@@ -255,20 +218,7 @@ export default function FormNewProject() {
 								value={newProject.clientData.name}
 								onChange={handleChange}
 								isRequired
-								classNames={{
-									label: '!text-white/50',
-									input: 'label:!text-[var(--father-font)] bg-transparent !text-[var(--father-font)] focus:!bg-white/30 active:!bg-white/30',
-									inputWrapper: [
-										'bg-transparent',
-										'hover:!bg-white/30',
-										'!data-[focused=true]:bg-transparent',
-										'data-[hover=true]:!bg-white/30',
-										'focus-within:!bg-transparent',
-										'focus:!bg-transparent',
-										'active:!bg-transparent',
-										'focus:border-white/50',
-									],
-								}}
+								classNames={classNames.input}
 							/>
 
 							<Input
@@ -278,20 +228,7 @@ export default function FormNewProject() {
 								value={newProject.clientData.email}
 								onChange={handleChange}
 								isRequired
-								classNames={{
-									label: '!text-white/50',
-									input: 'label:!text-[var(--father-font)] bg-transparent !text-[var(--father-font)] focus:!bg-white/30 active:!bg-white/30',
-									inputWrapper: [
-										'bg-transparent',
-										'hover:!bg-white/30',
-										'!data-[focused=true]:bg-transparent',
-										'data-[hover=true]:!bg-white/30',
-										'focus-within:!bg-transparent',
-										'focus:!bg-transparent',
-										'active:!bg-transparent',
-										'focus:border-white/50',
-									],
-								}}
+								classNames={classNames.input}
 							/>
 
 							<Input
@@ -300,20 +237,7 @@ export default function FormNewProject() {
 								value={newProject.clientData.phone}
 								onChange={handleChange}
 								isRequired
-								classNames={{
-									label: '!text-white/50',
-									input: 'label:!text-[var(--father-font)] bg-transparent !text-[var(--father-font)] focus:!bg-white/30 active:!bg-white/30',
-									inputWrapper: [
-										'bg-transparent',
-										'hover:!bg-white/30',
-										'!data-[focused=true]:bg-transparent',
-										'data-[hover=true]:!bg-white/30',
-										'focus-within:!bg-transparent',
-										'focus:!bg-transparent',
-										'active:!bg-transparent',
-										'focus:border-white/50',
-									],
-								}}
+								classNames={classNames.input}
 							/>
 
 							<Textarea
@@ -324,20 +248,7 @@ export default function FormNewProject() {
 								minRows={2}
 								maxRows={3}
 								isRequired
-								classNames={{
-									label: '!text-white/50',
-									input: 'label:!text-[var(--father-font)] bg-transparent !text-[var(--father-font)] focus:!bg-white/30 active:!bg-white/30',
-									inputWrapper: [
-										'bg-transparent',
-										'hover:!bg-white/30',
-										'!data-[focused=true]:bg-transparent',
-										'data-[hover=true]:!bg-white/30',
-										'focus-within:!bg-transparent',
-										'focus:!bg-transparent',
-										'active:!bg-transparent',
-										'focus:border-white/50',
-									],
-								}}
+								classNames={classNames.input}
 							/>
 						</div>
 					</div>
@@ -351,52 +262,19 @@ export default function FormNewProject() {
 							<Input
 								type='date'
 								label='Fecha de Inicio'
-								value={newProject.calendar.startDate}
-								onChange={(e) =>
-									handleDateChange(
-										'startDate',
-										e.target.value
-									)
-								}
+								value={newProject.calendar.intial_date?.toDateString()}
+								onChange={(e) => handleChange(e)}
 								isRequired
-								classNames={{
-									label: '!text-white/50',
-									input: 'label:!text-[var(--father-font)] bg-transparent !text-[var(--father-font)] focus:!bg-white/30 active:!bg-white/30',
-									inputWrapper: [
-										'bg-transparent',
-										'hover:!bg-white/30',
-										'!data-[focused=true]:bg-transparent',
-										'data-[hover=true]:!bg-white/30',
-										'focus-within:!bg-transparent',
-										'focus:!bg-transparent',
-										'active:!bg-transparent',
-										'focus:border-white/50',
-									],
-								}}
+								classNames={classNames.input}
 							/>
 
 							<Input
 								type='date'
 								label='Fecha de Finalización'
-								value={newProject.calendar.endDate}
-								onChange={(e) =>
-									handleDateChange('endDate', e.target.value)
-								}
+								value={newProject.calendar.final_date?.toDateString()}
+								onChange={(e) => handleChange(e)}
 								isRequired
-								classNames={{
-									label: '!text-white/50',
-									input: 'label:!text-[var(--father-font)] bg-transparent !text-[var(--father-font)] focus:!bg-white/30 active:!bg-white/30',
-									inputWrapper: [
-										'bg-transparent',
-										'hover:!bg-white/30',
-										'!data-[focused=true]:bg-transparent',
-										'data-[hover=true]:!bg-white/30',
-										'focus-within:!bg-transparent',
-										'focus:!bg-transparent',
-										'active:!bg-transparent',
-										'focus:border-white/50',
-									],
-								}}
+								classNames={classNames.input}
 							/>
 						</div>
 					</div>
@@ -421,20 +299,7 @@ export default function FormNewProject() {
 								accept='image/*'
 								onChange={handleImageChange}
 								label='Seleccionar imagen'
-								classNames={{
-									label: '!text-white/50',
-									input: 'label:!text-[var(--father-font)] bg-transparent !text-[var(--father-font)] focus:!bg-white/30 active:!bg-white/30',
-									inputWrapper: [
-										'bg-transparent',
-										'hover:!bg-white/30',
-										'!data-[focused=true]:bg-transparent',
-										'data-[hover=true]:!bg-white/30',
-										'focus-within:!bg-transparent',
-										'focus:!bg-transparent',
-										'active:!bg-transparent',
-										'focus:border-white/50',
-									],
-								}}
+								classNames={classNames.input}
 							/>
 						</div>
 					</div>
