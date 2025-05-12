@@ -1,7 +1,14 @@
+.idea
 
-app_venv
-venv/
+edensg/
+linux_venv/
+py-server/app_venv
+# carpetas
+venv
 src/backend/EdensGarden_Backend.egg-info
 
+# cache
 *.pyc
 .idea
+.env
+*.ini
