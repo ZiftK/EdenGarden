@@ -12,11 +12,21 @@ class EmployeeRepositorySB(EmployeeRepository):
 
     def create_employee(self, data: Employee) -> int:
         """Inserta un nuevo empleado en la base de datos."""
-        data_dict = data.model_dump(exclude={'id_empleado'})
+        data_dict = {
+            "nombre": data.nombre,
+            "direccion": data.direccion,
+            "telefono": data.telefono,
+            "email": data.email,
+            "fecha_contratacion": str(data.fecha_contratacion),
+            "clave": data.clave,
+            "rol": data.rol,
+            "puesto": data.puesto,
+            "salario": data.salario
+        }
         response = self.client.table(self.table).insert(data_dict).execute()
         return response.data[0]['id_empleado']
 
-    def get_all_employees(self) -> Employee:
+    def find_all(self) -> Employee:
         """Obtiene todos los empleados de la base de datos."""
         response = self.client.table(self.table).select('*').execute()
         return [Employee(**employee) for employee in response.data]
