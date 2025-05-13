@@ -8,13 +8,14 @@ class Employee(BaseModel):
     direccion: str
     telefono: str
     email: Optional[str] = None
-    fecha_contratacion: str
-    fecha_salida: Optional[str] = None  
-    fecha_recontratacion: Optional[str] = None
+    fecha_contratacion: Date
+    fecha_salida: Optional[Date] = None  
+    fecha_recontratacion: Optional[Date] = None
     clave: str
     rol: str
     puesto: str
     salario: float
+    equipo: Optional[int] = None
 
 class Attendance(BaseModel):
     id_asistencia: Optional[int] = None

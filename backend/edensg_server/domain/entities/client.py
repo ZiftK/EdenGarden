@@ -2,8 +2,11 @@ from pydantic import BaseModel
 from typing import Optional
 
 
-class Client(BaseModel):
-    id_cliente: Optional[int] = None
+class ClientToCreate(BaseModel):
+    nombre: str
     direccion: str
     telefono: str
     email: Optional[str] = None
+
+class Client(ClientToCreate):
+    id_cliente: int

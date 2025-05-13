@@ -4,6 +4,7 @@ from backend.edensg_server.domain.entities.employee import Employee, Attendance
 from backend.edensg_server.adapters.repository.interface.employee_repository_interface import EmployeeRepository
 from backend.edensg_server.domain.entities.project_calendar import Date, Time, EnumMonths
 from datetime import datetime
+from backend.edensg_server.adapters.repository.supb.formatter_from_db import format_employee
 
 class EmployeeRepositorySB(EmployeeRepository):
     def __init__(self):
@@ -12,21 +13,36 @@ class EmployeeRepositorySB(EmployeeRepository):
 
     def create_employee(self, data: Employee) -> int:
         """Inserta un nuevo empleado en la base de datos."""
-        data_dict = data.model_dump(exclude={'id_empleado'})
+        data_dict = {
+            "nombre": data.nombre,
+            "direccion": data.direccion,
+            "telefono": data.telefono,
+            "email": data.email,
+            "fecha_contratacion": str(data.fecha_contratacion),
+            "clave": data.clave,
+            "rol": data.rol,
+            "puesto": data.puesto,
+            "salario": data.salario,
+            "fk_equipo": data.equipo
+        }
         response = self.client.table(self.table).insert(data_dict).execute()
         return response.data[0]['id_empleado']
 
-    def get_all_employees(self) -> Employee:
+    def find_all(self) -> list[Employee]:
         """Obtiene todos los empleados de la base de datos."""
         response = self.client.table(self.table).select('*').execute()
-        return [Employee(**employee) for employee in response.data]
+        return [format_employee(employee) for employee in response.data]
 
-    def find_employee_by_id(self, id: int) -> list[Employee]:
+    def find_employee_by_id(self, id: int) -> Employee:
         """Busca empleados por id."""
         response = self.client.table(self.table).select('*').eq('id_empleado', id).execute()
-        data = response.data[0]
-        return Employee(**data) 
-    
+        
+        if not response.data:
+            raise Exception(f"Empleado con ID {id} no encontrado")
+            
+        data = format_employee(response.data[0])
+        return data
+
     def find_employees_by_ids(self, ids: list[int]) -> list[Employee]:
         """Busca empleados por ids."""
         response = self.client.table(self.table).select('*').in_('id_empleado', ids).execute()
@@ -35,20 +51,34 @@ class EmployeeRepositorySB(EmployeeRepository):
     def find_employee_by_name(self, name: str) -> list[Employee]:
         """Busca empleados por nombre."""
         response = self.client.table(self.table).select('*').ilike('nombre', f'%{name}%').execute()
-        return [Employee(**employee) for employee in response.data]
+        return [format_employee(employee) for employee in response.data]
 
     def find_employee_by_email(self, email: str) -> list[Employee]:
         """Busca empleados por email."""
         response = self.client.table(self.table).select('*').eq('email', email).execute()
-        return [Employee(**employee) for employee in response.data]
+        return [format_employee(employee) for employee in response.data]
 
     def update_employee_data(self, id: int, data: Employee) -> None:
         """Actualiza la información de un empleado."""
-        self.client.table(self.table).update(data.model_dump(exclude={'id_empleado'})).eq('id_empleado', id).execute()
+        update_data = {
+            "nombre": data.nombre,
+            "direccion": data.direccion,
+            "telefono": data.telefono,
+            "email": data.email,
+            "fecha_contratacion": str(data.fecha_contratacion),
+            "fecha_salida": str(data.fecha_salida) if data.fecha_salida else None,
+            "fecha_recontratacion": str(data.fecha_recontratacion) if data.fecha_recontratacion else None,
+            "clave": data.clave,
+            "rol": data.rol,
+            "puesto": data.puesto,
+            "salario": data.salario,
+            "fk_equipo": data.equipo
+        }
+        self.client.table(self.table).update(update_data).eq('id_empleado', id).execute()
 
-    def delete_employee_data(self, id: int) -> None:
+    def delete_employee_data(self, id: int) -> bool:
         """Elimina un empleado de la base de datos."""
-        self.client.table(self.table).delete().eq('id_empleado', id).execute()
+        return self.client.table(self.table).delete().eq('id_empleado', id).execute()
 
     def get_employee_attendance(self, employee_id: int, start_date: Date, end_date: Date) -> list[Attendance]:
         """

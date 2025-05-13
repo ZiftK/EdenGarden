@@ -36,6 +36,11 @@ class ClientRepositorySB(ClientRepository):
         response = self.client.table(self.table).select('*').eq('email', email).execute()
         return [Client(**client) for client in response.data]
 
+    def find_client_by_name(self, name: str) -> list[Client]:
+        """Busca clientes por nombre."""
+        response = self.client.table(self.table).select('*').ilike('nombre', f'%{name}%').execute()
+        return [Client(**client) for client in response.data]
+
     def update_client_data(self, id: int, data: Client) -> None:
         """Actualiza la información de un cliente."""
         self.client.table(self.table).update(data.model_dump(exclude={'id_cliente'})).eq('id_cliente', id).execute()
