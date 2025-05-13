@@ -1,9 +1,10 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api';
+const API_URL =  'http://127.0.0.1:8000';
 
 export async function httpFunction<T>(
     endpoint: string,
     options: RequestInit = {}
 ): Promise<T>{
+    console.log('URL:', `${API_URL}${endpoint}`)
     const response = await fetch(`${API_URL}${endpoint}`, {
         ...options,
         headers: {
@@ -14,8 +15,7 @@ export async function httpFunction<T>(
     })
 
     if(!response.ok){
-        const error = await response.json()
-        throw new Error(error.message || 'Error desconocido')
+        throw new Error('Error desconocido')
     }
 
     return response.json()
