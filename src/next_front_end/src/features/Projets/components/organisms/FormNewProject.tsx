@@ -12,17 +12,20 @@ import {
 	CardHeader,
 	CardFooter,
 	Divider,
-	DatePicker,
 } from '@heroui/react'
 import { redirect } from 'next/navigation'
-import Image from 'next/image'
+import Image, { StaticImageData } from 'next/image'
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import { Project } from '../../model/types'
 
+type ProjectModified = Omit<Project, 'image'> & {
+	image?: string | StaticImageData
+}
+
 export default function FormNewProject() {
 	const [teams, setTeams] = useState<ShortTeam[]>([])
-	const [newProject, setNewProject] = useState<Project>({
+	const [newProject, setNewProject] = useState<ProjectModified>({
 		id: '',
 		name: '',
 		teams: {} as ShortTeam,
@@ -62,7 +65,7 @@ export default function FormNewProject() {
 			setNewProject((prev) => ({
 				...prev,
 				[parent]: {
-					...prev[parent as keyof Project],
+					...prev,
 					[child]: value,
 				},
 			}))
@@ -109,7 +112,7 @@ export default function FormNewProject() {
 			label: '!text-white/50',
 			input: 'label:!text-[var(--father-font)] bg-transparent !text-[var(--father-font)] focus:!bg-white/30 active:!bg-white/30',
 			inputWrapper: [
-				'bg-transparent',
+				'!bg-transparent',
 				'hover:!bg-white/30',
 				'!data-[focused=true]:bg-transparent',
 				'data-[hover=true]:!bg-white/30',
@@ -129,6 +132,7 @@ export default function FormNewProject() {
 				'active:!bg-white/30',
 				'hover:!bg-white/30',
 				'data-[hover=true]:!bg-white/30',
+				'error:!bg-green-500',
 			],
 			listbox: 'bg-[#222] !text-[var(--father-font)]',
 			popoverContent: 'bg-[#222] border-[#333]',

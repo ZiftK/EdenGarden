@@ -83,6 +83,7 @@ export default function FormNewEmplooye() {
 				'focus:!bg-transparent',
 				'active:!bg-transparent',
 				'focus:border-white/50',
+				' data-[invalid=true]:!bg-red-500',
 			],
 		},
 		select: {

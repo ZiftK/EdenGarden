@@ -9,7 +9,7 @@ export default function Page() {
 		>
 			<h2 className='text-md font-bold mb-4 inline-block mr-3'>
 				<Link href={'./'} className='text-[var(--green-dark-500)]'>
-					Empleados
+					Proyectos
 				</Link>{' '}
 				/ Ingresa un nuevo empleado
 			</h2>

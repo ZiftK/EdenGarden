@@ -48,8 +48,8 @@ export default async function Page({
 						<span className='flex items-center gap-1 w-full text-sm text-[var(--children-font)]'>
 							<TableRowsIcon h={15} color={colorIcons} />
 							<DateProgressBar
-								startDate={project.calendar.intial_date}
-								endDate={project.calendar.final_date}
+								startDate={project.calendar.intial_date!}
+								endDate={project.calendar.final_date!}
 							/>
 						</span>
 					</CardHeader>
@@ -79,15 +79,15 @@ export default async function Page({
 							</h3>
 							<span className='flex items-center gap-1 text-sm text-[var(--father-font)] mb-3.5'>
 								<CalendarIcon h={15} color={colorIcons} />
-								{project.calendar.intial_date.toLocaleDateString()}{' '}
+								{project.calendar.intial_date!.toLocaleDateString()}{' '}
 								-{' '}
-								{project.calendar.final_date.toLocaleDateString()}
+								{project.calendar.final_date!.toLocaleDateString()}
 							</span>
 							<CalendarProject
-								initialDate={project.calendar.intial_date}
-								finalDate={project.calendar.final_date}
+								initialDate={project.calendar.intial_date!}
+								finalDate={project.calendar.final_date!}
 								nonWorkingDays={
-									project.calendar.non_working_days
+									project.calendar.non_working_days!
 								}
 							/>
 						</div>
@@ -97,7 +97,7 @@ export default async function Page({
 				<Card className='z-0 text-[var(--father-font)] mr-6 bg-transparent xl:col-start-2 xl:flex-5/12 shadow-none'>
 					<CardHeader className='relative aspect-[16/9] w-full rounded-lg overflow-hidden'>
 						<Image
-							src={project.image.src}
+							src={project.image!.src}
 							alt={project.name}
 							fill
 							sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
