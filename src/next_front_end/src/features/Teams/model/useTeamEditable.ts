@@ -8,43 +8,33 @@ import { handleToggleRemove } from "../handlers/handleToggleRemove"
 import { dataTeam } from "../types/types"
 
 export function useEditableTeam({initialTeam, isNewTeam = false}:{initialTeam: ShortTeam, isNewTeam?: boolean}) {
-  const [data, setData] = useState<dataTeam>({
-    currentTeam: initialTeam,
-    isEditing: isNewTeam,
-    teamShowed: initialTeam,
-    teamChanged: {		name: '',
+  const defaultTeam = {		
+      id: '',
+      name: '',
       leader: {
         name: '',
         id: '',
         email: '',
         phone_number: '',
-        role: 'leader',
+        role: "leader" as 'leader',
         position: '',
         salary: 0,
       },
-      members: [],},
+      members: [],}
+
+  const [data, setData] = useState<dataTeam>({
+    currentTeam: initialTeam,
+    isEditing: isNewTeam,
+    teamShowed: initialTeam,
+    teamChanged: defaultTeam
   })
 
   const reset = () => {
-    alert('se activo el reset')
     setData((prev) => ({
       ...prev,
-      isEditing: true,
-      teamShowed: data.currentTeam,
-      teamChanged: {
-        name: '',
-        leader: {
-          name: '',
-          id: '',
-          email: '',
-          phone_number: '',
-          role: 'leader',
-          position: '',
-          salary: 0,
-        },
-        members: [],
-      },
-      currentTeam: data.currentTeam
+      isEditing: false,
+      teamShowed: prev.currentTeam,
+      teamChanged: defaultTeam,
     }))
   }
 

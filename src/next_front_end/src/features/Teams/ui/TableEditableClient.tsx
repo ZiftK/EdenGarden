@@ -55,7 +55,10 @@ export default function TableEditableClient({
 
 						{data.isEditing ? (
 							<LeaderAutocomplete
-								value={String(currentLeader.id)}
+								value={String(
+									data.teamChanged!.leader.id ||
+										currentLeader.id
+								)}
 								onChange={(leader) => {
 									setData((prev) => ({
 										...prev,
@@ -63,6 +66,14 @@ export default function TableEditableClient({
 											...prev.teamShowed,
 											leader: {
 												...prev.teamShowed.leader,
+												name: leader.name,
+												id: leader.id,
+											},
+										},
+										teamChanged: {
+											...prev.teamChanged!,
+											leader: {
+												...prev.teamChanged!.leader,
 												name: leader.name,
 												id: leader.id,
 											},
@@ -110,9 +121,14 @@ export default function TableEditableClient({
 								false
 							}
 							onToggle={(checked) => {
-								setData((prev) =>
-									toggleTeamMember(prev, user, checked)
-								)
+								setData((prev) => {
+									const updatedData = toggleTeamMember(
+										prev,
+										user,
+										checked
+									)
+									return updatedData
+								})
 							}}
 						/>
 					))}

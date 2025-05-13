@@ -7,28 +7,43 @@ export const handleSaveTeam = async (
     setData: React.Dispatch<React.SetStateAction<dataTeam>>,
     reset: () => void,
 ) => {
+    // console.log("data", data)
     if(data.teamShowed?.members.length === 0 ) {
         alert("Puede borrar el equipo, mas no dejarlo vacio")
         return reset()
     }
-    console.log(data.teamShowed.members)
     if(data.teamShowed.members === data.currentTeam.members) return reset()
 
-    updateTeam(data.currentTeam.name, data.currentTeam.members)
+    updateTeam(data.currentTeam.id, data.currentTeam.members)
     setData((prev) => ({
         ...prev,
+        isEditing: false,
         currentTeam: {
             ...prev.currentTeam!,
-            name:  data.teamChanged!.name,
-            members: data.teamChanged?.members?.map((member) => ({
+            members: data.teamShowed?.members?.map((member) => ({
                 ...member,
                 teams: data.currentTeam?.name
-            })) || [],
-        leader: {
-            ...prev.teamChanged!.leader,
-            teams: data.teamChanged!.name,
-        }
-        }
-    }))
-    reset()
+            })) || [],},
+        teamShowed: {
+            ...prev.currentTeam!,
+            members: data.teamShowed?.members?.map((member) => ({
+                ...member,
+                teams: data.currentTeam?.name
+            })) || []},
+        teamChanged: {
+            id: '',
+            name: '',
+            leader: {
+                name: '',
+                id: '',
+                email: '',
+                phone_number: '',
+                role: 'leader',
+                position: '',
+                salary: 0,
+            },
+            members: [],
+        }}
+        ))
+    // reset()
 }

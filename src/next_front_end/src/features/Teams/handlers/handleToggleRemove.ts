@@ -13,6 +13,7 @@ export const handleToggleRemove = (data: dataTeam): dataTeam => {
         },
         teamChanged: {
             name: '',
+            id: '',
             leader: {
                 name: '',
                 id: '',

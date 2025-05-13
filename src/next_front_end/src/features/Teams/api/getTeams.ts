@@ -8,6 +8,7 @@ export async function getTeams(): Promise<ShortTeam[]> {
     return [
             {
                 name: "Equipo 1",
+                id: "41523",
                 leader: {
                     id: 'EMP001',
                     name: 'Luis Torres',
