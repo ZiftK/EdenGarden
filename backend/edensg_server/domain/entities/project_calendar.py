@@ -63,9 +63,11 @@ class SprintDates(BaseModel):
     fecha_final: Date
 
 
-class ProjectCalendar(BaseModel):
+class ProjectCalendarToCreate(BaseModel):
     fecha_inicio: Date
     fecha_fin: Date
+
+class ProjectCalendar(ProjectCalendarToCreate):
     dias_no_laborables: Optional[list[Date]] = None
     sprint_actual: Optional[SprintDates] = None
     plantillas_horario: ScheduleTemplates
