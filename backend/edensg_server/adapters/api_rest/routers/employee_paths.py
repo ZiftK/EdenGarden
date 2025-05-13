@@ -19,6 +19,20 @@ async def get_employee(employee_id: int):
     except Exception as e:
         raise HTTPException(status_code=404, detail=f"Empleado no encontrado: {str(e)}")
 
+@router.get("/name/{employee_name}")
+async def get_employee_by_name(employee_name: str):
+    try:
+        return employee_controller.get_employee_by_name(employee_name)
+    except Exception as e:
+        raise HTTPException(status_code=404, detail=f"Empleado no encontrado: {str(e)}")
+
+@router.get("/email/{employee_email}")
+async def get_employee_by_email(employee_email: str):
+    try:
+        return employee_controller.get_employee_by_email(employee_email)
+    except Exception as e:
+        raise HTTPException(status_code=404, detail=f"Empleado no encontrado: {str(e)}")
+
 @router.post("/create")
 async def create_employee(employee: Employee):
     try:

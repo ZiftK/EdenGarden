@@ -4,6 +4,7 @@ from backend.edensg_server.domain.entities.employee import Employee, Attendance
 from backend.edensg_server.adapters.repository.interface.employee_repository_interface import EmployeeRepository
 from backend.edensg_server.domain.entities.project_calendar import Date, Time, EnumMonths
 from datetime import datetime
+from backend.edensg_server.adapters.repository.supb.formatter import format_employee
 
 class EmployeeRepositorySB(EmployeeRepository):
     def __init__(self):
@@ -29,74 +30,18 @@ class EmployeeRepositorySB(EmployeeRepository):
 
     def find_all(self) -> list[Employee]:
         """Obtiene todos los empleados de la base de datos."""
-        response = self.client.table(self.table).select('''
-            *,
-            equipo (
-                id_equipo,
-                fk_lider
-            )
-        ''').execute()
-
-        employees = []
-        for employee in response.data:
-            in_date = employee['fecha_contratacion'].split('-')
-            employee['fecha_contratacion'] = Date(
-                dia=int(in_date[2]),
-                mes=EnumMonths(int(in_date[1])),
-                anno=int(in_date[0])
-            )
-            if employee.get('fecha_salida'):
-                out_date = employee['fecha_salida'].split('-')
-                employee['fecha_salida'] = Date(
-                    dia=int(out_date[2]),
-                    mes=EnumMonths(int(out_date[1])),
-                    anno=int(out_date[0])
-                )
-            if employee.get('fecha_recontratacion'):
-                rehire_date = employee['fecha_recontratacion'].split('-')
-                employee['fecha_recontratacion'] = Date(
-                    dia=int(rehire_date[2]),
-                    mes=EnumMonths(int(rehire_date[1])),
-                    anno=int(rehire_date[0])
-                )
-            employees.append(Employee(**employee))
-        return employees
+        response = self.client.table(self.table).select('*').execute()
+        return [format_employee(employee) for employee in response.data]
 
     def find_employee_by_id(self, id: int) -> Employee:
         """Busca empleados por id."""
-        response = self.client.table(self.table).select('''
-            *,
-            equipo (
-                id_equipo,
-                fk_lider
-            )
-        ''').eq('id_empleado', id).execute()
+        response = self.client.table(self.table).select('*').eq('id_empleado', id).execute()
         
         if not response.data:
             raise Exception(f"Empleado con ID {id} no encontrado")
             
-        data = response.data[0]
-        in_date = data['fecha_contratacion'].split('-')
-        data['fecha_contratacion'] = Date(
-            dia=int(in_date[2]),
-            mes=EnumMonths(int(in_date[1])),
-            anno=int(in_date[0])
-        )
-        if data.get('fecha_salida'):
-            out_date = data['fecha_salida'].split('-')
-            data['fecha_salida'] = Date(
-                dia=int(out_date[2]),
-                mes=EnumMonths(int(out_date[1])),
-                anno=int(out_date[0])
-            )
-        if data.get('fecha_recontratacion'):
-            rehire_date = data['fecha_recontratacion'].split('-')
-            data['fecha_recontratacion'] = Date(
-                dia=int(rehire_date[2]),
-                mes=EnumMonths(int(rehire_date[1])),
-                anno=int(rehire_date[0])
-            )
-        return Employee(**data)
+        data = format_employee(response.data[0])
+        return data
 
     def find_employees_by_ids(self, ids: list[int]) -> list[Employee]:
         """Busca empleados por ids."""
@@ -106,12 +51,12 @@ class EmployeeRepositorySB(EmployeeRepository):
     def find_employee_by_name(self, name: str) -> list[Employee]:
         """Busca empleados por nombre."""
         response = self.client.table(self.table).select('*').ilike('nombre', f'%{name}%').execute()
-        return [Employee(**employee) for employee in response.data]
+        return [format_employee(employee) for employee in response.data]
 
     def find_employee_by_email(self, email: str) -> list[Employee]:
         """Busca empleados por email."""
         response = self.client.table(self.table).select('*').eq('email', email).execute()
-        return [Employee(**employee) for employee in response.data]
+        return [format_employee(employee) for employee in response.data]
 
     def update_employee_data(self, id: int, data: Employee) -> None:
         """Actualiza la información de un empleado."""

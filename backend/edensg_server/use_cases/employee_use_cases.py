@@ -61,11 +61,13 @@ class EmployeeController:
             raise Exception("Error al eliminar el empleado")
 
     def update_employee(self, id: int, employee: Employee) -> Dict[str, Any]:
-        response = self.employee_repository.update_employee_data(id, employee)
-        if response:
+        # Primero verificamos que el empleado exista
+        try:
+            self.employee_repository.find_employee_by_id(id)
+            self.employee_repository.update_employee_data(id, employee)
             return {
                 'message': 'Empleado actualizado correctamente',
-                'data': response
+                'data': {'employee_id': id}
             }
-        else:
-            raise Exception(f"Error al actualizar el empleado con ID {id}")
+        except Exception as e:
+            raise Exception(f"Error al actualizar el empleado: {str(e)}")
