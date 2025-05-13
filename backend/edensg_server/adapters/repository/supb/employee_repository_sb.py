@@ -4,7 +4,7 @@ from backend.edensg_server.domain.entities.employee import Employee, Attendance
 from backend.edensg_server.adapters.repository.interface.employee_repository_interface import EmployeeRepository
 from backend.edensg_server.domain.entities.project_calendar import Date, Time, EnumMonths
 from datetime import datetime
-from backend.edensg_server.adapters.repository.supb.formatter import format_employee
+from backend.edensg_server.adapters.repository.supb.formatter_from_db import format_employee
 
 class EmployeeRepositorySB(EmployeeRepository):
     def __init__(self):

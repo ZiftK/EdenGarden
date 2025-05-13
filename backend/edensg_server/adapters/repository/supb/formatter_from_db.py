@@ -1,6 +1,7 @@
 from backend.edensg_server.domain.entities.employee import Employee
 from backend.edensg_server.domain.entities.team import Team
 from backend.edensg_server.domain.entities.project_calendar import Date
+from backend.edensg_server.domain.entities.project import Project
 from backend.edensg_server.domain.entities.time_enums import EnumMonths
 
 
@@ -34,4 +35,6 @@ def format_team(team: dict) -> Team:
 
     return Team(**{**team, 'lider': leader, 'empleados': employees})    
 
-
+def format_project(project: dict) -> Project:
+    client_id = project.get('fk_cliente')
+    return Project(**project)

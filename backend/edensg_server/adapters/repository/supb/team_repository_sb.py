@@ -3,7 +3,7 @@ from backend.edensg_server.adapters.repository.supb.client import supabase_clien
 from backend.edensg_server.domain.entities.team import Team, TeamToCreate
 from backend.edensg_server.adapters.repository.supb.employee_repository_sb import employee_sb_repository, EmployeeRepositorySB
 from supabase import Client
-from backend.edensg_server.adapters.repository.supb.formatter import format_team, format_employee
+from backend.edensg_server.adapters.repository.supb.formatter_from_db import format_team, format_employee
 
 class TeamRepositorySB(TeamRepository):
     def __init__(self):
