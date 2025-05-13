@@ -1,28 +1,31 @@
 from backend.edensg_server.adapters.repository.interface.team_repository_interface import TeamRepository
 from backend.edensg_server.adapters.repository.supb.client import supabase_client
-from backend.edensg_server.domain.entities.team import Team
-from backend.edensg_server.domain.entities.employee import Employee
-from backend.edensg_server.adapters.repository.supb.employee_repository_sb import employee_sb_repository, EmployeeRepository
+from backend.edensg_server.domain.entities.team import Team, TeamToCreate
+from backend.edensg_server.adapters.repository.supb.employee_repository_sb import employee_sb_repository, EmployeeRepositorySB
 from supabase import Client
-
+from backend.edensg_server.adapters.repository.supb.formatter import format_team, format_employee
 
 class TeamRepositorySB(TeamRepository):
     def __init__(self):
         self.client: Client = supabase_client
-        self.employee_repo: EmployeeRepository = employee_sb_repository
+        self.employee_repo: EmployeeRepositorySB = employee_sb_repository
         self.table = 'equipo'
-        self.equipoempleado_table = 'equipo_empleado'
+        self.employee_table = 'empleado'
 
-    def __get_team_employees(self, id: int) -> list[Employee]:
-        """Obtiene los empleados de un equipo."""
-        employee_ids: list[int] = [employee['fk_empleado'] for employee in self.client.table(self.equipoempleado_table).select('fk_empleado').eq('fk_equipo', id).execute().data]
-        return self.employee_repo.find_employees_by_ids(employee_ids)
-
-    def create_team(self, team: Team) -> int:
+    def create_team(self, team: TeamToCreate) -> int:
         """Inserta un nuevo equipo en la base de datos."""
-        data_dict = team.model_dump(exclude={'id_equipo'})
+        data_dict = team.model_dump(exclude={'empleados'})
+        data_dict['fk_lider'] = data_dict.pop('lider')
         response = self.client.table(self.table).insert(data_dict).execute()
         return response.data[0]['id_equipo']
+    
+    def register_team_employees(self, id: int, employee_ids: list[int]) -> None:
+        """Registra los empleados de un equipo en la base de datos."""
+        self.client.table(self.employee_table).update({'fk_equipo': id}).in_('id_empleado', employee_ids).execute()
+
+    def unregister_team_employees(self, id: int, employee_ids: list[int]) -> None:
+        """Elimina los empleados de un equipo en la base de datos."""
+        self.client.table(self.employee_table).update({'fk_equipo': None}).in_('id_empleado', employee_ids).execute()
     
     def get_all_teams(self) -> list[Team]:
         """Obtiene todos los equipos de la base de datos."""
@@ -32,52 +35,73 @@ class TeamRepositorySB(TeamRepository):
             # Get leader data
             leader = self.employee_repo.find_employee_by_id(team_data['fk_lider'])
             # Get team employees
-            employees = self.__get_team_employees(team_data['id_equipo'])
+            employees = self.client.table(self.employee_table).select('*').eq('fk_equipo', team_data['id_equipo']).execute().data
+            employees = [format_employee(employee) for employee in employees]
+            
             # Remove fk_lider from data
             team_data.pop('fk_lider')
             # Create team with complete data
             teams.append(Team(**{**team_data, 'lider': leader, 'empleados': employees}))
         return teams
     
+    def check_team_exists(self, id: int) -> bool:
+        """Verifica si un equipo existe en la base de datos."""
+        response = self.client.table(self.table).select('*').eq('id_equipo', id).execute()
+        return bool(response.data)
+    
+    def check_employee_exists(self, ids: list[int]) -> list[int]:
+        """Verifica si los empleados existen en la base de datos y devuelve las IDs que no existen."""
+        response = self.client.table(self.employee_table).select('id_empleado').in_('id_empleado', ids).execute()
+        existing_ids = [employee['id_empleado'] for employee in response.data]
+        return [id for id in ids if id not in existing_ids]
+    
+    def find_team_where_employee_is_leader(self, ids: list[int]) -> list[dict]:
+        """Busca equipos por id del lider."""
+        response = self.client.table(self.table).select('id_equipo, nombre, fk_lider(id_empleado, nombre)').in_('fk_lider', ids).execute()
+        return response.data
+
     def find_team_by_id(self, id: int) -> Team:
         """Busca equipos por id."""
         response = self.client.table(self.table).select('*').eq('id_equipo', id).execute()
-
+        if not response.data:
+            raise Exception(f"El equipo con id {id} no existe")
+        
         # Get team employees data
         data = response.data[0]
-        # We get the leader of the team using the employee repository that implements the supabase client
-        leader: Employee = self.employee_repo.find_employee_by_id(data['fk_lider'])
-        
-        # We get the employees of the team using the employee repository that implements the supabase client
-        employees: list[Employee] = self.__get_team_employees(data['id_equipo'])
-        
-        data.pop('fk_lider')
-
-        team = Team(
-            **{**data, 'lider': leader, 'empleados': employees}
-        )
-        return team
+        return format_team(data)
     
     def find_team_by_name(self, name: str) -> list[Team]:
         """Busca equipos por nombre."""
         response = self.client.table(self.table).select('*').ilike('nombre', f'%{name}%').execute()
         response = response.data
-
+        
         teams: list[Team] = []
         for team in response:
             leader = self.employee_repo.find_employee_by_id(team['fk_lider'])
-            employees = self.__get_team_employees(team['id_equipo'])
+            employees = self.client.table(self.employee_table).select('*').eq('fk_equipo', team['id_equipo']).execute().data
+            employees = [format_employee(employee) for employee in employees]
 
             team.pop('fk_lider')
-
-            teams.append(Team(
-                **{**team, 'lider': leader, 'empleados': employees}
-            ))
+            
+            teams.append(Team(**{**team, 'lider': leader, 'empleados': employees}))
         return teams
-    
+
+    def update_team_name(self, id: int, new_name: str) -> None:
+        """Actualiza el nombre de un equipo."""
+        self.client.table(self.table).update({'nombre': new_name}).eq('id_equipo', id).execute()
+
+    def update_team_leader(self, id: int, new_leader_id: int) -> None:
+        """Actualiza el líder de un equipo."""
+        self.client.table(self.table).update({'fk_lider': new_leader_id}).eq('id_equipo', id).execute()
+
     def update_team_data(self, id: int, data: Team) -> None:
         """Actualiza la información de un equipo."""
-        self.client.table(self.table).update(data.model_dump(exclude={'id_equipo'})).eq('id_equipo', id).execute()
+        # Solo actualizamos nombre y fk_lider
+        update_data = {
+            'nombre': data.nombre,
+            'fk_lider': data.lider
+        }
+        self.client.table(self.table).update(update_data).eq('id_equipo', id).execute()
 
     def delete_team_data(self, id: int) -> None:
         """Elimina un equipo de la base de datos."""
@@ -92,3 +116,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+team_sb_repository = TeamRepositorySB()

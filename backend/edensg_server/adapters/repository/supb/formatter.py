@@ -29,6 +29,9 @@ def format_employee(employee: dict) -> Employee:
     return Employee(**employee)
 
 def format_team(team: dict) -> Team:
-    return Team(**team)
+    leader = team.get('fk_lider')
+    employees = team.get('empleados')
+
+    return Team(**{**team, 'lider': leader, 'empleados': employees})    
 
 
