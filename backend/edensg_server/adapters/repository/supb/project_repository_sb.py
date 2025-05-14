@@ -107,6 +107,81 @@ class ProjectRepositorySB():
         # Retornar el ID del sprint creado
         return result.data[0]['id_sprint']
 
+    def _get_employee(self, employee_id: int, team_id: int) -> Employee:
+        '''
+        Obtiene un empleado completo.
+        '''
+        emp_data = self.client.table('empleado').select('*').eq('id_empleado', employee_id).execute().data[0]
+        fecha_contratacion = emp_data['fecha_contratacion'].split('-')
+        return Employee(
+            id_empleado=emp_data['id_empleado'],
+            nombre=emp_data['nombre'],
+            email=emp_data['email'],
+            telefono=emp_data['telefono'],
+            direccion=emp_data['direccion'],
+            fecha_contratacion=Date(
+                dia=int(fecha_contratacion[2]),
+                mes=EnumMonths(int(fecha_contratacion[1])),
+                anno=int(fecha_contratacion[0])
+            ),
+            clave=emp_data['clave'],
+            rol=emp_data['rol'],
+            puesto=emp_data['puesto'],
+            salario=emp_data['salario'],
+            equipo=team_id
+        )
+
+    def _get_sprint(self, sprint_id: int) -> Sprint:
+        '''
+        Obtiene un sprint completo.
+        '''
+        sprint_data = self.client.table('sprint').select('*').eq('id_sprint', sprint_id).execute().data[0]
+        return Sprint(
+            id_sprint=sprint_data['id_sprint'],
+            nombre=sprint_data['nombre'],
+            fecha_inicial=Date(
+                dia=int(sprint_data['fecha_inicial'].split('-')[2]), 
+                mes=EnumMonths(int(sprint_data['fecha_inicial'].split('-')[1])),
+                anno=int(sprint_data['fecha_inicial'].split('-')[0])
+            ),
+            fecha_final=Date(
+                dia=int(sprint_data['fecha_final'].split('-')[2]),
+                mes=EnumMonths(int(sprint_data['fecha_final'].split('-')[1])),
+                anno=int(sprint_data['fecha_final'].split('-')[0])
+            ),
+            hora_inicial=Time(
+                hora=int(sprint_data['hora_inicial'].split(':')[0]),
+                minuto=int(sprint_data['hora_inicial'].split(':')[1]),
+                segundo=int(sprint_data['hora_inicial'].split(':')[2])
+            ),
+            hora_final=Time(
+                hora=int(sprint_data['hora_final'].split(':')[0]),
+                minuto=int(sprint_data['hora_final'].split(':')[1]), 
+                segundo=int(sprint_data['hora_final'].split(':')[2])
+            ),
+            locacion=sprint_data['locacion']
+        )
+
+    def _get_team(self, team_id: int) -> Team:
+        '''
+        Obtiene un equipo completo con su líder y empleados.
+        '''
+        team_data = self.client.table('equipo').select('*').eq('id_equipo', team_id).execute().data[0]
+        
+        # Obtener el líder del equipo
+        leader = self._get_employee(team_data['fk_lider'], team_data['id_equipo'])
+        
+        # Obtener los empleados del equipo
+        employees_data = self.client.table('empleado').select('*').eq('fk_equipo', team_data['id_equipo']).execute().data
+        employees = [self._get_employee(emp['id_empleado'], team_data['id_equipo']) for emp in employees_data]
+        
+        return Team(
+            id_equipo=team_data['id_equipo'],
+            nombre=team_data['nombre'],
+            lider=leader,
+            empleados=employees
+        )
+
     def find_project(self, project_id: int)-> Project:
         '''
         Finds a project by its ID.
@@ -123,32 +198,19 @@ class ProjectRepositorySB():
             # Obtener el sprint actual si existe
             sprint = None
             if calendar_data['fk_sprint']:
-                sprint_data = self.client.table('sprint').select('*').eq('id_sprint', calendar_data['fk_sprint']).execute().data[0]
-                sprint = Sprint(
-                    id_sprint=sprint_data['id_sprint'],
-                    nombre=sprint_data['nombre'],
-                    fecha_inicial=Date(dia=int(sprint_data['fecha_inicial'].split('-')[2]), 
-                                    mes=EnumMonths(int(sprint_data['fecha_inicial'].split('-')[1])),
-                                    anno=int(sprint_data['fecha_inicial'].split('-')[0])),
-                    fecha_final=Date(dia=int(sprint_data['fecha_final'].split('-')[2]),
-                                   mes=EnumMonths(int(sprint_data['fecha_final'].split('-')[1])),
-                                   anno=int(sprint_data['fecha_final'].split('-')[0])),
-                    hora_inicial=Time(hora=int(sprint_data['hora_inicial'].split(':')[0]),
-                                    minuto=int(sprint_data['hora_inicial'].split(':')[1]),
-                                    segundo=int(sprint_data['hora_inicial'].split(':')[2])),
-                    hora_final=Time(hora=int(sprint_data['hora_final'].split(':')[0]),
-                                  minuto=int(sprint_data['hora_final'].split(':')[1]), 
-                                  segundo=int(sprint_data['hora_final'].split(':')[2])),
-                    locacion=sprint_data['locacion']
-                )
+                sprint = self._get_sprint(calendar_data['fk_sprint'])
             
             calendar = ProjectCalendar(
-                fecha_inicio=Date(dia=int(calendar_data['fecha_inicio'].split('-')[2]),
-                                mes=EnumMonths(int(calendar_data['fecha_inicio'].split('-')[1])),
-                                anno=int(calendar_data['fecha_inicio'].split('-')[0])),
-                fecha_fin=Date(dia=int(calendar_data['fecha_fin'].split('-')[2]),
-                             mes=EnumMonths(int(calendar_data['fecha_fin'].split('-')[1])),
-                             anno=int(calendar_data['fecha_fin'].split('-')[0])),
+                fecha_inicio=Date(
+                    dia=int(calendar_data['fecha_inicio'].split('-')[2]),
+                    mes=EnumMonths(int(calendar_data['fecha_inicio'].split('-')[1])),
+                    anno=int(calendar_data['fecha_inicio'].split('-')[0])
+                ),
+                fecha_fin=Date(
+                    dia=int(calendar_data['fecha_fin'].split('-')[2]),
+                    mes=EnumMonths(int(calendar_data['fecha_fin'].split('-')[1])),
+                    anno=int(calendar_data['fecha_fin'].split('-')[0])
+                ),
                 sprint_actual=sprint
             )
 
@@ -165,55 +227,7 @@ class ProjectRepositorySB():
         # Obtener el equipo del proyecto si existe
         team = None
         if project[0]['fk_equipo']:
-            team_data = self.client.table('equipo').select('*').eq('id_equipo', project[0]['fk_equipo']).execute().data[0]
-            # Obtener el líder del equipo
-            leader_data = self.client.table('empleado').select('*').eq('id_empleado', team_data['fk_lider']).execute().data[0]
-            fecha_contratacion_leader = leader_data['fecha_contratacion'].split('-')
-            leader = Employee(
-                id_empleado=leader_data['id_empleado'],
-                nombre=leader_data['nombre'],
-                email=leader_data['email'],
-                telefono=leader_data['telefono'],
-                direccion=leader_data['direccion'],
-                fecha_contratacion=Date(
-                    dia=int(fecha_contratacion_leader[2]),
-                    mes=EnumMonths(int(fecha_contratacion_leader[1])),
-                    anno=int(fecha_contratacion_leader[0])
-                ),
-                clave=leader_data['clave'],
-                rol=leader_data['rol'],
-                puesto=leader_data['puesto'],
-                salario=leader_data['salario'],
-                equipo=team_data['id_equipo']
-            )
-            # Obtener los empleados del equipo
-            employees_data = self.client.table('empleado').select('*').eq('fk_equipo', team_data['id_equipo']).execute().data
-            employees = []
-            for emp_data in employees_data:
-                fecha_contratacion_emp = emp_data['fecha_contratacion'].split('-')
-                employees.append(Employee(
-                    id_empleado=emp_data['id_empleado'],
-                    nombre=emp_data['nombre'],
-                    email=emp_data['email'],
-                    telefono=emp_data['telefono'],
-                    direccion=emp_data['direccion'],
-                    fecha_contratacion=Date(
-                        dia=int(fecha_contratacion_emp[2]),
-                        mes=EnumMonths(int(fecha_contratacion_emp[1])),
-                        anno=int(fecha_contratacion_emp[0])
-                    ),
-                    clave=emp_data['clave'],
-                    rol=emp_data['rol'],
-                    puesto=emp_data['puesto'],
-                    salario=emp_data['salario'],
-                    equipo=team_data['id_equipo']
-                ))
-            team = Team(
-                id_equipo=team_data['id_equipo'],
-                nombre=team_data['nombre'],
-                lider=leader,
-                empleados=employees
-            )
+            team = self._get_team(project[0]['fk_equipo'])
 
         # Formatear el proyecto completo
         formatted_project = Project(
