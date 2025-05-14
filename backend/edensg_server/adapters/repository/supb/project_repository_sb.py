@@ -7,7 +7,7 @@ from backend.edensg_server.domain.entities.project_calendar import (
     DateTemplate,
     DayTemplate,
     ScheduleTemplate,
-    SprintDates
+    Sprint
 )
 from backend.edensg_server.adapters.repository.supb.client import supabase_client
 from backend.edensg_server.adapters.repository.supb.formatter_to_db import format_project_calendar, format_sprint
@@ -73,7 +73,7 @@ class ProjectRepositorySB():
         
         return calendar_id
     
-    def create_sprint(self, project_id: int, sprint: SprintDates)-> int:
+    def create_sprint(self, project_id: int, sprint: Sprint)-> int:
         # Verificar que el proyecto existe
         project = self.client.table(self.table).select('*').eq('id_proyecto', project_id).execute().data
         if not project:

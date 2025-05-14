@@ -3,7 +3,7 @@ from backend.edensg_server.domain.entities.project_calendar import (
     ProjectCalendar,
     ProjectCalendarToCreate,
     Date,
-    SprintDates
+    Sprint
 )
 from backend.edensg_server.adapters.repository.supb.project_repository_sb import ProjectRepositorySB
 from datetime import date
@@ -50,7 +50,7 @@ class ProjectController():
             'calendar_id': calendar_id
         }
 
-    def create_project_sprint(self, project_id: int, sprint: SprintDates)-> dict:
+    def create_project_sprint(self, project_id: int, sprint: Sprint)-> dict:
         """
         Crea un nuevo sprint de proyecto con validaciones.
         """
@@ -139,7 +139,7 @@ class ProjectController():
             return False
 
 
-    def update_project_sprint(self, sprint_id: int, sprint: SprintDates)-> dict:
+    def update_project_sprint(self, sprint_id: int, sprint: Sprint)-> dict:
         """
         Actualiza un sprint de proyecto existente con validaciones.
         """

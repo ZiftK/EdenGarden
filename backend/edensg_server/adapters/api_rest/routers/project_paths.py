@@ -3,7 +3,7 @@ from backend.edensg_server.domain.entities.project import Project, ProjectToCrea
 from backend.edensg_server.domain.entities.project_calendar import (
     ProjectCalendar, 
     ProjectCalendarToCreate,
-    SprintDates
+    Sprint
 )
 from backend.edensg_server.use_cases.project_use_cases import ProjectController
 
@@ -34,7 +34,7 @@ async def create_project_calendar(project_id: int, calendar: ProjectCalendarToCr
         )
 
 @router.post("/{project_id}/sprint", status_code=status.HTTP_201_CREATED)
-async def create_project_sprint(project_id: int, sprint: SprintDates):
+async def create_project_sprint(project_id: int, sprint: Sprint):
     try:
         result = project_controller.create_project_sprint(project_id, sprint)
         return result
