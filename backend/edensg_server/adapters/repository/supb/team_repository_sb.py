@@ -44,6 +44,15 @@ class TeamRepositorySB(TeamRepository):
             teams.append(Team(**{**team_data, 'lider': leader, 'empleados': employees}))
         return teams
     
+    def check_employee_is_in_other_teams(self, ids: list[int]) -> list[int]:
+        """Verifica si los empleados están en otros equipos y devuelve las IDs de los que sí lo están."""
+        result = []
+        for employee_id in ids:
+            response = self.client.table(self.employee_table).select('id_empleado, fk_equipo').eq('id_empleado', employee_id).execute()
+            if response.data and response.data[0].get('fk_equipo') is not None:
+                result.append(employee_id)
+        return result
+    
     def check_team_exists(self, id: int) -> bool:
         """Verifica si un equipo existe en la base de datos."""
         response = self.client.table(self.table).select('*').eq('id_equipo', id).execute()
@@ -68,7 +77,13 @@ class TeamRepositorySB(TeamRepository):
         
         # Get team employees data
         data = response.data[0]
-        return format_team(data)
+
+        leader = self.employee_repo.find_employee_by_id(data['fk_lider'])
+        employees = self.client.table(self.employee_table).select('*').eq('fk_equipo', id).execute().data
+        employees = [format_employee(employee) for employee in employees]
+        data.pop('fk_lider')
+
+        return Team(**{**data, 'lider': leader, 'empleados': employees})
     
     def find_team_by_name(self, name: str) -> list[Team]:
         """Busca equipos por nombre."""

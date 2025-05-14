@@ -13,7 +13,7 @@ class TeamController:
     def get_team_by_id(self, id: int) -> Team:
         return self.team_repository.find_team_by_id(id)
     
-    def get_team_by_name(self, name: str) -> Team:
+    def get_team_by_name(self, name: str) -> list[Team]:
         return self.team_repository.find_team_by_name(name)
     
     def create_team(self, team: Team) -> Team:
@@ -82,7 +82,7 @@ class TeamController:
         else:
             raise Exception("Equipo no encontrado")
 
-    def register_team_employees(self, id: int, employee_ids: list[int]) -> None:
+    def register_team_employees(self, id: int, employee_ids: list[int]) -> dict:
         team_exists = self.team_repository.check_team_exists(id)
         if not team_exists:
             raise Exception(f"El equipo con id {id} no existe")
@@ -91,6 +91,12 @@ class TeamController:
         if non_existent_employees:
             raise Exception(f"Los siguientes empleados no existen: {', '.join(map(str, non_existent_employees))}")
         
+        # Verificar que los empleados no pertenezcan a ningún equipo
+        employees_in_other_teams = self.team_repository.check_employee_is_in_other_teams(employee_ids)
+        
+        if employees_in_other_teams:
+            raise Exception(f"Los siguientes empleados ya pertenecen a otros equipos: {', '.join(map(str, employees_in_other_teams))}")
+
         teams_where_employee_is_leader = self.team_repository.find_team_where_employee_is_leader(employee_ids)
         leaders_in_other_teams = []
         this_team_leader = None
@@ -111,10 +117,12 @@ class TeamController:
                 
         if leaders_in_other_teams:
             raise Exception(f"Los siguientes empleados son lideres de otros equipos: {', '.join(map(str, leaders_in_other_teams))}")
-        
-        return self.team_repository.register_team_employees(id, employee_ids)
+        self.team_repository.register_team_employees(id, employee_ids)
+        return {
+            'message': 'Empleados registrados correctamente'
+        }
 
-    def unregister_team_employees(self, id: int, employee_ids: list[int]) -> None:
+    def unregister_team_employees(self, id: int, employee_ids: list[int]) -> dict:
         # Primero verificamos que el equipo exista
         team = self.team_repository.find_team_by_id(id)
         
@@ -133,7 +141,10 @@ class TeamController:
         if team.lider.id_empleado in employee_ids:
             raise Exception(f"El empleado con id {team.lider.id_empleado} es el líder del equipo y no puede ser removido")
         
-        return self.team_repository.unregister_team_employees(id, employee_ids)
+        self.team_repository.unregister_team_employees(id, employee_ids)
+        return {
+            'message': 'Empleados desregistrados correctamente'
+        }
 
     def update_team_name(self, id: int, new_name: str) -> dict:
         """Actualiza el nombre de un equipo."""

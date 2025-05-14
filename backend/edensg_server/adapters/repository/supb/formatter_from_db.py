@@ -30,10 +30,8 @@ def format_employee(employee: dict) -> Employee:
     return Employee(**employee)
 
 def format_team(team: dict) -> Team:
-    leader = team.get('fk_lider')
-    employees = team.get('empleados')
-
-    return Team(**{**team, 'lider': leader, 'empleados': employees})    
+    
+    return Team(**{**team})    
 
 def format_project(project: dict) -> Project:
     client_id = project.get('fk_cliente')
