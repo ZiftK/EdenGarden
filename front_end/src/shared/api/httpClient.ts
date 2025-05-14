@@ -4,15 +4,19 @@ export async function httpFunction<T>(
     endpoint: string,
     options: RequestInit = {}
 ): Promise<T>{
-    console.log('URL:', `${API_URL}${endpoint}`)
-    const response = await fetch(`${API_URL}${endpoint}`, {
+    const config: RequestInit = {
         ...options,
         headers: {
             'Content-Type': 'application/json',
             ...options.headers
-        },
-        credentials: 'include'
-    })
+        }
+    };
+    
+    if ((options.method === 'GET' || options.method === 'HEAD') && config.body) {
+        delete config.body;
+    }
+
+    const response = await fetch(`${API_URL}${endpoint}`, config);
 
     if(!response.ok){
         throw new Error('Error desconocido')
@@ -22,7 +26,7 @@ export async function httpFunction<T>(
 }
 
 export const fetcher = {
-    get: <T>(endpoint: string,body?: unknown ) => httpFunction<T>(endpoint, { method: 'GET', body: JSON.stringify(body)}),
+    get: <T>(endpoint: string) => httpFunction<T>(endpoint, { method: 'GET' }),
     post: <T>(endpoint:string, body?: unknown) => httpFunction<T>(endpoint,{method: 'POST', body: JSON.stringify(body)}),
     put:<T>(endpoint: string, body: unknown) => httpFunction<T>(endpoint, { method: 'PUT', body: JSON.stringify(body) }),
     delete: <T>(endpoint: string) => httpFunction<T>(endpoint, { method: 'DELETE' }),

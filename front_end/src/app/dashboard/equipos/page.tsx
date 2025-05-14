@@ -1,10 +1,7 @@
 import TeamsCard from '@/src/components/ERP/organisms/TeamsCard'
 import Title from '@/src/shared/components/atoms/Title'
-import { getTeams } from '@/src/features/Teams/api/getTeams'
 
 export default async function page() {
-	const data = await getTeams()
-
 	return (
 		<section
 			aria-labelledby='dashboard-section-title'
@@ -15,7 +12,7 @@ export default async function page() {
 				btn={{ active: true, path: '/dashboard/equipos/crear' }}
 			/>
 
-			<TeamsCard data={data} />
+			<TeamsCard />
 		</section>
 	)
 }

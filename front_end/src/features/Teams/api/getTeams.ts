@@ -4,7 +4,7 @@ import { ShortTeam } from "@/src/shared/types";
 
 export async function getTeams(): Promise<ShortTeam[]> {
     try{
-        const dataTeams: ShortTeam[] = await fetcher.get(`${endpoints.teams}`)
+        const dataTeams: ShortTeam[] = await fetcher.get<ShortTeam[]>(`${endpoints.teams}`)
         if(!dataTeams)  throw new Error('No se encontraron equipos')
             return dataTeams
     } catch (error) {
