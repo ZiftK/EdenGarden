@@ -17,7 +17,20 @@ class ProjectRepositorySB():
         self.table = 'proyecto'
         self.project_calendar_table = 'calendario_proyecto'
         self.project_sprint_table = 'sprint'
+        
+    def get_all_projects(self)-> list[Project]:
+        '''
+        Gets all projects from the database.
+        '''
+        return self.client.table(self.table).select('*').execute().data
 
+
+    def create_project(self, project: Project)-> int:
+        '''
+        Creates a new project in the database.
+        '''
+        formatted_project = project.dict()
+        return self.client.table(self.table).insert(formatted_project).execute()
 
     def create_project_calendar(self, project_calendar: ProjectCalendarToCreate)-> int:
         '''

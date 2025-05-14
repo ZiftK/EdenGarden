@@ -2,8 +2,8 @@ export const endpoints ={
     login: '/auth/login',
     logout: '/auth/logout',
     
-    teams: '/team/all',
-    employees: '/employee/all',
+    teams: '/team/all', // 
+    employees: '/employee/all', //
 
-    projects: 'api/projects'
+    projects: 'project/get_all'
 }

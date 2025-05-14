@@ -11,6 +11,9 @@ from datetime import date
 class ProjectController():
     def __init__(self):
         self.project_repository = ProjectRepositorySB()
+        
+    def get_all_projects(self)-> list[Project]:
+        self.project_repository.get_all_projects()
 
     def create_project(self, project: Project)-> None:
         self.project_repository.create_project(project)

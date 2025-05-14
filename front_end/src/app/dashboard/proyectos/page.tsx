@@ -28,10 +28,10 @@ export default async function page() {
 			<div className='flex flex-col gap-4 xl:grid xl:grid-cols-2'>
 				{projects.map((project) => (
 					<Card
-						key={project.name}
+						key={project.nombre}
 						className='z-0 flex flex-col justify-between bg-center bg-cover bg-no-repeat text-[var(--father-font)] xl:h-56'
 						style={{
-							background: `linear-gradient(to left, var(--bg-card-obscure-300), var(--bg-card-obscure-200) 20%, var(--bg-card-obscure) 40%), url(${project.image.src}) right center no-repeat`,
+							background: `linear-gradient(to left, var(--bg-card-obscure-300), var(--bg-card-obscure-200) 20%, var(--bg-card-obscure) 40%), url(${project.img!.src}) right center no-repeat`,
 							backgroundSize: 'auto, 40% 100%',
 							backgroundPosition: 'left top, right center',
 							backgroundRepeat: 'no-repeat, no-repeat',
@@ -40,38 +40,40 @@ export default async function page() {
 						<CardHeader className='flex justify-between items-center'>
 							<div className='flex flex-col'>
 								<Link
-									href={`/dashboard/proyectos/${project.name}`}
+									href={`/dashboard/proyectos/${project.nombre}`}
 									className='font-bold text-lg'
 								>
-									{project.name}
+									{project.nombre}
 								</Link>
 								<span className='font-normal text-md'>
-									{project.teams.leader.name}
+									{project.equipo.lider.nombre}
 								</span>
 								<span className='font-light text-sm text-[var(--children-font)]'>
 									ID 189053
 								</span>
 							</div>
-							<PriceChip price={project.price} />
+							<PriceChip price={project.costo} />
 						</CardHeader>
 						<CardBody className='flex flex-row justify-between mb-auto '>
 							<div className='hidden md:flex flex-col gap-1 text-[var(--children-font)] text-xs mt-auto'>
 								<span className='flex items-center gap-1'>
 									<GroupIcon h={15} color={colorIcons} />
 									Conformado por{' '}
-									{project.teams.members.length} miembros
+									{project.equipo.empleados.length} miembros
 								</span>
 								<span className='flex items-center gap-1'>
 									<CalendarIcon h={15} color={colorIcons} />
-									{project.calendar.intial_date.toLocaleDateString()}{' '}
+									{project.calendario.fecha_inicio!.toLocaleDateString()}{' '}
 									-{' '}
-									{project.calendar.final_date.toLocaleDateString()}
+									{project.calendario.fecha_fin!.toLocaleDateString()}
 								</span>
 								<span className='flex items-center gap-1'>
 									<TableRowsIcon h={15} color={colorIcons} />
 									<DateProgressBar
-										startDate={project.calendar.intial_date}
-										endDate={project.calendar.final_date}
+										startDate={
+											project.calendario.fecha_inicio!
+										}
+										endDate={project.calendario.fecha_fin!}
 									/>
 								</span>
 							</div>

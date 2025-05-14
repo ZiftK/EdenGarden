@@ -2,28 +2,30 @@ import { ShortTeam } from "@/src/shared/types"
 import { StaticImageData } from "next/image"
 
 export type Project = {
-    name: string;
-    id: string
-    teams: ShortTeam
-    calendar: ProjectCalendar
-    image?: StaticImageData;
-    price: string;
-    clientData: {
-        name: string;
-        addressProject: string;
-        phone: string;
+    nombre: string;
+    id_proyecto: string
+    equipo: ShortTeam
+    calendario: ProjectCalendar
+    img?: StaticImageData;
+    costo: string;
+    cliente: {
+        nombre: string;
+        direccion: string;
+        telefono: string;
         email: string;
     }
 }
 
 export type ProjectCalendar = {
-    intial_date?: Date;
-    final_date?: Date;
-    non_working_days?: Date[];
+    fecha_inicio?: Date;
+    fecha_fin?: Date;
+    dias_no_laborables?: Date[];
     current_sprint?: SprintSchedule;
 }
 
 type SprintSchedule = {
+    nombre: string;
     initial_date: Date;
     final_date: Date;
 }
+

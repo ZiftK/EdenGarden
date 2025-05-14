@@ -8,6 +8,13 @@ project_controller = ProjectController()
 router = APIRouter(prefix='/project')
 
 
+@router.get('/get_all')
+async def get_all_projects()-> list[Project]:
+    projects = project_controller.get_all_projects()
+    if not projects:
+        raise HTTPException(status_code=404, detail="No projects found")
+    return projects
+
 @router.post('/create')
 async def create_project(project: ProjectToCreate)-> None:
     project_id = project_controller.create_project(project)
