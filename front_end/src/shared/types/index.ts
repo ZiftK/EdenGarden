@@ -11,8 +11,7 @@ export type Employee = {
     rol: 'user' | 'admin' | 'leader';
     puesto: string;
     img?: string
-    salario: number;
-    status?: 'active' | 'inactive' | 'pending';
+    salario: number
     equipo?: string;
 }
 
@@ -28,7 +27,7 @@ export type AuthState = {
 export type ShortTeam ={
     id_equipo: string;
     name: string;
-    lider: Pick<Employee, 'email' | 'id_empleado' | 'nombre' | 'telefono' | 'rol' | 'puesto' | 'salario' | 'equipo' | 'img' | 'status'>
-    empleados: Pick<Employee, 'email' | 'id_empleado' | 'nombre' | 'telefono' | 'rol' | 'puesto' | 'salario' | 'equipo' | 'img' | 'status'>[];
+    lider: Pick<Employee, 'email' | 'id_empleado' | 'nombre' | 'telefono' | 'rol' | 'puesto' | 'salario' | 'equipo' | 'img' >
+    empleados: Pick<Employee, 'email' | 'id_empleado' | 'nombre' | 'telefono' | 'rol' | 'puesto' | 'salario' | 'equipo' | 'img' >[];
 }
 

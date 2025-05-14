@@ -3,6 +3,7 @@
 import { getEmployees } from '@/src/features/Employees/model/getEmployees'
 import { renderCell } from '@/src/features/Employees/ui/moleculs/renderCell'
 import Title from '@/src/shared/components/atoms/Title'
+import { Employee } from '@/src/shared/types'
 import {
 	Table,
 	TableBody,
@@ -11,14 +12,26 @@ import {
 	TableHeader,
 	TableRow,
 } from '@heroui/react'
-import { useCallback } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 export default function Page() {
-	const data = getEmployees()
+	const [emplooyes, setEmployees] = useState<Employee[]>([])
+	useEffect(() => {
+		const fetchEmployees = async () => {
+			try {
+				const employees = await getEmployees()
+				setEmployees(employees)
+				console.log('Employees:', employees)
+			} catch (error) {
+				console.error('Error fetching employees:', error)
+			}
+		}
+		fetchEmployees()
+	}, [])
+
 	const columns = [
-		{ uid: 'name', name: 'Nombre' },
-		{ uid: 'role', name: 'Rol' },
-		{ uid: 'status', name: 'Estado' },
+		{ uid: 'nombre', name: 'Nombre' },
+		{ uid: 'rol', name: 'Rol' },
 		{ uid: 'actions', name: 'Acciones' },
 	]
 	const render = useCallback(renderCell, [])
@@ -54,9 +67,9 @@ export default function Page() {
 						</TableColumn>
 					)}
 				</TableHeader>
-				<TableBody items={data} className='overflow-y-auto'>
+				<TableBody items={emplooyes} className='overflow-y-auto'>
 					{(item) => (
-						<TableRow key={item.id}>
+						<TableRow key={item.id_empleado}>
 							{(columnKey) => (
 								<TableCell>{render(item, columnKey)}</TableCell>
 							)}

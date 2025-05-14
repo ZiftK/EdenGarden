@@ -1,5 +1,5 @@
 import { Employee } from '@/src/shared/types'
-import { User, Chip, Tooltip, Button } from '@heroui/react'
+import { User, Tooltip, Button } from '@heroui/react'
 import {
 	DeleteIcon,
 	EditIcon,
@@ -21,7 +21,7 @@ export function renderCell(
 	const cellValue = user[columnKey as keyof Employee]
 
 	switch (columnKey) {
-		case 'name':
+		case 'nombre':
 			return (
 				<User
 					avatarProps={{ radius: 'lg', src: user.img }}
@@ -31,29 +31,15 @@ export function renderCell(
 					{user.email}
 				</User>
 			)
-		case 'role':
+		case 'rol':
 			return (
 				<div className='flex flex-col'>
 					<p className='text-bold text-sm capitalize'>{cellValue}</p>
-					<p className='text-bold text-sm capitalize text-default-400'>
-						{user.teams}
-					</p>
 				</div>
-			)
-		case 'status':
-			return (
-				<Chip
-					className='capitalize'
-					color={statusColorMap[user.status!]}
-					size='sm'
-					variant='flat'
-				>
-					{cellValue}
-				</Chip>
 			)
 		case 'actions':
 			return (
-				<div className='relative flex items-center gap-2'>
+				<div className='relative flex items-center gap-2 mx-auto justify-center'>
 					<Tooltip content='Detalles' color='secondary'>
 						<Button
 							isIconOnly
