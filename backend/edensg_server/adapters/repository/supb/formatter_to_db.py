@@ -11,5 +11,8 @@ def format_sprint(sprint: Sprint)-> dict:
         'nombre': sprint.nombre,
         'fecha_inicial': str(sprint.fecha_inicial),
         'fecha_final': str(sprint.fecha_final),
+        'hora_inicial': str(sprint.hora_inicial),
+        'hora_final': str(sprint.hora_final),
+        'locacion': sprint.locacion
     }
     

@@ -43,3 +43,14 @@ async def create_project_sprint(project_id: int, sprint: Sprint):
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=str(e)
         )
+
+@router.get("/{project_id}", status_code=status.HTTP_200_OK)
+async def get_project(project_id: int):
+    try:
+        result = project_controller.get_project(project_id)
+        return result
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
