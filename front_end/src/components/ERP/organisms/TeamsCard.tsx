@@ -34,7 +34,7 @@ export default function TeamsCard() {
 							href={`/dashboard/equipos/${team.name}`}
 							className='text-lg font-bold leading-2.5'
 						>
-							{team.leader.name}
+							{team.lider.nombre}
 						</Link>
 					</div>
 

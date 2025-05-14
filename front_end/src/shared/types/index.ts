@@ -1,19 +1,19 @@
 export type Employee = {
-    id: string;
-    name: string;
-    address: string;
-    phone_number: string;
+    id_empleado: string;
+    nombre: string;
+    direccion: string;
+    telefono: string;
     email: string;
-    hire_date: string; //fecha de reintegracion
-    salary: number;
-    in_time: string;
-    out_time: string;
-    password: string;
-    role: 'user' | 'admin' | 'leader';
-    position: string;
+    fecha_recontratacion: string;
+    fecha_contratacion: string;
+    fecha_salida: string;
+    clave: string;
+    rol: 'user' | 'admin' | 'leader';
+    puesto: string;
     img?: string
+    salario: number;
     status?: 'active' | 'inactive' | 'pending';
-    teams?: string;
+    equipo?: string;
 }
 
 export type AuthState = {
@@ -26,9 +26,9 @@ export type AuthState = {
 }
 
 export type ShortTeam ={
-    id: string;
+    id_equipo: string;
     name: string;
-    leader: Pick<Employee, 'email' | 'id' | 'name' | 'phone_number' | 'role' | 'position' | 'salary' | 'teams' | 'img' | 'status'>
-    members: Pick<Employee, 'email' | 'id' | 'name' | 'phone_number' | 'role' | 'position' | 'salary' | 'teams' | 'img' | 'status'>[];
+    lider: Pick<Employee, 'email' | 'id_empleado' | 'nombre' | 'telefono' | 'rol' | 'puesto' | 'salario' | 'equipo' | 'img' | 'status'>
+    empleados: Pick<Employee, 'email' | 'id_empleado' | 'nombre' | 'telefono' | 'rol' | 'puesto' | 'salario' | 'equipo' | 'img' | 'status'>[];
 }
 

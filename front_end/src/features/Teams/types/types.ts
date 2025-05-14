@@ -8,7 +8,7 @@ export interface dataTeam  {
 }
 
 export interface TeamMemberRowProps {
-	user: Pick<Employee, 'email' | 'id' | 'name' | 'phone_number' | 'role' | 'position' | 'salary' | 'teams'>
+	user: Pick<Employee, 'email' | 'id_empleado' | 'nombre' | 'telefono' | 'rol' | 'puesto' | 'salario' | 'equipo' | 'img' >
 	index: number
 	isEditing: boolean
 	isIncluded: boolean
