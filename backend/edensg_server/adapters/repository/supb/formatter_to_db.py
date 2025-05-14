@@ -1,4 +1,4 @@
-from backend.edensg_server.domain.entities.project_calendar import ProjectCalendarToCreate
+from backend.edensg_server.domain.entities.project_calendar import ProjectCalendarToCreate, SprintDates
 
 def format_project_calendar(project_calendar: ProjectCalendarToCreate)-> dict:
     return {
@@ -6,3 +6,10 @@ def format_project_calendar(project_calendar: ProjectCalendarToCreate)-> dict:
         'fecha_fin': str(project_calendar.fecha_fin),
     }
 
+def format_sprint(sprint: SprintDates)-> dict:
+    return {
+        'nombre': sprint.nombre,
+        'fecha_inicial': str(sprint.fecha_inicial),
+        'fecha_final': str(sprint.fecha_final),
+    }
+    
