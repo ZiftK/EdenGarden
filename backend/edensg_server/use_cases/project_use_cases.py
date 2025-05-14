@@ -85,5 +85,11 @@ class ProjectController():
         Obtiene un proyecto por su ID.
         """
         project = self.project_repository.find_project(project_id)
-        return project
+        return {"proyecto": project}
 
+    def get_all_projects(self) -> dict:
+        """
+        Obtiene todos los proyectos registrados.
+        """
+        projects = self.project_repository.find_all_projects()
+        return {"proyectos": projects}

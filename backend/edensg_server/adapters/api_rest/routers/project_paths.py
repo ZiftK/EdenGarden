@@ -22,21 +22,10 @@ async def create_project(project: ProjectToCreate):
             detail=str(e)
         )
 
-@router.post("/{project_id}/calendar", status_code=status.HTTP_201_CREATED)
-async def create_project_calendar(project_id: int, calendar: ProjectCalendarToCreate):
+@router.get("/all", status_code=status.HTTP_200_OK)
+async def get_all_projects():
     try:
-        result = project_controller.create_project_calendar(project_id, calendar)
-        return result
-    except Exception as e:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=str(e)
-        )
-
-@router.post("/{project_id}/sprint", status_code=status.HTTP_201_CREATED)
-async def create_project_sprint(project_id: int, sprint: Sprint):
-    try:
-        result = project_controller.create_project_sprint(project_id, sprint)
+        result = project_controller.get_all_projects()
         return result
     except Exception as e:
         raise HTTPException(
@@ -48,6 +37,28 @@ async def create_project_sprint(project_id: int, sprint: Sprint):
 async def get_project(project_id: int):
     try:
         result = project_controller.get_project(project_id)
+        return result
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+
+@router.post("/{project_id}/calendar/create", status_code=status.HTTP_201_CREATED)
+async def create_project_calendar(project_id: int, calendar: ProjectCalendarToCreate):
+    try:
+        result = project_controller.create_project_calendar(project_id, calendar)
+        return result
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+
+@router.post("/{project_id}/sprint/create", status_code=status.HTTP_201_CREATED)
+async def create_project_sprint(project_id: int, sprint: Sprint):
+    try:
+        result = project_controller.create_project_sprint(project_id, sprint)
         return result
     except Exception as e:
         raise HTTPException(
