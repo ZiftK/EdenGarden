@@ -23,6 +23,8 @@ class ClientRepositorySB(ClientRepository):
     def find_client_by_id(self, id: int) -> list[Client]:
         """Busca clientes por id."""
         response = self.client.table(self.table).select('*').eq('id_cliente', id).execute()
+        if not response.data:
+            raise Exception(f"El cliente con id {id} no existe")
         data = response.data[0]
         return Client(**data)
 

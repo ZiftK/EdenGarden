@@ -11,8 +11,7 @@ class ProjectToCreate(BaseModel):
     estado: str
     costo: float
     cliente: int
-    equipo: Optional[int] = None
-    calendario: ProjectCalendarToCreate
+    equipo: int
 
 class Project(ProjectToCreate):
     id_proyecto: Optional[int] = None
