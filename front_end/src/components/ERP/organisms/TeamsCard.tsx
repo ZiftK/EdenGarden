@@ -30,7 +30,7 @@ export default function TeamsCard() {
 					<div>
 						<p className='text-sm'>{team.name}</p>
 						<Link
-							href={`/dashboard/equipos/${team.name}`}
+							href={`/dashboard/equipos/${team.id_equipo}`}
 							className='text-lg font-bold leading-2.5'
 						>
 							{team.lider.nombre}

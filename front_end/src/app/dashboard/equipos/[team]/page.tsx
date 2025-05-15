@@ -1,16 +1,13 @@
 import TableEditableClient from '@/src/features/Teams/ui/TableEditableClient'
-import { getTeams } from '@/src/features/Teams/api/getTeams'
 import Link from 'next/link'
+import { getTeamById } from '@/src/features/Teams/api/getTeamById'
 
 export default async function TeamPage({
 	params,
 }: {
 	params: { team: string }
 }) {
-	const teams = await getTeams()
-	const team = teams.find(
-		(item) => item.name === decodeURIComponent(params.team)
-	)
+	const team = await getTeamById(params.team)
 	if (!team) return null
 
 	return (
