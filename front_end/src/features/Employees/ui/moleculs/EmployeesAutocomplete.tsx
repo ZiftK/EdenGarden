@@ -1,5 +1,5 @@
 import { Autocomplete, AutocompleteItem } from '@heroui/react'
-import { getEmployees } from '../../model/getEmployees'
+import { getEmployees } from '../../api/getEmployees'
 import { Employee } from '@/src/shared/types'
 
 export default function EmployeesAutocomplete({

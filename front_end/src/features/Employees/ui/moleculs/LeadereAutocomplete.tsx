@@ -1,5 +1,5 @@
 import { Autocomplete, AutocompleteItem } from '@heroui/react'
-import { getLeaders } from '../../model/getLeaders'
+import { getLeaders } from '../../api/getLeaders'
 import { Props } from '../../types'
 
 export default function LeaderAutocomplete({ value, onChange }: Props) {

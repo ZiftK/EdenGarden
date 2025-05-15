@@ -16,7 +16,7 @@ export default async function TeamPage({
 				<Link href={'./'} className='text-[var(--green-dark-500)]'>
 					Equipos
 				</Link>{' '}
-				/ {decodeURIComponent(team!.name)}
+				/ {decodeURIComponent(team!.nombre)}
 			</h2>
 
 			<h3 className='text-lg font-bold'>Distribucion del equipo</h3>

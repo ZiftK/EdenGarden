@@ -1,23 +1,12 @@
 import { Employee } from '@/src/shared/types'
 import { User, Tooltip, Button } from '@heroui/react'
-import {
-	DeleteIcon,
-	EditIcon,
-	EyeIcon,
-} from '@/src/features/Employees/ui/moleculs/Icons'
+import { EditIcon, EyeIcon } from '@/src/features/Employees/ui/moleculs/Icons'
+import ModalDeleteEmployee from '../atoms/ModalDeleteEmployee'
 
 export function renderCell(
 	user: Employee,
 	columnKey: keyof Employee | 'actions'
 ) {
-	const statusColorMap: Record<
-		string,
-		'success' | 'default' | 'primary' | 'secondary' | 'warning' | 'danger'
-	> = {
-		active: 'success',
-		inactive: 'danger',
-		pending: 'warning',
-	}
 	const cellValue = user[columnKey as keyof Employee]
 
 	switch (columnKey) {
@@ -48,7 +37,7 @@ export function renderCell(
 							<EyeIcon />
 						</Button>
 					</Tooltip>
-					<Tooltip content='Edit user' color='secondary'>
+					<Tooltip content='Editar empleado' color='secondary'>
 						<Button
 							isIconOnly
 							className='text-lg text-default-400 bg-[#0002] cursor-pointer active:opacity-50 rounded-full'
@@ -56,13 +45,11 @@ export function renderCell(
 							<EditIcon />
 						</Button>
 					</Tooltip>
-					<Tooltip color='danger' content='Delete user'>
-						<Button
-							isIconOnly
-							className='text-lg text-danger bg-[#0002] cursor-pointer active:opacity-50 rounded-full'
-						>
-							<DeleteIcon />
-						</Button>
+					<Tooltip color='danger' content='Eliminar usuario'>
+						<ModalDeleteEmployee
+							employeeId={user.id_empleado}
+							employeeName={user.nombre}
+						/>
 					</Tooltip>
 				</div>
 			)

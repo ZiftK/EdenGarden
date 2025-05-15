@@ -1,6 +1,6 @@
 'use client'
 
-import { getEmployees } from '@/src/features/Employees/model/getEmployees'
+import { getEmployees } from '@/src/features/Employees/api/getEmployees'
 import { Employee } from '@/src/shared/types'
 import {
 	Modal,
