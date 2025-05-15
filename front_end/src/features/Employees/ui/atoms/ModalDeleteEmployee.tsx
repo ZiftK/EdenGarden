@@ -4,6 +4,7 @@ import {
 	ModalContent,
 	ModalFooter,
 	ModalHeader,
+	Tooltip,
 	useDisclosure,
 } from '@heroui/react'
 import { DeleteIcon } from '../moleculs/Icons'
@@ -24,13 +25,15 @@ export default function ModalDeleteEmployee({
 
 	return (
 		<>
-			<Button
-				isIconOnly
-				onPress={onOpen}
-				className='w-full py-4 text-sm h-[20px] cursor-pointer'
-			>
-				<DeleteIcon />
-			</Button>
+			<Tooltip color='danger' content='Eliminar usuario'>
+				<Button
+					isIconOnly
+					onPress={onOpen}
+					className='text-lg text-danger bg-[#0002] cursor-pointer active:opacity-50 rounded-full'
+				>
+					<DeleteIcon />
+				</Button>
+			</Tooltip>
 			<Modal
 				isOpen={isOpen}
 				size={'xs'}

@@ -48,8 +48,6 @@ export default function ModalNewMember({
 		(member) => !alreadyAddedIds.includes(member.id_empleado)
 	)
 
-	console.log('availableMembers', members)
-
 	const onSave = (id: string) => {
 		const selectedMember = members.find(
 			(member) => member.id_empleado === id

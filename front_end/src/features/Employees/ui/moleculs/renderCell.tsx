@@ -45,12 +45,11 @@ export function renderCell(
 							<EditIcon />
 						</Button>
 					</Tooltip>
-					<Tooltip color='danger' content='Eliminar usuario'>
-						<ModalDeleteEmployee
-							employeeId={user.id_empleado}
-							employeeName={user.nombre}
-						/>
-					</Tooltip>
+
+					<ModalDeleteEmployee
+						employeeId={user.id_empleado}
+						employeeName={user.nombre}
+					/>
 				</div>
 			)
 		default:
