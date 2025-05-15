@@ -3,22 +3,25 @@ import { StaticImageData } from "next/image"
 
 export type Project = {
     nombre: string;
-    id_proyecto: string
-    equipo: ShortTeam
-    calendario: ProjectCalendar
-    img?: StaticImageData;
-    costo: string;
+    descripcion: string;
+    estado: string;
+    costo: number;
     cliente: {
         nombre: string;
         direccion: string;
         telefono: string;
         email: string;
     }
+    equipo: ShortTeam
+    id_proyecto: number;
+    calendario: ProjectCalendar
+    img?: StaticImageData;
+
 }
 
 export type ProjectCalendar = {
-    fecha_inicio?: Date;
-    fecha_fin?: Date;
+    fecha_inicio?: date;
+    fecha_fin?: date;
     dias_no_laborables?: Date[];
     current_sprint?: SprintSchedule;
 }
@@ -29,3 +32,16 @@ type SprintSchedule = {
     final_date: Date;
 }
 
+type date = 
+    {
+        dia: number;
+        mes: number;
+        anno: number;
+    }
+
+
+type time = {
+    hora: number;
+    minuto: number;
+    segundo: number;
+}

@@ -5,5 +5,5 @@ export const endpoints ={
     teams: '/team/all', // 
     employees: '/employee/all', //
 
-    projects: 'project/get_all'
+    projects: '/project/all'
 }

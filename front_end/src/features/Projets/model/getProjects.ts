@@ -5,9 +5,8 @@ import { Project } from "./types"
 export default async function getProjects(): Promise<Project[]> {
     try{
         const dataProjects: Project[] = await fetcher.get(`${endpoints.projects}`)
-        if (!dataProjects) {
-            throw new Error('No se encontraron proyectos')
-        }
+        if (!dataProjects?.proyectos) throw new Error('No se encontraron proyectos')
+        
         return dataProjects
     } catch (error) {
         console.error('Error al obtener los proyectos:', error)

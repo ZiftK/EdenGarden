@@ -12,7 +12,6 @@ export default function TeamsCard() {
 		const fetchTeams = async () => {
 			try {
 				const teams = await getTeams()
-				console.log('teams', teams)
 				setTeams(teams)
 			} catch (error) {
 				console.error('Error fetching teams:', error)
