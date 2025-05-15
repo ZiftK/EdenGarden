@@ -123,18 +123,20 @@ export default async function Page({
 				</Card>
 
 				<Card className='z-0 text-[var(--father-font)] mr-6 bg-transparent xl:col-start-2 xl:flex-5/12 shadow-none'>
-					{/* <CardHeader className='relative aspect-[16/9] w-full rounded-lg overflow-hidden'>
-						<Image
-							src={project.img!.src}
-							alt={project.nombre}
-							fill
-							sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
-							style={{
-								objectFit: 'cover',
-							}}
-							priority
-						/>
-					</CardHeader> */}
+					<CardHeader className='relative aspect-[16/9] w-full rounded-lg overflow-hidden'>
+						{project.img && (
+							<Image
+								src={project.img!.src}
+								alt={project.nombre}
+								fill
+								sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
+								style={{
+									objectFit: 'cover',
+								}}
+								priority
+							/>
+						)}
+					</CardHeader>
 
 					<CardBody className='m-0 p-0 mt-3'>
 						<article className='flex justify-between'>

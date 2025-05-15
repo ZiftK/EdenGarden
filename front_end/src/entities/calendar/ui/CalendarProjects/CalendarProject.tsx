@@ -41,7 +41,7 @@ export default function CalendarProject({
 			date.setDate(date.getDate() + i)
 			return {
 				date,
-				isNonWorkingDay: nonWorkingDays.some(
+				isNonWorkingDay: nonWorkingDays?.some(
 					(nonWorkingDay) =>
 						nonWorkingDay.getTime() === date.getTime()
 				),
