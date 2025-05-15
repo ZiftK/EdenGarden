@@ -1,6 +1,8 @@
 
+import { fetcher } from "@/src/shared/api/httpClient"
 import { updateTeam } from "../api/updateTeams"
 import { dataTeam } from "../types/types"
+import { ShortTeam } from "@/src/shared/types"
 
 export const handleSaveTeam = async (
     data: dataTeam,
@@ -8,42 +10,47 @@ export const handleSaveTeam = async (
     reset: () => void,
 ) => {
     // console.log("data", data)
-    if(data.teamShowed?.members.length === 0 ) {
+    if(data.teamShowed?.empleados.length === 0 ) {
         alert("Puede borrar el equipo, mas no dejarlo vacio")
         return reset()
     }
-    if(data.teamShowed.members === data.currentTeam.members) return reset()
+    if(data.teamShowed.empleados === data.currentTeam.empleados) return reset()
 
-    updateTeam(data.currentTeam.id, data.currentTeam.members)
+    updateTeam(data.currentTeam.id_equipo, data.currentTeam.empleados)
     setData((prev) => ({
         ...prev,
         isEditing: false,
         currentTeam: {
             ...prev.currentTeam!,
-            members: data.teamShowed?.members?.map((member) => ({
+            empleados: data.teamShowed?.empleados?.map((member) => ({
                 ...member,
-                teams: data.currentTeam?.name
+                teams: data.currentTeam?.nombre
             })) || [],},
         teamShowed: {
             ...prev.currentTeam!,
-            members: data.teamShowed?.members?.map((member) => ({
+            empleados: data.teamShowed?.empleados?.map((member) => ({
                 ...member,
-                teams: data.currentTeam?.name
+                teams: data.currentTeam?.nombre
             })) || []},
         teamChanged: {
-            id: '',
-            name: '',
-            leader: {
-                name: '',
-                id: '',
-                email: '',
-                phone_number: '',
-                role: 'leader',
-                position: '',
-                salary: 0,
+        id_equipo: '',
+        nombre: '',
+        lider: {
+            nombre: '',
+            id_empleado: '',
+            email: '',
+            telefono: '',
+            rol: "leader" as 'leader',
+            puesto: '',
+            salario: 0,
+        },
+        empleados: [],
             },
-            members: [],
-        }}
-        ))
+            empleados: [],
+    }))
+
+    // try{
+    //     const teamModified = fetcher.post<ShortTeam>()
+    // }
     // reset()
 }

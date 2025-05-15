@@ -3,6 +3,8 @@ export const endpoints ={
     logout: '/auth/logout',
     
     teams: '/team/all', // 
+    team: '/team/id', //
+
     employees: '/employee/all', //
 
     projects: '/project/all',

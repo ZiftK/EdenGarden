@@ -13,7 +13,7 @@ import {
 	Autocomplete,
 	AutocompleteItem,
 } from '@heroui/react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 export default function ModalNewMember({
 	onChange,
@@ -21,24 +21,43 @@ export default function ModalNewMember({
 	onChange: (employee: Employee) => void
 }) {
 	const { isOpen, onOpen, onClose } = useDisclosure()
-	const members = getEmployees()
-	const membersWithoutTeam = members.filter(
-		(member) => !member.teams && member.role !== 'leader'
-	)
+
+	const [members, setMembers] = useState<Employee[]>([])
+	const [membersWithoutTeam, setMembersWithoutTeam] = useState<Employee[]>([])
+	useEffect(() => {
+		const fetchMembers = async () => {
+			try {
+				const members = await getEmployees()
+				setMembers(members)
+			} catch (error) {
+				console.error('Error fetching members:', error)
+			}
+		}
+		fetchMembers()
+		setMembersWithoutTeam(
+			members.filter(
+				(member) => !member.equipo && member.rol !== 'leader'
+			)
+		)
+	}, [])
 
 	const [idNewMember, setIdNewMember] = useState<string>('')
 	const [alreadyAddedIds, setAlreadyAddedIds] = useState<string[]>([])
 
 	const availableMembers = membersWithoutTeam.filter(
-		(member) => !alreadyAddedIds.includes(member.id)
+		(member) => !alreadyAddedIds.includes(member.id_empleado)
 	)
 
+	console.log('availableMembers', members)
+
 	const onSave = (id: string) => {
-		const selectedMember = members.find((member) => member.id === id)
+		const selectedMember = members.find(
+			(member) => member.id_empleado === id
+		)
 		if (!selectedMember) return
 
 		onChange(selectedMember)
-		setAlreadyAddedIds([...alreadyAddedIds, selectedMember.id])
+		setAlreadyAddedIds([...alreadyAddedIds, selectedMember.id_empleado])
 		onClose()
 	}
 
@@ -64,6 +83,7 @@ export default function ModalNewMember({
 							</ModalHeader>
 							<ModalBody>
 								<Autocomplete
+									aria-label='Selecciona un empleado'
 									color='secondary'
 									classNames={{
 										base: 'border-b-2 border-b-white text-amber-50',
@@ -84,10 +104,10 @@ export default function ModalNewMember({
 											classNames={{
 												title: 'text-black',
 											}}
-											key={member.id}
-											textValue={member.name}
+											key={member.id_empleado}
+											textValue={member.nombre}
 										>
-											{member.name}
+											{member.nombre}
 										</AutocompleteItem>
 									))}
 								</Autocomplete>

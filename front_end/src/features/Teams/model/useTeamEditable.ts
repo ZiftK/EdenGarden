@@ -8,19 +8,20 @@ import { handleToggleRemove } from "../handlers/handleToggleRemove"
 import { dataTeam } from "../types/types"
 
 export function useEditableTeam({initialTeam, isNewTeam = false}:{initialTeam: ShortTeam, isNewTeam?: boolean}) {
-  const defaultTeam = {		
-      id: '',
-      name: '',
-      leader: {
-        name: '',
-        id: '',
+  const defaultTeam: ShortTeam = {		
+      id_equipo: '',
+      nombre: '',
+      lider: {
+        nombre: '',
+        id_empleado: '',
         email: '',
-        phone_number: '',
-        role: "leader" as 'leader',
-        position: '',
-        salary: 0,
+        telefono: '',
+        rol: "leader" as 'leader',
+        puesto: '',
+        salario: 0,
       },
-      members: [],}
+      empleados: [],
+    }
 
   const [data, setData] = useState<dataTeam>({
     currentTeam: initialTeam,
@@ -43,7 +44,7 @@ export function useEditableTeam({initialTeam, isNewTeam = false}:{initialTeam: S
   }
 
   const handleRemove = () => {
-    if(data.teamChanged?.members.length === 0) return
+    if(data.teamChanged?.empleados?.length === 0) return
     const updated = handleToggleRemove(data)
     setData(updated)
   }

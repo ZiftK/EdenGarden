@@ -14,7 +14,7 @@ import {
 import CalendarProject from '@/src/entities/calendar/ui/CalendarProjects/CalendarProject'
 import DateProgressBar from '@/src/features/Projets/components/atoms/DateProgressBar'
 import PriceChip from '@/src/features/Projets/components/PriceChip'
-import { getProjectById } from '@/src/features/Projets/model/getProjectById'
+import { getProjectById } from '@/src/features/Projets/api/getProjectById'
 import { Card, CardBody, CardHeader, Divider } from '@heroui/react'
 import Image from 'next/image'
 import Link from 'next/link'

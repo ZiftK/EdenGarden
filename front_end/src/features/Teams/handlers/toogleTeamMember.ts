@@ -3,7 +3,7 @@ import { dataTeam } from "../types/types"
 
 export const toggleTeamMember = (
     state: dataTeam,
-    user: Pick<Employee, 'email' | 'id' | 'name' | 'phone_number' | 'role' | 'position' | 'salary'>,
+    user: Pick<Employee,'email' | 'id_empleado' | 'nombre' | 'telefono' | 'rol' | 'puesto' | 'salario' >,
     checked: boolean
     ): dataTeam => {
     const teamChanged = state.teamChanged;
@@ -12,17 +12,17 @@ export const toggleTeamMember = (
     
     let updatedMembers;
     if (checked) {
-        const exists = teamChanged.members.some(member => member.id === user.id);
-        updatedMembers = exists ? teamChanged.members : [...teamChanged.members, user];
+        const exists = teamChanged.empleados.some(member => member.id_empleado === user.id_empleado);
+        updatedMembers = exists ? teamChanged.empleados : [...teamChanged.empleados, user];
     } else {
-        updatedMembers = teamChanged.members.filter(member => member.id !== user.id);
+        updatedMembers = teamChanged.empleados.filter(member => member.id_empleado !== user.id_empleado);
     }
     
     return {
         ...state,
         teamChanged: {
             ...teamChanged,
-            members: updatedMembers,
+            empleados: updatedMembers,
         },
     };
 };

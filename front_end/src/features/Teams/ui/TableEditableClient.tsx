@@ -23,7 +23,7 @@ export default function TableEditableClient({
 	const { data, setData, reset, handleSave, handleToggleRemove } =
 		useEditableTeam({ initialTeam: team, isNewTeam })
 
-	const currentLeader = data?.currentTeam?.leader
+	const currentLeader = data?.currentTeam?.lider
 
 	return (
 		<>
@@ -48,16 +48,16 @@ export default function TableEditableClient({
 				</div>
 
 				{/*Leader*/}
-				{data.currentTeam?.leader && (
+				{data.currentTeam?.lider && (
 					<div className='grid grid-cols-[1fr_1fr_2fr_1fr_1fr] min-w-[450px] items-center text-center py-2 bg-[var(--father-font-transparent-200)]'>
-						<span>{currentLeader.position}</span>
-						<span>{currentLeader.id}</span>
+						<span>{currentLeader.puesto}</span>
+						<span>{currentLeader.id_empleado}</span>
 
 						{data.isEditing ? (
 							<LeaderAutocomplete
 								value={String(
-									data.teamChanged!.leader.id ||
-										currentLeader.id
+									data.teamChanged!.lider?.id_empleado ||
+										currentLeader.id_empleado
 								)}
 								onChange={(leader) => {
 									setData((prev) => ({
@@ -65,17 +65,17 @@ export default function TableEditableClient({
 										teamShowed: {
 											...prev.teamShowed,
 											leader: {
-												...prev.teamShowed.leader,
-												name: leader.name,
-												id: leader.id,
+												...prev.teamShowed.lider,
+												name: leader.nombre,
+												id: leader.id_empleado,
 											},
 										},
 										teamChanged: {
 											...prev.teamChanged!,
 											leader: {
-												...prev.teamChanged!.leader,
-												name: leader.name,
-												id: leader.id,
+												...prev.teamChanged!.lider,
+												name: leader.nombre,
+												id: leader.id_empleado,
 											},
 										},
 									}))
@@ -83,7 +83,7 @@ export default function TableEditableClient({
 							/>
 						) : (
 							<>
-								<span>{currentLeader.name}</span>
+								<span>{currentLeader.nombre}</span>
 
 								<div className='flex items-center justify-center gap-2'>
 									<CopyButton
@@ -94,7 +94,7 @@ export default function TableEditableClient({
 										})}
 									/>
 									<CopyButton
-										text={currentLeader.phone_number}
+										text={currentLeader.telefono}
 										icon={PhoneIcon({
 											color: 'var(--father-font)',
 											h: 12,
@@ -102,7 +102,7 @@ export default function TableEditableClient({
 									/>
 								</div>
 
-								<span>{currentLeader.salary}</span>
+								<span>{currentLeader.salario}</span>
 							</>
 						)}
 					</div>
@@ -110,14 +110,14 @@ export default function TableEditableClient({
 
 				{/* Body */}
 				<div className='divide-y min-w-[450px] divide-[#2b2f22] h-[100px] overflow-y-auto text-xs scrollbar-thin-custom xl:h-48'>
-					{data.teamShowed?.members.map((user, i) => (
+					{data.teamShowed?.empleados.map((user, i) => (
 						<TeamMemberRow
 							key={i}
 							user={user}
 							index={i}
 							isEditing={data.isEditing}
 							isIncluded={
-								data.teamChanged?.members.includes(user) ||
+								data.teamChanged?.empleados.includes(user) ||
 								false
 							}
 							onToggle={(checked) => {
@@ -140,7 +140,7 @@ export default function TableEditableClient({
 									teamShowed: {
 										...prev.teamShowed,
 										members: [
-											...prev.teamShowed?.members,
+											...prev.teamShowed?.empleados,
 											...(Array.isArray(employee)
 												? employee
 												: [employee]),
@@ -149,7 +149,7 @@ export default function TableEditableClient({
 									teamChanged: {
 										...prev.teamChanged!,
 										members: [
-											...prev.teamChanged!.members,
+											...prev.teamChanged!.empleados,
 											...(Array.isArray(employee)
 												? employee
 												: [employee]),

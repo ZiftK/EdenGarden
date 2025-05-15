@@ -14,7 +14,7 @@ import PriceChip from '@/src/features/Projets/components/PriceChip'
 import { useEffect, useState } from 'react'
 import { Project } from '../types'
 
-import getProjects from '../model/getProjects'
+import getProjects from '../api/getProjects'
 
 const colorIcons = 'var(--children-font)'
 
