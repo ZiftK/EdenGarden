@@ -11,7 +11,7 @@ export default function CalendarProject({
 }: {
 	initialDate: Date
 	finalDate: Date
-	nonWorkingDays: Date[]
+	nonWorkingDays?: Date[]
 }) {
 	const currentDate = new Date()
 

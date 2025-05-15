@@ -1,6 +1,6 @@
 import { endpoints } from "@/src/shared/api/endpoints"
 import { fetcher } from "@/src/shared/api/httpClient"
-import { Project } from "./types"
+import { Project } from "../types"
 
 export default async function getProjects(): Promise<Project[]> {
     try{

@@ -12,7 +12,7 @@ import { GroupIcon } from '@/src/components/landing/atoms/Icons/Icons'
 import DateProgressBar from '@/src/features/Projets/components/atoms/DateProgressBar'
 import PriceChip from '@/src/features/Projets/components/PriceChip'
 import { useEffect, useState } from 'react'
-import { Project } from '../model/types'
+import { Project } from '../types'
 
 import getProjects from '../model/getProjects'
 
@@ -49,7 +49,7 @@ export default function ShowAllProjects() {
 					<CardHeader className='flex justify-between items-center'>
 						<div className='flex flex-col'>
 							<Link
-								href={`/dashboard/proyectos/${project.nombre}`}
+								href={`/dashboard/proyectos/${project.id_proyecto}`}
 								className='font-bold text-lg'
 							>
 								{project.nombre}

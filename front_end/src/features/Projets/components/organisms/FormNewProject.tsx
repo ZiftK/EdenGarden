@@ -17,7 +17,7 @@ import { redirect } from 'next/navigation'
 import Image, { StaticImageData } from 'next/image'
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
-import { Project } from '../../model/types'
+import { Project } from '../../types'
 
 type ProjectModified = Omit<Project, 'image'> & {
 	image?: string | StaticImageData
