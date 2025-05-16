@@ -44,7 +44,8 @@ export default function ModalDeleteEmployee({
 					{(onClose) => (
 						<>
 							<ModalHeader className='flex flex-col gap-1 '>
-								Eliminaras a {employeeName} de la empresa
+								Eliminaras a {employeeName.split(' ')[0]} de la
+								empresa
 							</ModalHeader>
 
 							<ModalFooter>
@@ -56,7 +57,7 @@ export default function ModalDeleteEmployee({
 									Cerrar
 								</Button>
 								<Button onPress={() => onDelete(employeeId)}>
-									Agregar
+									Eliminar
 								</Button>
 							</ModalFooter>
 						</>
