@@ -1,8 +1,8 @@
 from supabase import Client
 from backend.edensg_server.adapters.repository.supb.client import supabase_client
-import requests
-from io import BytesIO
 import uuid
+import base64
+from urllib.parse import urlparse
 
 class ImageRepositorySupabase:
     def __init__(self):
@@ -11,19 +11,18 @@ class ImageRepositorySupabase:
 
     async def upload_image_from_url(self, image_url: str, employee_id: int) -> str:
         try:
-            # Descargar la imagen
-            response = requests.get(image_url)
-            image_data = BytesIO(response.content)
-
+            # Obtener la extensión del archivo de la URL
+            parsed_url = urlparse(image_url)
+            file_extension = parsed_url.path.split('.')[-1].split('?')[0]
+            
             # Generar nombre único para el archivo
-            file_extension = image_url.split('.')[-1].split('?')[0]  # Manejar URLs con parámetros
             file_name = f"employee_{employee_id}_{uuid.uuid4()}.{file_extension}"
 
-            # Subir a Supabase Storage
-            result = self.client.storage.from_(self.bucket_name).upload(
+            # Subir directamente la URL a Supabase Storage
+            self.client.storage.from_(self.bucket_name).upload(
                 file_name,
-                image_data.getvalue(),
-                {"content-type": response.headers.get('content-type', 'image/jpeg')}
+                image_url,
+                {"content-type": f"image/{file_extension}"}
             )
 
             # Obtener la URL pública
@@ -55,4 +54,34 @@ class ImageRepositorySupabase:
             # Subir la nueva imagen
             return await self.upload_image_from_url(image_url, employee_id)
         except Exception as e:
-            raise Exception(f"Error al actualizar la imagen del empleado: {str(e)}") 
+            raise Exception(f"Error al actualizar la imagen del empleado: {str(e)}")
+
+    async def upload_base64_image(self, base64_image: str, employee_id: int) -> str:
+        try:
+            # Decodificar la imagen base64
+            image_data = base64.b64decode(base64_image.split(',')[1] if ',' in base64_image else base64_image)
+            
+            # Determinar el tipo de imagen
+            if base64_image.startswith('data:image/jpeg'):
+                file_extension = 'jpg'
+            elif base64_image.startswith('data:image/png'):
+                file_extension = 'png'
+            else:
+                file_extension = 'jpg'  # Por defecto
+
+            # Generar nombre único para el archivo
+            file_name = f"employee_{employee_id}_{uuid.uuid4()}.{file_extension}"
+
+            # Subir a Supabase Storage
+            self.client.storage.from_(self.bucket_name).upload(
+                file_name,
+                image_data,
+                {"content-type": f"image/{file_extension}"}
+            )
+
+            # Obtener la URL pública
+            public_url = self.client.storage.from_(self.bucket_name).get_public_url(file_name)
+            return public_url
+
+        except Exception as e:
+            raise Exception(f"Error al subir la imagen: {str(e)}") 
