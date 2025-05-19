@@ -15,6 +15,7 @@ class Employee(BaseModel):
     rol: str
     puesto: str
     salario: float
+    img_url: Optional[str] = None
 
 class Attendance(BaseModel):
     id_asistencia: Optional[int] = None

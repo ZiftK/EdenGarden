@@ -14,12 +14,14 @@ Calcular horas extras del empleado
 
 from backend.edensg_server.domain.entities.employee import Employee
 from backend.edensg_server.adapters.repository.interface.employee_repository_interface import EmployeeRepository
+from backend.edensg_server.adapters.repository.supb.image_repository_sb import ImageRepositorySupabase
 from datetime import datetime, timedelta
 from typing import List, Optional
 
 class EmployeeUseCases:
     def __init__(self, employee_repository: EmployeeRepository):
         self.employee_repository = employee_repository
+        self.image_repository = ImageRepositorySupabase()
 
     def create_employee(self, employee: Employee) -> int:
         """Crea un nuevo empleado en el sistema."""
@@ -152,4 +154,39 @@ class EmployeeUseCases:
         )
         
         return attendance_id
+
+    async def update_employee_image(self, employee_id: int, image_url: str) -> str:
+        """Actualiza la imagen de perfil de un empleado."""
+        try:
+            # Subir la imagen a Supabase Storage
+            public_url = await self.image_repository.update_employee_image(employee_id, image_url)
+            
+            # Actualizar la URL de la imagen en la base de datos
+            employee = self.find_employee_by_id(employee_id)
+            if employee:
+                employee.img_url = public_url
+                self.update_employee(employee_id, employee)
+            
+            return public_url
+        except Exception as e:
+            raise Exception(f"Error al actualizar la imagen del empleado: {str(e)}")
+
+    async def delete_employee_image(self, employee_id: int) -> bool:
+        """Elimina la imagen de perfil de un empleado."""
+        try:
+            # Buscar la imagen en el bucket
+            files = self.image_repository.client.storage.from_(self.image_repository.bucket_name).list()
+            for file in files:
+                if file['name'].startswith(f"employee_{employee_id}_"):
+                    await self.image_repository.delete_image(file['name'])
+            
+            # Actualizar el empleado para eliminar la URL de la imagen
+            employee = self.find_employee_by_id(employee_id)
+            if employee:
+                employee.img_url = None
+                self.update_employee(employee_id, employee)
+            
+            return True
+        except Exception as e:
+            raise Exception(f"Error al eliminar la imagen del empleado: {str(e)}")
     
