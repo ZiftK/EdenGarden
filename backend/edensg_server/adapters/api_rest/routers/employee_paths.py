@@ -3,6 +3,7 @@ from backend.edensg_server.domain.entities.employee import Employee
 from backend.edensg_server.adapters.repository.supb.employee_repository_sb import EmployeeRepositorySB
 from backend.edensg_server.use_cases.employee_use_cases import EmployeeUseCases
 from pydantic import BaseModel
+from typing import Optional
 
 router = APIRouter('employee')
 
@@ -11,6 +12,15 @@ employee_use_cases = EmployeeUseCases(employee_repository)
 
 class ImageUpdateRequest(BaseModel):
     image_url: str
+
+class LoginRequest(BaseModel):
+    email: str
+    clave: str
+
+class LoginResponse(BaseModel):
+    success: bool
+    employee: Optional[Employee] = None
+    message: str
 
 @router.get("/all")
 async def get_employees():
@@ -41,5 +51,35 @@ async def delete_employee_image(employee_id: int):
     try:
         success = await employee_use_cases.delete_employee_image(employee_id)
         return {"success": success}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@router.post("/login", response_model=LoginResponse)
+async def login(request: LoginRequest):
+    try:
+        # Buscar empleado por email
+        employees = employee_repository.find_employee_by_email(request.email)
+        
+        if not employees:
+            return LoginResponse(
+                success=False,
+                message="Credenciales inválidas"
+            )
+        
+        employee = employees[0]  # Tomamos el primer empleado encontrado
+        
+        # Verificar la contraseña
+        if employee.clave != request.clave:  # En producción, usar hash de contraseñas
+            return LoginResponse(
+                success=False,
+                message="Credenciales inválidas"
+            )
+        
+        return LoginResponse(
+            success=True,
+            employee=employee,
+            message="Login exitoso"
+        )
+        
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

@@ -44,7 +44,8 @@ class EmployeeRepositorySB(EmployeeRepository):
 
     def update_employee_data(self, id: int, data: Employee) -> None:
         """Actualiza la información de un empleado."""
-        self.client.table(self.table).update(data.model_dump(exclude={'id_empleado'})).eq('id_empleado', id).execute()
+        data_dict = data.model_dump(exclude={'id_empleado'})
+        self.client.table(self.table).update(data_dict).eq('id_empleado', id).execute()
 
     def delete_employee_data(self, id: int) -> None:
         """Elimina un empleado de la base de datos."""
