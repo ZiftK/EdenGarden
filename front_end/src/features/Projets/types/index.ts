@@ -32,7 +32,7 @@ type SprintSchedule = {
     final_date: Date;
 }
 
-type date = 
+export type date = 
     {
         dia: number;
         mes: number;

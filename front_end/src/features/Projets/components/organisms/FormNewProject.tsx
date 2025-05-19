@@ -14,31 +14,31 @@ import {
 	Divider,
 } from '@heroui/react'
 import { redirect } from 'next/navigation'
-import Image, { StaticImageData } from 'next/image'
+import Image from 'next/image'
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import { Project } from '../../types'
-
-type ProjectModified = Omit<Project, 'image'> & {
-	image?: string | StaticImageData
-}
+import { fetcher } from '@/src/shared/api/httpClient'
+import { customDateToDateString } from '@/src/shared/hooks/useDatesCustoms'
 
 export default function FormNewProject() {
 	const [teams, setTeams] = useState<ShortTeam[]>([])
-	const [newProject, setNewProject] = useState<ProjectModified>({
-		id: '',
-		name: '',
-		teams: {} as ShortTeam,
-		calendar: {
-			intial_date: undefined,
-			final_date: undefined,
+	const [newProject, setNewProject] = useState<Project>({
+		id_proyecto: 0,
+		nombre: '',
+		descripcion: '',
+		estado: '',
+		equipo: {} as ShortTeam,
+		calendario: {
+			fecha_inicio: undefined,
+			fecha_fin: undefined,
 		},
-		image: undefined,
-		price: '',
-		clientData: {
-			name: '',
-			addressProject: '',
-			phone: '',
+		img: undefined,
+		costo: 0,
+		cliente: {
+			nombre: '',
+			direccion: '',
+			telefono: '',
 			email: '',
 		},
 	})
@@ -47,9 +47,9 @@ export default function FormNewProject() {
 		const fetchTeams = async () => {
 			// Ejemplo de datos, reemplazar con tu lógica real
 			const mockTeams: ShortTeam[] = [
-				{ id: 'team1', name: 'Equipo Alpha', members: 5 },
-				{ id: 'team2', name: 'Equipo Beta', members: 4 },
-				{ id: 'team3', name: 'Equipo Gamma', members: 6 },
+				{ id_equipo: 'team1', nombre: 'Equipo Alpha', empleados: 5 },
+				{ id_equipo: 'team2', nombre: 'Equipo Beta', empleados: 4 },
+				{ id_equipo: 'team3', nombre: 'Equipo Gamma', empleados: 6 },
 			]
 			setTeams(mockTeams)
 		}
@@ -79,7 +79,7 @@ export default function FormNewProject() {
 	}
 
 	const handleTeamChange = (teamId: string) => {
-		const selectedTeam = teams.find((team) => team.id === teamId)
+		const selectedTeam = teams.find((team) => team.id_equipo === teamId)
 		if (selectedTeam) {
 			setNewProject((prev) => ({
 				...prev,
@@ -103,8 +103,10 @@ export default function FormNewProject() {
 	}
 
 	const handleSubmit = () => {
-		// Aquí puedes manejar el envío del formulario
-		redirect(`/dashboard/proyectos/${newProject.id}`)
+		fetcher.post('/project', {
+			...newProject,
+		})
+		redirect(`/dashboard/proyectos/${newProject.id_proyecto}`)
 	}
 
 	const classNames = {
@@ -164,7 +166,7 @@ export default function FormNewProject() {
 							<Input
 								label='Nombre del Proyecto'
 								name='name'
-								value={newProject.name!}
+								value={newProject.nombre!}
 								onChange={handleChange}
 								isRequired
 								classNames={classNames.input}
@@ -173,7 +175,7 @@ export default function FormNewProject() {
 							<Input
 								label='ID del Proyecto'
 								name='id'
-								value={newProject.id}
+								value={String(newProject.id_proyecto)}
 								onChange={handleChange}
 								isRequired
 								classNames={classNames.input}
@@ -182,7 +184,7 @@ export default function FormNewProject() {
 							<Input
 								label='Presupuesto'
 								name='price'
-								value={newProject.price}
+								value={String(newProject.costo)}
 								onChange={handleChange}
 								placeholder='$0.00'
 								isRequired
@@ -191,7 +193,9 @@ export default function FormNewProject() {
 
 							<Select
 								label='Equipo Asignado'
-								selectedKeys={[newProject.teams?.id || '']}
+								selectedKeys={[
+									newProject.equipo?.id_equipo || '',
+								]}
 								onChange={(e) =>
 									handleTeamChange(e.target.value)
 								}
@@ -200,11 +204,11 @@ export default function FormNewProject() {
 							>
 								{teams.map((team) => (
 									<SelectItem
-										key={team.id}
-										textValue={team.name}
+										key={team.id_equipo}
+										textValue={team.nombre}
 									>
-										{team.name} (
-										{`${team.members} miembros`})
+										{team.nombre} (
+										{`${team.empleados} miembros`})
 									</SelectItem>
 								))}
 							</Select>
@@ -218,8 +222,8 @@ export default function FormNewProject() {
 
 							<Input
 								label='Nombre del Cliente'
-								name='clientData.name'
-								value={newProject.clientData.name}
+								name='nombre_cliente'
+								value={newProject.cliente.nombre}
 								onChange={handleChange}
 								isRequired
 								classNames={classNames.input}
@@ -229,7 +233,7 @@ export default function FormNewProject() {
 								label='Correo Electrónico'
 								name='clientData.email'
 								type='email'
-								value={newProject.clientData.email}
+								value={newProject.cliente.email}
 								onChange={handleChange}
 								isRequired
 								classNames={classNames.input}
@@ -238,7 +242,7 @@ export default function FormNewProject() {
 							<Input
 								label='Teléfono'
 								name='clientData.phone'
-								value={newProject.clientData.phone}
+								value={newProject.cliente.telefono}
 								onChange={handleChange}
 								isRequired
 								classNames={classNames.input}
@@ -247,7 +251,7 @@ export default function FormNewProject() {
 							<Textarea
 								label='Dirección del Proyecto'
 								name='clientData.addressProject'
-								value={newProject.clientData.addressProject}
+								value={newProject.cliente.direccion}
 								onChange={handleChange}
 								minRows={2}
 								maxRows={3}
@@ -266,7 +270,9 @@ export default function FormNewProject() {
 							<Input
 								type='date'
 								label='Fecha de Inicio'
-								value={newProject.calendar.intial_date?.toDateString()}
+								value={customDateToDateString(
+									newProject.calendario.fecha_inicio!
+								)}
 								onChange={(e) => handleChange(e)}
 								isRequired
 								classNames={classNames.input}
@@ -275,7 +281,9 @@ export default function FormNewProject() {
 							<Input
 								type='date'
 								label='Fecha de Finalización'
-								value={newProject.calendar.final_date?.toDateString()}
+								value={customDateToDateString(
+									newProject.calendario.fecha_fin!
+								)}
 								onChange={(e) => handleChange(e)}
 								isRequired
 								classNames={classNames.input}
@@ -289,10 +297,10 @@ export default function FormNewProject() {
 							Imagen del Proyecto
 						</h3>
 						<div className='flex items-center gap-4'>
-							{newProject.image && (
+							{newProject.img && (
 								<div className='relative w-32 h-24 rounded overflow-hidden'>
 									<Image
-										src={newProject.image}
+										src={newProject.img}
 										alt='Vista previa'
 										className='w-full h-full object-cover'
 									/>

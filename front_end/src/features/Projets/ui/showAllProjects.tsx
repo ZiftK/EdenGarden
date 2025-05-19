@@ -15,6 +15,7 @@ import { useEffect, useState } from 'react'
 import { Project } from '../types'
 
 import getProjects from '../api/getProjects'
+import { customDateToDateString } from '@/src/shared/hooks/useDatesCustoms'
 
 const colorIcons = 'var(--children-font)'
 
@@ -74,17 +75,13 @@ export default function ShowAllProjects() {
 							</span>
 							<span className='flex items-center gap-1'>
 								<CalendarIcon h={15} color={colorIcons} />
-								{new Date(
-									project.calendario.fecha_inicio!.anno,
-									project.calendario.fecha_inicio!.mes - 1,
-									project.calendario.fecha_inicio!.dia
-								).toLocaleDateString()}{' '}
+								{customDateToDateString(
+									project.calendario.fecha_inicio!
+								)}{' '}
 								-{' '}
-								{new Date(
-									project.calendario.fecha_fin!.anno,
-									project.calendario.fecha_fin!.mes - 1,
-									project.calendario.fecha_fin!.dia
-								).toLocaleDateString()}
+								{customDateToDateString(
+									project.calendario.fecha_fin!
+								)}
 							</span>
 							<span className='flex items-center gap-1'>
 								<TableRowsIcon h={15} color={colorIcons} />

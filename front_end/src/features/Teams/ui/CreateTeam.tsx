@@ -16,35 +16,36 @@ import { redirect } from 'next/navigation'
 
 export default function CreateTeam({}) {
 	const initialTeam: ShortTeam = {
-		name: '',
-		leader: {
-			name: '',
-			id: '',
+		nombre: '',
+		id_equipo: '',
+		lider: {
+			nombre: '',
+			id_empleado: '',
 			email: '',
-			phone_number: '',
-			role: 'leader',
-			position: '',
-			salary: 0,
-			teams: undefined,
+			telefono: '',
+			rol: 'leader',
+			puesto: '',
+			salario: 0,
+			equipo: undefined,
 		},
-		members: [],
+		empleados: [],
 	}
 
 	const { data, setData, reset, handleSave, handleToggleRemove } =
 		useEditableTeam({ initialTeam, isNewTeam: true })
 
 	const handleCreateNewTeam = () => {
-		if (data.teamChanged?.members.length === 0) return
-		if (data.teamChanged?.name === '') {
+		if (data.teamChanged?.empleados.length === 0) return
+		if (data.teamChanged?.nombre === '') {
 			alert('El nombre del equipo no puede estar vacio')
 			return
 		}
-		if (data.teamChanged?.leader.id === '') {
+		if (data.teamChanged?.lider.id_empleado === '') {
 			alert('El lider no puede estar vacio')
 			return
 		}
 		handleSave()
-		redirect(`/dashboard/equipos/${data.currentTeam.name}`)
+		redirect(`/dashboard/equipos/${data.currentTeam.nombre}`)
 	}
 
 	return (
@@ -78,7 +79,7 @@ export default function CreateTeam({}) {
 						teamChanged: {
 							...prev.teamChanged!,
 							name: e.target.value,
-							leader: prev.teamChanged?.leader || {
+							leader: prev.teamChanged?.lider || {
 								id: '',
 								name: '',
 								role: 'leader',
@@ -114,38 +115,39 @@ export default function CreateTeam({}) {
 				</div>
 
 				{/*Leader*/}
-				{data.currentTeam?.leader && (
+				{data.currentTeam?.lider && (
 					<div className='grid grid-cols-[1fr_1fr_2fr_1fr_1fr] min-w-[450px] items-center text-center py-2 bg-[var(--father-font-transparent-200)]'>
-						<span>{data.currentTeam.leader.position}</span>
-						<span>{data.currentTeam.leader.id}</span>
+						<span>{data.currentTeam.lider.puesto}</span>
+						<span>{data.currentTeam.lider.id_empleado}</span>
 
 						{data.isEditing ? (
 							<LeaderAutocomplete
-								value={String(data.currentTeam.leader.id)}
+								value={String(
+									data.currentTeam.lider.id_empleado
+								)}
 								onChange={(leader) => {
 									setData((prev) => ({
 										...prev,
 										teamShowed: {
 											...prev.teamShowed,
 											leader: {
-												...prev.teamShowed.leader,
-												name: leader.name,
-												id: leader.id,
+												...prev.teamShowed.lider,
+												name: leader.nombre,
+												id: leader.id_empleado,
 											},
 										},
 										teamChanged: {
 											...prev.teamChanged!,
 											leader: {
-												...prev.teamChanged?.leader,
-												name: leader.name,
-												id: leader.id,
+												...prev.teamChanged?.lider,
+												name: leader.nombre,
+												id: leader.id_empleado,
 												email: leader.email,
-												phone_number:
-													leader.phone_number,
-												role: leader.role,
-												position: leader.position,
-												salary: leader.salary,
-												teams: data.teamChanged?.name,
+												phone_number: leader.telefono,
+												role: leader.rol,
+												position: leader.puesto,
+												salary: leader.salario,
+												teams: data.teamChanged?.nombre,
 											},
 										},
 									}))
@@ -153,20 +155,18 @@ export default function CreateTeam({}) {
 							/>
 						) : (
 							<>
-								<span>{data.currentTeam.leader.name}</span>
+								<span>{data.currentTeam.lider.nombre}</span>
 
 								<div className='flex items-center justify-center gap-2 bg-amber-50'>
 									<CopyButton
-										text={data.currentTeam.leader.email}
+										text={data.currentTeam.lider.email}
 										icon={EmailIcon({
 											color: 'var(--father-font)',
 											h: 12,
 										})}
 									/>
 									<CopyButton
-										text={
-											data.currentTeam.leader.phone_number
-										}
+										text={data.currentTeam.lider.telefono}
 										icon={PhoneIcon({
 											color: 'var(--father-font)',
 											h: 10,
@@ -174,7 +174,7 @@ export default function CreateTeam({}) {
 									/>
 								</div>
 
-								<span>{data.currentTeam.leader.salary}</span>
+								<span>{data.currentTeam.lider.salario}</span>
 							</>
 						)}
 					</div>
@@ -182,14 +182,14 @@ export default function CreateTeam({}) {
 
 				{/* Body */}
 				<div className='divide-y min-w-[450px] divide-[#2b2f22] h-[100px] overflow-y-auto text-xs scrollbar-thin-custom xl:h-48'>
-					{data.teamShowed?.members.map((user, i) => (
+					{data.teamShowed?.empleados.map((user, i) => (
 						<TeamMemberRow
 							key={i}
 							user={user}
 							index={i}
 							isEditing={data.isEditing}
 							isIncluded={
-								data.teamChanged?.members.includes(user) ||
+								data.teamChanged?.empleados.includes(user) ||
 								false
 							}
 							onToggle={(checked) => {
@@ -207,7 +207,7 @@ export default function CreateTeam({}) {
 									teamShowed: {
 										...prev.teamShowed,
 										members: [
-											...prev.teamShowed?.members,
+											...prev.teamShowed?.empleados,
 											...(Array.isArray(employee)
 												? employee
 												: [employee]),
@@ -216,7 +216,7 @@ export default function CreateTeam({}) {
 									teamChanged: {
 										...prev.teamChanged!,
 										members: [
-											...prev.teamChanged!.members,
+											...prev.teamChanged!.empleados,
 											...(Array.isArray(employee)
 												? employee
 												: [employee]),
