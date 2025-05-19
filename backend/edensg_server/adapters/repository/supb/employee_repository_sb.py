@@ -60,21 +60,8 @@ class EmployeeRepositorySB(EmployeeRepository):
 
     def update_employee_data(self, id: int, data: Employee) -> None:
         """Actualiza la información de un empleado."""
-        update_data = {
-            "nombre": data.nombre,
-            "direccion": data.direccion,
-            "telefono": data.telefono,
-            "email": data.email,
-            "fecha_contratacion": str(data.fecha_contratacion),
-            "fecha_salida": str(data.fecha_salida) if data.fecha_salida else None,
-            "fecha_recontratacion": str(data.fecha_recontratacion) if data.fecha_recontratacion else None,
-            "clave": data.clave,
-            "rol": data.rol,
-            "puesto": data.puesto,
-            "salario": data.salario,
-            "fk_equipo": data.equipo
-        }
-        self.client.table(self.table).update(update_data).eq('id_empleado', id).execute()
+        data_dict = data.model_dump(exclude={'id_empleado'})
+        self.client.table(self.table).update(data_dict).eq('id_empleado', id).execute()
 
     def delete_employee_data(self, id: int) -> bool:
         """Elimina un empleado de la base de datos."""
