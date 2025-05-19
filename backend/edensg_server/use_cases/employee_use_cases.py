@@ -156,10 +156,26 @@ class EmployeeUseCases:
         return attendance_id
 
     async def update_employee_image(self, employee_id: int, image_url: str) -> str:
-        """Actualiza la imagen de perfil de un empleado."""
+        """Actualiza la imagen de perfil de un empleado desde una URL."""
         try:
             # Subir la imagen a Supabase Storage
             public_url = await self.image_repository.update_employee_image(employee_id, image_url)
+            
+            # Actualizar la URL de la imagen en la base de datos
+            employee = self.find_employee_by_id(employee_id)
+            if employee:
+                employee.img_url = public_url
+                self.update_employee(employee_id, employee)
+            
+            return public_url
+        except Exception as e:
+            raise Exception(f"Error al actualizar la imagen del empleado: {str(e)}")
+
+    async def update_employee_image_base64(self, employee_id: int, base64_image: str) -> str:
+        """Actualiza la imagen de perfil de un empleado desde una imagen en base64."""
+        try:
+            # Subir la imagen a Supabase Storage
+            public_url = await self.image_repository.upload_base64_image(base64_image, employee_id)
             
             # Actualizar la URL de la imagen en la base de datos
             employee = self.find_employee_by_id(employee_id)
