@@ -17,34 +17,33 @@ import { redirect } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
-import { Project } from '../../types'
+import { ProjectSendToAPI, ProjectToCreate } from '../../types'
 import { fetcher } from '@/src/shared/api/httpClient'
 import {
 	customDateToDateString,
 	parseDateStringToCustomDate,
 } from '@/src/shared/hooks/useDatesCustoms'
 import { getTeams } from '@/src/features/Teams/api/getTeams'
+import { ClientToCreate } from '../../types/client'
+import { ProjectCalendarToCreate } from '../../types/calendario'
+import { isClientComplete } from '../../model/client.utils'
 
 export default function FormNewProject() {
 	const [teams, setTeams] = useState<ShortTeam[]>([])
-	const [newProject, setNewProject] = useState<Project>({
+	const [newProject, setNewProject] = useState<
+		ProjectSendToAPI<
+			Partial<ClientToCreate>,
+			Partial<ProjectCalendarToCreate>
+		>
+	>({
 		id_proyecto: 0,
-		nombre: '',
-		descripcion: '',
-		estado: '',
+		cliente: {},
+		calendario: {},
 		equipo: {} as ShortTeam,
-		calendario: {
-			fecha_inicio: undefined,
-			fecha_fin: undefined,
-		},
-		img: '',
+		nombre: '',
+		estado: '',
 		costo: 0,
-		cliente: {
-			nombre: '',
-			direccion: '',
-			telefono: '',
-			email: '',
-		},
+		img: '',
 	})
 
 	useEffect(() => {
@@ -123,10 +122,46 @@ export default function FormNewProject() {
 		}
 	}
 
-	const handleSubmit = () => {
-		fetcher.post('/project', {
-			...newProject,
-		})
+	const handleSubmit = async () => {
+		const client = newProject?.cliente as ClientToCreate
+		const calendario = newProject?.calendario
+
+		try {
+			// Crear el cliente
+			if (!isClientComplete(newProject.cliente!)) return
+			const clientResponse = await fetcher.post('/client/create', {
+				...client,
+			})
+			const clientId = clientResponse?.client_id
+
+			// Crear el proyecto
+			const project: ProjectToCreate = {
+				nombre: newProject.nombre,
+				descripcion: newProject.descripcion,
+				estado: newProject.estado,
+				costo: newProject.costo,
+				cliente: clientId,
+				equipo: Number(newProject.equipo.id_equipo),
+			}
+			const projectResponse = await fetcher.post('/project/', {
+				...project,
+			})
+			const projectId = projectResponse?.project_id
+
+			//crear calendario
+			fetcher.post(`/project/${projectId}/calendar/create`, {
+				...calendario,
+			})
+
+			// Crear la imagen
+			fetcher.post(`/project/image/${projectId}`, {
+				image: newProject.img,
+			})
+		} catch (error) {
+			console.error('Error creating project:', error)
+			return
+		}
+
 		redirect(`/dashboard/proyectos/${newProject.id_proyecto}`)
 	}
 
@@ -194,16 +229,7 @@ export default function FormNewProject() {
 							/>
 
 							<Input
-								label='ID del Proyecto'
-								name='id_proyecto'
-								value={String(newProject.id_proyecto)}
-								onChange={handleChange}
-								isRequired
-								classNames={classNames.input}
-							/>
-
-							<Input
-								label='Presupuesto'
+								label='Costo'
 								name='costo'
 								value={String(newProject.costo)}
 								onChange={handleChange}

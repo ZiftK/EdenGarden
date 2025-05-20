@@ -1,5 +1,5 @@
 from supabase import Client
-from backend.edensg_server.adapters.api_rest.routers.employee_paths import update_employee_image
+from backend.edensg_server.adapters.repository.supb.image_repository_sb import update_employee_image
 from backend.edensg_server.adapters.repository.supb.client import supabase_client
 from backend.edensg_server.domain.entities.employee import Employee, Attendance
 from backend.edensg_server.adapters.repository.interface.employee_repository_interface import EmployeeRepository

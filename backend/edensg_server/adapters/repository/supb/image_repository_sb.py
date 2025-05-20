@@ -85,3 +85,20 @@ class ImageRepositorySupabase:
 
         except Exception as e:
             raise Exception(f"Error al subir la imagen: {str(e)}") 
+        
+    async def update_project_image(self, project_id: int, image_url: str) -> str:
+        try:
+            # Primero, intentamos eliminar la imagen anterior si existe
+            try:
+                # Buscar la imagen anterior en el bucket
+                files = self.client.storage.from_(self.bucket_name).list()
+                for file in files:
+                    if file['name'].startswith(f"project_{project_id}_"):
+                        await self.delete_image(file['name'])
+            except Exception:
+                pass  
+
+            # Subir la nueva imagen
+            return await self.upload_image_from_url(image_url, project_id)
+        except Exception as e:
+            raise Exception(f"Error al actualizar la imagen del proyecto: {str(e)}")

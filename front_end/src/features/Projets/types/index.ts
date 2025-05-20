@@ -2,7 +2,7 @@
 import { Client, ClientToCreate } from "./client"
 import { Team } from "../../Teams/types/teamFromAPI"
 import { ShortTeam } from "@/src/shared/types"
-import { Date } from "./calendario"
+import { Date, ProjectCalendarToCreate } from "./calendario"
 
 
 export interface ProjectToCreate {
@@ -50,3 +50,15 @@ type SprintSchedule = {
     initial_date: Date;
     final_date: Date;
 }
+
+export type ProjectSendToAPI<
+    TCliente = ClientToCreate,
+    TCalendario = ProjectCalendarToCreate,
+    TEquipo = ShortTeam
+> = Omit<ProjectToCreate, 'cliente' | 'equipo'> & {
+    id_proyecto: number;
+    cliente: TCliente;
+    calendario: TCalendario;
+    equipo: TEquipo;
+    img: string;
+};
