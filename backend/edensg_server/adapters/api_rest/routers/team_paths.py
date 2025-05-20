@@ -3,7 +3,7 @@ from backend.edensg_server.domain.entities.team import Team, TeamToCreate
 from backend.edensg_server.use_cases.team_use_cases import TeamController
 from typing import List
 
-router = APIRouter(prefix='/team')
+router = APIRouter(prefix='/team' , tags=['Team'])
 
 team_controller = TeamController()
 

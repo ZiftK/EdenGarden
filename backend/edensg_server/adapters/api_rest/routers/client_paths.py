@@ -3,7 +3,7 @@ from backend.edensg_server.domain.entities.client import Client, ClientToCreate
 from backend.edensg_server.use_cases.client_use_cases import ClientController
 from typing import List
 
-router = APIRouter(prefix='/client')
+router = APIRouter(prefix='/client', tags=['Client'])
 
 client_controller = ClientController()
 

@@ -9,7 +9,7 @@ from backend.edensg_server.use_cases.project_use_cases import ProjectController
 
 project_controller = ProjectController()
 
-router = APIRouter(prefix='/project')
+router = APIRouter(prefix='/project', tags=['Project'])
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
 async def create_project(project: ProjectToCreate):
