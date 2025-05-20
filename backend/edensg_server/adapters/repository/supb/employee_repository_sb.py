@@ -1,4 +1,5 @@
 from supabase import Client
+from backend.edensg_server.adapters.api_rest.routers.employee_paths import update_employee_image
 from backend.edensg_server.adapters.repository.supb.client import supabase_client
 from backend.edensg_server.domain.entities.employee import Employee, Attendance
 from backend.edensg_server.adapters.repository.interface.employee_repository_interface import EmployeeRepository
@@ -13,6 +14,7 @@ class EmployeeRepositorySB(EmployeeRepository):
 
     def create_employee(self, data: Employee) -> int:
         """Inserta un nuevo empleado en la base de datos."""
+        url = update_employee_image(data.img_url)
         data_dict = {
             "nombre": data.nombre,
             "direccion": data.direccion,
@@ -23,7 +25,8 @@ class EmployeeRepositorySB(EmployeeRepository):
             "rol": data.rol,
             "puesto": data.puesto,
             "salario": data.salario,
-            "fk_equipo": data.equipo
+            "fk_equipo": data.equipo,
+            'img' : url,
         }
         response = self.client.table(self.table).insert(data_dict).execute()
         return response.data[0]['id_empleado']

@@ -1,13 +1,13 @@
 from backend.edensg_server.adapters.repository.supb.employee_repository_sb import employee_sb_repository as employee_repository
 from backend.edensg_server.domain.entities.employee import Employee
-from backend.edensg_server.adapters.repository.interface.employee_repository_interface import EmployeeRepository
+from backend.edensg_server.adapters.repository.supb.employee_repository_sb import EmployeeRepositorySB
 from backend.edensg_server.adapters.repository.supb.image_repository_sb import ImageRepositorySupabase
 from datetime import datetime, timedelta
 from typing import List, Optional, Dict, Any
 
-class EmployeeUseCases:
-    def __init__(self, employee_repository: EmployeeRepository):
-        self.employee_repository = employee_repository
+class EmployeeController:
+    def __init__(self):
+        self.employee_repository = EmployeeRepositorySB()
         self.image_repository = ImageRepositorySupabase()
 
     def create_employee(self, employee: Employee) -> int:

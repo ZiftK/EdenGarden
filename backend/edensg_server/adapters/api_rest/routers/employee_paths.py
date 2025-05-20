@@ -1,14 +1,14 @@
 from fastapi import APIRouter, HTTPException
 from backend.edensg_server.domain.entities.employee import Employee
 from backend.edensg_server.adapters.repository.supb.employee_repository_sb import EmployeeRepositorySB
-from backend.edensg_server.use_cases.employee_use_cases import EmployeeUseCases
+from backend.edensg_server.use_cases.employee_use_cases import EmployeeController
 from pydantic import BaseModel
 from typing import Optional
 
 router = APIRouter(prefix='/employee', tags=["employee"])
 
 employee_repository = EmployeeRepositorySB()
-employee_use_cases = EmployeeUseCases(employee_repository)
+employee_controller = EmployeeController()
 
 class ImageUpdateRequest(BaseModel):
     image_url: Optional[str] = None
@@ -66,9 +66,9 @@ async def update_employee(employee_id: int, employee: Employee):
 async def update_employee_image(employee_id: int, request: ImageUpdateRequest):
     try:
         if request.image_url:
-            public_url = await employee_use_cases.update_employee_image(employee_id, request.image_url)
+            public_url = await employee_controller.update_employee_image(employee_id, request.image_url)
         elif request.base64_image:
-            public_url = await employee_use_cases.update_employee_image_base64(employee_id, request.base64_image)
+            public_url = await employee_controller.update_employee_image_base64(employee_id, request.base64_image)
         else:
             raise HTTPException(status_code=400, detail="Se requiere image_url o base64_image")
             
@@ -79,7 +79,7 @@ async def update_employee_image(employee_id: int, request: ImageUpdateRequest):
 @router.delete("/{employee_id}/image")
 async def delete_employee_image(employee_id: int):
     try:
-        success = await employee_use_cases.delete_employee_image(employee_id)
+        success = await employee_controller.delete_employee_image(employee_id)
         return {"success": success}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
