@@ -1,3 +1,4 @@
+from typing import Optional
 from fastapi import APIRouter, HTTPException, status
 from backend.edensg_server.domain.entities.project import Project, ProjectToCreate
 from backend.edensg_server.domain.entities.project_calendar import (
@@ -6,6 +7,10 @@ from backend.edensg_server.domain.entities.project_calendar import (
     Sprint
 )
 from backend.edensg_server.use_cases.project_use_cases import ProjectController
+
+class ImageUpdateRequest(BaseModel):
+    image_url: Optional[str] = None
+    base64_image: Optional[str] = None
 
 project_controller = ProjectController()
 
@@ -23,9 +28,24 @@ async def create_project(project: ProjectToCreate):
         )
         
 @router.post("/image/{project_id}", status_code=status.HTTP_200_OK)
-async def update_project_image(project_id: int, image: str):
+async def update_project_image(project_id: int, request: ImageUpdateRequest):
     try:
-        result = project_controller.update_project_image(project_id, image)
+        if request.image_url:
+            public_url = await project_controller.update_project_image(project_id, request.image_url)
+        elif request.base64_image:
+            public_url = await project_controller.update_project_image(project_id, request.base64_image)
+        else:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="No image provided"
+            )
+            return {"success": True, "url": public_url}
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+        
         return result
     except Exception as e:
         raise HTTPException(
