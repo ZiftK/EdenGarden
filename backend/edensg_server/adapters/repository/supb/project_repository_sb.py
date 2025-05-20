@@ -43,13 +43,24 @@ class ProjectRepositorySB():
             'costo': project.costo,
             'fk_cliente': project.cliente,
             'fk_equipo': project.equipo,
-            'img': project.img
         }).execute()
 
         # Obtener el ID del proyecto creado
         project_id = result.data[0]['id_proyecto']
 
         return project_id
+    
+    def update_project_image(self, project_id: int, image_url: str)-> None:
+        '''
+        Updates the image of a project in the database.
+        '''
+        # Verificar que el proyecto existe
+        project = self.client.table('proyecto').select('*').eq('id_proyecto', project_id).execute().data
+        if not project:
+            raise Exception(f"No se encontró el proyecto con ID {project_id}")
+
+        # Actualizar la imagen del proyecto
+        self.client.table('proyecto').update({'img': image_url}).eq('id_proyecto', project_id).execute()
 
 
     def create_project_calendar(self, project_id: int, project_calendar: ProjectCalendarToCreate)-> int:

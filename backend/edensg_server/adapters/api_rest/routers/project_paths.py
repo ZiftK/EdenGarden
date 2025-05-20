@@ -21,6 +21,17 @@ async def create_project(project: ProjectToCreate):
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=str(e)
         )
+        
+@router.post("/image/{project_id}", status_code=status.HTTP_200_OK)
+async def update_project_image(project_id: int, image: str):
+    try:
+        result = project_controller.update_project_image(project_id, image)
+        return result
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
 
 @router.get("/all", status_code=status.HTTP_200_OK)
 async def get_all_projects():

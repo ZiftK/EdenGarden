@@ -30,7 +30,20 @@ class ProjectController():
             'project_id': project_id
         }
 
-    
+    def update_project_image(self, project_id: int, image: str)-> dict:
+        """
+        Actualiza la imagen de un proyecto.
+        """
+        # Verificar que el proyecto existe
+        project = self.project_repository.find_project(project_id)
+        if not project:
+            raise Exception(f"No se encontró el proyecto con ID {project_id}")
+
+        # Actualizar la imagen del proyecto
+        self.project_repository.update_project_image(project_id, image)
+        return {
+            'message': 'Imagen del proyecto actualizada correctamente'
+        }
 
     def create_project_calendar(self, project_id: int, project_calendar: ProjectCalendarToCreate)-> dict:
         """

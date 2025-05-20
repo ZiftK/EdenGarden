@@ -10,6 +10,9 @@ class ProjectRepository(ABC):
     async def get_all_projects(self, id: int) -> list[Project]:
         """Busca proyectos por un campo específico."""
         
+    async def update_project_image(self, id: int, image: str) -> None:
+        """Sube una imagen a un proyecto."""
+        
     async def find_all_projects(self) -> list[Project]:
         """Busca todos los proyectos en la base de datos."""
 
