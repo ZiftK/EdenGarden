@@ -1,23 +1,25 @@
-import { ShortTeam } from "@/src/shared/types"
 import { StaticImageData } from "next/image"
+import { Client } from "./client"
+import { Team } from "../../Teams/types/teamFromAPI"
+import { ProjectCalendarFromAPI } from "./calendario"
 
-export type Project = {
-    nombre: string;
-    descripcion: string;
-    estado: string;
-    costo: number;
-    cliente: {
-        nombre: string;
-        direccion: string;
-        telefono: string;
-        email: string;
-    }
-    equipo: ShortTeam
-    id_proyecto: number;
-    calendario: ProjectCalendar
-    img?: string | StaticImageData;
+export type ProjectToCreate = {
+    id_proyecto?: number;
+    calendario: ProjectCalendarFromAPI
+    equipo?: Team[]
+    cliente: Client;
+    img : string | StaticImageData;
+    // costo?: number;
+    // estado: string;
+    // descripcion: string;
+    // nombre: string;
+    // img?: string | StaticImageData;
+}
+
+export interface Project extends Client, ProjectToCreate {
 
 }
+
 
 export type ProjectCalendar = {
     fecha_inicio?: date;
@@ -25,6 +27,8 @@ export type ProjectCalendar = {
     dias_no_laborables?: Date[];
     current_sprint?: SprintSchedule;
 }
+
+
 
 type SprintSchedule = {
     nombre: string;
@@ -38,10 +42,3 @@ export type date =
         mes: number;
         anno: number;
     }
-
-
-type time = {
-    hora: number;
-    minuto: number;
-    segundo: number;
-}

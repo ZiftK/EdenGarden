@@ -19,7 +19,11 @@ import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import { Project } from '../../types'
 import { fetcher } from '@/src/shared/api/httpClient'
-import { customDateToDateString } from '@/src/shared/hooks/useDatesCustoms'
+import {
+	customDateToDateString,
+	parseDateStringToCustomDate,
+} from '@/src/shared/hooks/useDatesCustoms'
+import { getTeams } from '@/src/features/Teams/api/getTeams'
 
 export default function FormNewProject() {
 	const [teams, setTeams] = useState<ShortTeam[]>([])
@@ -33,7 +37,7 @@ export default function FormNewProject() {
 			fecha_inicio: undefined,
 			fecha_fin: undefined,
 		},
-		img: undefined,
+		img: '',
 		costo: 0,
 		cliente: {
 			nombre: '',
@@ -45,27 +49,44 @@ export default function FormNewProject() {
 
 	useEffect(() => {
 		const fetchTeams = async () => {
-			// Ejemplo de datos, reemplazar con tu lógica real
-			const mockTeams: ShortTeam[] = [
-				{ id_equipo: 'team1', nombre: 'Equipo Alpha', empleados: 5 },
-				{ id_equipo: 'team2', nombre: 'Equipo Beta', empleados: 4 },
-				{ id_equipo: 'team3', nombre: 'Equipo Gamma', empleados: 6 },
-			]
-			setTeams(mockTeams)
+			const teams = await getTeams()
+			setTeams(teams)
 		}
 
 		fetchTeams()
 	}, [])
 
-	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+	const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = e.target
+		const dateValue = value ? parseDateStringToCustomDate(value) : null
 
 		if (name.includes('.')) {
 			const [parent, child] = name.split('.')
 			setNewProject((prev) => ({
 				...prev,
 				[parent]: {
-					...prev,
+					...prev[parent],
+					[child]: dateValue,
+				},
+			}))
+		} else {
+			setNewProject((prev) => ({
+				...prev,
+				[name]: dateValue,
+			}))
+		}
+	}
+
+	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const { name, value } = e.target
+		console.log(name, value)
+
+		if (name.includes('.')) {
+			const [parent, child] = name.split('.')
+			setNewProject((prev) => ({
+				...prev,
+				[parent]: {
+					...prev[parent],
 					[child]: value,
 				},
 			}))
@@ -165,7 +186,7 @@ export default function FormNewProject() {
 
 							<Input
 								label='Nombre del Proyecto'
-								name='name'
+								name='nombre'
 								value={newProject.nombre!}
 								onChange={handleChange}
 								isRequired
@@ -174,7 +195,7 @@ export default function FormNewProject() {
 
 							<Input
 								label='ID del Proyecto'
-								name='id'
+								name='id_proyecto'
 								value={String(newProject.id_proyecto)}
 								onChange={handleChange}
 								isRequired
@@ -183,7 +204,7 @@ export default function FormNewProject() {
 
 							<Input
 								label='Presupuesto'
-								name='price'
+								name='costo'
 								value={String(newProject.costo)}
 								onChange={handleChange}
 								placeholder='$0.00'
@@ -222,7 +243,7 @@ export default function FormNewProject() {
 
 							<Input
 								label='Nombre del Cliente'
-								name='nombre_cliente'
+								name='cliente.nombre'
 								value={newProject.cliente.nombre}
 								onChange={handleChange}
 								isRequired
@@ -231,7 +252,7 @@ export default function FormNewProject() {
 
 							<Input
 								label='Correo Electrónico'
-								name='clientData.email'
+								name='cliente.email'
 								type='email'
 								value={newProject.cliente.email}
 								onChange={handleChange}
@@ -241,7 +262,7 @@ export default function FormNewProject() {
 
 							<Input
 								label='Teléfono'
-								name='clientData.phone'
+								name='cliente.telefono'
 								value={newProject.cliente.telefono}
 								onChange={handleChange}
 								isRequired
@@ -250,7 +271,7 @@ export default function FormNewProject() {
 
 							<Textarea
 								label='Dirección del Proyecto'
-								name='clientData.addressProject'
+								name='cliente.direccion'
 								value={newProject.cliente.direccion}
 								onChange={handleChange}
 								minRows={2}
@@ -268,23 +289,34 @@ export default function FormNewProject() {
 						</h3>
 						<div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
 							<Input
+								name='calendario.fecha_inicio'
 								type='date'
 								label='Fecha de Inicio'
-								value={customDateToDateString(
-									newProject.calendario.fecha_inicio!
-								)}
-								onChange={(e) => handleChange(e)}
+								value={
+									newProject.calendario.fecha_inicio
+										? customDateToDateString(
+												newProject.calendario
+													.fecha_inicio
+											)
+										: ''
+								}
+								onChange={(e) => handleDateChange(e)}
 								isRequired
 								classNames={classNames.input}
 							/>
 
 							<Input
-								type='date'
+								name='calendario.fecha_fin'
 								label='Fecha de Finalización'
-								value={customDateToDateString(
-									newProject.calendario.fecha_fin!
-								)}
-								onChange={(e) => handleChange(e)}
+								type='date'
+								value={
+									newProject.calendario.fecha_fin
+										? customDateToDateString(
+												newProject.calendario.fecha_fin
+											)
+										: ''
+								}
+								onChange={(e) => handleDateChange(e)}
 								isRequired
 								classNames={classNames.input}
 							/>
@@ -312,6 +344,7 @@ export default function FormNewProject() {
 								onChange={handleImageChange}
 								label='Seleccionar imagen'
 								classNames={classNames.input}
+								name='img'
 							/>
 						</div>
 					</div>
