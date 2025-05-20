@@ -244,7 +244,7 @@ export default function FormNewProject() {
 							<Input
 								label='Nombre del Cliente'
 								name='cliente.nombre'
-								value={newProject.cliente.nombre}
+								value={newProject.cliente!.nombre}
 								onChange={handleChange}
 								isRequired
 								classNames={classNames.input}
@@ -254,7 +254,7 @@ export default function FormNewProject() {
 								label='Correo Electrónico'
 								name='cliente.email'
 								type='email'
-								value={newProject.cliente.email}
+								value={newProject.cliente!.email}
 								onChange={handleChange}
 								isRequired
 								classNames={classNames.input}
@@ -263,7 +263,7 @@ export default function FormNewProject() {
 							<Input
 								label='Teléfono'
 								name='cliente.telefono'
-								value={newProject.cliente.telefono}
+								value={newProject.cliente!.telefono}
 								onChange={handleChange}
 								isRequired
 								classNames={classNames.input}
@@ -272,7 +272,7 @@ export default function FormNewProject() {
 							<Textarea
 								label='Dirección del Proyecto'
 								name='cliente.direccion'
-								value={newProject.cliente.direccion}
+								value={newProject.cliente!.direccion}
 								onChange={handleChange}
 								minRows={2}
 								maxRows={3}
