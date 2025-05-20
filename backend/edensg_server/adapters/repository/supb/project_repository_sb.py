@@ -42,14 +42,15 @@ class ProjectRepositorySB():
             'estado': project.estado,
             'costo': project.costo,
             'fk_cliente': project.cliente,
-            'fk_equipo': project.equipo
+            'fk_equipo': project.equipo,
+            'img': project.img
         }).execute()
 
         # Obtener el ID del proyecto creado
         project_id = result.data[0]['id_proyecto']
 
         return project_id
-   
+
 
     def create_project_calendar(self, project_id: int, project_calendar: ProjectCalendarToCreate)-> int:
         '''

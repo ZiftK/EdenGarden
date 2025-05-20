@@ -12,6 +12,7 @@ class ProjectToCreate(BaseModel):
     costo: float
     cliente: int
     equipo: int
+    img: Optional[str] = None
 
 class Project(ProjectToCreate):
     id_proyecto: Optional[int] = None
