@@ -9,7 +9,6 @@ const nextConfig: NextConfig = {
     NEXTAUTH_JWT_SECRET: 'jwt_secret'
   },
   images:{
-    domains: ['mthehujknsafqhtuuuek.supabase.co'],
     remotePatterns:[
       {
         protocol: 'https',
