@@ -3,10 +3,10 @@ from backend.edensg_server.domain.entities.employee import Employee
 from backend.edensg_server.adapters.repository.interface.employee_repository_interface import EmployeeRepository
 from backend.edensg_server.adapters.repository.supb.image_repository_sb import ImageRepositorySupabase
 from datetime import datetime, timedelta
-from typing import List, Optional
+from typing import List, Optional, Dict, Any
 
-class EmployeeController:
-    def __init__(self):
+class EmployeeUseCases:
+    def __init__(self, employee_repository: EmployeeRepository):
         self.employee_repository = employee_repository
         self.image_repository = ImageRepositorySupabase()
 

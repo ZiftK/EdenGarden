@@ -7,6 +7,17 @@ const nextConfig: NextConfig = {
     NEXTAUTH_URL: 'http://localhost:3000',
     NEXTAUTH_SECRET: 'secret',
     NEXTAUTH_JWT_SECRET: 'jwt_secret'
+  },
+  images:{
+    domains: ['mthehujknsafqhtuuuek.supabase.co'],
+    remotePatterns:[
+      {
+        protocol: 'https',
+        hostname: 'mthehujknsafqhtuuuek.supabase.co',
+        port: '',
+        pathname: '/storage/v1/object/sign/images/**',
+      }
+    ]
   }
 };
 

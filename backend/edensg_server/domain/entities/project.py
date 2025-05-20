@@ -18,3 +18,4 @@ class Project(ProjectToCreate):
     calendario: ProjectCalendar
     equipo: Optional[Team] = None
     cliente: Client
+    img: str

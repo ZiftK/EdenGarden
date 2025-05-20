@@ -238,7 +238,8 @@ class ProjectRepositorySB():
             costo=project[0]['costo'],
             cliente=client,
             equipo=team,
-            calendario=calendar
+            calendario=calendar,
+            img=project[0]['img'] if 'img' in project[0] else None
         )
         
         return formatted_project
@@ -303,9 +304,11 @@ class ProjectRepositorySB():
                 costo=project['costo'],
                 cliente=client,
                 equipo=team,
-                calendario=calendar
+                calendario=calendar,
+                img=project['img'] if 'img' in project else None
             )
             
+            print(formatted_project)
             formatted_projects.append(formatted_project)
 
         return formatted_projects

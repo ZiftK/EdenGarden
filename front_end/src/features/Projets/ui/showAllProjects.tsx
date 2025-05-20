@@ -40,12 +40,13 @@ export default function ShowAllProjects() {
 				<Card
 					key={project.nombre}
 					className='z-0 flex flex-col justify-between bg-center bg-cover bg-no-repeat text-[var(--father-font)] xl:h-56'
-					// style={{
-					// 	background: `linear-gradient(to left, var(--bg-card-obscure-300), var(--bg-card-obscure-200) 20%, var(--bg-card-obscure) 40%), url(${project.img!.src}) right center no-repeat`,
-					// 	backgroundSize: 'auto, 40% 100%',
-					// 	backgroundPosition: 'left top, right center',
-					// 	backgroundRepeat: 'no-repeat, no-repeat',
-					// }}
+					style={{
+						background: `linear-gradient(to left, var(--bg-card-obscure-300), var(--bg-card-obscure-200) 20%, var(--bg-card-obscure) 40%), url(${project.img!}) right center no-repeat`,
+						backgroundSize: 'auto, 40% 100%',
+						backgroundPosition: 'left top, right center',
+						backgroundRepeat: 'no-repeat, no-repeat',
+						imageRendering: 'auto',
+					}}
 				>
 					<CardHeader className='flex justify-between items-center'>
 						<div className='flex flex-col'>

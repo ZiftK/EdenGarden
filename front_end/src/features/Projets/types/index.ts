@@ -15,7 +15,7 @@ export type Project = {
     equipo: ShortTeam
     id_proyecto: number;
     calendario: ProjectCalendar
-    img?: StaticImageData;
+    img?: string | StaticImageData;
 
 }
 

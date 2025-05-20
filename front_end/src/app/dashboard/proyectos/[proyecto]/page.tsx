@@ -126,13 +126,14 @@ export default async function Page({
 					<CardHeader className='relative aspect-[16/9] w-full rounded-lg overflow-hidden'>
 						{project.img && (
 							<Image
-								src={project.img!.src}
+								src={project.img!}
 								alt={project.nombre}
 								fill
 								sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
 								style={{
 									objectFit: 'cover',
 								}}
+								s
 								priority
 							/>
 						)}

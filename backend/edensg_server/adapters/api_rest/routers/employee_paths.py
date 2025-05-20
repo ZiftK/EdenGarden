@@ -5,7 +5,7 @@ from backend.edensg_server.use_cases.employee_use_cases import EmployeeUseCases
 from pydantic import BaseModel
 from typing import Optional
 
-router = APIRouter('employee')
+router = APIRouter(prefix='/employee', tags=["employee"])
 
 employee_repository = EmployeeRepositorySB()
 employee_use_cases = EmployeeUseCases(employee_repository)
