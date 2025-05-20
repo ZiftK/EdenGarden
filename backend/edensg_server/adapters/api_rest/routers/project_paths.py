@@ -7,14 +7,14 @@ from backend.edensg_server.domain.entities.project_calendar import (
     Sprint
 )
 from backend.edensg_server.use_cases.project_use_cases import ProjectController
+from pydantic import BaseModel
+
+router = APIRouter(prefix='/project', tags=["project"])
+project_controller = ProjectController()
 
 class ImageUpdateRequest(BaseModel):
     image_url: Optional[str] = None
     base64_image: Optional[str] = None
-
-project_controller = ProjectController()
-
-router = APIRouter(prefix='/project', tags=['Project'])
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
 async def create_project(project: ProjectToCreate):
@@ -27,29 +27,33 @@ async def create_project(project: ProjectToCreate):
             detail=str(e)
         )
         
-@router.post("/image/{project_id}", status_code=status.HTTP_200_OK)
+@router.post("/{project_id}/image", status_code=status.HTTP_200_OK)
 async def update_project_image(project_id: int, request: ImageUpdateRequest):
     try:
         if request.image_url:
             public_url = await project_controller.update_project_image(project_id, request.image_url)
         elif request.base64_image:
-            public_url = await project_controller.update_project_image(project_id, request.base64_image)
+            public_url = await project_controller.update_project_image_base64(project_id, request.base64_image)
         else:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail="No image provided"
+                detail="Se requiere image_url o base64_image"
             )
-            return {"success": True, "url": public_url}
+        return {"success": True, "image_url": public_url}
     except Exception as e:
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=str(e)
         )
-        
-        return result
+
+@router.delete("/{project_id}/image", status_code=status.HTTP_200_OK)
+async def delete_project_image(project_id: int):
+    try:
+        success = await project_controller.delete_project_image(project_id)
+        return {"success": success}
     except Exception as e:
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=str(e)
         )
 

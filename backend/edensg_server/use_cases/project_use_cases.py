@@ -6,13 +6,14 @@ from backend.edensg_server.domain.entities.project_calendar import (
     Sprint
 )
 from backend.edensg_server.adapters.repository.supb.project_repository_sb import ProjectRepositorySB
-from datetime import date
 from backend.edensg_server.adapters.repository.supb.client_repository_sb import client_sb_repository
 from backend.edensg_server.adapters.repository.supb.team_repository_sb import team_sb_repository
+from backend.edensg_server.adapters.repository.supb.image_repository_sb import ImageRepositorySupabase
 
 class ProjectController():
     def __init__(self):
         self.project_repository = ProjectRepositorySB()
+        self.image_repository = ImageRepositorySupabase()
         
     def get_all_projects(self)-> list[Project]:
         self.project_repository.get_all_projects()
@@ -30,20 +31,47 @@ class ProjectController():
             'project_id': project_id
         }
 
-    def update_project_image(self, project_id: int, image: str)-> dict:
-        """
-        Actualiza la imagen de un proyecto.
-        """
-        # Verificar que el proyecto existe
-        project = self.project_repository.find_project(project_id)
-        if not project:
-            raise Exception(f"No se encontró el proyecto con ID {project_id}")
+    async def update_project_image(self, project_id: int, image_url: str) -> str:
+        """Actualiza la imagen de un proyecto desde una URL."""
+        try:
+            # Subir la imagen a Supabase Storage
+            public_url = await self.image_repository.update_entity_image(project_id, image_url, is_project=True)
+            
+            # Actualizar la URL de la imagen en la base de datos
+            self.project_repository.update_project_image(project_id, public_url)
+            
+            return public_url
+        except Exception as e:
+            raise Exception(f"Error al actualizar la imagen del proyecto: {str(e)}")
 
-        # Actualizar la imagen del proyecto
-        self.project_repository.update_project_image(project_id, image)
-        return {
-            'message': 'Imagen del proyecto actualizada correctamente'
-        }
+    async def update_project_image_base64(self, project_id: int, base64_image: str) -> str:
+        """Actualiza la imagen de un proyecto desde una imagen en base64."""
+        try:
+            # Subir la imagen a Supabase Storage
+            public_url = await self.image_repository.upload_base64_image(base64_image, project_id, is_project=True)
+            
+            # Actualizar la URL de la imagen en la base de datos
+            self.project_repository.update_project_image(project_id, public_url)
+            
+            return public_url
+        except Exception as e:
+            raise Exception(f"Error al actualizar la imagen del proyecto: {str(e)}")
+
+    async def delete_project_image(self, project_id: int) -> bool:
+        """Elimina la imagen de un proyecto."""
+        try:
+            # Buscar la imagen en el bucket
+            files = self.image_repository.client.storage.from_(self.image_repository.project_bucket).list()
+            for file in files:
+                if file['name'].startswith(f"project_{project_id}_"):
+                    await self.image_repository.delete_image(file['name'], is_project=True)
+            
+            # Actualizar el proyecto para eliminar la URL de la imagen
+            self.project_repository.update_project_image(project_id, None)
+            
+            return True
+        except Exception as e:
+            raise Exception(f"Error al eliminar la imagen del proyecto: {str(e)}")
 
     def create_project_calendar(self, project_id: int, project_calendar: ProjectCalendarToCreate)-> dict:
         """

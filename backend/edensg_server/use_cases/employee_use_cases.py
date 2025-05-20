@@ -143,7 +143,7 @@ class EmployeeController:
         """Actualiza la imagen de perfil de un empleado desde una URL."""
         try:
             # Subir la imagen a Supabase Storage
-            public_url = await self.image_repository.update_employee_image(employee_id, image_url)
+            public_url = await self.image_repository.update_entity_image(employee_id, image_url, is_project=False)
             
             # Actualizar la URL de la imagen en la base de datos
             employee = self.find_employee_by_id(employee_id)
@@ -159,7 +159,7 @@ class EmployeeController:
         """Actualiza la imagen de perfil de un empleado desde una imagen en base64."""
         try:
             # Subir la imagen a Supabase Storage
-            public_url = await self.image_repository.upload_base64_image(base64_image, employee_id)
+            public_url = await self.image_repository.upload_base64_image(base64_image, employee_id, is_project=False)
             
             # Actualizar la URL de la imagen en la base de datos
             employee = self.find_employee_by_id(employee_id)
@@ -175,10 +175,10 @@ class EmployeeController:
         """Elimina la imagen de perfil de un empleado."""
         try:
             # Buscar la imagen en el bucket
-            files = self.image_repository.client.storage.from_(self.image_repository.bucket_name).list()
+            files = self.image_repository.client.storage.from_(self.image_repository.employee_bucket).list()
             for file in files:
                 if file['name'].startswith(f"employee_{employee_id}_"):
-                    await self.image_repository.delete_image(file['name'])
+                    await self.image_repository.delete_image(file['name'], is_project=False)
             
             # Actualizar el empleado para eliminar la URL de la imagen
             employee = self.find_employee_by_id(employee_id)
