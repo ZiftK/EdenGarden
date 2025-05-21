@@ -4,10 +4,11 @@ from .employee import Employee
 
 class TeamToCreate(BaseModel):
     nombre: str
-    lider: int
-    empleados: Optional[list[int]] = None
+    lider_id: int
+    empleados_ids: Optional[list[int]] = None
 
-class Team(TeamToCreate):
+class Team(BaseModel):
     id_equipo: int
+    nombre: str
     lider: Employee
     empleados: Optional[list[Employee]] = None

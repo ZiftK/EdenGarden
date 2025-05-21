@@ -36,3 +36,16 @@ export type ShortTeam = {
     empleados: Pick<Employee, 'email' | 'id_empleado' | 'nombre' | 'telefono' | 'rol' | 'puesto' | 'salario' | 'img'>[];
 }
 
+export type Team = {
+    id_equipo: number;
+    nombre: string;
+    lider: Employee;
+    empleados: Employee[];
+}
+
+export type TeamCreate = {
+    nombre: string;
+    lider_id: number;
+    empleados_ids: number[];
+}
+

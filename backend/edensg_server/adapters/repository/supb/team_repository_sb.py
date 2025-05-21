@@ -12,12 +12,25 @@ class TeamRepositorySB(TeamRepository):
         self.table = 'equipo'
         self.employee_table = 'empleado'
 
-    def create_team(self, team: TeamToCreate) -> int:
+    def create_team(self, data: TeamToCreate) -> int:
         """Inserta un nuevo equipo en la base de datos."""
-        data_dict = team.model_dump(exclude={'empleados'})
-        data_dict['fk_lider'] = data_dict.pop('lider')
-        response = self.client.table(self.table).insert(data_dict).execute()
-        return response.data[0]['id_equipo']
+        team_data = {
+            'name': data.nombre,
+            'leader': data.lider_id
+        }
+        
+        # Create team
+        response = self.client.table(self.table).insert(team_data).execute()
+        team_id = response.data[0]['id_team']
+        
+        # Register employees if any
+        if data.empleados_ids:
+            for emp_id in data.empleados_ids:
+                self.client.table(self.employee_table).update({
+                    'fk_equipo': team_id
+                }).eq('id_empleado', emp_id).execute()
+        
+        return team_id
     
     def register_team_employees(self, id: int, employee_ids: list[int]) -> None:
         """Registra los empleados de un equipo en la base de datos."""
@@ -33,15 +46,21 @@ class TeamRepositorySB(TeamRepository):
         teams = []
         for team_data in response.data:
             # Get leader data
-            leader = self.employee_repo.find_employee_by_id(team_data['fk_lider'])
+            leader = self.employee_repo.find_employee_by_id(team_data['leader'])
             # Get team employees
-            employees = self.client.table(self.employee_table).select('*').eq('fk_equipo', team_data['id_equipo']).execute().data
+            employees = self.client.table(self.employee_table).select('*').eq('fk_equipo', team_data['id_team']).execute().data
             employees = [format_employee(employee) for employee in employees]
             
-            # Remove fk_lider from data
-            team_data.pop('fk_lider')
+            # Remove leader from data and map field names
+            team_data.pop('leader')
+            mapped_data = {
+                'id_equipo': team_data['id_team'],
+                'nombre': team_data['name'],
+                'lider': leader,
+                'empleados': employees
+            }
             # Create team with complete data
-            teams.append(Team(**{**team_data, 'lider': leader, 'empleados': employees}))
+            teams.append(Team(**mapped_data))
         return teams
     
     def check_employee_is_in_other_teams(self, ids: list[int]) -> list[int]:

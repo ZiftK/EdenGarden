@@ -1,14 +1,19 @@
 from backend.edensg_server.adapters.repository.supb.team_repository_sb import team_sb_repository as team_repository
 from backend.edensg_server.adapters.repository.supb.employee_repository_sb import employee_sb_repository
-from backend.edensg_server.domain.entities.team import Team
+from backend.edensg_server.domain.entities.team import Team, TeamToCreate
+from backend.edensg_server.adapters.repository.supb.team_repository_sb import TeamRepositorySB
 
 class TeamController:
     def __init__(self):
-        self.team_repository = team_repository
+        self.team_repository = TeamRepositorySB()
         self.employee_repo = employee_sb_repository
         
     def get_all_teams(self) -> list[Team]:
-        return self.team_repository.get_all_teams()
+        """Obtiene todos los equipos."""
+        try:
+            return self.team_repository.get_all_teams()
+        except Exception as e:
+            raise Exception(f"Error al obtener los equipos: {str(e)}")
     
     def get_team_by_id(self, id: int) -> Team:
         return self.team_repository.find_team_by_id(id)
@@ -16,57 +21,29 @@ class TeamController:
     def get_team_by_name(self, name: str) -> list[Team]:
         return self.team_repository.find_team_by_name(name)
     
-    def create_team(self, team: Team) -> Team:
-        # Verificar que el líder existe
+    def create_team(self, team: TeamToCreate) -> dict:
+        """Crea un nuevo equipo."""
         try:
-            self.employee_repo.find_employee_by_id(team.lider)
+            # Verificar que el líder exista y sea un líder
+            leader = self.team_repository.employee_repo.find_employee_by_id(team.lider_id)
+            if leader.rol != 'leader':
+                raise Exception("El empleado seleccionado no es un líder")
+
+            # Si hay empleados, verificar que existan y no estén en otros equipos
+            if team.empleados_ids:
+                non_existent = self.team_repository.check_employee_exists(team.empleados_ids)
+                if non_existent:
+                    raise Exception(f"Los siguientes empleados no existen: {', '.join(map(str, non_existent))}")
+                
+                in_other_teams = self.team_repository.check_employee_is_in_other_teams(team.empleados_ids)
+                if in_other_teams:
+                    raise Exception(f"Los siguientes empleados ya están en otros equipos: {', '.join(map(str, in_other_teams))}")
+
+            # Crear el equipo
+            team_id = self.team_repository.create_team(team)
+            return {"message": "Equipo creado correctamente", "team_id": team_id}
         except Exception as e:
-            raise Exception(f"El empleado con ID {team.lider} no existe y no puede ser líder del equipo")
-
-        # Verificar que el líder no es líder de otro equipo
-        teams_where_leader = self.team_repository.find_team_where_employee_is_leader([team.lider])
-        if teams_where_leader:
-            raise Exception(f"El empleado con ID {team.lider} ya es líder de otro equipo")
-
-        # Verificar que el líder no pertenece a otro equipo
-        leader_employee = self.employee_repo.find_employee_by_id(team.lider)
-        if leader_employee.equipo is not None:
-            raise Exception(f"El empleado con ID {team.lider} ya pertenece a otro equipo")
-
-        # Verificar que los empleados existen y no pertenecen a otros equipos
-        if team.empleados:
-            # Verificar que los empleados existen
-            non_existent_employees = self.team_repository.check_employee_exists(team.empleados)
-            if non_existent_employees:
-                raise Exception(f"Los siguientes empleados no existen: {', '.join(map(str, non_existent_employees))}")
-
-            # Verificar que los empleados no son líderes de otros equipos
-            teams_where_employees_are_leaders = self.team_repository.find_team_where_employee_is_leader(team.empleados)
-            if teams_where_employees_are_leaders:
-                leader_ids = [team['fk_lider']['id_empleado'] for team in teams_where_employees_are_leaders]
-                raise Exception(f"Los siguientes empleados son líderes de otros equipos: {', '.join(map(str, leader_ids))}")
-
-            # Verificar que los empleados no pertenecen a otros equipos
-            employees_in_other_teams = []
-            for emp_id in team.empleados:
-                employee = self.employee_repo.find_employee_by_id(emp_id)
-                if employee.equipo is not None:
-                    employees_in_other_teams.append(emp_id)
-            
-            if employees_in_other_teams:
-                raise Exception(f"Los siguientes empleados ya pertenecen a otros equipos: {', '.join(map(str, employees_in_other_teams))}")
-
-        # Crear el equipo
-        team_id = self.team_repository.create_team(team)
-        
-        # Registrar los empleados si se proporcionaron
-        if team.empleados:
-            self.team_repository.register_team_employees(team_id, team.empleados)
-        
-        return {
-            'message': 'Equipo creado correctamente',
-            'team_id': team_id
-        }
+            raise Exception(f"Error al crear el equipo: {str(e)}")
     
     def update_team(self, id: int, team: Team) -> Team:
         response = self.team_repository.update_team_data(id, team)
