@@ -1,8 +1,7 @@
 'use client'
 
 import { Card, CardBody, CardHeader, Divider } from '@heroui/react'
-import { useEffect, useState } from 'react'
-import { Employee } from '@/src/shared/types'
+import { useEffect } from 'react'
 import { useEmployeeStore } from '@/src/features/Employees/model/employeeStore'
 import Image from 'next/image'
 import {
@@ -19,31 +18,24 @@ import Link from 'next/link'
 const colorIcons = 'var(--children-font)'
 
 export default function Page({ params }: { params: { empleado: string } }) {
-	const [employee, setEmployee] = useState<Employee | null>(null)
-	const [loading, setLoading] = useState(true)
-	const [error, setError] = useState<string | null>(null)
-	const { getEmployeeById } = useEmployeeStore()
+	const {
+		currentEmployee,
+		isLoading,
+		error,
+		getEmployeeById,
+		clearCurrentEmployee,
+	} = useEmployeeStore()
 
 	useEffect(() => {
-		const fetchEmployee = async () => {
-			try {
-				setLoading(true)
-				setError(null)
-				const data = await getEmployeeById(params.empleado)
-				setEmployee(data)
-			} catch (error) {
-				console.error('Error al obtener el empleado:', error)
-				setError('Error al cargar el empleado')
-			} finally {
-				setLoading(false)
-			}
+		getEmployeeById(params.empleado)
+		return () => {
+			clearCurrentEmployee()
 		}
-		fetchEmployee()
-	}, [params.empleado, getEmployeeById])
+	}, [params.empleado, getEmployeeById, clearCurrentEmployee])
 
-	if (loading) return <div>Cargando...</div>
+	if (isLoading) return <div>Cargando...</div>
 	if (error) return <div className='text-red-500'>{error}</div>
-	if (!employee) return <div>Empleado no encontrado</div>
+	if (!currentEmployee) return <div>Empleado no encontrado</div>
 
 	return (
 		<section className='mt-4 text-[var(--father-font)] md:row-start-2 md:row-end-4 xl:col-start-2'>
@@ -51,14 +43,14 @@ export default function Page({ params }: { params: { empleado: string } }) {
 				<h1 className='text-2xl font-bold'>Detalles del Empleado</h1>
 				<div className='flex gap-2'>
 					<Link
-						href={`/dashboard/empleados/${employee.id_empleado}/editar`}
+						href={`/dashboard/empleados/${currentEmployee.id_empleado}/editar`}
 						className='bg-[var(--green-dark-500)] text-white px-4 py-2 rounded-lg hover:bg-[var(--green-dark-600)] transition-colors'
 					>
 						Editar
 					</Link>
 					<ModalDeleteEmployee
-						employeeId={employee.id_empleado}
-						employeeName={employee.nombre}
+						employeeId={currentEmployee.id_empleado}
+						employeeName={currentEmployee.nombre}
 					/>
 				</div>
 			</div>
@@ -67,21 +59,24 @@ export default function Page({ params }: { params: { empleado: string } }) {
 				<CardHeader className='flex gap-4'>
 					<div className='relative w-32 h-32 rounded-full overflow-hidden border-4 border-[var(--green-dark-500)]'>
 						<Image
-							src={employee.img || 'https://i.pravatar.cc/150'}
-							alt={employee.nombre}
+							src={
+								currentEmployee.img ||
+								'https://i.pravatar.cc/150'
+							}
+							alt={currentEmployee.nombre}
 							fill
 							className='object-cover'
 						/>
 					</div>
 					<div>
 						<h2 className='text-2xl font-bold'>
-							{employee.nombre}
+							{currentEmployee.nombre}
 						</h2>
 						<p className='text-[var(--children-font)] text-lg'>
-							{employee.puesto}
+							{currentEmployee.puesto}
 						</p>
 						<p className='text-[var(--children-font)] text-sm mt-1'>
-							ID: {employee.id_empleado}
+							ID: {currentEmployee.id_empleado}
 						</p>
 					</div>
 				</CardHeader>
@@ -97,19 +92,19 @@ export default function Page({ params }: { params: { empleado: string } }) {
 							<div className='space-y-4 text-[var(--children-font)]'>
 								<p className='flex items-center gap-3'>
 									<UserIcon h={20} color={colorIcons} />
-									{employee.nombre}
+									{currentEmployee.nombre}
 								</p>
 								<p className='flex items-center gap-3'>
 									<EmailIcon h={20} color={colorIcons} />
-									{employee.email}
+									{currentEmployee.email}
 								</p>
 								<p className='flex items-center gap-3'>
 									<PhoneIcon h={20} color={colorIcons} />
-									{employee.telefono}
+									{currentEmployee.telefono}
 								</p>
 								<p className='flex items-center gap-3'>
 									<InfoHouseIcon h={20} color={colorIcons} />
-									{employee.direccion}
+									{currentEmployee.direccion}
 								</p>
 							</div>
 						</div>
@@ -123,42 +118,45 @@ export default function Page({ params }: { params: { empleado: string } }) {
 									<span className='font-semibold'>
 										Puesto:
 									</span>{' '}
-									{employee.puesto}
+									{currentEmployee.puesto}
 								</p>
 								<p>
 									<span className='font-semibold'>Rol:</span>{' '}
-									{employee.rol}
+									{currentEmployee.rol}
 								</p>
 								<p>
 									<span className='font-semibold'>
 										Salario:
 									</span>{' '}
 									$
-									{employee.salario.toLocaleString('es-MX', {
-										minimumFractionDigits: 2,
-										maximumFractionDigits: 2,
-									})}
+									{currentEmployee.salario.toLocaleString(
+										'es-MX',
+										{
+											minimumFractionDigits: 2,
+											maximumFractionDigits: 2,
+										}
+									)}
 								</p>
 								<p>
 									<span className='font-semibold'>
 										Fecha de Contratación:
 									</span>{' '}
-									{employee.fecha_contratacion}
+									{currentEmployee.fecha_contratacion}
 								</p>
-								{employee.fecha_salida && (
+								{currentEmployee.fecha_salida && (
 									<p>
 										<span className='font-semibold'>
 											Fecha de Salida:
 										</span>{' '}
-										{employee.fecha_salida}
+										{currentEmployee.fecha_salida}
 									</p>
 								)}
-								{employee.fecha_recontratacion && (
+								{currentEmployee.fecha_recontratacion && (
 									<p>
 										<span className='font-semibold'>
 											Fecha de Recontratación:
 										</span>{' '}
-										{employee.fecha_recontratacion}
+										{currentEmployee.fecha_recontratacion}
 									</p>
 								)}
 							</div>

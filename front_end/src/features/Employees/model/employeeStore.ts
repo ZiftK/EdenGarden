@@ -5,87 +5,132 @@ import { create } from "zustand"
 
 interface EmployeeState {
     employees: Employee[];
+    currentEmployee: Employee | null;
     isLoading: boolean;
     error: string | null;
 
+    // Acciones para la lista de empleados
     getEmployees: () => Promise<void>;
     getLeaders: () => Promise<Employee[]>;
-    getEmployeeById: (id: string) => Promise<Employee | null>;
     
+    // Acciones para un empleado específico
+    getEmployeeById: (id: string) => Promise<void>;
     deleteEmployee: (id: string) => Promise<void>;
     updateEmployee: (id: string, data: Employee) => Promise<void>;
     createEmployee: (data: Employee) => Promise<void>;
+    
+    // Acciones para el estado
+    setLoading: (loading: boolean) => void;
+    setError: (error: string | null) => void;
+    clearCurrentEmployee: () => void;
 }
 
-export const useEmployeeStore = create<EmployeeState>((set) => ({
+export const useEmployeeStore = create<EmployeeState>((set, get) => ({
     employees: [],
+    currentEmployee: null,
     isLoading: false,
     error: null,
 
-    getEmployees: async() => {
-        set({ isLoading: true, error: null})
-        try{
-            const dataEmployees: Employee[] = await fetcher.get<Employee[]>(`${endpoints.employees}`)
-            if(!dataEmployees)  throw new Error('No se encontraron empleados')
-            return dataEmployees['data']
+    setLoading: (loading) => set({ isLoading: loading }),
+    setError: (error) => set({ error }),
+    clearCurrentEmployee: () => set({ currentEmployee: null }),
+
+    getEmployees: async () => {
+        try {
+            set({ isLoading: true, error: null })
+            const response = await fetcher.get<{message: string, data: Employee[]}>(`${endpoints.employees}`)
+            if (!response || !response.data) {
+                throw new Error('No se encontraron empleados')
+            }
+            set({ employees: response.data })
         } catch (error) {
             console.error('Error al obtener los empleados:', error)
-            throw new Error('Error al obtener los empleados')
+            set({ error: 'Error al obtener los empleados' })
+        } finally {
+            set({ isLoading: false })
         }
     },
 
-    getLeaders: async() => {
-        set({ isLoading: true, error: null})
+    getLeaders: async () => {
         try {
-            const dataLeaders: Employee[] = await fetcher.get<Employee[]>(`${endpoints.employees}`)
-            if (!dataLeaders) throw new Error('No se encontraron empleados')
-            const leaders = dataLeaders.filter((employee) => employee.rol === 'leader')
+            set({ isLoading: true, error: null })
+            const response = await fetcher.get<{message: string, data: Employee[]}>(`${endpoints.employees}`)
+            if (!response || !response.data) {
+                throw new Error('No se encontraron líderes')
+            }
+            const leaders = response.data.filter(emp => emp.rol === 'leader')
             return leaders
         } catch (error) {
-            console.error('Error al obtener los empleados:', error)
-            throw new Error('Error al obtener los empleados')
+            console.error('Error al obtener los líderes:', error)
+            set({ error: 'Error al obtener los líderes' })
+            return []
+        } finally {
+            set({ isLoading: false })
         }
     },
 
-    deleteEmployee: async(id: string) => {
-        set({ isLoading: true, error: null})
+    getEmployeeById: async (id) => {
         try {
-            await fetcher.delete(`${endpoints.employeeDelete}/${id}`)   
-        } catch (error) {
-            console.error('Error al eliminar el empleado:', error)
-            throw new Error('Error al eliminar el empleado')
-        }
-    },
-
-    createEmployee: async (data: Employee) => {
-        set({ isLoading: true, error: null})
-        try {
-            await fetcher.post(`${endpoints.employeeCreate}`, data)
-        } catch (error) {
-            console.error('Error al crear el empleado:', error)
-            throw new Error('Error al crear el empleado')
-        }
-        
-    },
-
-    getEmployeeById: async (id: string) => {
-        set({ isLoading: true, error: null})
-        try {
-            const dataEmployee: Employee = await fetcher.get<Employee>(`${endpoints.employeeById}/${id}`)
-            if(!dataEmployee)  throw new Error('No se encontraron empleados')
-            return dataEmployee
+            set({ isLoading: true, error: null })
+            const response = await fetcher.get<{message: string, data: Employee}>(`${endpoints.employeeById}/${id}`)
+            if (!response || !response.data) {
+                throw new Error('No se encontró el empleado')
+            }
+            set({ currentEmployee: response.data })
         } catch (error) {
             console.error('Error al obtener el empleado:', error)
-            throw new Error('Error al obtener el empleado')
+            set({ error: 'Error al obtener el empleado' })
+        } finally {
+            set({ isLoading: false })
         }
     },
-    updateEmployee: async (id: string, data: Employee) => {
-        set({ isLoading: true, error: null})
+
+    deleteEmployee: async (id) => {
         try {
+            set({ isLoading: true, error: null })
+            await fetcher.delete(`${endpoints.employeeDelete}/${id}`)
+            // Actualizar la lista de empleados después de eliminar
+            const updatedEmployees = get().employees.filter(emp => emp.id_empleado !== id)
+            set({ employees: updatedEmployees })
+        } catch (error) {
+            console.error('Error al eliminar el empleado:', error)
+            set({ error: 'Error al eliminar el empleado' })
+        } finally {
+            set({ isLoading: false })
+        }
+    },
+
+    updateEmployee: async (id, data) => {
+        try {
+            set({ isLoading: true, error: null })
             await fetcher.put(`${endpoints.employeeUpdate}/${id}`, data)
+            // Actualizar el empleado actual y la lista de empleados
+            set({ currentEmployee: data })
+            const updatedEmployees = get().employees.map(emp => 
+                emp.id_empleado === id ? data : emp
+            )
+            set({ employees: updatedEmployees })
         } catch (error) {
             console.error('Error al actualizar el empleado:', error)
-            throw new Error('Error al actualizar el empleado')
+            set({ error: 'Error al actualizar el empleado' })
+            throw error
+        } finally {
+            set({ isLoading: false })
+        }
+    },
+
+    createEmployee: async (data) => {
+        try {
+            set({ isLoading: true, error: null })
+            await fetcher.post(endpoints.employeeCreate, data)
+            // Actualizar la lista de empleados después de crear uno nuevo
+            await get().getEmployees()
+        } catch (error) {
+            console.error('Error al crear el empleado:', error)
+            set({ error: 'Error al crear el empleado' })
+            throw error
+        } finally {
+            set({ isLoading: false })
         }
     }
 }))

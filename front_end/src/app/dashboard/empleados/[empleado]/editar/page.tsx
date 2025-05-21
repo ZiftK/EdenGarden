@@ -34,61 +34,57 @@ export default function EditEmployeePage({
 }: {
 	params: { empleado: string }
 }) {
-	const [employee, setEmployee] = useState<Employee | null>(null)
-	const [loading, setLoading] = useState(true)
-	const [error, setError] = useState<string | null>(null)
-	const { getEmployeeById, updateEmployee } = useEmployeeStore()
+	const {
+		currentEmployee,
+		isLoading,
+		error,
+		getEmployeeById,
+		updateEmployee,
+		setError,
+		clearCurrentEmployee,
+	} = useEmployeeStore()
+	const [editedEmployee, setEditedEmployee] = useState<Employee | null>(null)
 	const router = useRouter()
 
 	useEffect(() => {
-		const fetchEmployee = async () => {
-			try {
-				setLoading(true)
-				setError(null)
-				const data = await getEmployeeById(params.empleado)
-				setEmployee(data)
-			} catch (error) {
-				console.error('Error al obtener el empleado:', error)
-				setError('Error al cargar el empleado')
-			} finally {
-				setLoading(false)
-			}
+		getEmployeeById(params.empleado)
+		return () => {
+			clearCurrentEmployee()
 		}
-		fetchEmployee()
-	}, [params.empleado, getEmployeeById])
+	}, [params.empleado, getEmployeeById, clearCurrentEmployee])
+
+	useEffect(() => {
+		if (currentEmployee) {
+			setEditedEmployee(currentEmployee)
+		}
+	}, [currentEmployee])
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		if (!editedEmployee) return
 		const { name, value } = e.target
-		setEmployee((prev) => {
-			if (!prev) return null
-			return {
-				...prev,
-				[name]: value,
-			}
+		setEditedEmployee({
+			...editedEmployee,
+			[name]: value,
 		})
 	}
 
 	const handleSelectChange = (name: string, value: unknown) => {
-		setEmployee((prev) => {
-			if (!prev) return null
-			return {
-				...prev,
-				[name]: value,
-			}
+		if (!editedEmployee) return
+		setEditedEmployee({
+			...editedEmployee,
+			[name]: value,
 		})
 	}
 
 	const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		if (!editedEmployee) return
 		const file = e.target.files?.[0]
 		if (file) {
 			const reader = new FileReader()
 			reader.onload = () => {
-				setEmployee((prev) => {
-					if (!prev) return null
-					return {
-						...prev,
-						img: reader.result as string,
-					}
+				setEditedEmployee({
+					...editedEmployee,
+					img: reader.result as string,
 				})
 			}
 			reader.readAsDataURL(file)
@@ -96,20 +92,19 @@ export default function EditEmployeePage({
 	}
 
 	const handleSubmit = async () => {
-		if (!employee) return
+		if (!editedEmployee) return
 		try {
-			await updateEmployee(employee.id_empleado, employee)
-			router.push(`/dashboard/empleados/${employee.id_empleado}`)
+			await updateEmployee(editedEmployee.id_empleado, editedEmployee)
+			router.push(`/dashboard/empleados/${editedEmployee.id_empleado}`)
 			router.refresh()
 		} catch (error) {
-			console.error('Error al actualizar el empleado:', error)
 			setError('Error al actualizar el empleado')
 		}
 	}
 
-	if (loading) return <div>Cargando...</div>
+	if (isLoading) return <div>Cargando...</div>
 	if (error) return <div className='text-red-500'>{error}</div>
-	if (!employee) return <div>Empleado no encontrado</div>
+	if (!editedEmployee) return <div>Empleado no encontrado</div>
 
 	return (
 		<Card className='!relative z-0 max-w-3xl mx-auto bg-[var(--bg-card-obscure)] overflow-hidden'>
@@ -135,7 +130,7 @@ export default function EditEmployeePage({
 							<Input
 								label='Nombre Completo'
 								name='nombre'
-								value={employee.nombre}
+								value={editedEmployee.nombre}
 								onChange={handleChange}
 								isRequired
 								classNames={classNames.input}
@@ -144,7 +139,7 @@ export default function EditEmployeePage({
 								label='Correo Electrónico'
 								name='email'
 								type='email'
-								value={employee.email}
+								value={editedEmployee.email}
 								onChange={handleChange}
 								isRequired
 								classNames={classNames.input}
@@ -152,7 +147,7 @@ export default function EditEmployeePage({
 							<Input
 								label='Teléfono'
 								name='telefono'
-								value={employee.telefono}
+								value={editedEmployee.telefono}
 								onChange={handleChange}
 								isRequired
 								classNames={classNames.input}
@@ -160,7 +155,7 @@ export default function EditEmployeePage({
 							<Input
 								label='Dirección'
 								name='direccion'
-								value={employee.direccion}
+								value={editedEmployee.direccion}
 								onChange={handleChange}
 								isRequired
 								classNames={classNames.input}
@@ -177,7 +172,7 @@ export default function EditEmployeePage({
 							<Input
 								label='Puesto'
 								name='puesto'
-								value={employee.puesto}
+								value={editedEmployee.puesto}
 								onChange={handleChange}
 								isRequired
 								classNames={classNames.input}
@@ -186,7 +181,7 @@ export default function EditEmployeePage({
 								label='Salario'
 								name='salario'
 								type='number'
-								value={String(employee.salario)}
+								value={String(editedEmployee.salario)}
 								onChange={handleChange}
 								placeholder='$0.00'
 								isRequired
@@ -194,7 +189,7 @@ export default function EditEmployeePage({
 							/>
 							<Select
 								label='Rol'
-								selectedKeys={[employee.rol]}
+								selectedKeys={[editedEmployee.rol]}
 								onChange={(e) =>
 									handleSelectChange('rol', e.target.value)
 								}
@@ -223,10 +218,10 @@ export default function EditEmployeePage({
 							Foto del Empleado
 						</h3>
 						<div className='flex items-center gap-4'>
-							{employee.img && (
+							{editedEmployee.img && (
 								<div className='relative w-32 h-32 rounded-full overflow-hidden'>
 									<Image
-										src={employee.img}
+										src={editedEmployee.img}
 										alt='Vista previa'
 										fill
 										className='object-cover'
@@ -258,7 +253,7 @@ export default function EditEmployeePage({
 
 				<Link
 					className='bg-gray-600 text-white text-sm py-1.5 px-3 rounded-lg flex items-center justify-center hover:bg-gray-700 transition-colors'
-					href={`/dashboard/empleados/${employee.id_empleado}`}
+					href={`/dashboard/empleados/${editedEmployee.id_empleado}`}
 				>
 					Cancelar
 				</Link>

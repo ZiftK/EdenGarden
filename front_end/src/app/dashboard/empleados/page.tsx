@@ -21,7 +21,6 @@ export default function Page() {
 			try {
 				const employees = await getEmployees()
 				setEmployees(employees)
-				console.log('Employees:', employees)
 			} catch (error) {
 				console.error('Error fetching employees:', error)
 			}
