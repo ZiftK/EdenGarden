@@ -28,6 +28,7 @@ export default function Page() {
 
 	const columns = [
 		{ uid: 'nombre' as ColumnKey, name: 'Nombre' },
+		{ uid: 'id_empleado' as ColumnKey, name: 'Expediente' },
 		{ uid: 'rol' as ColumnKey, name: 'Rol' },
 		{ uid: 'actions' as ColumnKey, name: 'Acciones' },
 	]
@@ -54,28 +55,35 @@ export default function Page() {
 			className='overflow-x-auto w-full mt-4 text-[var(--father-font)] mx-auto col-start-1 md:row-start-2 md:!col-start-1 md:row-span-3 xl:!col-start-2'
 		>
 			<div className='flex flex-col gap-4'>
-				<Title
-					title='Empleados'
-					btn={{ active: true, path: '/dashboard/empleados/crear' }}
-				/>
+				<div className='flex justify-between items-center'>
+					<div className='flex items-center'>
+						<Title
+							title='Empleados'
+							btn={{
+								active: true,
+								path: '/dashboard/empleados/crear',
+							}}
+						/>
+					</div>
 
-				<Input
-					type='text'
-					placeholder='Buscar por expediente, nombre o rol...'
-					value={searchTerm}
-					onChange={(e) => setSearchTerm(e.target.value)}
-					className='max-w-xs mb-4 ml-auto'
-					classNames={{
-						base: '!bg-transparent !font-normal !text-sm',
-						input: 'text-[var(--father-font)]',
-						inputWrapper: [
-							'bg-transparent',
-							'hover:!bg-white/30',
-							'data-[hover=true]:!bg-white/30',
-							'group-data-[focus=true]:bg-white/30',
-						],
-					}}
-				/>
+					<Input
+						type='text'
+						placeholder='Buscar por expediente, nombre o rol...'
+						value={searchTerm}
+						onChange={(e) => setSearchTerm(e.target.value)}
+						className='max-w-xs'
+						classNames={{
+							base: '!bg-transparent !font-normal !text-sm',
+							input: 'text-[var(--father-font)]',
+							inputWrapper: [
+								'bg-transparent',
+								'hover:!bg-white/30',
+								'data-[hover=true]:!bg-white/30',
+								'group-data-[focus=true]:bg-white/30',
+							],
+						}}
+					/>
+				</div>
 
 				<Table
 					aria-label='Example table with custom cells'

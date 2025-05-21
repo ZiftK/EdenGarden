@@ -17,6 +17,12 @@ export function renderCell(
 	const cellValue = user[columnKey as keyof Employee]
 
 	switch (columnKey) {
+		case 'id_empleado':
+			return (
+				<div className='flex flex-col'>
+					<p className='text-bold text-sm'>{cellValue}</p>
+				</div>
+			)
 		case 'nombre':
 			return (
 				<User
