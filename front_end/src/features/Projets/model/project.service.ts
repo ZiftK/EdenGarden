@@ -36,14 +36,22 @@ export const createNewProject = async (data: CreateProjectData) => {
         const projectData: ProjectToCreate = {
             ...data.project,
             cliente: clientId,
+            estado: data.project.estado || 'PENDIENTE', // Aseguramos que siempre haya un estado
             img: '' // Placeholder, will be updated after image upload
         };
 
         try {
             projectId = await createProject(projectData);
+            console.log('Datos enviados al crear proyecto:', projectData); // Para debugging
         } catch (error) {
             console.error('Error al crear el proyecto:', error);
-            throw new Error(error instanceof Error ? error.message : 'Error al crear el proyecto');
+            // Mejorar el mensaje de error para incluir detalles de validación
+            if (error instanceof Error && 'response' in error) {
+                const apiError = error as any;
+                const detail = apiError.response?.data?.detail;
+                throw new Error(`Error al crear el proyecto: ${detail || error.message}`);
+            }
+            throw error;
         }
 
         // 3. Subir imagen si existe

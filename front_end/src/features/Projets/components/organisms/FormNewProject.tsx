@@ -41,7 +41,7 @@ export default function FormNewProject() {
 		calendario: {},
 		equipo: {} as ShortTeam,
 		nombre: '',
-		estado: '',
+		estado: 'PENDIENTE',
 		costo: 0,
 		img: '',
 	})
@@ -140,8 +140,8 @@ export default function FormNewProject() {
 				project: {
 					nombre: newProject.nombre,
 					descripcion: newProject.descripcion,
-					estado: newProject.estado,
-					costo: newProject.costo,
+					estado: newProject.estado || 'PENDIENTE',
+					costo: Number(newProject.costo),
 					equipo: Number(newProject.equipo?.id_equipo),
 				},
 				calendar:
@@ -153,6 +153,8 @@ export default function FormNewProject() {
 					? newProject.img
 					: undefined,
 			}
+
+			console.log('Datos del proyecto a enviar:', projectData)
 
 			// Crear proyecto usando el servicio
 			const projectId = await createNewProject(projectData)

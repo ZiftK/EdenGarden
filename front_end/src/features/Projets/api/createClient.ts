@@ -12,7 +12,7 @@ interface ClientResponse {
 
 export const createClient = async (client: ClientToCreate): Promise<number> => {
     const response = await fetcher.post<ApiResponse<ClientResponse>>('/client/create', client)
-    console.log(response)
+    
     
     // Si no hay data o no hay client_id, lanzar un error con el mensaje del servidor si existe
     if (!response?.client_id) {

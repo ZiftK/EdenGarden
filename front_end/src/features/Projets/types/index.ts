@@ -1,4 +1,3 @@
-
 import { Client, ClientToCreate } from "./client"
 import { Team } from "../../Teams/types/teamFromAPI"
 import { ShortTeam } from "@/src/shared/types"
@@ -12,7 +11,7 @@ export interface ProjectToCreate {
     costo: number;
     cliente: number;
     equipo: number;
-    img: string;
+    img?: string;
 }
 
 export interface ProjectBase {
