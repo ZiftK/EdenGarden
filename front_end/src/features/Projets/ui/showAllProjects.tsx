@@ -21,18 +21,37 @@ const colorIcons = 'var(--children-font)'
 
 export default function ShowAllProjects() {
 	const [projects, setProjects] = useState<Project[]>([])
+	const [loading, setLoading] = useState(true)
+	const [error, setError] = useState<string | null>(null)
+
 	useEffect(() => {
 		const fetchProjects = async () => {
 			try {
+				setLoading(true)
+				setError(null)
 				const dataProjects = await getProjects()
-
-				setProjects(dataProjects.proyectos)
+				setProjects(dataProjects)
 			} catch (error) {
 				console.error('Error al obtener los proyectos:', error)
+				setError('Error al cargar los proyectos')
+			} finally {
+				setLoading(false)
 			}
 		}
 		fetchProjects()
 	}, [])
+
+	if (loading) {
+		return <div>Cargando proyectos...</div>
+	}
+
+	if (error) {
+		return <div className='text-red-500'>{error}</div>
+	}
+
+	if (!projects.length) {
+		return <div>No hay proyectos disponibles</div>
+	}
 
 	return (
 		<>

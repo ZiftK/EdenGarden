@@ -270,70 +270,77 @@ class ProjectRepositorySB():
         """
         Encuentra todos los proyectos en la base de datos
         """
-        # Obtener todos los proyectos
-        projects = self.client.table('proyecto').select('*').execute().data
+        try:
+            # Obtener todos los proyectos
+            projects = self.client.table('proyecto').select('*').execute().data
 
-        # Lista para almacenar los proyectos formateados
-        formatted_projects = []
+            # Lista para almacenar los proyectos formateados
+            formatted_projects = []
 
-        # Formatear cada proyecto
-        for project in projects:
-            # Obtener el calendario si existe
-            calendar = None
-            if project['fk_calendario']:
-                calendar_data = self.client.table('calendario_proyecto').select('*').eq('id_calendario', project['fk_calendario']).execute().data[0]
-                
-                # Obtener el sprint actual si existe
-                sprint = None
-                if calendar_data['fk_sprint']:
-                    sprint = self._get_sprint(calendar_data['fk_sprint'])
-                
-                calendar = ProjectCalendar(
-                    fecha_inicio=Date(
-                        dia=int(calendar_data['fecha_inicio'].split('-')[2]),
-                        mes=EnumMonths(int(calendar_data['fecha_inicio'].split('-')[1])),
-                        anno=int(calendar_data['fecha_inicio'].split('-')[0])
-                    ),
-                    fecha_fin=Date(
-                        dia=int(calendar_data['fecha_fin'].split('-')[2]),
-                        mes=EnumMonths(int(calendar_data['fecha_fin'].split('-')[1])),
-                        anno=int(calendar_data['fecha_fin'].split('-')[0])
-                    ),
-                    sprint_actual=sprint
-                )
+            # Formatear cada proyecto
+            for project in projects:
+                try:
+                    # Obtener el calendario si existe
+                    calendar = None
+                    if project['fk_calendario']:
+                        calendar_data = self.client.table('calendario_proyecto').select('*').eq('id_calendario', project['fk_calendario']).execute().data[0]
+                        
+                        # Obtener el sprint actual si existe
+                        sprint = None
+                        if calendar_data['fk_sprint']:
+                            sprint = self._get_sprint(calendar_data['fk_sprint'])
+                        
+                        calendar = ProjectCalendar(
+                            fecha_inicio=Date(
+                                dia=int(calendar_data['fecha_inicio'].split('-')[2]),
+                                mes=EnumMonths(int(calendar_data['fecha_inicio'].split('-')[1])),
+                                anno=int(calendar_data['fecha_inicio'].split('-')[0])
+                            ),
+                            fecha_fin=Date(
+                                dia=int(calendar_data['fecha_fin'].split('-')[2]),
+                                mes=EnumMonths(int(calendar_data['fecha_fin'].split('-')[1])),
+                                anno=int(calendar_data['fecha_fin'].split('-')[0])
+                            ),
+                            sprint_actual=sprint if sprint else None
+                        )
 
-            # Obtener el cliente del proyecto
-            client_data = self.client.table('cliente').select('*').eq('id_cliente', project['fk_cliente']).execute().data[0]
-            client = Client(
-                id_cliente=client_data['id_cliente'],
-                nombre=client_data['nombre'],
-                direccion=client_data['direccion'],
-                telefono=client_data['telefono'],
-                email=client_data['email']
-            )
+                    # Obtener el cliente del proyecto
+                    client_data = self.client.table('cliente').select('*').eq('id_cliente', project['fk_cliente']).execute().data[0]
+                    client = Client(
+                        id_cliente=client_data['id_cliente'],
+                        nombre=client_data['nombre'],
+                        direccion=client_data['direccion'],
+                        telefono=client_data['telefono'],
+                        email=client_data['email']
+                    )
 
-            # Obtener el equipo si existe
-            team = None
-            if project['fk_equipo']:
-                team = self._get_team(project['fk_equipo'])
+                    # Obtener el equipo si existe
+                    team = None
+                    if project['fk_equipo']:
+                        team = self._get_team(project['fk_equipo'])
 
-            # Crear el proyecto formateado
-            formatted_project = Project(
-                id_proyecto=project['id_proyecto'],
-                nombre=project['nombre'],
-                descripcion=project['descripcion'],
-                estado=project['estado'],
-                costo=project['costo'],
-                cliente=client,
-                equipo=team,
-                calendario=calendar,
-                img=project['img'] if 'img' in project else None
-            )
-            
-            print(formatted_project)
-            formatted_projects.append(formatted_project)
+                    # Crear el proyecto formateado
+                    formatted_project = Project(
+                        id_proyecto=project['id_proyecto'],
+                        nombre=project['nombre'],
+                        descripcion=project['descripcion'],
+                        estado=project['estado'],
+                        costo=project['costo'],
+                        cliente=client,
+                        equipo=team,
+                        calendario=calendar,
+                        img=project['img'] if 'img' in project else None
+                    )
+                    
+                    formatted_projects.append(formatted_project)
+                except Exception as e:
+                    print(f"Error al formatear proyecto {project['id_proyecto']}: {str(e)}")
+                    continue
 
-        return formatted_projects
+            return formatted_projects
+        except Exception as e:
+            print(f"Error al obtener los proyectos: {str(e)}")
+            raise e
 
     def delete_project_calendar(self, project_id: int) -> None:
         """

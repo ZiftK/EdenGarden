@@ -121,9 +121,14 @@ export default async function Page({
 											project.calendario?.fecha_fin!.dia
 										)
 									}
-									nonWorkingDays={
-										project.calendario?.dias_no_laborables
-									}
+									nonWorkingDays={project.calendario?.dias_no_laborables?.map(
+										(date) =>
+											new Date(
+												date.anno,
+												date.mes - 1,
+												date.dia
+											)
+									)}
 								/>
 							</div>
 						</CardBody>
@@ -140,7 +145,6 @@ export default async function Page({
 									style={{
 										objectFit: 'cover',
 									}}
-									s
 									priority
 								/>
 							)}
