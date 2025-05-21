@@ -24,7 +24,6 @@ class EmployeeRepositorySB(EmployeeRepository):
             "rol": data.rol,
             "puesto": data.puesto,
             "salario": data.salario,
-            "fk_equipo": data.equipo,
             'img': data.img,
         }
         response = self.client.table(self.table).insert(data_dict).execute()
@@ -69,7 +68,6 @@ class EmployeeRepositorySB(EmployeeRepository):
             "rol": data.rol,
             "puesto": data.puesto,
             "salario": data.salario,
-            "fk_equipo": data.equipo,
             'img': data.img,
         }
         self.client.table(self.table).update(data_dict).eq('id_empleado', id).execute()
