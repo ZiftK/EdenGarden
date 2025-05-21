@@ -78,7 +78,6 @@ export default function FormNewProject() {
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = e.target
-		console.log(name, value)
 
 		if (name.includes('.')) {
 			const [parent, child] = name.split('.')
@@ -95,15 +94,14 @@ export default function FormNewProject() {
 				[name]: value,
 			}))
 		}
-		console.log(newProject)
 	}
 
 	const handleTeamChange = (teamId: string) => {
-		const selectedTeam = teams.find((team) => team.id_equipo === teamId)
+		const selectedTeam = teams.find((team) => team.nombre === teamId)
 		if (selectedTeam) {
 			setNewProject((prev) => ({
 				...prev,
-				teams: selectedTeam,
+				equipo: selectedTeam,
 			}))
 		}
 	}
@@ -123,46 +121,86 @@ export default function FormNewProject() {
 	}
 
 	const handleSubmit = async () => {
-		const client = newProject?.cliente as ClientToCreate
+		const client: ClientToCreate = {
+			nombre: newProject.cliente!.nombre!,
+			direccion: newProject.cliente!.direccion!,
+			telefono: newProject.cliente!.telefono!,
+			email: newProject.cliente!.email!,
+		}
+
 		const calendario = newProject?.calendario
+		let imageUrl = null
 
 		try {
-			// Crear el cliente
-			if (!isClientComplete(newProject.cliente!)) return
-			const clientResponse = await fetcher.post('/client/create', {
-				...client,
-			})
-			const clientId = clientResponse?.client_id
+			// Validar cliente
+			if (!isClientComplete(newProject.cliente!)) {
+				throw new Error(
+					'Por favor complete todos los campos del cliente'
+				)
+			}
 
-			// Crear el proyecto
+			// Si hay imagen, subirla primero a Supabase
+			if (newProject.img) {
+				const imageResponse = await fetcher.post('/storage/upload', {
+					base64_image: newProject.img,
+					folder: 'projects',
+				})
+				imageUrl = imageResponse.data?.url
+				if (!imageUrl) {
+					throw new Error('Error al subir la imagen')
+				}
+			}
+
+			const clientResponse = await fetcher.post('/client/create', client)
+			const clientId = clientResponse.data?.client_id
+
+			if (!clientId) {
+				throw new Error('Error al crear el cliente')
+			}
+
+			// Crear el proyecto con la URL de la imagen
 			const project: ProjectToCreate = {
 				nombre: newProject.nombre,
 				descripcion: newProject.descripcion,
 				estado: newProject.estado,
 				costo: newProject.costo,
 				cliente: clientId,
-				equipo: Number(newProject.equipo.id_equipo),
+				equipo: Number(newProject.equipo?.id_equipo),
+				img: imageUrl,
 			}
-			const projectResponse = await fetcher.post('/project/', {
-				...project,
-			})
-			const projectId = projectResponse?.project_id
 
-			//crear calendario
-			fetcher.post(`/project/${projectId}/calendar/create`, {
-				...calendario,
-			})
+			const projectResponse = await fetcher.post('/project/', project)
+			const projectId = projectResponse.data?.project_id
 
-			// Crear la imagen
-			fetcher.post(`/project/image/${projectId}`, {
-				image: newProject.img,
-			})
-		} catch (error) {
-			console.error('Error creating project:', error)
-			return
+			if (!projectId) {
+				throw new Error('Error al crear el proyecto')
+			}
+
+			// Crear calendario
+			if (calendario.fecha_inicio && calendario.fecha_fin) {
+				await fetcher.post(
+					`/project/${projectId}/calendar/create`,
+					calendario
+				)
+			}
+
+			// Redirigir al detalle del proyecto
+			redirect(`/dashboard/proyectos/${projectId}`)
+		} catch (error: unknown) {
+			if (error.response) {
+				// Error de respuesta del servidor
+				console.error('Error response:', {
+					status: error.response.status,
+					data: error.response.data,
+					headers: error.response.headers,
+				})
+			} else if (error.request) {
+				console.error('Error request:', error.request)
+			} else {
+				console.error('Error message:', error.message)
+			}
+			throw error
 		}
-
-		redirect(`/dashboard/proyectos/${newProject.id_proyecto}`)
 	}
 
 	const classNames = {
@@ -182,7 +220,7 @@ export default function FormNewProject() {
 		},
 		select: {
 			label: '!text-white/50',
-			value: '!text-[var(--father-font)] ',
+			value: '!text-[var(--father-font)]',
 			trigger: [
 				'bg-transparent',
 				'!text-[var(--father-font)]',
@@ -240,22 +278,17 @@ export default function FormNewProject() {
 
 							<Select
 								label='Equipo Asignado'
-								selectedKeys={[
-									newProject.equipo?.id_equipo || '',
-								]}
 								onChange={(e) =>
 									handleTeamChange(e.target.value)
 								}
 								className='w-full'
 								classNames={classNames.select}
+								value={newProject.equipo?.nombre}
 							>
 								{teams.map((team) => (
-									<SelectItem
-										key={team.id_equipo}
-										textValue={team.nombre}
-									>
+									<SelectItem key={team.id_equipo}>
 										{team.nombre} (
-										{`${team.empleados} miembros`})
+										{`${team.empleados.length} miembros`})
 									</SelectItem>
 								))}
 							</Select>

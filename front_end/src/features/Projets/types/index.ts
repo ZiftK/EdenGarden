@@ -12,6 +12,7 @@ export interface ProjectToCreate {
     costo: number;
     cliente: number;
     equipo: number;
+    img: string;
 }
 
 export interface ProjectBase {

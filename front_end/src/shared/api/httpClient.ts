@@ -19,7 +19,13 @@ export async function httpFunction<T>(
     const response = await fetch(`${API_URL}${endpoint}`, config);
 
     if(!response.ok){
-        throw new Error('Error desconocido')
+        const errorData = await response.json().catch(() => null);
+        throw {
+            status: response.status,
+            statusText: response.statusText,
+            data: errorData,
+            response: response
+        };
     }
 
     return response.json()
