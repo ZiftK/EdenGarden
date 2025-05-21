@@ -24,99 +24,94 @@ const formatDate = (date: DateFormat | null) => {
 }
 
 export default function Page({ params }: { params: { empleado: string } }) {
-	const {
-		currentEmployee,
-		isLoading,
-		error,
-		getEmployeeById,
-		clearCurrentEmployee,
-	} = useEmployeeStore()
+	const { currentEmployee, getEmployeeById, isLoading } = useEmployeeStore()
 
 	useEffect(() => {
-		getEmployeeById(params.empleado)
-		return () => {
-			clearCurrentEmployee()
+		const fetchEmployee = async () => {
+			try {
+				await getEmployeeById(params.empleado)
+			} catch (error) {
+				console.error('Error fetching employee:', error)
+			}
 		}
-	}, [params.empleado, getEmployeeById, clearCurrentEmployee])
+		fetchEmployee()
+	}, [getEmployeeById, params.empleado])
 
-	if (isLoading) return <div>Cargando...</div>
-	if (error) return <div className='text-red-500'>{error}</div>
-	if (!currentEmployee) return <div>Empleado no encontrado</div>
+	if (isLoading) {
+		return (
+			<div className='flex justify-center items-center min-h-[200px]'>
+				<span>Cargando empleado...</span>
+			</div>
+		)
+	}
+
+	if (!currentEmployee) {
+		return (
+			<div className='flex justify-center items-center min-h-[200px]'>
+				<span>No se encontró el empleado</span>
+			</div>
+		)
+	}
 
 	return (
-		<section className='h-full mt-4 text-[var(--father-font)] !row-start-2 !row-end-4 xl:col-start-2'>
-			<div className='flex justify-between items-center mb-4'>
-				<h1 className='text-2xl font-bold'>Detalles del Empleado</h1>
-				<div className='flex gap-2'>
-					<Link
-						href={`/dashboard/empleados/${currentEmployee.id_empleado}/editar`}
-						className='bg-[var(--green-dark-500)] text-white px-4 py-2 rounded-lg hover:bg-[var(--green-dark-600)] transition-colors'
-					>
-						Editar
-					</Link>
-					<ModalDeleteEmployee
-						employeeId={currentEmployee.id_empleado}
-						employeeName={currentEmployee.nombre}
-					/>
-				</div>
-			</div>
-
-			<Card className='!relative z-0 overflow-hidden bg-[var(--bg-card-obscure)]'>
-				<CardHeader className='flex gap-4'>
-					<div className='relative w-32 h-32 rounded-full overflow-hidden border-4 border-[var(--green-dark-500)]'>
+		<section className='text-[var(--father-font)] md:row-start-2 md:row-end-4 xl:col-start-2'>
+			<Card className='bg-[var(--bg-card-obscure-200)]'>
+				<CardHeader className='flex justify-between items-center'>
+					<div className='flex gap-3'>
 						<Image
-							src={
-								currentEmployee.img ||
-								'https://i.pravatar.cc/150'
-							}
+							src={currentEmployee.img || '/placeholder.png'}
 							alt={currentEmployee.nombre}
-							fill
-							className='object-cover'
+							width={100}
+							height={100}
+							className='rounded-full'
+						/>
+						<div className='flex flex-col'>
+							<p className='text-xl font-bold'>
+								{currentEmployee.nombre}
+							</p>
+							<p className='text-sm text-[var(--children-font)]'>
+								{currentEmployee.puesto}
+							</p>
+						</div>
+					</div>
+					<div className='flex gap-2'>
+						<Link
+							href={`/dashboard/empleados/editar/${currentEmployee.id_empleado}`}
+							className='text-blue-500 hover:text-blue-600'
+						>
+							Editar
+						</Link>
+						<ModalDeleteEmployee
+							employeeId={currentEmployee.id_empleado.toString()}
+							employeeName={currentEmployee.nombre}
 						/>
 					</div>
-					<div>
-						<h2 className='text-2xl font-bold  text-[var(--father-font)]'>
-							{currentEmployee.nombre}
-						</h2>
-						<p className='text-[var(--children-font)] text-lg'>
-							{currentEmployee.puesto}
-						</p>
-						<p className='text-[var(--children-font)] text-sm mt-1'>
-							ID: {currentEmployee.id_empleado}
-						</p>
-					</div>
 				</CardHeader>
-
 				<Divider />
-
 				<CardBody>
 					<div className='grid grid-cols-1 md:grid-cols-2 gap-8'>
 						<div>
-							<h3 className='text-xl font-bold mb-4  text-[var(--father-font)]'>
+							<h3 className='text-xl font-bold mb-4 text-[var(--father-font)]'>
 								Información Personal
 							</h3>
 							<div className='space-y-4 text-[var(--children-font)]'>
-								<p className='flex items-center gap-3'>
-									<UserIcon h={20} color={colorIcons} />
-									{currentEmployee.nombre}
-								</p>
-								<p className='flex items-center gap-3'>
-									<EmailIcon h={20} color={colorIcons} />
-									{currentEmployee.email}
-								</p>
-								<p className='flex items-center gap-3'>
-									<PhoneIcon h={20} color={colorIcons} />
-									{currentEmployee.telefono}
-								</p>
-								<p className='flex items-center gap-3'>
-									<InfoHouseIcon h={20} color={colorIcons} />
-									{currentEmployee.direccion}
-								</p>
+								<div className='flex items-center gap-2'>
+									<EmailIcon h={15} color={colorIcons} />
+									<span>{currentEmployee.email}</span>
+								</div>
+								<div className='flex items-center gap-2'>
+									<PhoneIcon h={15} color={colorIcons} />
+									<span>{currentEmployee.telefono}</span>
+								</div>
+								<div className='flex items-center gap-2'>
+									<InfoHouseIcon h={15} color={colorIcons} />
+									<span>{currentEmployee.direccion}</span>
+								</div>
 							</div>
 						</div>
 
 						<div>
-							<h3 className='text-xl font-bold mb-4  text-[var(--father-font)]'>
+							<h3 className='text-xl font-bold mb-4 text-[var(--father-font)]'>
 								Información Laboral
 							</h3>
 							<div className='space-y-4 text-[var(--children-font)]'>
@@ -135,13 +130,15 @@ export default function Page({ params }: { params: { empleado: string } }) {
 										Salario:
 									</span>{' '}
 									$
-									{currentEmployee.salario.toLocaleString(
-										'es-MX',
-										{
-											minimumFractionDigits: 2,
-											maximumFractionDigits: 2,
-										}
-									)}
+									{typeof currentEmployee.salario === 'number'
+										? currentEmployee.salario.toLocaleString(
+												'es-MX',
+												{
+													minimumFractionDigits: 2,
+													maximumFractionDigits: 2,
+												}
+											)
+										: '0.00'}
 								</p>
 								<p>
 									<span className='font-semibold'>

@@ -35,7 +35,6 @@ export default function FormNewTeam() {
 			try {
 				console.log('Fetching employees...')
 				await getEmployees()
-				console.log('Raw employees data:', employees)
 			} catch (error) {
 				setError('Error al cargar los empleados')
 				console.error('Error fetching employees:', error)
@@ -131,12 +130,15 @@ export default function FormNewTeam() {
 								selectedKeys={
 									formData.lider_id ? [formData.lider_id] : []
 								}
-								onChange={(e) =>
+								onSelectionChange={(keys) => {
+									const selectedId =
+										Array.from(keys)[0]?.toString()
+									console.log('Selected leader:', selectedId)
 									setFormData((prev) => ({
 										...prev,
-										lider_id: e.target.value,
+										lider_id: selectedId || '',
 									}))
-								}
+								}}
 								classNames={employeeFormStyles.select}
 								isRequired
 							>
@@ -162,17 +164,17 @@ export default function FormNewTeam() {
 								placeholder='Seleccione los miembros'
 								selectionMode='multiple'
 								selectedKeys={new Set(formData.empleados_ids)}
-								onChange={(e) => {
+								onSelectionChange={(keys) => {
+									const selectedIds = Array.from(keys).map(
+										(id) => id.toString()
+									)
 									console.log(
 										'Selected members:',
-										e.target.value
+										selectedIds
 									)
 									setFormData((prev) => ({
 										...prev,
-										empleados_ids: Array.from(
-											e.target.selectedOptions,
-											(option) => option.value
-										),
+										empleados_ids: selectedIds,
 									}))
 								}}
 								classNames={employeeFormStyles.select}
