@@ -18,6 +18,7 @@ export type Employee = {
     puesto: string;
     img: string;
     salario: number;
+    fk_equipo?: number | null;
 }
 
 export type AuthState = {

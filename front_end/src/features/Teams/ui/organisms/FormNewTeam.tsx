@@ -1,13 +1,27 @@
-import { useState } from 'react'
+'use client'
+
+import { useState, useEffect } from 'react'
 import { useTeamStore } from '../../model/teamStore'
 import { useRouter } from 'next/navigation'
-import { Input, Button, Select, SelectItem } from '@heroui/react'
+import {
+	Card,
+	CardBody,
+	CardHeader,
+	CardFooter,
+	Input,
+	Button,
+	Select,
+	SelectItem,
+	Divider,
+} from '@heroui/react'
 import { useEmployeeStore } from '@/src/features/Employees/model/employeeStore'
+import Link from 'next/link'
+import { employeeFormStyles } from '@/src/features/Employees/ui/styles/employeeForm'
 
 export default function FormNewTeam() {
 	const router = useRouter()
 	const { createTeam } = useTeamStore()
-	const { employees } = useEmployeeStore()
+	const { employees, getAllEmployees } = useEmployeeStore()
 	const [formData, setFormData] = useState({
 		nombre: '',
 		lider_id: '',
@@ -15,8 +29,11 @@ export default function FormNewTeam() {
 	})
 	const [error, setError] = useState<string | null>(null)
 
-	const handleSubmit = async (e: React.FormEvent) => {
-		e.preventDefault()
+	useEffect(() => {
+		getAllEmployees()
+	}, [getAllEmployees])
+
+	const handleSubmit = () => {
 		try {
 			if (!formData.nombre || !formData.lider_id) {
 				setError('Por favor complete todos los campos requeridos')
@@ -29,98 +46,137 @@ export default function FormNewTeam() {
 				empleados_ids: formData.empleados_ids.map((id) => parseInt(id)),
 			}
 
-			await createTeam(teamData)
+			createTeam(teamData)
 			router.push('/dashboard/equipos')
 		} catch (error) {
 			setError((error as Error).message)
 		}
 	}
 
-	const availableEmployees = employees.filter((emp) => emp.rol !== 'admin')
-	const leaderEmployees = employees.filter((emp) => emp.rol === 'leader')
+	const availableEmployees = employees.filter(
+		(emp) => emp.rol !== 'admin' && !emp.fk_equipo
+	)
+	const leaderEmployees = employees.filter(
+		(emp) => emp.rol === 'leader' && !emp.fk_equipo
+	)
 
 	return (
-		<form
-			onSubmit={handleSubmit}
-			className='flex flex-col gap-4 max-w-xl mx-auto p-4'
-		>
-			<div className='space-y-4'>
-				<Input
-					label='Nombre del Equipo'
-					placeholder='Ingrese el nombre del equipo'
-					value={formData.nombre}
-					onChange={(e) =>
-						setFormData((prev) => ({
-							...prev,
-							nombre: e.target.value,
-						}))
-					}
-					required
-				/>
+		<Card className={employeeFormStyles.container}>
+			<CardHeader className='flex gap-3'>
+				<div className='flex flex-col'>
+					<p className={employeeFormStyles.title}>
+						Crear Nuevo Equipo
+					</p>
+					<p className={employeeFormStyles.subtitle}>
+						Complete todos los campos requeridos
+					</p>
+				</div>
+			</CardHeader>
+			<Divider />
+			<CardBody>
+				<div className='space-y-4'>
+					{/* Información del Equipo */}
+					<div className={employeeFormStyles.form.section}>
+						<h3 className={employeeFormStyles.sectionTitle}>
+							Información del Equipo
+						</h3>
+						<div className={employeeFormStyles.form.grid}>
+							<Input
+								label='Nombre del Equipo'
+								placeholder='Ingrese el nombre del equipo'
+								value={formData.nombre}
+								onChange={(e) =>
+									setFormData((prev) => ({
+										...prev,
+										nombre: e.target.value,
+									}))
+								}
+								classNames={employeeFormStyles.input}
+								isRequired
+							/>
 
-				<Select
-					label='Líder del Equipo'
-					placeholder='Seleccione el líder'
-					value={formData.lider_id}
-					onChange={(e) =>
-						setFormData((prev) => ({
-							...prev,
-							lider_id: e.target.value,
-						}))
-					}
-					required
-				>
-					{leaderEmployees.map((employee) => (
-						<SelectItem
-							key={employee.id_empleado}
-							value={employee.id_empleado.toString()}
-						>
-							{employee.nombre}
-						</SelectItem>
-					))}
-				</Select>
+							<Select
+								label='Líder del Equipo'
+								placeholder='Seleccione el líder'
+								selectedKeys={
+									formData.lider_id ? [formData.lider_id] : []
+								}
+								onChange={(e) =>
+									setFormData((prev) => ({
+										...prev,
+										lider_id: e.target.value,
+									}))
+								}
+								classNames={employeeFormStyles.select}
+								isRequired
+							>
+								{leaderEmployees.map((employee) => (
+									<SelectItem
+										key={employee.id_empleado.toString()}
+									>
+										{employee.nombre} - {employee.puesto}
+									</SelectItem>
+								))}
+							</Select>
+						</div>
+					</div>
 
-				<Select
-					label='Miembros del Equipo'
-					placeholder='Seleccione los miembros'
-					selectionMode='multiple'
-					value={formData.empleados_ids}
-					onChange={(e) =>
-						setFormData((prev) => ({
-							...prev,
-							empleados_ids: Array.from(
-								e.target.selectedOptions,
-								(option) => option.value
-							),
-						}))
-					}
-				>
-					{availableEmployees.map((employee) => (
-						<SelectItem
-							key={employee.id_empleado}
-							value={employee.id_empleado.toString()}
-						>
-							{employee.nombre}
-						</SelectItem>
-					))}
-				</Select>
-			</div>
+					{/* Miembros del Equipo */}
+					<div className={employeeFormStyles.form.section}>
+						<h3 className={employeeFormStyles.sectionTitle}>
+							Miembros del Equipo
+						</h3>
+						<div className={employeeFormStyles.form.grid}>
+							<Select
+								label='Seleccionar Miembros'
+								placeholder='Seleccione los miembros'
+								selectionMode='multiple'
+								selectedKeys={new Set(formData.empleados_ids)}
+								onChange={(e) =>
+									setFormData((prev) => ({
+										...prev,
+										empleados_ids: Array.from(
+											e.target.selectedOptions,
+											(option) => option.value
+										),
+									}))
+								}
+								classNames={employeeFormStyles.select}
+							>
+								{availableEmployees.map((employee) => (
+									<SelectItem
+										key={employee.id_empleado.toString()}
+									>
+										{employee.nombre} - {employee.puesto}
+									</SelectItem>
+								))}
+							</Select>
+						</div>
+					</div>
 
-			{error && <p className='text-red-500 text-sm mt-2'>{error}</p>}
+					{error && (
+						<p className='text-red-500 text-sm mt-2'>{error}</p>
+					)}
+				</div>
+			</CardBody>
 
-			<div className='flex justify-end gap-2 mt-4'>
+			<Divider />
+
+			<CardFooter className={employeeFormStyles.footer.container}>
 				<Button
-					type='button'
-					color='danger'
-					variant='light'
-					onClick={() => router.back()}
+					className={employeeFormStyles.footer.saveButton}
+					onPress={handleSubmit}
 				>
-					Cancelar
-				</Button>
-				<Button type='submit' color='primary'>
 					Crear Equipo
 				</Button>
-			</div>
-		</form>
+
+				<Link
+					className={employeeFormStyles.footer.cancelButton}
+					href='/dashboard/equipos'
+				>
+					Cancelar
+				</Link>
+			</CardFooter>
+		</Card>
 	)
 }

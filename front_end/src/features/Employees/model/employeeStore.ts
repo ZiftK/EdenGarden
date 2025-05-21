@@ -23,6 +23,8 @@ interface EmployeeState {
     setLoading: (loading: boolean) => void;
     setError: (error: string | null) => void;
     clearCurrentEmployee: () => void;
+
+    getAllEmployees: () => Promise<void>;
 }
 
 export const useEmployeeStore = create<EmployeeState>((set, get) => ({
@@ -131,6 +133,20 @@ export const useEmployeeStore = create<EmployeeState>((set, get) => ({
             throw error
         } finally {
             set({ isLoading: false })
+        }
+    },
+
+    getAllEmployees: async () => {
+        try {
+            set({ isLoading: true, error: null })
+            const response = await fetch('http://127.0.0.1:8000/employee/all')
+            if (!response.ok) {
+                throw new Error('Error al obtener los empleados')
+            }
+            const data = await response.json()
+            set({ employees: data, isLoading: false })
+        } catch (error) {
+            set({ error: (error as Error).message, isLoading: false })
         }
     }
 }))
