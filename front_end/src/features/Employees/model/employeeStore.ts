@@ -71,7 +71,7 @@ export const useEmployeeStore = create<EmployeeState>((set) => ({
     getEmployeeById: async (id: string) => {
         set({ isLoading: true, error: null})
         try {
-            const dataEmployee: Employee = await fetcher.get<Employee>(`${endpoints.employeeDelete}/${id}`)
+            const dataEmployee: Employee = await fetcher.get<Employee>(`${endpoints.employeeById}/${id}`)
             if(!dataEmployee)  throw new Error('No se encontraron empleados')
             return dataEmployee
         } catch (error) {

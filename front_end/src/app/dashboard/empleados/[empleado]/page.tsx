@@ -67,7 +67,9 @@ export default function Page({ params }: { params: { empleado: string } }) {
 				<CardHeader className='flex gap-4'>
 					<div className='relative w-24 h-24 rounded-full overflow-hidden'>
 						<Image
-							src={employee.img || 'https://i.pravatar.cc/150'}
+							src={
+								employee.img_url || 'https://i.pravatar.cc/150'
+							}
 							alt={employee.nombre}
 							fill
 							className='object-cover'

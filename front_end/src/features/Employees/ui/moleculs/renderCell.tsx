@@ -14,7 +14,7 @@ export function renderCell(
 		case 'nombre':
 			return (
 				<User
-					avatarProps={{ radius: 'lg', src: user.img }}
+					avatarProps={{ radius: 'lg', src: user.img_url }}
 					description={user.email}
 					name={cellValue as string}
 				>
