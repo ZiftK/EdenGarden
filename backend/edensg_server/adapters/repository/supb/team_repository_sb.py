@@ -44,37 +44,45 @@ class TeamRepositorySB(TeamRepository):
     
     def get_all_teams(self) -> list[Team]:
         """Obtiene todos los equipos de la base de datos."""
-        response = self.client.table(self.table).select('*').execute()
-        teams = []
-        for team_data in response.data:
-            # Get leader data
-            leader = self.employee_repo.find_employee_by_id(team_data['fk_lider'])
-            
-            # Get team employees
-            employees_response = self.client.table(self.employee_base_table).select('*').eq('fk_equipo', team_data['id_equipo']).execute()
-            employees = []
-            for emp_data in employees_response.data:
+        try:
+            response = self.client.table(self.table).select('*').execute()
+            teams = []
+            for team_data in response.data:
                 try:
-                    emp = format_employee(emp_data)
-                    employees.append(emp)
-                except Exception:
+                    # Get leader data
+                    leader = self.employee_repo.find_employee_by_id(team_data['fk_lider'])
+                    
+                    # Get team employees
+                    employees_response = self.client.table(self.employee_base_table).select('*').eq('fk_equipo', team_data['id_equipo']).execute()
+                    employees = []
+                    for emp_data in employees_response.data:
+                        try:
+                            emp = format_employee(emp_data)
+                            employees.append(emp)
+                        except Exception as e:
+                            print(f"Error formatting employee: {str(e)}")
+                            continue
+                    
+                    # Map field names to match our model
+                    mapped_data = {
+                        'id_equipo': team_data['id_equipo'],
+                        'nombre': team_data['nombre'],
+                        'lider': leader,
+                        'empleados': employees
+                    }
+                    teams.append(Team(**mapped_data))
+                except Exception as e:
+                    print(f"Error processing team {team_data.get('id_equipo')}: {str(e)}")
                     continue
-            
-            # Map field names to match our model
-            mapped_data = {
-                'id_equipo': team_data['id_equipo'],
-                'nombre': team_data['nombre'],
-                'lider': leader,
-                'empleados': employees
-            }
-            teams.append(Team(**mapped_data))
-        return teams
+            return teams
+        except Exception as e:
+            raise Exception(f"Error getting teams: {str(e)}")
     
     def check_employee_is_in_other_teams(self, ids: list[int]) -> list[int]:
         """Verifica si los empleados están en otros equipos y devuelve las IDs de los que sí lo están."""
         result = []
         for employee_id in ids:
-            response = self.client.table(self.employee_base_table).select('id_empleado').eq('id_empleado', employee_id).not_.is_('fk_equipo', None).execute()
+            response = self.client.table(self.employee_base_table).select('id_empleado').eq('id_empleado', employee_id).is_('fk_equipo', 'not.null').execute()
             if response.data:
                 result.append(employee_id)
         return result
