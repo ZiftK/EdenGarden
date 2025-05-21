@@ -9,12 +9,29 @@ from backend.edensg_server.adapters.repository.supb.project_repository_sb import
 from backend.edensg_server.adapters.repository.supb.client_repository_sb import client_sb_repository
 from backend.edensg_server.adapters.repository.supb.team_repository_sb import team_sb_repository
 from backend.edensg_server.adapters.repository.supb.image_repository_sb import ImageRepositorySupabase
+from datetime import date, datetime
 
 class ProjectController():
     def __init__(self):
         self.project_repository = ProjectRepositorySB()
         self.image_repository = ImageRepositorySupabase()
         
+    def _validate_date(self, date_obj: Date) -> bool:
+        """
+        Valida que una fecha sea válida.
+        """
+        try:
+            # Validar que el año sea razonable
+            current_year = datetime.now().year
+            if date_obj.anno < current_year - 1 or date_obj.anno > current_year + 10:
+                return False
+
+            # Validar que el día sea válido para el mes
+            date(date_obj.anno, date_obj.mes.value, date_obj.dia)
+            return True
+        except ValueError:
+            return False
+
     def get_all_projects(self)-> list[Project]:
         self.project_repository.get_all_projects()
 
@@ -156,3 +173,29 @@ class ProjectController():
             }
         except Exception as e:
             raise Exception(f"Error al eliminar el calendario del proyecto: {str(e)}")
+
+    async def delete_project(self, project_id: int)-> dict:
+        """
+        Elimina un proyecto y sus recursos asociados.
+        """
+        try:
+            # Primero eliminar el calendario si existe
+            try:
+                self.delete_project_calendar(project_id)
+            except Exception:
+                pass  # Si no hay calendario, continuamos
+
+            # Eliminar la imagen si existe
+            try:
+                await self.delete_project_image(project_id)
+            except Exception:
+                pass  # Si no hay imagen, continuamos
+
+            # Eliminar el proyecto
+            self.project_repository.delete_project(project_id)
+            
+            return {
+                'message': 'Proyecto eliminado correctamente'
+            }
+        except Exception as e:
+            raise Exception(f"Error al eliminar el proyecto: {str(e)}")

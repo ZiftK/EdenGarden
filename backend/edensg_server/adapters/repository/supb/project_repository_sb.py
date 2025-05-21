@@ -337,8 +337,25 @@ class ProjectRepositorySB():
             
         calendar_id = project['fk_calendario']
         
+        # Eliminar cualquier sprint asociado primero
+        calendar = self.client.table('calendario_proyecto').select('fk_sprint').eq('id_calendario', calendar_id).execute().data[0]
+        if calendar and calendar['fk_sprint']:
+            self.client.table('sprint').delete().eq('id_sprint', calendar['fk_sprint']).execute()
+        
         # Actualizar el proyecto para quitar la referencia al calendario
         self.client.table('proyecto').update({'fk_calendario': None}).eq('id_proyecto', project_id).execute()
         
         # Eliminar el calendario
         self.client.table('calendario_proyecto').delete().eq('id_calendario', calendar_id).execute()
+
+    def delete_project(self, project_id: int)-> None:
+        '''
+        Elimina un proyecto de la base de datos.
+        '''
+        # Verificar que el proyecto existe
+        project = self.client.table('proyecto').select('*').eq('id_proyecto', project_id).execute().data
+        if not project:
+            raise Exception(f"No se encontró el proyecto con ID {project_id}")
+
+        # Eliminar el proyecto
+        self.client.table('proyecto').delete().eq('id_proyecto', project_id).execute()

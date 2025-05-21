@@ -27,6 +27,6 @@ export type Sprint = {
 }
 
 export type ProjectCalendarToCreate = {
-    fecha_inicio?: Date;
-    fecha_fin?: Date;
+    fecha_inicio: Date;
+    fecha_fin: Date;
 }

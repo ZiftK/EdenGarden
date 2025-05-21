@@ -59,9 +59,13 @@ export const createNewProject = async (data: CreateProjectData) => {
         }
 
         // 3. Crear calendario si existe
-        if (data.calendario && projectId) {
+        if (data.calendario?.fecha_inicio && data.calendario?.fecha_fin && projectId) {
             try {
-                await createProjectCalendar(projectId, data.calendario);
+                const calendarData = {
+                    fecha_inicio: data.calendario.fecha_inicio,
+                    fecha_fin: data.calendario.fecha_fin
+                };
+                await createProjectCalendar(projectId, calendarData);
                 calendarCreated = true;
             } catch (error) {
                 console.error('Error al crear el calendario:', error);

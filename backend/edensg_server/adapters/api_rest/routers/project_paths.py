@@ -111,3 +111,14 @@ async def delete_project_calendar(project_id: int):
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=str(e)
         )
+
+@router.delete("/{project_id}", status_code=status.HTTP_200_OK)
+async def delete_project(project_id: int):
+    try:
+        result = await project_controller.delete_project(project_id)
+        return result
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )

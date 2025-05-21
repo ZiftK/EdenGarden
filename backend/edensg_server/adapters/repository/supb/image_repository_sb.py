@@ -69,30 +69,55 @@ class ImageRepositorySupabase:
         try:
             prefix = "project" if is_project else "employee"
             
-            # Decodificar la imagen base64
-            image_data = base64.b64decode(base64_image.split(',')[1] if ',' in base64_image else base64_image)
-            
-            # Determinar el tipo de imagen
-            if base64_image.startswith('data:image/jpeg'):
+            # Validar que la imagen es base64 válida
+            if not base64_image or not isinstance(base64_image, str):
+                raise ValueError("La imagen base64 es inválida")
+
+            # Extraer la parte de datos del base64
+            try:
+                if ',' in base64_image:
+                    # Formato: data:image/jpeg;base64,/9j/4AAQSkZJRg...
+                    header, encoded = base64_image.split(',', 1)
+                    content_type = header.split(';')[0].split(':')[1]
+                else:
+                    # Formato: /9j/4AAQSkZJRg...
+                    encoded = base64_image
+                    content_type = 'image/jpeg'  # Default
+            except Exception as e:
+                raise ValueError(f"Error al procesar la imagen base64: {str(e)}")
+
+            # Decodificar la imagen
+            try:
+                image_data = base64.b64decode(encoded)
+            except Exception as e:
+                raise ValueError(f"Error al decodificar la imagen base64: {str(e)}")
+
+            # Determinar la extensión del archivo
+            if 'jpeg' in content_type or 'jpg' in content_type:
                 file_extension = 'jpg'
-            elif base64_image.startswith('data:image/png'):
+            elif 'png' in content_type:
                 file_extension = 'png'
             else:
-                file_extension = 'jpg'  # Por defecto
+                raise ValueError(f"Tipo de imagen no soportado: {content_type}")
 
             # Generar nombre único para el archivo
             file_name = f"{prefix}_{entity_id}_{uuid.uuid4()}.{file_extension}"
 
-            # Subir a Supabase Storage
-            self.client.storage.from_(self.bucket).upload(
-                file_name,
-                image_data,
-                {"content-type": f"image/{file_extension}"}
-            )
+            try:
+                # Subir a Supabase Storage
+                self.client.storage.from_(self.bucket).upload(
+                    file_name,
+                    image_data,
+                    {"content-type": content_type}
+                )
 
-            # Obtener la URL pública
-            public_url = self.client.storage.from_(self.bucket).get_public_url(file_name)
-            return public_url
+                # Obtener la URL pública
+                public_url = self.client.storage.from_(self.bucket).get_public_url(file_name)
+                return public_url
+            except Exception as e:
+                raise Exception(f"Error al subir la imagen a Supabase: {str(e)}")
 
+        except ValueError as e:
+            raise Exception(str(e))
         except Exception as e:
-            raise Exception(f"Error al subir la imagen: {str(e)}")
+            raise Exception(f"Error al procesar la imagen: {str(e)}")
