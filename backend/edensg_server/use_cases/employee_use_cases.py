@@ -10,9 +10,27 @@ class EmployeeController:
         self.employee_repository = EmployeeRepositorySB()
         self.image_repository = ImageRepositorySupabase()
 
-    def create_employee(self, employee: Employee) -> int:
+    async def create_employee(self, employee: Employee) -> int:
         """Crea un nuevo empleado en el sistema."""
-        return self.employee_repository.create_employee(employee)
+        try:
+            # First create the employee to get the ID
+            employee_id = self.employee_repository.create_employee(employee)
+            
+            # If we have a base64 image, upload it
+            if employee.img and employee.img.startswith('data:image/'):
+                try:
+                    # Upload the image and get the public URL
+                    public_url = await self.image_repository.upload_base64_image(employee.img, employee_id, is_project=False)
+                    
+                    # Update the employee with the image URL
+                    employee.img = public_url
+                    self.employee_repository.update_employee(employee_id, employee)
+                except Exception as e:
+                    print(f"Error uploading image: {str(e)}")  # Log error but don't fail employee creation
+            
+            return employee_id
+        except Exception as e:
+            raise Exception(f"Error creating employee: {str(e)}")
 
     def find_employee_by_id(self, id: int) -> Optional[Employee]:
         """Busca un empleado por su ID."""
@@ -214,4 +232,15 @@ class EmployeeController:
             }
         except Exception as e:
             raise Exception(f"Error al obtener los empleados: {str(e)}")
+
+    def search_employees(self, search_term: str) -> dict:
+        """Busca empleados por expediente (ID)."""
+        try:
+            employees = self.employee_repository.search_employees_by_id(search_term)
+            return {
+                'message': 'Empleados encontrados correctamente',
+                'data': employees
+            }
+        except Exception as e:
+            raise Exception(f"Error al buscar empleados: {str(e)}")
     

@@ -92,6 +92,11 @@ class EmployeeRepositorySB(EmployeeRepository):
         response = self.client.table('asistencia').insert(data).execute()
         return response.data[0]['id_asistencia']
 
+    def search_employees_by_id(self, id_pattern: str) -> list[Employee]:
+        """Busca empleados por coincidencia parcial de ID."""
+        response = self.client.table(self.table).select('*').ilike('id_empleado', f'%{id_pattern}%').execute()
+        return [format_employee(employee) for employee in response.data]
+
 def main():
     repo = EmployeeRepositorySB()
     
