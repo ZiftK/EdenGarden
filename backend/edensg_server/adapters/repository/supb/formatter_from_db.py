@@ -27,6 +27,7 @@ def format_employee(employee: dict) -> Employee:
             anno=int(rehire_date[0])
         )
     
+    # No need to check for img_url, it will be passed through automatically
     return Employee(**employee)
 
 def format_team(team: dict) -> Team:

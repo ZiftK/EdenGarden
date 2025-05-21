@@ -25,7 +25,7 @@ class EmployeeRepositorySB(EmployeeRepository):
             "puesto": data.puesto,
             "salario": data.salario,
             "fk_equipo": data.equipo,
-            'img_url': data.img_url,
+            'img': data.img,
         }
         response = self.client.table(self.table).insert(data_dict).execute()
         return response.data[0]['id_empleado']
@@ -70,7 +70,7 @@ class EmployeeRepositorySB(EmployeeRepository):
             "puesto": data.puesto,
             "salario": data.salario,
             "fk_equipo": data.equipo,
-            'img_url': data.img_url,
+            'img': data.img,
         }
         self.client.table(self.table).update(data_dict).eq('id_empleado', id).execute()
 

@@ -44,7 +44,7 @@ export default function Page({ params }: { params: { empleado: string } }) {
 	if (loading) return <div>Cargando...</div>
 	if (error) return <div className='text-red-500'>{error}</div>
 	if (!employee) return <div>Empleado no encontrado</div>
-	console.log(employee)
+
 	return (
 		<section className='mt-4 text-[var(--father-font)] md:row-start-2 md:row-end-4 xl:col-start-2'>
 			<div className='flex justify-between items-center mb-4'>
@@ -52,7 +52,7 @@ export default function Page({ params }: { params: { empleado: string } }) {
 				<div className='flex gap-2'>
 					<Link
 						href={`/dashboard/empleados/${employee.id_empleado}/editar`}
-						className='bg-[var(--green-dark-500)] text-white px-4 py-2 rounded-lg'
+						className='bg-[var(--green-dark-500)] text-white px-4 py-2 rounded-lg hover:bg-[var(--green-dark-600)] transition-colors'
 					>
 						Editar
 					</Link>
@@ -65,22 +65,22 @@ export default function Page({ params }: { params: { empleado: string } }) {
 
 			<Card className='bg-[var(--bg-card-obscure)]'>
 				<CardHeader className='flex gap-4'>
-					<div className='relative w-24 h-24 rounded-full overflow-hidden'>
+					<div className='relative w-32 h-32 rounded-full overflow-hidden border-4 border-[var(--green-dark-500)]'>
 						<Image
-							src={
-								employee.img_url || 'https://i.pravatar.cc/150'
-							}
+							src={employee.img || 'https://i.pravatar.cc/150'}
 							alt={employee.nombre}
 							fill
 							className='object-cover'
 						/>
 					</div>
 					<div>
-						<h2 className='text-xl font-bold'>{employee.nombre}</h2>
-						<p className='text-[var(--children-font)]'>
+						<h2 className='text-2xl font-bold'>
+							{employee.nombre}
+						</h2>
+						<p className='text-[var(--children-font)] text-lg'>
 							{employee.puesto}
 						</p>
-						<p className='text-[var(--children-font)] text-sm'>
+						<p className='text-[var(--children-font)] text-sm mt-1'>
 							ID: {employee.id_empleado}
 						</p>
 					</div>
@@ -91,34 +91,34 @@ export default function Page({ params }: { params: { empleado: string } }) {
 				<CardBody>
 					<div className='grid grid-cols-1 md:grid-cols-2 gap-8'>
 						<div>
-							<h3 className='text-lg font-bold mb-4'>
+							<h3 className='text-xl font-bold mb-4'>
 								Información Personal
 							</h3>
-							<div className='space-y-3 text-[var(--children-font)]'>
-								<p className='flex items-center gap-2'>
-									<UserIcon h={15} color={colorIcons} />
+							<div className='space-y-4 text-[var(--children-font)]'>
+								<p className='flex items-center gap-3'>
+									<UserIcon h={20} color={colorIcons} />
 									{employee.nombre}
 								</p>
-								<p className='flex items-center gap-2'>
-									<EmailIcon h={15} color={colorIcons} />
+								<p className='flex items-center gap-3'>
+									<EmailIcon h={20} color={colorIcons} />
 									{employee.email}
 								</p>
-								<p className='flex items-center gap-2'>
-									<PhoneIcon h={15} color={colorIcons} />
+								<p className='flex items-center gap-3'>
+									<PhoneIcon h={20} color={colorIcons} />
 									{employee.telefono}
 								</p>
-								<p className='flex items-center gap-2'>
-									<InfoHouseIcon h={15} color={colorIcons} />
+								<p className='flex items-center gap-3'>
+									<InfoHouseIcon h={20} color={colorIcons} />
 									{employee.direccion}
 								</p>
 							</div>
 						</div>
 
 						<div>
-							<h3 className='text-lg font-bold mb-4'>
+							<h3 className='text-xl font-bold mb-4'>
 								Información Laboral
 							</h3>
-							<div className='space-y-3 text-[var(--children-font)]'>
+							<div className='space-y-4 text-[var(--children-font)]'>
 								<p>
 									<span className='font-semibold'>
 										Puesto:
@@ -133,7 +133,11 @@ export default function Page({ params }: { params: { empleado: string } }) {
 									<span className='font-semibold'>
 										Salario:
 									</span>{' '}
-									${employee.salario}
+									$
+									{employee.salario.toLocaleString('es-MX', {
+										minimumFractionDigits: 2,
+										maximumFractionDigits: 2,
+									})}
 								</p>
 								<p>
 									<span className='font-semibold'>

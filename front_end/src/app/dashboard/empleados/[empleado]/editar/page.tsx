@@ -87,7 +87,7 @@ export default function EditEmployeePage({
 					if (!prev) return null
 					return {
 						...prev,
-						img_url: reader.result as string,
+						img: reader.result as string,
 					}
 				})
 			}
@@ -223,10 +223,10 @@ export default function EditEmployeePage({
 							Foto del Empleado
 						</h3>
 						<div className='flex items-center gap-4'>
-							{employee.img_url && (
+							{employee.img && (
 								<div className='relative w-32 h-32 rounded-full overflow-hidden'>
 									<Image
-										src={employee.img_url}
+										src={employee.img}
 										alt='Vista previa'
 										fill
 										className='object-cover'

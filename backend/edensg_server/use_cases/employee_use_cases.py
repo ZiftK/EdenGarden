@@ -148,7 +148,7 @@ class EmployeeController:
             # Actualizar la URL de la imagen en la base de datos
             employee = self.find_employee_by_id(employee_id)
             if employee:
-                employee.img_url = public_url
+                employee.img = public_url
                 self.update_employee(employee_id, employee)
             
             return public_url
@@ -164,7 +164,7 @@ class EmployeeController:
             # Actualizar la URL de la imagen en la base de datos
             employee = self.find_employee_by_id(employee_id)
             if employee:
-                employee.img_url = public_url
+                employee.img = public_url
                 self.update_employee(employee_id, employee)
             
             return public_url
@@ -183,7 +183,7 @@ class EmployeeController:
             # Actualizar el empleado para eliminar la URL de la imagen
             employee = self.find_employee_by_id(employee_id)
             if employee:
-                employee.img_url = None
+                employee.img = None
                 self.update_employee(employee_id, employee)
             
             return True
