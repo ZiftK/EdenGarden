@@ -13,6 +13,7 @@ import {
 	Select,
 	SelectItem,
 	Divider,
+	Spinner,
 } from '@heroui/react'
 import { useEmployeeStore } from '@/src/features/Employees/model/employeeStore'
 import Link from 'next/link'
@@ -21,7 +22,7 @@ import { employeeFormStyles } from '@/src/features/Employees/ui/styles/employeeF
 export default function FormNewTeam() {
 	const router = useRouter()
 	const { createTeam } = useTeamStore()
-	const { employees, getAllEmployees } = useEmployeeStore()
+	const { employees, getEmployees, isLoading } = useEmployeeStore()
 	const [formData, setFormData] = useState({
 		nombre: '',
 		lider_id: '',
@@ -30,8 +31,18 @@ export default function FormNewTeam() {
 	const [error, setError] = useState<string | null>(null)
 
 	useEffect(() => {
-		getAllEmployees()
-	}, [getAllEmployees])
+		const fetchEmployees = async () => {
+			try {
+				console.log('Fetching employees...')
+				await getEmployees()
+				console.log('Raw employees data:', employees)
+			} catch (error) {
+				setError('Error al cargar los empleados')
+				console.error('Error fetching employees:', error)
+			}
+		}
+		fetchEmployees()
+	}, [getEmployees])
 
 	const handleSubmit = () => {
 		try {
@@ -53,12 +64,31 @@ export default function FormNewTeam() {
 		}
 	}
 
-	const availableEmployees = employees.filter(
-		(emp) => emp.rol !== 'admin' && !emp.fk_equipo
-	)
-	const leaderEmployees = employees.filter(
-		(emp) => emp.rol === 'leader' && !emp.fk_equipo
-	)
+	const availableEmployees = Array.isArray(employees)
+		? employees.filter((emp) => emp.rol !== 'admin' && !emp.fk_equipo)
+		: []
+
+	const leaderEmployees = Array.isArray(employees)
+		? employees.filter((emp) => emp.rol === 'leader' && !emp.fk_equipo)
+		: []
+
+	console.log('Filtered employees:', {
+		total: employees?.length || 0,
+		available: availableEmployees.length,
+		leaders: leaderEmployees.length,
+		employeesIsArray: Array.isArray(employees),
+		sampleEmployee: employees?.[0],
+		availableEmployeesSample: availableEmployees[0],
+		leaderEmployeesSample: leaderEmployees[0],
+	})
+
+	if (isLoading) {
+		return (
+			<div className='flex justify-center items-center min-h-[200px]'>
+				<Spinner size='lg' />
+			</div>
+		)
+	}
 
 	return (
 		<Card className={employeeFormStyles.container}>
@@ -132,7 +162,11 @@ export default function FormNewTeam() {
 								placeholder='Seleccione los miembros'
 								selectionMode='multiple'
 								selectedKeys={new Set(formData.empleados_ids)}
-								onChange={(e) =>
+								onChange={(e) => {
+									console.log(
+										'Selected members:',
+										e.target.value
+									)
 									setFormData((prev) => ({
 										...prev,
 										empleados_ids: Array.from(
@@ -140,7 +174,7 @@ export default function FormNewTeam() {
 											(option) => option.value
 										),
 									}))
-								}
+								}}
 								classNames={employeeFormStyles.select}
 							>
 								{availableEmployees.map((employee) => (

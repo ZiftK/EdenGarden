@@ -1,5 +1,5 @@
 export const employeeFormStyles = {
-    container: 'w-full max-w-full mx-auto bg-[var(--bg-card-obscure)] h-full min-h-full row-start-2 row-end-4 md:col-start-2',
+    container: 'w-full max-w-full mx-auto bg-[var(--bg-card-obscure)] h-full min-h-full !row-start-2 row-end-4 md:col-start-2',
     title: 'text-xl font-bold text-[var(--father-font)]',
     subtitle: 'text-small text-[var(--children-font)]',
     sectionTitle: 'text-lg font-medium text-[var(--father-font)]',

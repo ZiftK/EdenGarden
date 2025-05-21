@@ -15,16 +15,14 @@ interface EmployeeState {
     
     // Acciones para un empleado específico
     getEmployeeById: (id: string) => Promise<void>;
-    deleteEmployee: (id: string) => Promise<void>;
-    updateEmployee: (id: string, data: Employee) => Promise<void>;
+    deleteEmployee: (id: number) => Promise<void>;
+    updateEmployee: (id: number, data: Employee) => Promise<void>;
     createEmployee: (data: Employee) => Promise<void>;
     
     // Acciones para el estado
     setLoading: (loading: boolean) => void;
     setError: (error: string | null) => void;
     clearCurrentEmployee: () => void;
-
-    getAllEmployees: () => Promise<void>;
 }
 
 export const useEmployeeStore = create<EmployeeState>((set, get) => ({
@@ -39,114 +37,125 @@ export const useEmployeeStore = create<EmployeeState>((set, get) => ({
 
     getEmployees: async () => {
         try {
-            set({ isLoading: true, error: null })
-            const response = await fetcher.get<{message: string, data: Employee[]}>(`${endpoints.employees}`)
-            if (!response || !response.data) {
-                throw new Error('No se encontraron empleados')
+            set({ isLoading: true, error: null });
+            console.log('Fetching employees from API...');
+            
+            const response = await fetch('http://127.0.0.1:8000/employee/all');
+            console.log('API Response status:', response.status);
+            
+            if (!response.ok) {
+                throw new Error(`Error al obtener los empleados: ${response.status} ${response.statusText}`);
             }
-            set({ employees: response.data })
+            
+            const responseData = await response.json();
+            console.log('Raw API response:', responseData);
+            
+            // The API returns { message: string, data: Employee[] }
+            const employeesArray = Array.isArray(responseData.data) ? responseData.data : [];
+            console.log('Processed employees array:', employeesArray);
+            
+            set({ employees: employeesArray, isLoading: false });
         } catch (error) {
-            console.error('Error al obtener los empleados:', error)
-            set({ error: 'Error al obtener los empleados' })
-        } finally {
-            set({ isLoading: false })
+            console.error('Error en getEmployees:', error);
+            set({ employees: [], error: (error as Error).message, isLoading: false });
         }
     },
 
     getLeaders: async () => {
         try {
-            set({ isLoading: true, error: null })
-            const response = await fetcher.get<{message: string, data: Employee[]}>(`${endpoints.employees}`)
-            if (!response || !response.data) {
-                throw new Error('No se encontraron líderes')
+            set({ isLoading: true, error: null });
+            const response = await fetch('http://127.0.0.1:8000/employee/all');
+            if (!response.ok) {
+                throw new Error('No se encontraron líderes');
             }
-            const leaders = response.data.filter(emp => emp.rol === 'leader')
-            return leaders
+            const responseData = await response.json();
+            const allEmployees = Array.isArray(responseData.data) ? responseData.data : [];
+            const leaders = allEmployees.filter((emp: Employee) => emp.rol === 'leader');
+            return leaders;
         } catch (error) {
-            console.error('Error al obtener los líderes:', error)
-            set({ error: 'Error al obtener los líderes' })
-            return []
+            console.error('Error al obtener los líderes:', error);
+            set({ error: 'Error al obtener los líderes' });
+            return [];
         } finally {
-            set({ isLoading: false })
+            set({ isLoading: false });
         }
     },
 
     getEmployeeById: async (id) => {
         try {
             set({ isLoading: true, error: null })
-            const response = await fetcher.get<{message: string, data: Employee}>(`${endpoints.employeeById}/${id}`)
-            if (!response || !response.data) {
+            const response = await fetch(`http://127.0.0.1:8000/employee/id/${id}`)
+            if (!response.ok) {
                 throw new Error('No se encontró el empleado')
             }
-            set({ currentEmployee: response.data })
+            const data = await response.json()
+            set({ currentEmployee: data, isLoading: false })
         } catch (error) {
             console.error('Error al obtener el empleado:', error)
-            set({ error: 'Error al obtener el empleado' })
-        } finally {
-            set({ isLoading: false })
+            set({ error: 'Error al obtener el empleado', isLoading: false })
         }
     },
 
     deleteEmployee: async (id) => {
         try {
             set({ isLoading: true, error: null })
-            await fetcher.delete(`${endpoints.employeeDelete}/${id}`)
-            // Actualizar la lista de empleados después de eliminar
+            const response = await fetch(`http://127.0.0.1:8000/employee/delete/${id}`, {
+                method: 'DELETE'
+            })
+            if (!response.ok) {
+                throw new Error('Error al eliminar el empleado')
+            }
             const updatedEmployees = get().employees.filter(emp => emp.id_empleado !== id)
-            set({ employees: updatedEmployees })
+            set({ employees: updatedEmployees, isLoading: false })
         } catch (error) {
             console.error('Error al eliminar el empleado:', error)
-            set({ error: 'Error al eliminar el empleado' })
-        } finally {
-            set({ isLoading: false })
+            set({ error: 'Error al eliminar el empleado', isLoading: false })
         }
     },
 
     updateEmployee: async (id, data) => {
         try {
             set({ isLoading: true, error: null })
-            await fetcher.put(`${endpoints.employeeUpdate}/${id}`, data)
-            // Actualizar el empleado actual y la lista de empleados
+            const response = await fetch(`http://127.0.0.1:8000/employee/update/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            })
+            if (!response.ok) {
+                throw new Error('Error al actualizar el empleado')
+            }
             set({ currentEmployee: data })
             const updatedEmployees = get().employees.map(emp => 
                 emp.id_empleado === id ? data : emp
             )
-            set({ employees: updatedEmployees })
+            set({ employees: updatedEmployees, isLoading: false })
         } catch (error) {
             console.error('Error al actualizar el empleado:', error)
-            set({ error: 'Error al actualizar el empleado' })
+            set({ error: 'Error al actualizar el empleado', isLoading: false })
             throw error
-        } finally {
-            set({ isLoading: false })
         }
     },
 
     createEmployee: async (data) => {
         try {
             set({ isLoading: true, error: null })
-            await fetcher.post(endpoints.employeeCreate, data)
-            // Actualizar la lista de empleados después de crear uno nuevo
+            const response = await fetch('http://127.0.0.1:8000/employee/create', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            })
+            if (!response.ok) {
+                throw new Error('Error al crear el empleado')
+            }
             await get().getEmployees()
         } catch (error) {
             console.error('Error al crear el empleado:', error)
-            set({ error: 'Error al crear el empleado' })
+            set({ error: 'Error al crear el empleado', isLoading: false })
             throw error
-        } finally {
-            set({ isLoading: false })
-        }
-    },
-
-    getAllEmployees: async () => {
-        try {
-            set({ isLoading: true, error: null })
-            const response = await fetch('http://127.0.0.1:8000/employee/all')
-            if (!response.ok) {
-                throw new Error('Error al obtener los empleados')
-            }
-            const data = await response.json()
-            set({ employees: data, isLoading: false })
-        } catch (error) {
-            set({ error: (error as Error).message, isLoading: false })
         }
     }
 }))
