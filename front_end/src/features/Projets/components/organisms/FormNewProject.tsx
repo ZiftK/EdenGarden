@@ -17,16 +17,16 @@ import { redirect } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
-import { ProjectSendToAPI, ProjectToCreate } from '../../types'
-import { fetcher } from '@/src/shared/api/httpClient'
-import {
-	customDateToDateString,
-	parseDateStringToCustomDate,
-} from '@/src/shared/hooks/useDatesCustoms'
-import { getTeams } from '@/src/features/Teams/api/getTeams'
+import { ProjectSendToAPI } from '../../types'
 import { ClientToCreate } from '../../types/client'
 import { ProjectCalendarToCreate } from '../../types/calendario'
 import { isClientComplete } from '../../model/client.utils'
+import { getTeams } from '@/src/features/Teams/api/getTeams'
+import { createNewProject } from '../../model/project.service'
+import {
+	parseDateStringToCustomDate,
+	customDateToDateString,
+} from '@/src/shared/hooks/useDatesCustoms'
 
 export default function FormNewProject() {
 	const [teams, setTeams] = useState<ShortTeam[]>([])
@@ -113,7 +113,7 @@ export default function FormNewProject() {
 			reader.onload = () => {
 				setNewProject((prev) => ({
 					...prev,
-					image: reader.result as string,
+					img: reader.result as string,
 				}))
 			}
 			reader.readAsDataURL(file)
@@ -121,16 +121,6 @@ export default function FormNewProject() {
 	}
 
 	const handleSubmit = async () => {
-		const client: ClientToCreate = {
-			nombre: newProject.cliente!.nombre!,
-			direccion: newProject.cliente!.direccion!,
-			telefono: newProject.cliente!.telefono!,
-			email: newProject.cliente!.email!,
-		}
-
-		const calendario = newProject?.calendario
-		let imageUrl = null
-
 		try {
 			// Validar cliente
 			if (!isClientComplete(newProject.cliente!)) {
@@ -139,56 +129,37 @@ export default function FormNewProject() {
 				)
 			}
 
-			// Si hay imagen, subirla primero a Supabase
-			if (newProject.img) {
-				const imageResponse = await fetcher.post('/storage/upload', {
-					base64_image: newProject.img,
-					folder: 'projects',
-				})
-				imageUrl = imageResponse.data?.url
-				if (!imageUrl) {
-					throw new Error('Error al subir la imagen')
-				}
+			// Preparar datos para el servicio
+			const projectData = {
+				client: {
+					nombre: newProject.cliente!.nombre!,
+					direccion: newProject.cliente!.direccion!,
+					telefono: newProject.cliente!.telefono!,
+					email: newProject.cliente!.email!,
+				},
+				project: {
+					nombre: newProject.nombre,
+					descripcion: newProject.descripcion,
+					estado: newProject.estado,
+					costo: newProject.costo,
+					equipo: Number(newProject.equipo?.id_equipo),
+				},
+				calendar:
+					newProject.calendario.fecha_inicio &&
+					newProject.calendario.fecha_fin
+						? newProject.calendario
+						: undefined,
+				image: newProject.img || undefined,
 			}
 
-			const clientResponse = await fetcher.post('/client/create', client)
-			const clientId = clientResponse.data?.client_id
-
-			if (!clientId) {
-				throw new Error('Error al crear el cliente')
-			}
-
-			// Crear el proyecto con la URL de la imagen
-			const project: ProjectToCreate = {
-				nombre: newProject.nombre,
-				descripcion: newProject.descripcion,
-				estado: newProject.estado,
-				costo: newProject.costo,
-				cliente: clientId,
-				equipo: Number(newProject.equipo?.id_equipo),
-				img: imageUrl,
-			}
-
-			const projectResponse = await fetcher.post('/project/', project)
-			const projectId = projectResponse.data?.project_id
-
-			if (!projectId) {
-				throw new Error('Error al crear el proyecto')
-			}
-
-			// Crear calendario
-			if (calendario.fecha_inicio && calendario.fecha_fin) {
-				await fetcher.post(
-					`/project/${projectId}/calendar/create`,
-					calendario
-				)
-			}
+			// Crear proyecto usando el servicio
+			const projectId = await createNewProject(projectData)
 
 			// Redirigir al detalle del proyecto
 			redirect(`/dashboard/proyectos/${projectId}`)
-		} catch (error: unknown) {
+		} catch (error) {
+			console.error('Error creating project:', error)
 			if (error.response) {
-				// Error de respuesta del servidor
 				console.error('Error response:', {
 					status: error.response.status,
 					data: error.response.data,
@@ -391,6 +362,8 @@ export default function FormNewProject() {
 							{newProject.img && (
 								<div className='relative w-32 h-24 rounded overflow-hidden'>
 									<Image
+										width={100}
+										height={100}
 										src={newProject.img}
 										alt='Vista previa'
 										className='w-full h-full object-cover'
