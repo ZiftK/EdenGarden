@@ -2,6 +2,7 @@
 
 import { Card, CardBody, CardHeader, Divider } from '@heroui/react'
 import { useEffect } from 'react'
+import { Employee, DateFormat } from '@/src/shared/types'
 import { useEmployeeStore } from '@/src/features/Employees/model/employeeStore'
 import Image from 'next/image'
 import {
@@ -16,6 +17,11 @@ import ModalDeleteEmployee from '@/src/features/Employees/ui/atoms/ModalDeleteEm
 import Link from 'next/link'
 
 const colorIcons = 'var(--children-font)'
+
+const formatDate = (date: DateFormat | null) => {
+	if (!date) return null
+	return `${date.dia}/${date.mes}/${date.anno}`
+}
 
 export default function Page({ params }: { params: { empleado: string } }) {
 	const {
@@ -141,14 +147,18 @@ export default function Page({ params }: { params: { empleado: string } }) {
 									<span className='font-semibold'>
 										Fecha de Contratación:
 									</span>{' '}
-									{currentEmployee.fecha_contratacion}
+									{formatDate(
+										currentEmployee.fecha_contratacion
+									)}
 								</p>
 								{currentEmployee.fecha_salida && (
 									<p>
 										<span className='font-semibold'>
 											Fecha de Salida:
 										</span>{' '}
-										{currentEmployee.fecha_salida}
+										{formatDate(
+											currentEmployee.fecha_salida
+										)}
 									</p>
 								)}
 								{currentEmployee.fecha_recontratacion && (
@@ -156,7 +166,9 @@ export default function Page({ params }: { params: { empleado: string } }) {
 										<span className='font-semibold'>
 											Fecha de Recontratación:
 										</span>{' '}
-										{currentEmployee.fecha_recontratacion}
+										{formatDate(
+											currentEmployee.fecha_recontratacion
+										)}
 									</p>
 								)}
 							</div>
