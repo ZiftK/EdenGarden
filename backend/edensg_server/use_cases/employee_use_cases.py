@@ -189,4 +189,15 @@ class EmployeeController:
             return True
         except Exception as e:
             raise Exception(f"Error al eliminar la imagen del empleado: {str(e)}")
+
+    def get_all_employees(self):
+        """Obtiene todos los empleados del sistema."""
+        try:
+            employees = self.employee_repository.find_all()
+            return {
+                'message': 'Empleados encontrados correctamente',
+                'data': employees
+            }
+        except Exception as e:
+            raise Exception(f"Error al obtener los empleados: {str(e)}")
     

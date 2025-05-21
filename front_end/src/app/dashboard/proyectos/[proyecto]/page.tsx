@@ -71,10 +71,10 @@ export default async function Page({
 						<CardBody className='flex flex-col gap-10 scrollbar-thin-custom px-4'>
 							<div>
 								<Link
-									href={`/dashboard/proyectos/${project.nombre}`}
+									href={`/dashboard/equipos/${project.equipo?.id_equipo}`}
 									className='font-medium text-md'
 								>
-									{project.nombre}
+									{project.equipo?.nombre}
 								</Link>
 								<span className='flex items-center gap-1 text-sm text-[var(--father-font)] mb-3.5'>
 									<GroupIcon h={15} color={colorIcons} />

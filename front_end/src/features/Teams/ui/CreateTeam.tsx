@@ -17,7 +17,7 @@ import { redirect } from 'next/navigation'
 export default function CreateTeam({}) {
 	const initialTeam: ShortTeam = {
 		nombre: '',
-		id_equipo: '',
+		id_equipo: 0,
 		lider: {
 			nombre: '',
 			id_empleado: '',

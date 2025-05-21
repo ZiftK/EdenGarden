@@ -1,5 +1,5 @@
-from pydantic import BaseModel
 from typing import Optional
+from pydantic import BaseModel
 from .time_enums import EnumDays, EnumMonths
 
 class Time(BaseModel):
@@ -38,4 +38,4 @@ class ProjectCalendarToCreate(BaseModel):
     fecha_fin: Date
 
 class ProjectCalendar(ProjectCalendarToCreate):
-    sprint_actual: Sprint
+    sprint_actual: Optional[Sprint] = None
