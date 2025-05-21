@@ -16,6 +16,15 @@ class ImageUpdateRequest(BaseModel):
     image_url: Optional[str] = None
     base64_image: Optional[str] = None
 
+class ProjectUpdateRequest(BaseModel):
+    nombre: Optional[str] = None
+    descripcion: Optional[str] = None
+    estado: Optional[str] = None
+    costo: Optional[float] = None
+    cliente: Optional[int] = None
+    equipo: Optional[int] = None
+    img: Optional[str] = None
+
 @router.post("/", status_code=status.HTTP_201_CREATED)
 async def create_project(project: ProjectToCreate):
     try:
@@ -121,6 +130,17 @@ async def delete_project_calendar(project_id: int):
 async def delete_project(project_id: int):
     try:
         result = await project_controller.delete_project(project_id)
+        return result
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+
+@router.patch("/{project_id}", status_code=status.HTTP_200_OK)
+async def update_project(project_id: int, project: ProjectUpdateRequest):
+    try:
+        result = project_controller.update_project(project_id, project)
         return result
     except Exception as e:
         raise HTTPException(

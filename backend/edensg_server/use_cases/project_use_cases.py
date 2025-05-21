@@ -194,3 +194,22 @@ class ProjectController():
             }
         except Exception as e:
             raise Exception(f"Error al eliminar el proyecto: {str(e)}")
+
+    def update_project(self, project_id: int, project_data: dict) -> dict:
+        """
+        Actualiza un proyecto existente.
+        """
+        try:
+            # Verificar que el proyecto existe
+            current_project = self.project_repository.find_project(project_id)
+            if not current_project:
+                raise Exception(f"No se encontró el proyecto con ID {project_id}")
+
+            # Actualizar el proyecto
+            self.project_repository.update_project(project_id, project_data)
+            
+            return {
+                'message': 'Proyecto actualizado correctamente'
+            }
+        except Exception as e:
+            raise Exception(f"Error al actualizar el proyecto: {str(e)}")

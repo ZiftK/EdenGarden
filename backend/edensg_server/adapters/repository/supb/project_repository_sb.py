@@ -24,31 +24,41 @@ class ProjectRepositorySB():
         '''
         Creates a new project in the database.
         '''
-        # Verificar que el cliente existe
-        client_response = self.client.table('cliente').select('*').eq('id_cliente', project.cliente).execute()
-        if not client_response.data:
-            raise Exception(f"No se encontró el cliente con ID {project.cliente}")
+        try:
+            # Verificar que el cliente existe
+            client_response = self.client.table('cliente').select('*').eq('id_cliente', project.cliente).execute()
+            if not client_response.data:
+                raise Exception(f"No se encontró el cliente con ID {project.cliente}")
 
-        # Verificar que el equipo existe si se proporciona
-        if project.equipo:
-            team_response = self.client.table('equipo').select('*').eq('id_equipo', project.equipo).execute()
-            if not team_response.data:
-                raise Exception(f"No se encontró el equipo con ID {project.equipo}")
+            # Verificar que el equipo existe si se proporciona
+            if project.equipo:
+                team_response = self.client.table('equipo').select('*').eq('id_equipo', project.equipo).execute()
+                if not team_response.data:
+                    raise Exception(f"No se encontró el equipo con ID {project.equipo}")
 
-        # Crear el proyecto
-        result = self.client.table('proyecto').insert({
-            'nombre': project.nombre,
-            'descripcion': project.descripcion,
-            'estado': project.estado,
-            'costo': project.costo,
-            'fk_cliente': project.cliente,
-            'fk_equipo': project.equipo,
-        }).execute()
+            # Crear el proyecto
+            result = self.client.table('proyecto').insert({
+                'nombre': project.nombre,
+                'descripcion': project.descripcion,
+                'estado': project.estado,
+                'costo': project.costo,
+                'fk_cliente': project.cliente,
+                'fk_equipo': project.equipo,
+                'img': project.img if project.img else None
+            }).execute()
 
-        # Obtener el ID del proyecto creado
-        project_id = result.data[0]['id_proyecto']
+            if not result.data:
+                raise Exception("Error al crear el proyecto: no se recibió respuesta del servidor")
 
-        return project_id
+            # Obtener el ID del proyecto creado
+            project_id = result.data[0]['id_proyecto']
+            if not project_id:
+                raise Exception("Error al crear el proyecto: no se recibió el ID del proyecto")
+
+            return project_id
+        except Exception as e:
+            print(f"Error al crear el proyecto: {str(e)}")
+            raise e
     
     def update_project_image(self, project_id: int, image_url: str)-> None:
         '''
@@ -223,7 +233,7 @@ class ProjectRepositorySB():
                     mes=EnumMonths(int(calendar_data['fecha_fin'].split('-')[1])),
                     anno=int(calendar_data['fecha_fin'].split('-')[0])
                 ),
-                sprint_actual=sprint
+                sprint_actual=sprint if sprint else None
             )
 
         # Obtener el cliente del proyecto
@@ -365,3 +375,32 @@ class ProjectRepositorySB():
 
         # Eliminar el proyecto
         self.client.table('proyecto').delete().eq('id_proyecto', project_id).execute()
+
+    def update_project(self, project_id: int, project_data: dict) -> None:
+        '''
+        Updates a project in the database.
+        '''
+        # Verificar que el proyecto existe
+        project = self.client.table('proyecto').select('*').eq('id_proyecto', project_id).execute().data
+        if not project:
+            raise Exception(f"No se encontró el proyecto con ID {project_id}")
+
+        # Preparar los datos para actualizar
+        update_data = {}
+        if project_data.get('nombre') is not None:
+            update_data['nombre'] = project_data['nombre']
+        if project_data.get('descripcion') is not None:
+            update_data['descripcion'] = project_data['descripcion']
+        if project_data.get('estado') is not None:
+            update_data['estado'] = project_data['estado']
+        if project_data.get('costo') is not None:
+            update_data['costo'] = project_data['costo']
+        if project_data.get('cliente') is not None:
+            update_data['fk_cliente'] = project_data['cliente']
+        if project_data.get('equipo') is not None:
+            update_data['fk_equipo'] = project_data['equipo']
+        if project_data.get('img') is not None:
+            update_data['img'] = project_data['img']
+
+        # Actualizar el proyecto
+        self.client.table('proyecto').update(update_data).eq('id_proyecto', project_id).execute()

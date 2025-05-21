@@ -22,29 +22,74 @@ import { ClientToCreate } from '../../types/client'
 import { ProjectCalendarToCreate } from '../../types/calendario'
 import { isClientComplete } from '../../model/client.utils'
 import { getTeams } from '@/src/features/Teams/api/getTeams'
-import { createNewProject } from '../../model/project.service'
+import {
+	createNewProject,
+	createNewProjectWithImage,
+	CreateProjectData,
+} from '../../model/project.service'
 import {
 	parseDateStringToCustomDate,
 	customDateToDateString,
 } from '@/src/shared/hooks/useDatesCustoms'
+import { uploadProjectImage } from '../../api/createProject'
+import { EnumMonths } from '../../types/time_enums'
+
+interface FormProject {
+	nombre: string
+	descripcion: string
+	estado: string
+	costo: number
+	cliente: ClientToCreate
+	equipo: ShortTeam
+	calendario: {
+		fecha_inicio: ProjectCalendarToCreate['fecha_inicio']
+		fecha_fin: ProjectCalendarToCreate['fecha_fin']
+	}
+	img?: string
+	[key: string]: any
+}
 
 export default function FormNewProject() {
 	const [teams, setTeams] = useState<ShortTeam[]>([])
-	const [newProject, setNewProject] = useState<
-		ProjectSendToAPI<
-			Partial<ClientToCreate>,
-			Partial<ProjectCalendarToCreate>
-		>
-	>({
-		id_proyecto: 0,
-		cliente: {},
-		calendario: {},
-		equipo: {} as ShortTeam,
+	const [newProject, setNewProject] = useState<FormProject>({
 		nombre: '',
+		descripcion: '',
 		estado: 'PENDIENTE',
 		costo: 0,
+		cliente: {
+			nombre: '',
+			direccion: '',
+			telefono: '',
+			email: '',
+		},
+		equipo: {
+			id_equipo: 0,
+			nombre: '',
+			lider: {
+				id_empleado: '',
+				nombre: '',
+				email: '',
+				telefono: '',
+				img: '',
+				rol: 'user',
+				puesto: '',
+				salario: 0,
+			},
+			empleados: [],
+		},
+		calendario: {
+			fecha_inicio: {
+				dia: 0,
+				mes: EnumMonths.Enero,
+				anno: 0,
+			},
+			fecha_fin: {
+				dia: 0,
+				mes: EnumMonths.Enero,
+				anno: 0,
+			},
+		},
 		img: '',
-		descripcion: '',
 	})
 
 	const [selectedTeamKey, setSelectedTeamKey] = useState<Set<string>>(
@@ -100,13 +145,13 @@ export default function FormNewProject() {
 		if (name.includes('.')) {
 			const [parent, child] = name.split('.')
 			setNewProject((prev) => {
-				if (parent === 'cliente') {
+				if (parent === 'cliente' && prev.cliente) {
 					return {
 						...prev,
 						cliente: {
 							...prev.cliente,
 							[child]: value,
-						},
+						} as ClientToCreate,
 					}
 				}
 				if (parent === 'calendario') {
@@ -166,7 +211,7 @@ export default function FormNewProject() {
 			}
 
 			// Preparar datos para el servicio
-			const projectData = {
+			const projectData: CreateProjectData = {
 				cliente: {
 					nombre: newProject.cliente!.nombre!,
 					direccion: newProject.cliente!.direccion!,
@@ -183,7 +228,11 @@ export default function FormNewProject() {
 				calendario:
 					newProject.calendario.fecha_inicio &&
 					newProject.calendario.fecha_fin
-						? newProject.calendario
+						? {
+								fecha_inicio:
+									newProject.calendario.fecha_inicio,
+								fecha_fin: newProject.calendario.fecha_fin,
+							}
 						: undefined,
 				img: newProject.img?.startsWith('data:image/')
 					? newProject.img
@@ -193,31 +242,14 @@ export default function FormNewProject() {
 			console.log('Datos del proyecto a enviar:', projectData)
 
 			// Crear proyecto usando el servicio
-			const projectId = await createNewProject(projectData)
+			const projectId = await createNewProjectWithImage(projectData)
 
 			// Redirigir al detalle del proyecto
 			if (projectId) {
 				redirect(`/dashboard/proyectos/${projectId}`)
 			}
-		} catch (error: unknown) {
-			console.error('Error creating project:', error)
-			if (error instanceof Error) {
-				if ('response' in error) {
-					const apiError = error as {
-						response: { status: number; data: any; headers: any }
-					}
-					console.error('Error response:', {
-						status: apiError.response.status,
-						data: apiError.response.data,
-						headers: apiError.response.headers,
-					})
-				} else if ('request' in error) {
-					const requestError = error as { request: any }
-					console.error('Error request:', requestError.request)
-				} else {
-					console.error('Error message:', error.message)
-				}
-			}
+		} catch (error) {
+			console.error('Error al crear el proyecto:', error)
 			throw error
 		}
 	}

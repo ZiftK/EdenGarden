@@ -10,9 +10,9 @@ import {
     uploadProjectImage,
     deleteProjectImage
 } from '../api/createProject'
-import { fetcher } from '../api/fetcher'
+import { fetcher } from '@/src/shared/api/httpClient'
 
-interface CreateProjectData {
+export interface CreateProjectData {
     cliente: ClientToCreate;
     proyecto: {
         nombre: string;
@@ -25,16 +25,35 @@ interface CreateProjectData {
     img?: string;
 }
 
+export const createNewProjectWithImage = async (data: CreateProjectData): Promise<number> => {
+    // Create the project first
+    const projectId = await createNewProject(data)
+
+    // If we have an image and project was created successfully, upload the image
+    if (projectId && data.img) {
+        try {
+            await uploadProjectImage(projectId, data.img)
+        } catch (error) {
+            console.error('Error al subir la imagen:', error)
+            // Don't throw here, allow the project creation to succeed
+        }
+    }
+
+    return projectId
+}
+
 export const createNewProject = async (data: CreateProjectData) => {
     let clientId: number | null = null;
     let projectId: number | null = null;
-    let imageUrl: string | null = null;
     let calendarCreated = false;
 
     try {
         // 1. Crear cliente
         try {
             clientId = await createClient(data.cliente);
+            if (!clientId) {
+                throw new Error('No se recibió el ID del cliente al crearlo');
+            }
         } catch (error) {
             console.error('Error al crear el cliente:', error);
             throw new Error(error instanceof Error ? error.message : 'Error al crear el cliente');
@@ -53,9 +72,20 @@ export const createNewProject = async (data: CreateProjectData) => {
 
         try {
             projectId = await createProject(projectData);
-            console.log('Datos enviados al crear proyecto:', projectData);
+            if (!projectId) {
+                throw new Error('No se recibió el ID del proyecto al crearlo');
+            }
+            console.log('Proyecto creado con ID:', projectId);
         } catch (error) {
             console.error('Error al crear el proyecto:', error);
+            // Si falla la creación del proyecto, eliminamos el cliente
+            if (clientId) {
+                try {
+                    await deleteClient(clientId);
+                } catch (deleteError) {
+                    console.error('Error al eliminar el cliente durante rollback:', deleteError);
+                }
+            }
             throw error;
         }
 
@@ -70,33 +100,28 @@ export const createNewProject = async (data: CreateProjectData) => {
                 calendarCreated = true;
             } catch (error) {
                 console.error('Error al crear el calendario:', error);
-                throw new Error(error instanceof Error ? error.message : 'Error al crear el calendario');
-            }
-        }
-
-        // 4. Subir imagen si existe
-        if (data.img && projectId) {
-            try {
-                imageUrl = await uploadProjectImage(projectId, data.img);
-                // Actualizar el proyecto con la URL de la imagen
-                await fetcher.patch(`/project/${projectId}`, {
-                    img: imageUrl
+                // Si falla la creación del calendario, hacemos rollback del proyecto y cliente
+                await handleRollback({
+                    clientId,
+                    projectId,
+                    hasCalendar: false,
+                    hasImage: false
                 });
-            } catch (error) {
-                console.error('Error al subir la imagen:', error);
-                throw new Error(error instanceof Error ? error.message : 'Error al subir la imagen');
+                throw new Error(error instanceof Error ? error.message : 'Error al crear el calendario');
             }
         }
 
         return projectId;
     } catch (error) {
         // Rollback en caso de error
-        await handleRollback({
-            clientId,
-            projectId,
-            hasCalendar: calendarCreated,
-            hasImage: !!imageUrl
-        });
+        if (clientId || projectId) {
+            await handleRollback({
+                clientId,
+                projectId,
+                hasCalendar: calendarCreated,
+                hasImage: false
+            });
+        }
         throw error;
     }
 };

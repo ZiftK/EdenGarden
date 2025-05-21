@@ -41,6 +41,10 @@ export const uploadProjectImage = async (projectId: number, base64Image: string)
         throw new Error('Failed to upload image');
     }
     
+    await fetcher.patch<{message: string}>(`/project/${projectId}`, {
+        img: response.image_url
+    });
+    
     return response.image_url;
 }
 
