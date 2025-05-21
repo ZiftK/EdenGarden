@@ -8,3 +8,5 @@ export type ClientToCreate = {
     telefono: string;
     email: string;
 }
+
+export type ClientFromAPI = ClientToCreate & Client;

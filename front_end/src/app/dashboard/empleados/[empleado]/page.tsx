@@ -44,7 +44,7 @@ export default function Page({ params }: { params: { empleado: string } }) {
 	if (!currentEmployee) return <div>Empleado no encontrado</div>
 
 	return (
-		<section className='mt-4 text-[var(--father-font)] md:row-start-2 md:row-end-4 xl:col-start-2'>
+		<section className='h-full mt-4 text-[var(--father-font)] !row-start-2 !row-end-4 xl:col-start-2'>
 			<div className='flex justify-between items-center mb-4'>
 				<h1 className='text-2xl font-bold'>Detalles del Empleado</h1>
 				<div className='flex gap-2'>
@@ -61,7 +61,7 @@ export default function Page({ params }: { params: { empleado: string } }) {
 				</div>
 			</div>
 
-			<Card className='bg-[var(--bg-card-obscure)]'>
+			<Card className='!relative z-0 overflow-hidden bg-[var(--bg-card-obscure)]'>
 				<CardHeader className='flex gap-4'>
 					<div className='relative w-32 h-32 rounded-full overflow-hidden border-4 border-[var(--green-dark-500)]'>
 						<Image
@@ -75,7 +75,7 @@ export default function Page({ params }: { params: { empleado: string } }) {
 						/>
 					</div>
 					<div>
-						<h2 className='text-2xl font-bold'>
+						<h2 className='text-2xl font-bold  text-[var(--father-font)]'>
 							{currentEmployee.nombre}
 						</h2>
 						<p className='text-[var(--children-font)] text-lg'>
@@ -92,7 +92,7 @@ export default function Page({ params }: { params: { empleado: string } }) {
 				<CardBody>
 					<div className='grid grid-cols-1 md:grid-cols-2 gap-8'>
 						<div>
-							<h3 className='text-xl font-bold mb-4'>
+							<h3 className='text-xl font-bold mb-4  text-[var(--father-font)]'>
 								Información Personal
 							</h3>
 							<div className='space-y-4 text-[var(--children-font)]'>
@@ -116,7 +116,7 @@ export default function Page({ params }: { params: { empleado: string } }) {
 						</div>
 
 						<div>
-							<h3 className='text-xl font-bold mb-4'>
+							<h3 className='text-xl font-bold mb-4  text-[var(--father-font)]'>
 								Información Laboral
 							</h3>
 							<div className='space-y-4 text-[var(--children-font)]'>

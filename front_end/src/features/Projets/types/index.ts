@@ -1,4 +1,4 @@
-import { Client, ClientToCreate } from "./client"
+import { Client, ClientToCreate, ClientFromAPI } from "./client"
 import { Team } from "../../Teams/types/teamFromAPI"
 import { ShortTeam } from "@/src/shared/types"
 import { Date, ProjectCalendarToCreate } from "./calendario"
@@ -26,7 +26,7 @@ export interface ProjectBase {
 
 
 export interface ProjectFromAPI extends ProjectBase {
-    cliente: Client;  
+    cliente: ClientFromAPI;  
     equipo?: Team;    
 }
 

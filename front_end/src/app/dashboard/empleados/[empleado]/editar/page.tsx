@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { Employee } from '@/src/shared/types'
+import { Employee, DateFormat } from '@/src/shared/types'
 import { useEmployeeStore } from '@/src/features/Employees/model/employeeStore'
 import {
 	Card,
@@ -17,17 +17,7 @@ import {
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
-
-const classNames = {
-	input: {
-		base: '[&>div>input]:!text-[var(--father-font)] [&>div>label]:!text-[var(--father-font)]',
-		label: 'text-[var(--father-font)]',
-	},
-	select: {
-		base: '[&>div>button]:!text-[var(--father-font)] [&>div>label]:!text-[var(--father-font)]',
-		label: 'text-[var(--father-font)]',
-	},
-}
+import { employeeFormStyles } from '@/src/features/Employees/ui/styles/employeeForm'
 
 export default function EditEmployeePage({
 	params,
@@ -107,13 +97,11 @@ export default function EditEmployeePage({
 	if (!editedEmployee) return <div>Empleado no encontrado</div>
 
 	return (
-		<Card className='!relative z-0 max-w-3xl mx-auto bg-[var(--bg-card-obscure)] overflow-hidden'>
+		<Card className={employeeFormStyles.container}>
 			<CardHeader className='flex gap-3'>
 				<div className='flex flex-col'>
-					<p className='text-xl font-bold text-[var(--father-font)]'>
-						Editar Empleado
-					</p>
-					<p className='text-small text-[var(--children-font)]'>
+					<p className={employeeFormStyles.title}>Editar Empleado</p>
+					<p className={employeeFormStyles.subtitle}>
 						Modifica los campos que desees actualizar
 					</p>
 				</div>
@@ -122,18 +110,18 @@ export default function EditEmployeePage({
 			<CardBody>
 				<div className='space-y-4'>
 					{/* Información Personal */}
-					<div className='space-y-2'>
-						<h3 className='text-lg font-medium text-[var(--father-font)]'>
+					<div className={employeeFormStyles.form.section}>
+						<h3 className={employeeFormStyles.sectionTitle}>
 							Información Personal
 						</h3>
-						<div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+						<div className={employeeFormStyles.form.grid}>
 							<Input
 								label='Nombre Completo'
 								name='nombre'
 								value={editedEmployee.nombre}
 								onChange={handleChange}
 								isRequired
-								classNames={classNames.input}
+								classNames={employeeFormStyles.input}
 							/>
 							<Input
 								label='Correo Electrónico'
@@ -142,7 +130,7 @@ export default function EditEmployeePage({
 								value={editedEmployee.email}
 								onChange={handleChange}
 								isRequired
-								classNames={classNames.input}
+								classNames={employeeFormStyles.input}
 							/>
 							<Input
 								label='Teléfono'
@@ -150,7 +138,7 @@ export default function EditEmployeePage({
 								value={editedEmployee.telefono}
 								onChange={handleChange}
 								isRequired
-								classNames={classNames.input}
+								classNames={employeeFormStyles.input}
 							/>
 							<Input
 								label='Dirección'
@@ -158,24 +146,24 @@ export default function EditEmployeePage({
 								value={editedEmployee.direccion}
 								onChange={handleChange}
 								isRequired
-								classNames={classNames.input}
+								classNames={employeeFormStyles.input}
 							/>
 						</div>
 					</div>
 
 					{/* Información Laboral */}
-					<div className='space-y-2'>
-						<h3 className='text-lg font-medium text-[var(--father-font)]'>
+					<div className={employeeFormStyles.form.section}>
+						<h3 className={employeeFormStyles.sectionTitle}>
 							Información Laboral
 						</h3>
-						<div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+						<div className={employeeFormStyles.form.grid}>
 							<Input
 								label='Puesto'
 								name='puesto'
 								value={editedEmployee.puesto}
 								onChange={handleChange}
 								isRequired
-								classNames={classNames.input}
+								classNames={employeeFormStyles.input}
 							/>
 							<Input
 								label='Salario'
@@ -185,7 +173,7 @@ export default function EditEmployeePage({
 								onChange={handleChange}
 								placeholder='$0.00'
 								isRequired
-								classNames={classNames.input}
+								classNames={employeeFormStyles.input}
 							/>
 							<Select
 								label='Rol'
@@ -194,7 +182,7 @@ export default function EditEmployeePage({
 									handleSelectChange('rol', e.target.value)
 								}
 								className='w-full'
-								classNames={classNames.select}
+								classNames={employeeFormStyles.select}
 							>
 								<SelectItem key='user' textValue='Usuario'>
 									Usuario
@@ -213,13 +201,17 @@ export default function EditEmployeePage({
 					</div>
 
 					{/* Sección de Imagen */}
-					<div className='mt-4'>
-						<h3 className='text-lg font-medium mb-2 text-[var(--father-font)]'>
+					<div className={employeeFormStyles.imageSection.container}>
+						<h3 className={employeeFormStyles.sectionTitle}>
 							Foto del Empleado
 						</h3>
 						<div className='flex items-center gap-4'>
 							{editedEmployee.img && (
-								<div className='relative w-32 h-32 rounded-full overflow-hidden'>
+								<div
+									className={
+										employeeFormStyles.imageSection.preview
+									}
+								>
 									<Image
 										src={editedEmployee.img}
 										alt='Vista previa'
@@ -233,7 +225,7 @@ export default function EditEmployeePage({
 								accept='image/*'
 								onChange={handleImageChange}
 								label='Seleccionar imagen'
-								classNames={classNames.input}
+								classNames={employeeFormStyles.input}
 							/>
 						</div>
 					</div>
@@ -242,9 +234,9 @@ export default function EditEmployeePage({
 
 			<Divider />
 
-			<CardFooter className='flex justify-start flex-row-reverse gap-2'>
+			<CardFooter className={employeeFormStyles.footer.container}>
 				<Button
-					className='bg-[var(--green-dark-500)] text-white text-sm px-3 py-2'
+					className={employeeFormStyles.footer.saveButton}
 					size='sm'
 					onPress={handleSubmit}
 				>
@@ -252,7 +244,7 @@ export default function EditEmployeePage({
 				</Button>
 
 				<Link
-					className='bg-gray-600 text-white text-sm py-1.5 px-3 rounded-lg flex items-center justify-center hover:bg-gray-700 transition-colors'
+					className={employeeFormStyles.footer.cancelButton}
 					href={`/dashboard/empleados/${editedEmployee.id_empleado}`}
 				>
 					Cancelar
