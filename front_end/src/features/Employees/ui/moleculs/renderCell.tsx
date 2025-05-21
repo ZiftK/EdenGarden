@@ -1,13 +1,19 @@
-import { Employee } from '@/src/shared/types'
+import { Employee, DateFormat } from '@/src/shared/types'
 import { User, Tooltip, Button } from '@heroui/react'
 import { EditIcon, EyeIcon } from '@/src/features/Employees/ui/moleculs/Icons'
 import ModalDeleteEmployee from '../atoms/ModalDeleteEmployee'
 import Link from 'next/link'
+import { ReactNode } from 'react'
+
+const formatDate = (date: DateFormat | null): string => {
+	if (!date) return ''
+	return `${date.dia}/${date.mes}/${date.anno}`
+}
 
 export function renderCell(
 	user: Employee,
 	columnKey: keyof Employee | 'actions'
-) {
+): ReactNode {
 	const cellValue = user[columnKey as keyof Employee]
 
 	switch (columnKey) {
@@ -27,6 +33,10 @@ export function renderCell(
 					<p className='text-bold text-sm capitalize'>{cellValue}</p>
 				</div>
 			)
+		case 'fecha_contratacion':
+		case 'fecha_salida':
+		case 'fecha_recontratacion':
+			return <span>{formatDate(cellValue as DateFormat | null)}</span>
 		case 'actions':
 			return (
 				<div className='relative flex items-center gap-2 mx-auto justify-center'>
@@ -60,6 +70,10 @@ export function renderCell(
 				</div>
 			)
 		default:
-			return cellValue
+			if (cellValue === null || cellValue === undefined)
+				return <span></span>
+			if (typeof cellValue === 'object')
+				return <span>{JSON.stringify(cellValue)}</span>
+			return <span>{String(cellValue)}</span>
 	}
 }

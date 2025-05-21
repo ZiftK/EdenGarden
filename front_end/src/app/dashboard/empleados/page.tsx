@@ -12,28 +12,28 @@ import {
 	TableHeader,
 	TableRow,
 } from '@heroui/react'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect } from 'react'
+import { useEmployeeStore } from '@/src/features/Employees/model/employeeStore'
+
+type ColumnKey = keyof Employee | 'actions'
 
 export default function Page() {
-	const [emplooyes, setEmployees] = useState<Employee[]>([])
+	const { employees, getEmployees, isLoading, error } = useEmployeeStore()
+
 	useEffect(() => {
-		const fetchEmployees = async () => {
-			try {
-				const employees = await getEmployees()
-				setEmployees(employees)
-			} catch (error) {
-				console.error('Error fetching employees:', error)
-			}
-		}
-		fetchEmployees()
-	}, [])
+		getEmployees()
+	}, [getEmployees])
 
 	const columns = [
-		{ uid: 'nombre', name: 'Nombre' },
-		{ uid: 'rol', name: 'Rol' },
-		{ uid: 'actions', name: 'Acciones' },
+		{ uid: 'nombre' as ColumnKey, name: 'Nombre' },
+		{ uid: 'rol' as ColumnKey, name: 'Rol' },
+		{ uid: 'actions' as ColumnKey, name: 'Acciones' },
 	]
 	const render = useCallback(renderCell, [])
+
+	if (isLoading) return <div>Cargando...</div>
+	if (error) return <div className='text-red-500'>{error}</div>
+
 	return (
 		<section
 			aria-labelledby='dashboard-section-title'
@@ -66,11 +66,13 @@ export default function Page() {
 						</TableColumn>
 					)}
 				</TableHeader>
-				<TableBody items={emplooyes} className='overflow-y-auto'>
+				<TableBody items={employees}>
 					{(item) => (
 						<TableRow key={item.id_empleado}>
 							{(columnKey) => (
-								<TableCell>{render(item, columnKey)}</TableCell>
+								<TableCell>
+									{render(item, columnKey as ColumnKey)}
+								</TableCell>
 							)}
 						</TableRow>
 					)}
