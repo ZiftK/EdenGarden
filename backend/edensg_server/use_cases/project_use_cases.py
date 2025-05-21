@@ -160,11 +160,6 @@ class ProjectController():
         Elimina el calendario de un proyecto.
         """
         try:
-            # Verificar que el proyecto existe
-            project = self.project_repository.find_project(project_id)
-            if not project:
-                raise Exception(f"No se encontró el proyecto con ID {project_id}")
-
             # Eliminar el calendario
             self.project_repository.delete_project_calendar(project_id)
             

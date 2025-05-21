@@ -107,8 +107,13 @@ async def delete_project_calendar(project_id: int):
         result = project_controller.delete_project_calendar(project_id)
         return result
     except Exception as e:
+        if "No se encontró el proyecto" in str(e):
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=str(e)
+            )
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=str(e)
         )
 

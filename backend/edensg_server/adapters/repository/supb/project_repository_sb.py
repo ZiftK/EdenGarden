@@ -329,24 +329,30 @@ class ProjectRepositorySB():
         """
         Elimina el calendario de un proyecto.
         """
-        # Obtener el ID del calendario del proyecto
-        project = self.client.table('proyecto').select('fk_calendario').eq('id_proyecto', project_id).execute().data[0]
-        
-        if not project['fk_calendario']:
-            return  # No hay calendario que eliminar
+        try:
+            # Obtener el ID del calendario del proyecto
+            project = self.client.table('proyecto').select('fk_calendario').eq('id_proyecto', project_id).execute().data
             
-        calendar_id = project['fk_calendario']
-        
-        # Eliminar cualquier sprint asociado primero
-        calendar = self.client.table('calendario_proyecto').select('fk_sprint').eq('id_calendario', calendar_id).execute().data[0]
-        if calendar and calendar['fk_sprint']:
-            self.client.table('sprint').delete().eq('id_sprint', calendar['fk_sprint']).execute()
-        
-        # Actualizar el proyecto para quitar la referencia al calendario
-        self.client.table('proyecto').update({'fk_calendario': None}).eq('id_proyecto', project_id).execute()
-        
-        # Eliminar el calendario
-        self.client.table('calendario_proyecto').delete().eq('id_calendario', calendar_id).execute()
+            if not project:
+                return  # No existe el proyecto
+                
+            if not project[0]['fk_calendario']:
+                return  # No hay calendario que eliminar
+                
+            calendar_id = project[0]['fk_calendario']
+            
+            # Eliminar cualquier sprint asociado primero
+            calendar = self.client.table('calendario_proyecto').select('fk_sprint').eq('id_calendario', calendar_id).execute().data
+            if calendar and calendar[0]['fk_sprint']:
+                self.client.table('sprint').delete().eq('id_sprint', calendar[0]['fk_sprint']).execute()
+            
+            # Actualizar el proyecto para quitar la referencia al calendario
+            self.client.table('proyecto').update({'fk_calendario': None}).eq('id_proyecto', project_id).execute()
+            
+            # Eliminar el calendario
+            self.client.table('calendario_proyecto').delete().eq('id_calendario', calendar_id).execute()
+        except Exception as e:
+            raise Exception(f"Error al eliminar el calendario: {str(e)}")
 
     def delete_project(self, project_id: int)-> None:
         '''

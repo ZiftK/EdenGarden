@@ -33,13 +33,15 @@ export const deleteProjectCalendar = async (projectId: number): Promise<void> =>
 }
 
 export const uploadProjectImage = async (projectId: number, base64Image: string): Promise<string> => {
-    const response = await fetcher.post<ImageApiResponse>(`/project/${projectId}/image`, {
+    const response = await fetcher.post<{success: boolean, image_url: string}>(`/project/${projectId}/image`, {
         base64_image: base64Image
-    })
-    if (!response?.url) {
-        throw new Error('Failed to upload image')
+    });
+    
+    if (!response?.image_url) {
+        throw new Error('Failed to upload image');
     }
-    return response.url
+    
+    return response.image_url;
 }
 
 export const deleteProjectImage = async (projectId: number): Promise<void> => {

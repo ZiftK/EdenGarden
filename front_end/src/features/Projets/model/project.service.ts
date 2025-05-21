@@ -10,6 +10,7 @@ import {
     uploadProjectImage,
     deleteProjectImage
 } from '../api/createProject'
+import { fetcher } from '../api/fetcher'
 
 interface CreateProjectData {
     cliente: ClientToCreate;
@@ -77,6 +78,10 @@ export const createNewProject = async (data: CreateProjectData) => {
         if (data.img && projectId) {
             try {
                 imageUrl = await uploadProjectImage(projectId, data.img);
+                // Actualizar el proyecto con la URL de la imagen
+                await fetcher.patch(`/project/${projectId}`, {
+                    img: imageUrl
+                });
             } catch (error) {
                 console.error('Error al subir la imagen:', error);
                 throw new Error(error instanceof Error ? error.message : 'Error al subir la imagen');
