@@ -13,7 +13,7 @@ import {
 
 interface CreateProjectData {
     client: ClientToCreate;
-    project: ProjectToCreate;
+    project: Omit<ProjectToCreate, 'cliente' | 'img'>;
     calendar?: ProjectCalendarToCreate;
     image?: string;
 }
@@ -24,31 +24,46 @@ export const createNewProject = async (data: CreateProjectData) => {
     let imageUrl: string | null = null;
 
     try {
-        // 1. Subir imagen si existe
-        if (data.image) {
-            imageUrl = await uploadProjectImage(data.image);
+        // 1. Crear cliente
+        try {
+            clientId = await createClient(data.client);
+        } catch (error) {
+            console.error('Error al crear el cliente:', error);
+            throw new Error(error instanceof Error ? error.message : 'Error al crear el cliente');
         }
 
-        // 2. Crear cliente
-        clientId = await createClient(data.client);
-        if (!clientId) {
-            throw new Error('Error al crear el cliente');
-        }
-
-        // 3. Crear proyecto
-        const projectData = {
+        // 2. Crear proyecto
+        const projectData: ProjectToCreate = {
             ...data.project,
             cliente: clientId,
-            img: imageUrl
+            img: '' // Placeholder, will be updated after image upload
         };
-        projectId = await createProject(projectData);
-        if (!projectId) {
-            throw new Error('Error al crear el proyecto');
+
+        try {
+            projectId = await createProject(projectData);
+        } catch (error) {
+            console.error('Error al crear el proyecto:', error);
+            throw new Error(error instanceof Error ? error.message : 'Error al crear el proyecto');
+        }
+
+        // 3. Subir imagen si existe
+        if (data.image && projectId) {
+            try {
+                imageUrl = await uploadProjectImage(projectId, data.image);
+            } catch (error) {
+                console.error('Error al subir la imagen:', error);
+                throw new Error(error instanceof Error ? error.message : 'Error al subir la imagen');
+            }
         }
 
         // 4. Crear calendario si existe
-        if (data.calendar) {
-            await createProjectCalendar(projectId, data.calendar);
+        if (data.calendar && projectId) {
+            try {
+                await createProjectCalendar(projectId, data.calendar);
+            } catch (error) {
+                console.error('Error al crear el calendario:', error);
+                throw new Error(error instanceof Error ? error.message : 'Error al crear el calendario');
+            }
         }
 
         return projectId;
@@ -60,7 +75,7 @@ export const createNewProject = async (data: CreateProjectData) => {
             hasCalendar: !!data.calendar,
             hasImage: !!imageUrl
         });
-        throw error;
+        throw error; // Re-lanzar el error original
     }
 };
 

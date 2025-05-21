@@ -149,26 +149,36 @@ export default function FormNewProject() {
 					newProject.calendario.fecha_fin
 						? newProject.calendario
 						: undefined,
-				image: newProject.img || undefined,
+				image: newProject.img?.startsWith('data:image/')
+					? newProject.img
+					: undefined,
 			}
 
 			// Crear proyecto usando el servicio
 			const projectId = await createNewProject(projectData)
 
 			// Redirigir al detalle del proyecto
-			redirect(`/dashboard/proyectos/${projectId}`)
-		} catch (error) {
+			if (projectId) {
+				redirect(`/dashboard/proyectos/${projectId}`)
+			}
+		} catch (error: unknown) {
 			console.error('Error creating project:', error)
-			if (error.response) {
-				console.error('Error response:', {
-					status: error.response.status,
-					data: error.response.data,
-					headers: error.response.headers,
-				})
-			} else if (error.request) {
-				console.error('Error request:', error.request)
-			} else {
-				console.error('Error message:', error.message)
+			if (error instanceof Error) {
+				if ('response' in error) {
+					const apiError = error as {
+						response: { status: number; data: any; headers: any }
+					}
+					console.error('Error response:', {
+						status: apiError.response.status,
+						data: apiError.response.data,
+						headers: apiError.response.headers,
+					})
+				} else if ('request' in error) {
+					const requestError = error as { request: any }
+					console.error('Error request:', requestError.request)
+				} else {
+					console.error('Error message:', error.message)
+				}
 			}
 			throw error
 		}
