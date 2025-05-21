@@ -79,23 +79,17 @@ class EmployeeLicensesMid(Base):
     )
 
 class Team(Base):
-    __tablename__ = "TTeam"
-    __table_args__ = {
-        "schema": "admin"
-    }
+    __tablename__ = "equipo"
 
-    id_team = Column("idTeam", Integer, autoincrement=True, primary_key=True)
-    name = Column(VARCHAR(30), nullable=False)
-    leader = Column(Integer, ForeignKey("admin.TEmployee.idEmployee", ondelete="SET NULL", onupdate="CASCADE"))
+    id_equipo = Column(Integer, autoincrement=True, primary_key=True)
+    nombre = Column(VARCHAR(30), nullable=False)
+    fk_lider = Column(Integer, ForeignKey("empleado.id_empleado", ondelete="SET NULL", onupdate="CASCADE"))
 
 class EmployeeTeamMid(Base):
-    __tablename__ = "TEmployeeTeamMid"
-    __table_args__ = {
-        "schema":"admin"
-    }
+    __tablename__ = "equipo_empleado"
 
-    id_team = Column("idTeam", Integer, ForeignKey("admin.TTeam.idTeam", ondelete="SET NULL", onupdate="CASCADE"), primary_key=True)
-    id_employee = Column("idEmployee", Integer, ForeignKey("admin.TEmployee.idEmployee", ondelete="SET NULL", onupdate="CASCADE"), primary_key=True)
+    fk_equipo = Column(Integer, ForeignKey("equipo.id_equipo", ondelete="SET NULL", onupdate="CASCADE"), primary_key=True)
+    fk_empleado = Column(Integer, ForeignKey("empleado.id_empleado", ondelete="SET NULL", onupdate="CASCADE"), primary_key=True)
 
 class ProjectStatus(Base):
     __tablename__ = "TProjectStatus"
@@ -117,27 +111,22 @@ class Project(Base):
     status = Column(Integer, ForeignKey("admin.TProjectStatus.idProjectStatus", ondelete="SET NULL", onupdate="CASCADE"))
 
 class CurrentProjectTeams(Base):
-    __tablename__ = "TCurrentProjectTeams"
-    __table_args__ = {
-        "schema":"admin"
-    }
+    __tablename__ = "proyecto_equipo"
 
-    id_project = Column(
-        "idProject",
+    id_proyecto = Column(
         Integer, 
         ForeignKey(
-            "admin.TProject.idProject", 
+            "proyecto.id_proyecto", 
             onupdate="CASCADE", 
             ondelete="SET NULL"
-            ), 
+        ), 
         primary_key=True
     )
     
-    id_team = Column(
-        "idTeam",
+    fk_equipo = Column(
         Integer,
         ForeignKey(
-            "admin.TTeam.idTeam",
+            "equipo.id_equipo",
             onupdate="CASCADE",
             ondelete="SET NULL"
         ),
