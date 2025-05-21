@@ -1,6 +1,6 @@
 'use client'
 
-import { Employee, ShortTeam } from '@/src/shared/types'
+import { Employee, ShortTeam, DateFormat } from '@/src/shared/types'
 import {
 	Input,
 	Button,
@@ -12,36 +12,72 @@ import {
 	CardFooter,
 	Divider,
 } from '@heroui/react'
-import { redirect } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useEmployeeStore } from '../../model/employeeStore'
+import { parseDateStringToCustomDate } from '@/src/shared/hooks/useDatesCustoms'
+
+type EmployeeToCreate = Omit<Employee, 'equipo'> & {
+	equipo?: string | undefined
+}
 
 export default function FormNewEmplooye() {
-	const teams: ShortTeam[] = []
-	const [newEmployee, setNewEmployee] = useState<Employee>({
-		id: '',
-		name: '',
-		address: '',
-		phone_number: '',
+	const router = useRouter()
+	const { createEmployee, isLoading, error, setError } = useEmployeeStore()
+	const [teams, setTeams] = useState<ShortTeam[]>([])
+	const [newEmployee, setNewEmployee] = useState<EmployeeToCreate>({
+		id_empleado: 0,
+		nombre: '',
+		direccion: '',
+		telefono: '',
 		email: '',
-		hire_date: '',
-		salary: 0,
-		in_time: '',
-		out_time: '',
-		password: '',
-		role: 'user',
-		position: '',
-		img: undefined,
-		status: 'active',
-		teams: undefined,
+		fecha_contratacion: {
+			dia: 0,
+			mes: 1,
+			anno: 0,
+		},
+		salario: 0,
+		fecha_salida: {
+			dia: 0,
+			mes: 1,
+			anno: 0,
+		},
+		fecha_recontratacion: {
+			dia: 0,
+			mes: 1,
+			anno: 0,
+		},
+		clave: '',
+		rol: 'user',
+		puesto: '',
+		img_url: '',
 	})
 
-	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+	const handleChange = (
+		e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+	) => {
 		const { name, value } = e.target
 		setNewEmployee((prev) => ({
 			...prev,
 			[name]: value,
+		}))
+	}
+
+	const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const { name, value } = e.target
+		const dateValue = value
+			? parseDateStringToCustomDate(value)
+			: {
+					dia: 0,
+					mes: 1,
+					anno: 0,
+				}
+
+		setNewEmployee((prev) => ({
+			...prev,
+			[name]: dateValue,
 		}))
 	}
 
@@ -55,19 +91,68 @@ export default function FormNewEmplooye() {
 	const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const file = e.target.files?.[0]
 		if (file) {
-			const render = new FileReader()
-			render.onload = () => {
+			const reader = new FileReader()
+			reader.onload = () => {
 				setNewEmployee((prev) => ({
 					...prev,
-					img: render.result as string,
+					img_url: reader.result as string,
 				}))
 			}
+			reader.readAsDataURL(file)
 		}
 	}
 
-	const handleSubmit = () => {
-		// Aquí puedes manejar el envío del formulario
-		redirect(`/dadashboard/empleados/${newEmployee.id}`)
+	const validateEmployee = (employee: EmployeeToCreate): boolean => {
+		if (!employee.nombre) {
+			setError('El nombre es requerido')
+			return false
+		}
+		if (!employee.email) {
+			setError('El correo electrónico es requerido')
+			return false
+		}
+		if (!employee.telefono) {
+			setError('El teléfono es requerido')
+			return false
+		}
+		if (!employee.direccion) {
+			setError('La dirección es requerida')
+			return false
+		}
+		if (!employee.puesto) {
+			setError('La posición es requerida')
+			return false
+		}
+		if (!employee.salario || employee.salario <= 0) {
+			setError('El salario debe ser mayor a 0')
+			return false
+		}
+		if (!employee.fecha_contratacion) {
+			setError('La fecha de contratación es requerida')
+			return false
+		}
+		if (!employee.clave) {
+			setError('La contraseña es requerida')
+			return false
+		}
+		return true
+	}
+
+	const handleSubmit = async () => {
+		try {
+			if (!validateEmployee(newEmployee)) {
+				return
+			}
+
+			// Create a copy of the employee data without the equipo field
+			const { equipo, ...employeeData } = newEmployee
+
+			await createEmployee(employeeData)
+			router.push('/dashboard/empleados')
+		} catch (error) {
+			console.error('Error al crear el empleado:', error)
+			setError('Error al crear el empleado')
+		}
 	}
 
 	const classNames = {
@@ -126,8 +211,8 @@ export default function FormNewEmplooye() {
 						<div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
 							<Input
 								label='Nombre Completo'
-								name='name'
-								value={newEmployee.name}
+								name='nombre'
+								value={newEmployee.nombre}
 								onChange={handleChange}
 								isRequired
 								classNames={classNames.input}
@@ -145,8 +230,8 @@ export default function FormNewEmplooye() {
 
 							<Input
 								label='Teléfono'
-								name='phone_number'
-								value={newEmployee.phone_number}
+								name='telefono'
+								value={newEmployee.telefono}
 								onChange={handleChange}
 								isRequired
 								classNames={classNames.input}
@@ -154,8 +239,8 @@ export default function FormNewEmplooye() {
 
 							<Input
 								label='Dirección'
-								name='address'
-								value={newEmployee.address}
+								name='direccion'
+								value={newEmployee.direccion}
 								onChange={handleChange}
 								isRequired
 								classNames={classNames.input}
@@ -171,8 +256,8 @@ export default function FormNewEmplooye() {
 						<div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
 							<Input
 								label='Posición'
-								name='position'
-								value={newEmployee.position}
+								name='puesto'
+								value={newEmployee.puesto}
 								onChange={handleChange}
 								isRequired
 								classNames={classNames.input}
@@ -180,10 +265,10 @@ export default function FormNewEmplooye() {
 
 							<Input
 								label='Salario'
-								name='salary'
+								name='salario'
 								type='number'
-								value={String(newEmployee.salary)}
-								onChange={(e) => handleChange(e)}
+								value={String(newEmployee.salario)}
+								onChange={handleChange}
 								placeholder='$0.00'
 								isRequired
 								classNames={classNames.input}
@@ -192,83 +277,17 @@ export default function FormNewEmplooye() {
 							<Input
 								type='date'
 								label='Fecha de Contratación'
-								name='hire_date'
-								value={newEmployee.hire_date}
-								onChange={handleChange}
-								isRequired
-								classNames={classNames.input}
-							/>
-
-							<Select
-								label='Equipo Asignado'
-								selectedKeys={[newEmployee.teams!]}
-								onChange={(e) =>
-									handleSelectChange('teams', e.target.value)
-								}
-								className='w-full'
-								classNames={classNames.select}
-							>
-								{teams.map((team) => (
-									<SelectItem
-										key={team.id}
-										textValue={team.name}
-									>
-										{team.name}
-									</SelectItem>
-								))}
-							</Select>
-						</div>
-					</div>
-
-					{/* Horario de Trabajo */}
-					<div className='space-y-2 mt-4'>
-						<h3 className='text-lg font-medium text-[var(--father-font)]'>
-							Horario de Trabajo
-						</h3>
-						<div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-							<Input
-								type='time'
-								label='Hora de Entrada'
-								name='in_time'
-								value={newEmployee.in_time}
-								onChange={handleChange}
-								isRequired
-								classNames={classNames.input}
-							/>
-
-							<Input
-								type='time'
-								label='Hora de Salida'
-								name='out_time'
-								value={newEmployee.out_time}
-								onChange={handleChange}
-								isRequired
-								classNames={classNames.input}
-							/>
-						</div>
-					</div>
-
-					{/* Información de Acceso */}
-					<div className='space-y-2 mt-4'>
-						<h3 className='text-lg font-medium text-[var(--father-font)]'>
-							Información de Acceso
-						</h3>
-						<div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-							<Input
-								label='Contraseña'
-								name='password'
-								type='password'
-								value={newEmployee.password}
-								onChange={handleChange}
+								name='fecha_contratacion'
+								onChange={handleDateChange}
 								isRequired
 								classNames={classNames.input}
 							/>
 
 							<Select
 								label='Rol'
-								selectedKeys={[newEmployee.role]}
+								selectedKeys={[newEmployee.rol]}
 								onChange={(e) =>
-									handleSelectChange('role', e.target.value)
+									handleSelectChange('rol', e.target.value)
 								}
 								className='w-full'
 								classNames={classNames.select}
@@ -289,45 +308,37 @@ export default function FormNewEmplooye() {
 						</div>
 					</div>
 
-					{/* Estado */}
+					{/* Información de Acceso */}
 					<div className='space-y-2 mt-4'>
 						<h3 className='text-lg font-medium text-[var(--father-font)]'>
-							Estado
+							Información de Acceso
 						</h3>
-						<Select
-							label='Estado del Empleado'
-							selectedKeys={[newEmployee.status!]}
-							onChange={(e) =>
-								handleSelectChange('status', e.target.value)
-							}
-							className='w-full md:w-1/2'
-							classNames={classNames.select}
-						>
-							<SelectItem key='active' textValue='Activo'>
-								Activo
-							</SelectItem>
-							<SelectItem key='inactive' textValue='Inactivo'>
-								Inactivo
-							</SelectItem>
-							<SelectItem key='pending' textValue='Pendiente'>
-								Pendiente
-							</SelectItem>
-						</Select>
+						<div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+							<Input
+								label='Contraseña'
+								name='clave'
+								type='password'
+								value={newEmployee.clave}
+								onChange={handleChange}
+								isRequired
+								classNames={classNames.input}
+							/>
+						</div>
 					</div>
 
 					{/* Sección de Imagen */}
 					<div className='mt-4'>
 						<h3 className='text-lg font-medium mb-2 text-[var(--father-font)]'>
-							Foto del Empleado
+							Imagen del Empleado
 						</h3>
 						<div className='flex items-center gap-4'>
-							{newEmployee.img && (
+							{newEmployee.img_url && (
 								<div className='relative w-32 h-32 rounded-full overflow-hidden'>
 									<Image
-										src={newEmployee.img}
+										src={newEmployee.img_url}
 										alt='Vista previa'
-										layout='fill'
-										objectFit='cover'
+										fill
+										className='object-cover'
 									/>
 								</div>
 							)}
@@ -340,6 +351,10 @@ export default function FormNewEmplooye() {
 							/>
 						</div>
 					</div>
+
+					{error && (
+						<div className='text-red-500 mt-4 text-sm'>{error}</div>
+					)}
 				</div>
 			</CardBody>
 
@@ -350,13 +365,14 @@ export default function FormNewEmplooye() {
 					className='bg-[var(--green-dark-500)] text-white text-sm px-3 py-2'
 					size='sm'
 					onPress={handleSubmit}
+					isLoading={isLoading}
 				>
-					Registrar Empleado
+					Crear nuevo empleado
 				</Button>
 
 				<Link
 					className='bg-gray-600 text-white text-sm py-1.5 px-3 rounded-lg flex items-center justify-center hover:bg-gray-700 transition-colors'
-					href={'/dashboard/empleados'}
+					href='/dashboard/empleados'
 				>
 					Cancelar
 				</Link>

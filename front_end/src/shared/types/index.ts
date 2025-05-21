@@ -5,20 +5,20 @@ export type DateFormat = {
 }
 
 export type Employee = {
-    id_empleado: string;
+    id_empleado: number;
     nombre: string;
     direccion: string;
     telefono: string;
     email: string;
-    fecha_recontratacion: DateFormat | null;
+    fecha_recontratacion: DateFormat;
     fecha_contratacion: DateFormat;
-    fecha_salida: DateFormat | null;
+    fecha_salida: DateFormat;
     clave: string;
     rol: 'user' | 'admin' | 'leader';
     puesto: string;
-    img?: string;
+    img_url: string;
     salario: number;
-    equipo?: string;
+    equipo?: string | undefined;
 }
 
 export type AuthState = {
@@ -30,10 +30,10 @@ export type AuthState = {
     logout: () => Promise<void>
 }
 
-export type ShortTeam ={
+export type ShortTeam = {
     id_equipo: number;
     nombre: string;
-    lider: Pick<Employee, 'email' | 'id_empleado' | 'nombre' | 'telefono' | 'rol' | 'puesto' | 'salario' | 'equipo' | 'img' >
-    empleados: Pick<Employee, 'email' | 'id_empleado' | 'nombre' | 'telefono' | 'rol' | 'puesto' | 'salario' | 'equipo' | 'img' >[];
+    lider: Pick<Employee, 'email' | 'id_empleado' | 'nombre' | 'telefono' | 'rol' | 'puesto' | 'salario' | 'img_url'>
+    empleados: Pick<Employee, 'email' | 'id_empleado' | 'nombre' | 'telefono' | 'rol' | 'puesto' | 'salario' | 'img_url'>[];
 }
 
