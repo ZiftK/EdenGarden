@@ -6,7 +6,7 @@ import { Date, ProjectCalendarToCreate } from "./calendario"
 
 export interface ProjectToCreate {
     nombre: string;
-    descripcion?: string;
+    descripcion: string;
     estado: string;
     costo: number;
     cliente: number;

@@ -44,7 +44,12 @@ export default function FormNewProject() {
 		estado: 'PENDIENTE',
 		costo: 0,
 		img: '',
+		descripcion: '',
 	})
+
+	const [selectedTeamKey, setSelectedTeamKey] = useState<Set<string>>(
+		new Set([])
+	)
 
 	useEffect(() => {
 		const fetchTeams = async () => {
@@ -54,6 +59,15 @@ export default function FormNewProject() {
 
 		fetchTeams()
 	}, [])
+
+	// Agregar efecto para actualizar la selección cuando cambia el equipo
+	useEffect(() => {
+		if (newProject.equipo?.id_equipo) {
+			setSelectedTeamKey(new Set([String(newProject.equipo.id_equipo)]))
+		} else {
+			setSelectedTeamKey(new Set([]))
+		}
+	}, [newProject.equipo?.id_equipo])
 
 	const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = e.target
@@ -96,14 +110,35 @@ export default function FormNewProject() {
 		}
 	}
 
-	const handleTeamChange = (teamId: string) => {
-		const selectedTeam = teams.find((team) => team.nombre === teamId)
-		if (selectedTeam) {
+	const handleTeamChange = (keys: Set<string>) => {
+		setSelectedTeamKey(keys)
+		const selectedId = Array.from(keys)[0]
+		if (!selectedId) {
 			setNewProject((prev) => ({
 				...prev,
-				equipo: selectedTeam,
+				equipo: {} as ShortTeam,
 			}))
+			return
 		}
+
+		const teamIdNumber = parseInt(selectedId, 10)
+		if (isNaN(teamIdNumber)) {
+			console.error('ID de equipo inválido:', selectedId)
+			return
+		}
+
+		const selectedTeam = teams.find(
+			(team) => team.id_equipo === teamIdNumber
+		)
+		if (!selectedTeam) {
+			console.error('Equipo no encontrado:', teamIdNumber)
+			return
+		}
+
+		setNewProject((prev) => ({
+			...prev,
+			equipo: selectedTeam,
+		}))
 	}
 
 	const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -129,6 +164,11 @@ export default function FormNewProject() {
 				)
 			}
 
+			// Validar equipo
+			if (!newProject.equipo?.id_equipo) {
+				throw new Error('Por favor seleccione un equipo')
+			}
+
 			// Preparar datos para el servicio
 			const projectData = {
 				client: {
@@ -139,10 +179,10 @@ export default function FormNewProject() {
 				},
 				project: {
 					nombre: newProject.nombre,
-					descripcion: newProject.descripcion,
+					descripcion: newProject.descripcion || '',
 					estado: newProject.estado || 'PENDIENTE',
 					costo: Number(newProject.costo),
-					equipo: Number(newProject.equipo?.id_equipo),
+					equipo: Number(newProject.equipo.id_equipo),
 				},
 				calendar:
 					newProject.calendario.fecha_inicio &&
@@ -261,15 +301,16 @@ export default function FormNewProject() {
 
 							<Select
 								label='Equipo Asignado'
-								onChange={(e) =>
-									handleTeamChange(e.target.value)
+								selectedKeys={selectedTeamKey}
+								onSelectionChange={(keys) =>
+									handleTeamChange(keys as Set<string>)
 								}
 								className='w-full'
 								classNames={classNames.select}
-								value={newProject.equipo?.nombre}
+								placeholder='Selecciona un equipo'
 							>
 								{teams.map((team) => (
-									<SelectItem key={team.id_equipo}>
+									<SelectItem key={String(team.id_equipo)}>
 										{team.nombre} (
 										{`${team.empleados.length} miembros`})
 									</SelectItem>
