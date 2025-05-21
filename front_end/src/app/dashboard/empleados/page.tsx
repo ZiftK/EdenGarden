@@ -64,7 +64,7 @@ export default function Page() {
 					placeholder='Buscar por expediente, nombre o rol...'
 					value={searchTerm}
 					onChange={(e) => setSearchTerm(e.target.value)}
-					className='max-w-xs mb-4'
+					className='max-w-xs mb-4 ml-auto'
 					classNames={{
 						base: '!bg-transparent !font-normal !text-sm',
 						input: 'text-[var(--father-font)]',

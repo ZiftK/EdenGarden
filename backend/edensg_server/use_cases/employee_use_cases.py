@@ -19,17 +19,24 @@ class EmployeeController:
             # If we have a base64 image, upload it
             if employee.img and employee.img.startswith('data:image/'):
                 try:
+                    print(f"Uploading image for employee {employee_id}")
                     # Upload the image and get the public URL
                     public_url = await self.image_repository.upload_base64_image(employee.img, employee_id, is_project=False)
+                    print(f"Image uploaded successfully, URL: {public_url}")
                     
                     # Update the employee with the image URL
                     employee.img = public_url
                     self.employee_repository.update_employee(employee_id, employee)
+                    print(f"Employee {employee_id} updated with new image URL")
                 except Exception as e:
-                    print(f"Error uploading image: {str(e)}")  # Log error but don't fail employee creation
+                    print(f"Error uploading image for employee {employee_id}: {str(e)}")
+                    # Don't fail employee creation, but log the error
+            else:
+                print(f"No image provided for employee {employee_id} or invalid image format")
             
             return employee_id
         except Exception as e:
+            print(f"Error creating employee: {str(e)}")
             raise Exception(f"Error creating employee: {str(e)}")
 
     def find_employee_by_id(self, id: int) -> Optional[Employee]:

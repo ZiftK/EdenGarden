@@ -52,7 +52,7 @@ export default function FormNewEmplooye() {
 		clave: '',
 		rol: 'user',
 		puesto: '',
-		img_url: '',
+		img: '',
 	})
 
 	const handleChange = (
@@ -95,7 +95,7 @@ export default function FormNewEmplooye() {
 			reader.onload = () => {
 				setNewEmployee((prev) => ({
 					...prev,
-					img_url: reader.result as string,
+					img: reader.result as string,
 				}))
 			}
 			reader.readAsDataURL(file)
@@ -332,10 +332,10 @@ export default function FormNewEmplooye() {
 							Imagen del Empleado
 						</h3>
 						<div className='flex items-center gap-4'>
-							{newEmployee.img_url && (
+							{newEmployee.img && (
 								<div className='relative w-32 h-32 rounded-full overflow-hidden'>
 									<Image
-										src={newEmployee.img_url}
+										src={newEmployee.img}
 										alt='Vista previa'
 										fill
 										className='object-cover'
