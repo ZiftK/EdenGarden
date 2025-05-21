@@ -88,8 +88,8 @@ export const useEmployeeStore = create<EmployeeState>((set, get) => ({
             if (!response.ok) {
                 throw new Error('No se encontró el empleado')
             }
-            const data = await response.json()
-            set({ currentEmployee: data, isLoading: false })
+            const responseData = await response.json()
+            set({ currentEmployee: responseData.data, isLoading: false })
         } catch (error) {
             console.error('Error al obtener el empleado:', error)
             set({ error: 'Error al obtener el empleado', isLoading: false })
