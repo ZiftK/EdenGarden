@@ -8,7 +8,8 @@ import {
 	useDisclosure,
 } from '@heroui/react'
 import { DeleteIcon } from '../moleculs/Icons'
-import deleteEmployee from '../../api/deleteEmployee'
+import { useEmployeeStore } from '../../model/employeeStore'
+import { useRouter } from 'next/navigation'
 
 export default function ModalDeleteEmployee({
 	employeeName,
@@ -18,9 +19,18 @@ export default function ModalDeleteEmployee({
 	employeeId: string
 }) {
 	const { isOpen, onOpen, onClose } = useDisclosure()
-	const onDelete = (id: string) => {
-		deleteEmployee(id)
-		onClose()
+	const { deleteEmployee } = useEmployeeStore()
+	const router = useRouter()
+
+	const onDelete = async (id: string) => {
+		try {
+			await deleteEmployee(id)
+			onClose()
+			router.push('/dashboard/empleados')
+			router.refresh()
+		} catch (error) {
+			console.error('Error al eliminar el empleado:', error)
+		}
 	}
 
 	return (
@@ -38,14 +48,14 @@ export default function ModalDeleteEmployee({
 				isOpen={isOpen}
 				size={'xs'}
 				onClose={onClose}
-				className=' bg-[var(--bg-card-obscure)]'
+				className='bg-[var(--bg-card-obscure)]'
 			>
 				<ModalContent>
 					{(onClose) => (
 						<>
-							<ModalHeader className='flex flex-col gap-1 '>
-								Eliminaras a {employeeName.split(' ')[0]} de la
-								empresa
+							<ModalHeader className='flex flex-col gap-1'>
+								¿Estás seguro que deseas eliminar a{' '}
+								{employeeName.split(' ')[0]} de la empresa?
 							</ModalHeader>
 
 							<ModalFooter>
@@ -54,9 +64,12 @@ export default function ModalDeleteEmployee({
 									variant='light'
 									onPress={onClose}
 								>
-									Cerrar
+									Cancelar
 								</Button>
-								<Button onPress={() => onDelete(employeeId)}>
+								<Button
+									color='danger'
+									onPress={() => onDelete(employeeId)}
+								>
 									Eliminar
 								</Button>
 							</ModalFooter>

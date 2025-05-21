@@ -82,7 +82,7 @@ export const useEmployeeStore = create<EmployeeState>((set) => ({
     updateEmployee: async (id: string, data: Employee) => {
         set({ isLoading: true, error: null})
         try {
-            await fetcher.put(`${endpoints.employeeDelete}/${id}`, data)
+            await fetcher.put(`${endpoints.employeeUpdate}/${id}`, data)
         } catch (error) {
             console.error('Error al actualizar el empleado:', error)
             throw new Error('Error al actualizar el empleado')

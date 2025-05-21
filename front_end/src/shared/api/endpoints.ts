@@ -8,6 +8,7 @@ export const endpoints ={
     employeeCreate: '/employee/create',
     employees: '/employee/all', 
     employeeDelete: '/employee/delete', 
+    employeeUpdate: '/employee/update', 
 
     projects: '/project/all',
     project: '/project',

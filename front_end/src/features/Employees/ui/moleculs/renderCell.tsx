@@ -2,6 +2,7 @@ import { Employee } from '@/src/shared/types'
 import { User, Tooltip, Button } from '@heroui/react'
 import { EditIcon, EyeIcon } from '@/src/features/Employees/ui/moleculs/Icons'
 import ModalDeleteEmployee from '../atoms/ModalDeleteEmployee'
+import Link from 'next/link'
 
 export function renderCell(
 	user: Employee,
@@ -30,20 +31,26 @@ export function renderCell(
 			return (
 				<div className='relative flex items-center gap-2 mx-auto justify-center'>
 					<Tooltip content='Detalles' color='secondary'>
-						<Button
-							isIconOnly
-							className='text-lg text-default-400 bg-[#0002] cursor-pointer active:opacity-50 rounded-full'
-						>
-							<EyeIcon />
-						</Button>
+						<Link href={`/dashboard/empleados/${user.id_empleado}`}>
+							<Button
+								isIconOnly
+								className='text-lg text-default-400 bg-[#0002] cursor-pointer active:opacity-50 rounded-full'
+							>
+								<EyeIcon />
+							</Button>
+						</Link>
 					</Tooltip>
 					<Tooltip content='Editar empleado' color='secondary'>
-						<Button
-							isIconOnly
-							className='text-lg text-default-400 bg-[#0002] cursor-pointer active:opacity-50 rounded-full'
+						<Link
+							href={`/dashboard/empleados/${user.id_empleado}/editar`}
 						>
-							<EditIcon />
-						</Button>
+							<Button
+								isIconOnly
+								className='text-lg text-default-400 bg-[#0002] cursor-pointer active:opacity-50 rounded-full'
+							>
+								<EditIcon />
+							</Button>
+						</Link>
 					</Tooltip>
 
 					<ModalDeleteEmployee
