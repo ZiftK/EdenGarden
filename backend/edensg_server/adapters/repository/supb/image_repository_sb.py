@@ -7,12 +7,10 @@ from urllib.parse import urlparse
 class ImageRepositorySupabase:
     def __init__(self):
         self.client: Client = supabase_client
-        self.employee_bucket = "employee_images"  # Bucket para imágenes de empleados
-        self.project_bucket = "project_images"    # Bucket para imágenes de proyectos
+        self.bucket = "images"  # Único bucket para todas las imágenes
 
     async def upload_image_from_url(self, image_url: str, entity_id: int, is_project: bool = False) -> str:
         try:
-            bucket_name = self.project_bucket if is_project else self.employee_bucket
             prefix = "project" if is_project else "employee"
             
             # Obtener la extensión del archivo de la URL
@@ -23,14 +21,14 @@ class ImageRepositorySupabase:
             file_name = f"{prefix}_{entity_id}_{uuid.uuid4()}.{file_extension}"
 
             # Subir directamente la URL a Supabase Storage
-            self.client.storage.from_(bucket_name).upload(
+            self.client.storage.from_(self.bucket).upload(
                 file_name,
                 image_url,
                 {"content-type": f"image/{file_extension}"}
             )
 
             # Obtener la URL pública
-            public_url = self.client.storage.from_(bucket_name).get_public_url(file_name)
+            public_url = self.client.storage.from_(self.bucket).get_public_url(file_name)
             return public_url
 
         except Exception as e:
@@ -38,35 +36,37 @@ class ImageRepositorySupabase:
 
     async def delete_image(self, file_name: str, is_project: bool = False) -> bool:
         try:
-            bucket_name = self.project_bucket if is_project else self.employee_bucket
-            self.client.storage.from_(bucket_name).remove([file_name])
+            self.client.storage.from_(self.bucket).remove([file_name])
             return True
         except Exception as e:
             raise Exception(f"Error al eliminar la imagen: {str(e)}")
 
     async def update_entity_image(self, entity_id: int, image_url: str, is_project: bool = False) -> str:
         try:
-            bucket_name = self.project_bucket if is_project else self.employee_bucket
             prefix = "project" if is_project else "employee"
             
             # Primero, intentamos eliminar la imagen anterior si existe
             try:
                 # Buscar la imagen anterior en el bucket
-                files = self.client.storage.from_(bucket_name).list()
+                files = self.client.storage.from_(self.bucket).list()
                 for file in files:
                     if file['name'].startswith(f"{prefix}_{entity_id}_"):
                         await self.delete_image(file['name'], is_project)
             except Exception:
                 pass  # Si no hay imagen anterior, continuamos
 
-            # Subir la nueva imagen
+            # Si la imagen es base64, usar upload_base64_image
+            if image_url.startswith('data:image/'):
+                return await self.upload_base64_image(image_url, entity_id, is_project)
+            
+            # Si no es base64, subir desde URL
             return await self.upload_image_from_url(image_url, entity_id, is_project)
+            
         except Exception as e:
             raise Exception(f"Error al actualizar la imagen: {str(e)}")
 
     async def upload_base64_image(self, base64_image: str, entity_id: int, is_project: bool = False) -> str:
         try:
-            bucket_name = self.project_bucket if is_project else self.employee_bucket
             prefix = "project" if is_project else "employee"
             
             # Decodificar la imagen base64
@@ -84,14 +84,14 @@ class ImageRepositorySupabase:
             file_name = f"{prefix}_{entity_id}_{uuid.uuid4()}.{file_extension}"
 
             # Subir a Supabase Storage
-            self.client.storage.from_(bucket_name).upload(
+            self.client.storage.from_(self.bucket).upload(
                 file_name,
                 image_data,
                 {"content-type": f"image/{file_extension}"}
             )
 
             # Obtener la URL pública
-            public_url = self.client.storage.from_(bucket_name).get_public_url(file_name)
+            public_url = self.client.storage.from_(self.bucket).get_public_url(file_name)
             return public_url
 
         except Exception as e:

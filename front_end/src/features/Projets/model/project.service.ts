@@ -12,21 +12,28 @@ import {
 } from '../api/createProject'
 
 interface CreateProjectData {
-    client: ClientToCreate;
-    project: Omit<ProjectToCreate, 'cliente' | 'img'>;
-    calendar?: ProjectCalendarToCreate;
-    image?: string;
+    cliente: ClientToCreate;
+    proyecto: {
+        nombre: string;
+        descripcion?: string;
+        estado: string;
+        costo: number;
+        equipo: number;
+    };
+    calendario?: ProjectCalendarToCreate;
+    img?: string;
 }
 
 export const createNewProject = async (data: CreateProjectData) => {
     let clientId: number | null = null;
     let projectId: number | null = null;
     let imageUrl: string | null = null;
+    let calendarCreated = false;
 
     try {
         // 1. Crear cliente
         try {
-            clientId = await createClient(data.client);
+            clientId = await createClient(data.cliente);
         } catch (error) {
             console.error('Error al crear el cliente:', error);
             throw new Error(error instanceof Error ? error.message : 'Error al crear el cliente');
@@ -34,43 +41,41 @@ export const createNewProject = async (data: CreateProjectData) => {
 
         // 2. Crear proyecto
         const projectData: ProjectToCreate = {
-            ...data.project,
+            nombre: data.proyecto.nombre,
+            descripcion: data.proyecto.descripcion || '',
+            estado: data.proyecto.estado || 'PENDIENTE',
+            costo: data.proyecto.costo,
             cliente: clientId,
-            estado: data.project.estado || 'PENDIENTE', // Aseguramos que siempre haya un estado
-            img: '' // Placeholder, will be updated after image upload
+            equipo: data.proyecto.equipo,
+            img: ''
         };
 
         try {
             projectId = await createProject(projectData);
-            console.log('Datos enviados al crear proyecto:', projectData); // Para debugging
+            console.log('Datos enviados al crear proyecto:', projectData);
         } catch (error) {
             console.error('Error al crear el proyecto:', error);
-            // Mejorar el mensaje de error para incluir detalles de validación
-            if (error instanceof Error && 'response' in error) {
-                const apiError = error as any;
-                const detail = apiError.response?.data?.detail;
-                throw new Error(`Error al crear el proyecto: ${detail || error.message}`);
-            }
             throw error;
         }
 
-        // 3. Subir imagen si existe
-        if (data.image && projectId) {
+        // 3. Crear calendario si existe
+        if (data.calendario && projectId) {
             try {
-                imageUrl = await uploadProjectImage(projectId, data.image);
-            } catch (error) {
-                console.error('Error al subir la imagen:', error);
-                throw new Error(error instanceof Error ? error.message : 'Error al subir la imagen');
-            }
-        }
-
-        // 4. Crear calendario si existe
-        if (data.calendar && projectId) {
-            try {
-                await createProjectCalendar(projectId, data.calendar);
+                await createProjectCalendar(projectId, data.calendario);
+                calendarCreated = true;
             } catch (error) {
                 console.error('Error al crear el calendario:', error);
                 throw new Error(error instanceof Error ? error.message : 'Error al crear el calendario');
+            }
+        }
+
+        // 4. Subir imagen si existe
+        if (data.img && projectId) {
+            try {
+                imageUrl = await uploadProjectImage(projectId, data.img);
+            } catch (error) {
+                console.error('Error al subir la imagen:', error);
+                throw new Error(error instanceof Error ? error.message : 'Error al subir la imagen');
             }
         }
 
@@ -80,10 +85,10 @@ export const createNewProject = async (data: CreateProjectData) => {
         await handleRollback({
             clientId,
             projectId,
-            hasCalendar: !!data.calendar,
+            hasCalendar: calendarCreated,
             hasImage: !!imageUrl
         });
-        throw error; // Re-lanzar el error original
+        throw error;
     }
 };
 
@@ -98,10 +103,20 @@ const handleRollback = async (data: RollbackData) => {
     try {
         if (data.projectId) {
             if (data.hasCalendar) {
-                await deleteProjectCalendar(data.projectId);
+                try {
+                    await deleteProjectCalendar(data.projectId);
+                } catch (error) {
+                    console.error('Error al eliminar el calendario durante rollback:', error);
+                    // Continue with rollback even if calendar deletion fails
+                }
             }
             if (data.hasImage) {
-                await deleteProjectImage(data.projectId);
+                try {
+                    await deleteProjectImage(data.projectId);
+                } catch (error) {
+                    console.error('Error al eliminar la imagen durante rollback:', error);
+                    // Continue with rollback even if image deletion fails
+                }
             }
             await deleteProject(data.projectId);
         }

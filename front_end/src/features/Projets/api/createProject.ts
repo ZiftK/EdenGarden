@@ -1,25 +1,23 @@
 import { fetcher } from '@/src/shared/api/httpClient'
 import { ProjectToCreate } from '../types'
 
-interface ApiResponse<T> {
-    data?: T;
-    error?: string;
-}
-
-interface ProjectResponse {
+interface ApiResponse {
+    message: string;
     project_id: number;
 }
 
-interface ImageResponse {
+interface ImageApiResponse {
+    message: string;
     url: string;
 }
 
 export const createProject = async (project: ProjectToCreate): Promise<number> => {
-    const response = await fetcher.post<ApiResponse<ProjectResponse>>('/project/', project)
-    if (!response.data?.project_id) {
+    const response = await fetcher.post<ApiResponse>('/project', project)
+    
+    if (!response?.project_id) {
         throw new Error('Failed to create project')
     }
-    return response.data.project_id
+    return response.project_id
 }
 
 export const deleteProject = async (projectId: number): Promise<void> => {
@@ -35,13 +33,13 @@ export const deleteProjectCalendar = async (projectId: number): Promise<void> =>
 }
 
 export const uploadProjectImage = async (projectId: number, base64Image: string): Promise<string> => {
-    const response = await fetcher.post<ApiResponse<ImageResponse>>(`/project/${projectId}/image`, {
+    const response = await fetcher.post<ImageApiResponse>(`/project/${projectId}/image`, {
         base64_image: base64Image
     })
-    if (!response.data?.url) {
+    if (!response?.url) {
         throw new Error('Failed to upload image')
     }
-    return response.data.url
+    return response.url
 }
 
 export const deleteProjectImage = async (projectId: number): Promise<void> => {

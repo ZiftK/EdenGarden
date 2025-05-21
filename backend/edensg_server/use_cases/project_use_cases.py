@@ -61,7 +61,7 @@ class ProjectController():
         """Elimina la imagen de un proyecto."""
         try:
             # Buscar la imagen en el bucket
-            files = self.image_repository.client.storage.from_(self.image_repository.project_bucket).list()
+            files = self.image_repository.client.storage.from_('images').list()
             for file in files:
                 if file['name'].startswith(f"project_{project_id}_"):
                     await self.image_repository.delete_image(file['name'], is_project=True)
@@ -137,3 +137,22 @@ class ProjectController():
         """
         projects = self.project_repository.find_all_projects()
         return {"proyectos": projects}
+
+    def delete_project_calendar(self, project_id: int) -> dict:
+        """
+        Elimina el calendario de un proyecto.
+        """
+        try:
+            # Verificar que el proyecto existe
+            project = self.project_repository.find_project(project_id)
+            if not project:
+                raise Exception(f"No se encontró el proyecto con ID {project_id}")
+
+            # Eliminar el calendario
+            self.project_repository.delete_project_calendar(project_id)
+            
+            return {
+                'message': 'Calendario eliminado correctamente'
+            }
+        except Exception as e:
+            raise Exception(f"Error al eliminar el calendario del proyecto: {str(e)}")

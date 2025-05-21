@@ -175,7 +175,7 @@ class EmployeeController:
         """Elimina la imagen de perfil de un empleado."""
         try:
             # Buscar la imagen en el bucket
-            files = self.image_repository.client.storage.from_(self.image_repository.employee_bucket).list()
+            files = self.image_repository.client.storage.from_('images').list()
             for file in files:
                 if file['name'].startswith(f"employee_{employee_id}_"):
                     await self.image_repository.delete_image(file['name'], is_project=False)

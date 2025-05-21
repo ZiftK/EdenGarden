@@ -324,3 +324,21 @@ class ProjectRepositorySB():
             formatted_projects.append(formatted_project)
 
         return formatted_projects
+
+    def delete_project_calendar(self, project_id: int) -> None:
+        """
+        Elimina el calendario de un proyecto.
+        """
+        # Obtener el ID del calendario del proyecto
+        project = self.client.table('proyecto').select('fk_calendario').eq('id_proyecto', project_id).execute().data[0]
+        
+        if not project['fk_calendario']:
+            return  # No hay calendario que eliminar
+            
+        calendar_id = project['fk_calendario']
+        
+        # Actualizar el proyecto para quitar la referencia al calendario
+        self.client.table('proyecto').update({'fk_calendario': None}).eq('id_proyecto', project_id).execute()
+        
+        # Eliminar el calendario
+        self.client.table('calendario_proyecto').delete().eq('id_calendario', calendar_id).execute()

@@ -100,3 +100,14 @@ async def create_project_sprint(project_id: int, sprint: Sprint):
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=str(e)
         )
+
+@router.delete("/{project_id}/calendar", status_code=status.HTTP_200_OK)
+async def delete_project_calendar(project_id: int):
+    try:
+        result = project_controller.delete_project_calendar(project_id)
+        return result
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )

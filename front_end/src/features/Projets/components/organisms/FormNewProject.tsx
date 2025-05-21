@@ -90,55 +90,51 @@ export default function FormNewProject() {
 		}
 	}
 
-	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+	const handleChange = (
+		e: React.ChangeEvent<
+			HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+		>
+	) => {
 		const { name, value } = e.target
 
 		if (name.includes('.')) {
 			const [parent, child] = name.split('.')
-			setNewProject((prev) => ({
-				...prev,
-				[parent]: {
-					...prev[parent],
-					[child]: value,
-				},
-			}))
+			setNewProject((prev) => {
+				if (parent === 'cliente') {
+					return {
+						...prev,
+						cliente: {
+							...prev.cliente,
+							[child]: value,
+						},
+					}
+				}
+				if (parent === 'calendario') {
+					return {
+						...prev,
+						calendario: {
+							...prev.calendario,
+							[child]: value,
+						},
+					}
+				}
+				return prev
+			})
+		} else if (name === 'equipo') {
+			const teamId = parseInt(value, 10)
+			const selectedTeam = teams.find((team) => team.id_equipo === teamId)
+			if (selectedTeam) {
+				setNewProject((prev) => ({
+					...prev,
+					equipo: selectedTeam,
+				}))
+			}
 		} else {
 			setNewProject((prev) => ({
 				...prev,
 				[name]: value,
 			}))
 		}
-	}
-
-	const handleTeamChange = (keys: Set<string>) => {
-		setSelectedTeamKey(keys)
-		const selectedId = Array.from(keys)[0]
-		if (!selectedId) {
-			setNewProject((prev) => ({
-				...prev,
-				equipo: {} as ShortTeam,
-			}))
-			return
-		}
-
-		const teamIdNumber = parseInt(selectedId, 10)
-		if (isNaN(teamIdNumber)) {
-			console.error('ID de equipo inválido:', selectedId)
-			return
-		}
-
-		const selectedTeam = teams.find(
-			(team) => team.id_equipo === teamIdNumber
-		)
-		if (!selectedTeam) {
-			console.error('Equipo no encontrado:', teamIdNumber)
-			return
-		}
-
-		setNewProject((prev) => ({
-			...prev,
-			equipo: selectedTeam,
-		}))
 	}
 
 	const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -171,25 +167,25 @@ export default function FormNewProject() {
 
 			// Preparar datos para el servicio
 			const projectData = {
-				client: {
+				cliente: {
 					nombre: newProject.cliente!.nombre!,
 					direccion: newProject.cliente!.direccion!,
 					telefono: newProject.cliente!.telefono!,
 					email: newProject.cliente!.email!,
 				},
-				project: {
+				proyecto: {
 					nombre: newProject.nombre,
 					descripcion: newProject.descripcion || '',
 					estado: newProject.estado || 'PENDIENTE',
 					costo: Number(newProject.costo),
 					equipo: Number(newProject.equipo.id_equipo),
 				},
-				calendar:
+				calendario:
 					newProject.calendario.fecha_inicio &&
 					newProject.calendario.fecha_fin
 						? newProject.calendario
 						: undefined,
-				image: newProject.img?.startsWith('data:image/')
+				img: newProject.img?.startsWith('data:image/')
 					? newProject.img
 					: undefined,
 			}
@@ -299,23 +295,147 @@ export default function FormNewProject() {
 								classNames={classNames.input}
 							/>
 
-							<Select
-								label='Equipo Asignado'
-								selectedKeys={selectedTeamKey}
-								onSelectionChange={(keys) =>
-									handleTeamChange(keys as Set<string>)
-								}
+							<div className='w-full'>
+								<label className='!text-white/50 text-sm'>
+									Equipo Asignado
+								</label>
+								<div className='relative mt-1.5'>
+									<select
+										name='equipo'
+										value={
+											newProject.equipo?.id_equipo || ''
+										}
+										onChange={(e) => {
+											const selectedTeam = teams.find(
+												(team) =>
+													team.id_equipo ===
+													parseInt(e.target.value, 10)
+											)
+											if (selectedTeam) {
+												setNewProject((prev) => ({
+													...prev,
+													equipo: selectedTeam,
+												}))
+											}
+										}}
+										className='w-full bg-transparent text-[var(--father-font)] text-sm rounded-lg p-3 pr-10 
+														 hover:!bg-white/30
+														 
+														 appearance-none outline-none'
+										style={{
+											border: 'none',
+										}}
+									>
+										<option
+											value=''
+											className='bg-[rgba(9,17,1,1)] text-[var(--father-font)]'
+										>
+											Selecciona un equipo
+										</option>
+										{teams.map((team) => (
+											<option
+												key={team.id_equipo}
+												value={team.id_equipo}
+												className='bg-[rgba(9,17,1,1)] text-[var(--father-font)]'
+											>
+												{team.nombre} (
+												{team.empleados.length}{' '}
+												miembros)
+											</option>
+										))}
+									</select>
+									<div className='absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-[var(--father-font)]'>
+										<svg
+											className='w-4 h-4'
+											fill='none'
+											stroke='currentColor'
+											viewBox='0 0 24 24'
+										>
+											<path
+												strokeLinecap='round'
+												strokeLinejoin='round'
+												strokeWidth={2}
+												d='M19 9l-7 7-7-7'
+											/>
+										</svg>
+									</div>
+									<div
+										className='absolute inset-0 rounded-lg 
+									 pointer-events-none transition-colors'
+									></div>
+								</div>
+							</div>
+
+							<Textarea
+								label='Descripción del Proyecto'
+								name='descripcion'
+								value={newProject.descripcion}
+								onChange={handleChange}
+								placeholder='Describe el proyecto'
 								className='w-full'
-								classNames={classNames.select}
-								placeholder='Selecciona un equipo'
-							>
-								{teams.map((team) => (
-									<SelectItem key={String(team.id_equipo)}>
-										{team.nombre} (
-										{`${team.empleados.length} miembros`})
-									</SelectItem>
-								))}
-							</Select>
+								classNames={classNames.input}
+								minRows={3}
+							/>
+
+							<div className='w-full'>
+								<label className='!text-white/50 text-sm'>
+									Estado del Proyecto
+								</label>
+								<div className='relative mt-1.5'>
+									<select
+										name='estado'
+										value={newProject.estado}
+										onChange={handleChange}
+										className='w-full bg-transparent text-[var(--father-font)] text-sm rounded-lg p-3 pr-10 
+														 hover:bg-white/30 
+														 appearance-none outline-none'
+										style={{
+											border: 'none',
+										}}
+									>
+										<option
+											value='PENDIENTE'
+											className='bg-[rgba(9,17,1,1)] text-[var(--father-font)]'
+										>
+											Pendiente
+										</option>
+										<option
+											value='EN_PROGRESO'
+											className='bg-[rgba(9,17,1,1)] text-[var(--father-font)]'
+										>
+											En Progreso
+										</option>
+										<option
+											value='COMPLETADO'
+											className='bg-[rgba(9,17,1,1)] text-[var(--father-font)]'
+										>
+											Completado
+										</option>
+										<option
+											value='CANCELADO'
+											className='bg-[rgba(9,17,1,1)] text-[var(--father-font)]'
+										>
+											Cancelado
+										</option>
+									</select>
+									<div className='absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-[var(--father-font)]'>
+										<svg
+											className='w-4 h-4'
+											fill='none'
+											stroke='currentColor'
+											viewBox='0 0 24 24'
+										>
+											<path
+												strokeLinecap='round'
+												strokeLinejoin='round'
+												strokeWidth={2}
+												d='M19 9l-7 7-7-7'
+											/>
+										</svg>
+									</div>
+									<div className='absolute inset-0 rounded-lg hover:bg-[rgba(19,39,2,1)] focus-within:bg-[rgba(19,39,2,1)] pointer-events-none transition-colors'></div>
+								</div>
+							</div>
 						</div>
 
 						{/* Información del Cliente */}
