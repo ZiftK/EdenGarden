@@ -19,7 +19,7 @@ export default function ModalDeleteEmployee({
 	employeeId: string
 }) {
 	const { isOpen, onOpen, onClose } = useDisclosure()
-	const { deleteEmployee } = useEmployeeStore()
+	const { deleteEmployee, isLoading, error, setError } = useEmployeeStore()
 	const router = useRouter()
 
 	const onDelete = async (id: string) => {
@@ -30,7 +30,13 @@ export default function ModalDeleteEmployee({
 			router.refresh()
 		} catch (error) {
 			console.error('Error al eliminar el empleado:', error)
+			setError('Error al eliminar el empleado')
 		}
+	}
+
+	const handleClose = () => {
+		setError(null)
+		onClose()
 	}
 
 	return (
@@ -47,28 +53,37 @@ export default function ModalDeleteEmployee({
 			<Modal
 				isOpen={isOpen}
 				size={'xs'}
-				onClose={onClose}
+				onClose={handleClose}
 				className='bg-[var(--bg-card-obscure)]'
 			>
 				<ModalContent>
 					{(onClose) => (
 						<>
 							<ModalHeader className='flex flex-col gap-1'>
-								¿Estás seguro que deseas eliminar a{' '}
-								{employeeName.split(' ')[0]} de la empresa?
+								<div>
+									¿Estás seguro que deseas eliminar a{' '}
+									{employeeName.split(' ')[0]} de la empresa?
+								</div>
+								{error && (
+									<div className='text-sm text-danger'>
+										{error}
+									</div>
+								)}
 							</ModalHeader>
 
 							<ModalFooter>
 								<Button
 									color='danger'
 									variant='light'
-									onPress={onClose}
+									onPress={handleClose}
+									isDisabled={isLoading}
 								>
 									Cancelar
 								</Button>
 								<Button
 									color='danger'
 									onPress={() => onDelete(employeeId)}
+									isLoading={isLoading}
 								>
 									Eliminar
 								</Button>

@@ -1,9 +1,9 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, status
 from backend.edensg_server.domain.entities.employee import Employee
 from backend.edensg_server.adapters.repository.supb.employee_repository_sb import EmployeeRepositorySB
 from backend.edensg_server.use_cases.employee_use_cases import EmployeeController
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, List
 
 router = APIRouter(prefix='/employee', tags=["employee"])
 
@@ -113,3 +113,19 @@ async def login(request: LoginRequest):
         
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+@router.delete('/delete/{id}', 
+    response_model=dict,
+    status_code=status.HTTP_200_OK,
+    responses={
+        200: {"description": "Empleado eliminado exitosamente", "content": {"application/json": {"example": {"message": "Empleado eliminado correctamente", "id": 1}}}},
+        404: {"description": "Empleado no encontrado"},
+        400: {"description": "Error al eliminar el empleado"}
+    })
+async def delete_employee(id: int):
+    try:
+        return employee_controller.delete_employee(id)
+    except Exception as e:
+        if "No se encontró el empleado" in str(e):
+            raise HTTPException(status_code=404, detail=str(e))
+        raise HTTPException(status_code=400, detail=str(e))

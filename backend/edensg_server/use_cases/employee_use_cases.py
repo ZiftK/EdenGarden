@@ -27,9 +27,23 @@ class EmployeeController:
             'data': response
         }
 
-    def delete_employee(self, id: int) -> None:
+    def delete_employee(self, id: int) -> dict:
         """Elimina un empleado del sistema."""
-        self.employee_repository.delete_employee(id)
+        try:
+            # Verificar que el empleado existe
+            employee = self.employee_repository.find_employee_by_id(id)
+            if not employee:
+                raise Exception(f"No se encontró el empleado con ID {id}")
+            
+            # Eliminar el empleado
+            self.employee_repository.delete_employee(id)
+            
+            return {
+                "message": "Empleado eliminado correctamente",
+                "id": id
+            }
+        except Exception as e:
+            raise Exception(f"Error al eliminar el empleado: {str(e)}")
 
     def calculate_employee_salary(self, employee_id: int, sprint_id: int) -> float:
         """
