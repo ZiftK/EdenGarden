@@ -6,6 +6,7 @@ import { redirect } from 'next/navigation'
 import img from '@/public/assets/icons/Logo_Eden_Icon.png'
 import MeetsDay from '@/src/features/Meets/ui/MeetsDay'
 import InfoUser from '@/src/components/ERP/moleculs/InfoUser'
+import '@/src/app/globals.css'
 
 export default async function DashboardLayout({
 	children,
@@ -21,11 +22,6 @@ export default async function DashboardLayout({
 			<head>
 				<link rel='icon' href={img.src} />
 				<meta name='color-scheme' content='dark' />
-				<style>{`
-					:root {
-						color-scheme: dark;
-					}
-				`}</style>
 			</head>
 			<body>
 				<HydrateZustandProvider user={user}>

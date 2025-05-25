@@ -5,6 +5,22 @@
 @source '../../node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}';
 @custom-variant dark (&:is(.dark *));
 
+/* Forzar modo oscuro */
+:root {
+  color-scheme: dark !important;
+  --background: #091101 !important;
+  --foreground: #ededed !important;
+}
+
+html {
+  color-scheme: dark !important;
+}
+
+body {
+  color-scheme: dark !important;
+  background-color: var(--background) !important;
+  color: var(--foreground) !important;
+}
 
 @theme {
   --theme-xxs: 0.4rem;
