@@ -3,7 +3,6 @@ import { fetcher } from '@/src/shared/api/httpClient';
 import { AuthState, Employee } from '@/src/shared/types'
 import { loginUser } from '../login/model'
 
-
 export const useAuthStore = create<AuthState>((set) => ({
     user: null,
     loading: false,
@@ -12,28 +11,56 @@ export const useAuthStore = create<AuthState>((set) => ({
     validateSession: async () => {
         set({ loading: true, error: null });
         try {
-            const user = await fetcher.get<Employee>('/auth/session');
-            set({ user, loading: false });
-        } catch {
-            set({ error: 'Error validating session', loading: false });
+            // Si ya tenemos un usuario en el store, no necesitamos validar
+            const currentState = useAuthStore.getState();
+            if (currentState.user) {
+                set({ loading: false });
+                return;
+            }
+            
+            // Si no hay usuario, intentamos obtener la sesión del localStorage
+            const storedUser = localStorage.getItem('user');
+            if (storedUser) {
+                set({ user: JSON.parse(storedUser), loading: false });
+                return;
+            }
+
+            // Si no hay sesión almacenada, el usuario no está autenticado
+            set({ user: null, loading: false });
+        } catch (error) {
+            set({ 
+                error: error instanceof Error ? error.message : 'Error al validar la sesión',
+                loading: false,
+                user: null
+            });
+            localStorage.removeItem('user');
         }
     },
-    login: async (id, password) => {
-        set({ loading: true });
+    login: async (expediente, clave) => {
+        set({ loading: true, error: null });
         try {
-            const user = await loginUser({ exp: id, password });
+            const user = await loginUser({ expediente, clave });
+            localStorage.setItem('user', JSON.stringify(user));
             set({ user, loading: false });
-        } catch {
-            set({ error: 'Error logging in', loading: false });
+        } catch (error) {
+            set({ 
+                error: error instanceof Error ? error.message : 'Error al iniciar sesión', 
+                loading: false,
+                user: null
+            });
+            localStorage.removeItem('user');
         }
     },
     logout: async () => {
-        set({ loading: true });
+        set({ loading: true, error: null });
         try {
-            await fetcher.post('/auth/logout');
+            localStorage.removeItem('user');
             set({ user: null, loading: false });
-        } catch {
-            set({ error: 'Error logging out', loading: false });
+        } catch (error) {
+            set({ 
+                error: error instanceof Error ? error.message : 'Error al cerrar sesión',
+                loading: false 
+            });
         }
     },
 }))

@@ -5,18 +5,18 @@ export type DateFormat = {
 }
 
 export type Employee = {
-    id_empleado: number;
+    id_empleado?: number;
     nombre: string;
     direccion: string;
     telefono: string;
-    email: string;
-    fecha_recontratacion: DateFormat;
+    email?: string | null;
+    fecha_recontratacion?: DateFormat | null;
     fecha_contratacion: DateFormat;
-    fecha_salida: DateFormat;
+    fecha_salida?: DateFormat | null;
     clave: string;
-    rol: 'user' | 'admin' | 'leader';
+    rol: string;
     puesto: string;
-    img: string;
+    img?: string | null;
     salario: number;
     fk_equipo?: number | null;
 }
@@ -26,7 +26,7 @@ export type AuthState = {
     loading: boolean
     error: string | null
     validateSession: () => Promise<void>
-    login: (id: string, password: string) => Promise<void>
+    login: (expediente: string, clave: string) => Promise<void>
     logout: () => Promise<void>
 }
 
