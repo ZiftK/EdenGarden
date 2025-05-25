@@ -1,6 +1,6 @@
 'use client'
 import { Button, Tooltip } from '@heroui/react'
-import { format } from 'date-fns'
+import { format, addMonths, addWeeks } from 'date-fns'
 import { es } from 'date-fns/locale'
 import { useMemo } from 'react'
 
@@ -23,12 +23,22 @@ export default function CalendarProject({
 		return monday
 	}
 
+	// Ensure minimum display period of 3 months from initial date
+	const minEndDate = addMonths(initialDate, 3)
+
+	// Add 2 weeks to the final date
+	const extendedFinalDate = addWeeks(finalDate, 2)
+
+	// Use the later date between minEndDate and extendedFinalDate
+	const effectiveFinalDate =
+		extendedFinalDate > minEndDate ? extendedFinalDate : minEndDate
+
 	const adjustedInitialDate = getPreviousMonday(initialDate)
 
-	const adjustedFinalDate = new Date(finalDate)
-	const finalDay = finalDate.getDay()
+	const adjustedFinalDate = new Date(effectiveFinalDate)
+	const finalDay = effectiveFinalDate.getDay()
 	const daysToAdd = finalDay === 0 ? 0 : 7 - finalDay
-	adjustedFinalDate.setDate(finalDate.getDate() + daysToAdd)
+	adjustedFinalDate.setDate(effectiveFinalDate.getDate() + daysToAdd)
 
 	const calendar = useMemo(() => {
 		const totalDuration = Math.ceil(

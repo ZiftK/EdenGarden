@@ -3,6 +3,7 @@ import { Montserrat } from 'next/font/google'
 import './globals.css'
 import ThemeScript from './ThemeScript'
 import img from '@/public/assets/icons/Logo_Eden_Icon.png'
+import LoadingOverlay from '@/src/components/ERP/atoms/LoadingOverlay/LoadingOverlay'
 
 const montSains = Montserrat({
 	variable: '--font-mont-sains',
@@ -29,6 +30,7 @@ export default function RootLayout({
 			</head>
 			<body className={montSains.className}>
 				<ThemeScript />
+				<LoadingOverlay />
 				{children}
 			</body>
 		</html>
