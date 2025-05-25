@@ -15,7 +15,7 @@ class ImageUpdateRequest(BaseModel):
     base64_image: Optional[str] = None
 
 class LoginRequest(BaseModel):
-    email: str
+    expediente: str
     clave: str
 
 class LoginResponse(BaseModel):
@@ -87,22 +87,20 @@ async def delete_employee_image(employee_id: int):
 @router.post("/login", response_model=LoginResponse)
 async def login(request: LoginRequest):
     try:
-        # Buscar empleado por email
-        employees = employee_repository.find_employee_by_email(request.email)
+        # Buscar empleado por expediente
+        employee = employee_repository.find_employee_by_id(int(request.expediente))
         
-        if not employees:
+        if not employee:
             return LoginResponse(
                 success=False,
-                message="Credenciales inválidas"
+                message="Expediente no encontrado"
             )
-        
-        employee = employees[0]  # Tomamos el primer empleado encontrado
         
         # Verificar la contraseña
         if employee.clave != request.clave:  # En producción, usar hash de contraseñas
             return LoginResponse(
                 success=False,
-                message="Credenciales inválidas"
+                message="Contraseña incorrecta"
             )
         
         return LoginResponse(

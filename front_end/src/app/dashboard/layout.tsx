@@ -15,7 +15,7 @@ export default async function DashboardLayout({
 }>) {
 	const user = await getServerUser()
 
-	// if(!user) redirect("/login")
+	if (!user) redirect('/login')
 
 	return (
 		<html lang='es' className='dark' suppressHydrationWarning={true}>
