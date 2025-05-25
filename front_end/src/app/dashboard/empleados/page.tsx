@@ -15,6 +15,7 @@ import {
 } from '@heroui/react'
 import { useCallback, useEffect, useState, useMemo } from 'react'
 import { useEmployeeStore } from '@/src/features/Employees/model/employeeStore'
+import Loading from './loading'
 
 type ColumnKey = keyof Employee | 'actions'
 
@@ -45,6 +46,10 @@ export default function Page() {
 				employee.rol.toLowerCase().includes(searchLower) // And by role
 		)
 	}, [employees, searchTerm])
+
+	if (isLoading) {
+		return <Loading />
+	}
 
 	if (error) return <div className='text-red-500'>{error}</div>
 

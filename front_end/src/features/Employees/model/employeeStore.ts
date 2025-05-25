@@ -54,7 +54,7 @@ export const useEmployeeStore = create<EmployeeState>((set, get) => ({
             const employeesArray = Array.isArray(responseData.data) ? responseData.data : [];
             console.log('Processed employees array:', employeesArray);
             
-            set({ employees: employeesArray, isLoading: false });
+            set({ employees: employeesArray, isLoading: false, error: null });
         } catch (error) {
             console.error('Error en getEmployees:', error);
             set({ employees: [], error: (error as Error).message, isLoading: false });
@@ -83,79 +83,124 @@ export const useEmployeeStore = create<EmployeeState>((set, get) => ({
 
     getEmployeeById: async (id) => {
         try {
-            set({ isLoading: true, error: null })
-            const response = await fetch(`http://127.0.0.1:8000/employee/id/${id}`)
+            set({ isLoading: true, error: null, currentEmployee: null });
+            console.log('Fetching employee by ID:', id);
+            
+            const response = await fetch(`http://127.0.0.1:8000/employee/id/${id}`);
+            console.log('API Response status:', response.status);
+            
             if (!response.ok) {
-                throw new Error('No se encontró el empleado')
+                throw new Error('No se encontró el empleado');
             }
-            const responseData = await response.json()
-            set({ currentEmployee: responseData.data, isLoading: false })
+            
+            const responseData = await response.json();
+            console.log('Employee data received:', responseData);
+            
+            if (!responseData.data) {
+                throw new Error('No se encontró el empleado');
+            }
+            
+            // Asegurarse de que los datos del empleado son válidos
+            const employeeData = responseData.data;
+            if (!employeeData.id_empleado || !employeeData.nombre) {
+                throw new Error('Datos del empleado incompletos');
+            }
+            
+            // Asegurarse de que las fechas están en el formato correcto
+            const formattedEmployee = {
+                ...employeeData,
+                fecha_contratacion: employeeData.fecha_contratacion ? {
+                    dia: employeeData.fecha_contratacion.dia,
+                    mes: employeeData.fecha_contratacion.mes,
+                    anno: employeeData.fecha_contratacion.anno
+                } : null,
+                fecha_salida: employeeData.fecha_salida ? {
+                    dia: employeeData.fecha_salida.dia,
+                    mes: employeeData.fecha_salida.mes,
+                    anno: employeeData.fecha_salida.anno
+                } : null,
+                fecha_recontratacion: employeeData.fecha_recontratacion ? {
+                    dia: employeeData.fecha_recontratacion.dia,
+                    mes: employeeData.fecha_recontratacion.mes,
+                    anno: employeeData.fecha_recontratacion.anno
+                } : null
+            };
+            
+            console.log('Setting formatted employee data:', formattedEmployee);
+            set({ currentEmployee: formattedEmployee, isLoading: false, error: null });
         } catch (error) {
-            console.error('Error al obtener el empleado:', error)
-            set({ error: 'Error al obtener el empleado', isLoading: false })
+            console.error('Error al obtener el empleado:', error);
+            set({ 
+                currentEmployee: null, 
+                error: (error as Error).message || 'Error al obtener el empleado',
+                isLoading: false 
+            });
+            throw error;
         }
     },
 
     deleteEmployee: async (id) => {
         try {
-            set({ isLoading: true, error: null })
+            set({ isLoading: true, error: null });
             const response = await fetch(`http://127.0.0.1:8000/employee/delete/${id}`, {
                 method: 'DELETE'
-            })
+            });
             if (!response.ok) {
-                throw new Error('Error al eliminar el empleado')
+                throw new Error('Error al eliminar el empleado');
             }
-            const updatedEmployees = get().employees.filter(emp => emp.id_empleado !== id)
-            set({ employees: updatedEmployees, isLoading: false })
+            const updatedEmployees = get().employees.filter(emp => emp.id_empleado !== id);
+            set({ employees: updatedEmployees, isLoading: false, error: null });
         } catch (error) {
-            console.error('Error al eliminar el empleado:', error)
-            set({ error: 'Error al eliminar el empleado', isLoading: false })
+            console.error('Error al eliminar el empleado:', error);
+            set({ error: 'Error al eliminar el empleado', isLoading: false });
+            throw error;
         }
     },
 
     updateEmployee: async (id, data) => {
         try {
-            set({ isLoading: true, error: null })
+            set({ isLoading: true, error: null });
             const response = await fetch(`http://127.0.0.1:8000/employee/update/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(data)
-            })
+            });
             if (!response.ok) {
-                throw new Error('Error al actualizar el empleado')
+                throw new Error('Error al actualizar el empleado');
             }
-            set({ currentEmployee: data })
+            set({ currentEmployee: data, error: null });
             const updatedEmployees = get().employees.map(emp => 
                 emp.id_empleado === id ? data : emp
-            )
-            set({ employees: updatedEmployees, isLoading: false })
+            );
+            set({ employees: updatedEmployees, isLoading: false });
         } catch (error) {
-            console.error('Error al actualizar el empleado:', error)
-            set({ error: 'Error al actualizar el empleado', isLoading: false })
-            throw error
+            console.error('Error al actualizar el empleado:', error);
+            set({ error: 'Error al actualizar el empleado', isLoading: false });
+            throw error;
         }
     },
 
     createEmployee: async (data) => {
         try {
-            set({ isLoading: true, error: null })
+            set({ isLoading: true, error: null });
             const response = await fetch('http://127.0.0.1:8000/employee/create', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(data)
-            })
+            });
             if (!response.ok) {
-                throw new Error('Error al crear el empleado')
+                throw new Error('Error al crear el empleado');
             }
-            await get().getEmployees()
+            await get().getEmployees();
+            set({ isLoading: false, error: null });
         } catch (error) {
-            console.error('Error al crear el empleado:', error)
-            set({ error: 'Error al crear el empleado', isLoading: false })
-            throw error
+            console.error('Error al crear el empleado:', error);
+            set({ error: 'Error al crear el empleado', isLoading: false });
+            throw error;
         }
     }
 }))

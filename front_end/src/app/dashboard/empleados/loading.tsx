@@ -1,50 +1,39 @@
-import { Card, CardBody, CardHeader, Divider, Skeleton } from '@heroui/react'
+'use client'
+
+import { Skeleton } from '@heroui/react'
 
 export default function Loading() {
 	return (
-		<div className='space-y-4'>
+		<div className='w-full mt-4 space-y-4 col-start-1 md:row-start-2 md:!col-start-1 md:row-span-3 xl:!col-start-2'>
+			{/* Title and search bar skeleton */}
 			<div className='flex justify-between items-center'>
-				<Skeleton className='h-8 w-48' />
-				<Skeleton className='h-9 w-32' />
+				<div className='flex items-center gap-2'>
+					<Skeleton className='w-32 h-8 rounded-lg' />
+					<Skeleton className='w-8 h-8 rounded-lg' />
+				</div>
+				<Skeleton className='w-64 h-10 rounded-lg' />
 			</div>
 
-			<Card className='bg-[var(--bg-card-obscure-200)]'>
-				<CardHeader>
-					<div className='flex justify-between items-center'>
-						<Skeleton className='h-8 w-48' />
-						<Skeleton className='h-10 w-64' />
-					</div>
-				</CardHeader>
-				<Divider />
-				<CardBody>
-					<div className='space-y-4'>
-						{/* Encabezados de la tabla */}
-						<div className='grid grid-cols-4 gap-4 py-3 px-4 bg-[var(--bg-card-obscure-300)]'>
-							<Skeleton className='h-6 w-24' />
-							<Skeleton className='h-6 w-24' />
-							<Skeleton className='h-6 w-16' />
-							<Skeleton className='h-6 w-24' />
-						</div>
+			{/* Table skeleton */}
+			<div className='space-y-4'>
+				{/* Header */}
+				<div className='flex gap-4 p-4 bg-[#0002]'>
+					<Skeleton className='w-1/4 h-6 rounded-lg' />
+					<Skeleton className='w-1/4 h-6 rounded-lg' />
+					<Skeleton className='w-1/4 h-6 rounded-lg' />
+					<Skeleton className='w-1/4 h-6 rounded-lg' />
+				</div>
 
-						{/* Filas de la tabla */}
-						{[...Array(5)].map((_, index) => (
-							<div
-								key={index}
-								className='grid grid-cols-4 gap-4 py-3 px-4'
-							>
-								<Skeleton className='h-6 w-32' />
-								<Skeleton className='h-6 w-20' />
-								<Skeleton className='h-6 w-16' />
-								<div className='flex gap-2'>
-									<Skeleton className='h-8 w-8' />
-									<Skeleton className='h-8 w-8' />
-									<Skeleton className='h-8 w-8' />
-								</div>
-							</div>
-						))}
+				{/* Rows */}
+				{[...Array(5)].map((_, i) => (
+					<div key={i} className='flex gap-4 p-4 bg-[#0001]'>
+						<Skeleton className='w-1/4 h-6 rounded-lg' />
+						<Skeleton className='w-1/4 h-6 rounded-lg' />
+						<Skeleton className='w-1/4 h-6 rounded-lg' />
+						<Skeleton className='w-1/4 h-6 rounded-lg' />
 					</div>
-				</CardBody>
-			</Card>
+				))}
+			</div>
 		</div>
 	)
 }

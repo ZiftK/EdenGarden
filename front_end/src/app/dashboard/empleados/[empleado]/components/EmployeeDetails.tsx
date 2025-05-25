@@ -23,10 +23,14 @@ interface EmployeeDetailsProps {
 }
 
 export default function EmployeeDetails({ employee }: EmployeeDetailsProps) {
-	if (!employee || !employee.id_empleado) {
+	console.log('Employee in EmployeeDetails:', employee)
+
+	if (!employee) {
 		return (
-			<div className='flex justify-center items-center min-h-[200px]'>
-				<span>No se encontró el empleado</span>
+			<div className='flex justify-center items-center min-h-[200px] md:row-start-2 md:row-end-4 xl:col-start-2 '>
+				<span className='text-2xl font-bold text-[var(--father-font)]'>
+					No se encontró el empleado
+				</span>
 			</div>
 		)
 	}
@@ -62,7 +66,7 @@ export default function EmployeeDetails({ employee }: EmployeeDetailsProps) {
 							</Link>
 							<ModalDeleteEmployee
 								employeeId={employee.id_empleado.toString()}
-								employeeName={employee.nombre || ''}
+								employeeName={employee.nombre}
 							/>
 						</div>
 					</div>

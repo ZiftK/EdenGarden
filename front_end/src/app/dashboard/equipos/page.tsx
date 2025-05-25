@@ -1,7 +1,11 @@
+'use client'
+
 import TeamsCard from '@/src/components/ERP/organisms/TeamsCard'
 import Title from '@/src/shared/components/atoms/Title'
+import { Suspense } from 'react'
+import Loading from './loading'
 
-export default async function page() {
+export default function Page() {
 	return (
 		<section
 			aria-labelledby='dashboard-section-title'
@@ -12,7 +16,9 @@ export default async function page() {
 				btn={{ active: true, path: '/dashboard/equipos/crear' }}
 			/>
 
-			<TeamsCard />
+			<Suspense fallback={<Loading />}>
+				<TeamsCard />
+			</Suspense>
 		</section>
 	)
 }
