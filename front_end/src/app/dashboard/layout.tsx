@@ -17,14 +17,19 @@ export default async function DashboardLayout({
 	// if(!user) redirect("/login")
 
 	return (
-		<html lang='es' suppressHydrationWarning={true}>
+		<html lang='es' className='dark' suppressHydrationWarning={true}>
 			<head>
 				<link rel='icon' href={img.src} />
 				<meta name='color-scheme' content='dark' />
+				<style>{`
+					:root {
+						color-scheme: dark;
+					}
+				`}</style>
 			</head>
 			<body>
 				<HydrateZustandProvider user={user}>
-					<div className='grid grid-cols-1 grid-rows-[55px_100px_auto_1fr] md:grid-rows-[55px_100px_125_1fr] md:h-dvh md:max-w-[700px] md:mx-auto md:grid-cols-[1fr_300px] xl:max-w-[1536px] xl:grid-cols-[200px_1fr_250px] xl:grid-rows-[55px_250px_1fr]  min-h-full xl:pt-2 pt-20 px-2  gap-4 py-4'>
+					<div className='grid grid-cols-1 grid-rows-[55px_100px_auto_1fr] md:grid-rows-[55px_100px_125_1fr] md:h-dvh md:max-w-[700px] md:mx-auto md:grid-cols-[1fr_300px] xl:max-w-[1536px] xl:grid-cols-[200px_1fr_250px] xl:grid-rows-[55px_250px_1fr] min-h-full xl:pt-2 pt-20 px-2 gap-4 py-4'>
 						<InfoUser user={user} />
 						<Calendar />
 						<MeetsDay />

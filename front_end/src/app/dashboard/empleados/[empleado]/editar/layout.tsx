@@ -1,7 +1,7 @@
 import { Suspense } from 'react'
 import Loading from './loading'
 
-export default function EmployeesLayout({
+export default function EditEmployeeLayout({
 	children,
 }: {
 	children: React.ReactNode

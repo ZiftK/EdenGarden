@@ -46,7 +46,6 @@ export default function Page() {
 		)
 	}, [employees, searchTerm])
 
-	if (isLoading) return <div>Cargando...</div>
 	if (error) return <div className='text-red-500'>{error}</div>
 
 	return (
@@ -109,7 +108,10 @@ export default function Page() {
 							</TableColumn>
 						)}
 					</TableHeader>
-					<TableBody items={filteredEmployees}>
+					<TableBody
+						items={filteredEmployees}
+						emptyContent='No se encontraron empleados'
+					>
 						{(item) => (
 							<TableRow key={item.id_empleado}>
 								{(columnKey) => (
