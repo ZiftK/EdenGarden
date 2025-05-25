@@ -4,21 +4,17 @@ export type DateFormat = {
     anno: number;
 }
 
-export type Employee = {
+export interface Employee {
     id_empleado?: number;
+    expediente: string;
     nombre: string;
+    apellido_paterno: string;
+    apellido_materno: string;
     direccion: string;
     telefono: string;
-    email?: string | null;
-    fecha_recontratacion?: DateFormat | null;
-    fecha_contratacion: DateFormat;
-    fecha_salida?: DateFormat | null;
-    clave: string;
+    email: string;
     rol: string;
-    puesto: string;
     img?: string | null;
-    salario: number;
-    fk_equipo?: number | null;
 }
 
 export type AuthState = {

@@ -1,16 +1,22 @@
 'use client'
 
-import Image from 'next/image'
-import imgIcon from '@/public/assets/Profile-picture.jpg'
 import { useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { LogOutIcon, UserIcon, BellIcon, SettingsIcon } from './icons/iconst'
 import { Employee } from '@/src/shared/types'
+import { useAuthStore } from '@/src/features/auth/model/useAuthStore'
+import { Button } from '@heroui/react'
+import Image from 'next/image'
+import imgDefault from '@/public/assets/Profile-picture.jpg'
+import { LogOutIcon, UserIcon } from './icons/iconst'
 
 export default function InfoUser({ user }: { user: Employee }) {
 	const [isMenuOpen, setIsMenuOpen] = useState(false)
 	const menuRef = useRef<HTMLDivElement>(null)
 	const router = useRouter()
+	const { logout } = useAuthStore()
+
+	// Obtener solo el primer nombre
+	const firstName = user.nombre.split(' ')[0]
 
 	// Cerrar el menú cuando se hace click fuera
 	useEffect(() => {
@@ -29,84 +35,63 @@ export default function InfoUser({ user }: { user: Employee }) {
 	}, [])
 
 	const handleLogout = async () => {
-		try {
-			const response = await fetch('/api/auth/logout', {
-				method: 'POST',
-				credentials: 'include',
-			})
-
-			if (response.ok) {
-				router.push('/login')
-			}
-		} catch (error) {
-			console.error('Error during logout:', error)
-		}
+		await logout()
+		setIsMenuOpen(false)
 	}
 
 	return (
 		<section className='w-full flex justify-between max-h-[55px] h-[55px] md:col-span-2 row-start-1 xl:col-start-2'>
 			<div className='flex flex-col text-[var(--father-font)]'>
-				<h1 className='font-bold text-2xl'>
-					Buen día, {user?.nombre || 'Usuario'}
-				</h1>
-				<p className='text-sm'>{user?.rol || 'Cuenta'}</p>
+				<h1 className='font-bold text-2xl'>Buen día, {firstName}</h1>
+				<p className='text-sm capitalize'>{user.rol}</p>
 			</div>
 
 			<div className='relative' ref={menuRef}>
-				<button
-					onClick={() => setIsMenuOpen(!isMenuOpen)}
-					className='focus:outline-none'
+				<Button
+					onPress={() => setIsMenuOpen(!isMenuOpen)}
+					className='w-12 h-12 p-0 rounded-full bg-transparent flex items-center justify-center overflow-hidden'
 				>
-					<Image
-						src={user?.img || imgIcon}
-						alt='Foto de perfil'
-						className='rounded-full object-cover hover:ring-2 hover:ring-[var(--green-dark-500)] transition-all'
-						width={55}
-						height={55}
-					/>
-				</button>
+					<div className='relative w-12 h-12'>
+						{user.img ? (
+							<Image
+								src={user.img}
+								alt='foto de usuario'
+								fill
+								className='object-cover rounded-full bg-transparent'
+							/>
+						) : (
+							<Image
+								src={imgDefault}
+								alt='foto de usuario por defecto'
+								fill
+								className='object-cover rounded-full bg-transparent'
+							/>
+						)}
+					</div>
+				</Button>
 
 				{isMenuOpen && (
-					<div className='absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-[var(--bg-card-obscure)] ring-1 ring-black ring-opacity-5 z-50'>
-						<div
-							className='py-1'
-							role='menu'
-							aria-orientation='vertical'
+					<div className='absolute right-0 mt-2 w-64 bg-[var(--bg-card-obscure)] z-50 rounded-lg py-3'>
+						<Button
+							onPress={() => {
+								router.push(
+									`/dashboard/empleados/${user.id_empleado}`
+								)
+								setIsMenuOpen(false)
+							}}
+							className='flex items-center w-full px-6 py-4 text-base text-[var(--father-font)] hover:bg-[var(--bg-card-obscure-200)] gap-2 bg-transparent'
 						>
-							<button
-								className='flex items-center w-full px-4 py-2 text-sm text-[var(--father-font)] hover:bg-[var(--bg-card-obscure-200)] gap-2'
-								onClick={() => router.push('/dashboard/perfil')}
-							>
-								<UserIcon h={16} color='var(--father-font)' />
-								Mi Perfil
-							</button>
+							<UserIcon h={20} color='var(--father-font)' />
+							Mi Perfil
+						</Button>
 
-							<button className='flex items-center w-full px-4 py-2 text-sm text-[var(--father-font)] hover:bg-[var(--bg-card-obscure-200)] gap-2'>
-								<BellIcon h={16} color='var(--father-font)' />
-								Notificaciones
-								<span className='ml-auto bg-[var(--green-dark-500)] text-white text-xs rounded-full px-2'>
-									2
-								</span>
-							</button>
-
-							<button className='flex items-center w-full px-4 py-2 text-sm text-[var(--father-font)] hover:bg-[var(--bg-card-obscure-200)] gap-2'>
-								<SettingsIcon
-									h={16}
-									color='var(--father-font)'
-								/>
-								Configuración
-							</button>
-
-							<div className='border-t border-[var(--bg-card-obscure-200)]'></div>
-
-							<button
-								className='flex items-center w-full px-4 py-2 text-sm text-red-500 hover:bg-[var(--bg-card-obscure-200)] gap-2'
-								onClick={handleLogout}
-							>
-								<LogOutIcon h={16} color='rgb(239 68 68)' />
-								Cerrar Sesión
-							</button>
-						</div>
+						<Button
+							onPress={handleLogout}
+							className='flex items-center w-full px-6 py-4 text-base text-red-500 hover:bg-[var(--bg-card-obscure-200)] gap-2 bg-transparent'
+						>
+							<LogOutIcon h={20} color='rgb(239 68 68)' />
+							Cerrar Sesión
+						</Button>
 					</div>
 				)}
 			</div>
