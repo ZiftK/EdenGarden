@@ -2,69 +2,55 @@
 
 import { useEmployeeStore } from '@/src/features/Employees/model/employeeStore'
 import EmployeeDetails from './components/EmployeeDetails'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import Loading from './loading'
 import { useParams } from 'next/navigation'
 
 export default function Page() {
 	const params = useParams()
-	const { getEmployeeById, currentEmployee, isLoading, error } =
-		useEmployeeStore()
 	const employeeId = params?.empleado as string
-	const [isInitialLoad, setIsInitialLoad] = useState(true)
+	const {
+		getEmployeeById,
+		currentEmployee,
+		isLoading,
+		isInitialLoading,
+		error,
+		clearCurrentEmployee,
+	} = useEmployeeStore()
 
 	useEffect(() => {
-		const loadEmployee = async () => {
-			if (employeeId) {
-				setIsInitialLoad(true)
-				try {
-					await getEmployeeById(employeeId)
-				} catch (error) {
-					console.error('Error loading employee:', error)
-				} finally {
-					setIsInitialLoad(false)
-				}
-			}
+		if (employeeId) {
+			getEmployeeById(employeeId)
 		}
 
-		loadEmployee()
-
-		// Cleanup function
 		return () => {
-			setIsInitialLoad(false)
+			clearCurrentEmployee()
 		}
-	}, [employeeId, getEmployeeById])
+	}, [employeeId, getEmployeeById, clearCurrentEmployee])
 
-	console.log('Page render state:', {
-		isInitialLoad,
-		isLoading,
-		currentEmployee,
-		error,
-	})
-
-	// Show loading state
-	if (isInitialLoad || isLoading) {
+	// Mostrar el loader durante la carga inicial
+	if (isInitialLoading) {
 		return <Loading />
 	}
 
-	// Show error state
+	// Mostrar error si existe
 	if (error) {
 		return (
-			<div className='flex items-center justify-center h-full text-[var(--father-font)]'>
+			<div className='relative flex items-center justify-center h-full text-[var(--father-font)]'>
 				{error}
 			</div>
 		)
 	}
 
-	// Show not found state
-	if (!currentEmployee) {
+	// Mostrar mensaje si no hay empleado
+	if (!currentEmployee && !isLoading) {
 		return (
-			<div className='flex items-center justify-center h-full text-[var(--father-font)]'>
+			<div className='relative flex items-center justify-center h-full text-[var(--father-font)]'>
 				No se encontró el empleado
 			</div>
 		)
 	}
 
-	// Show employee details
+	// Mostrar los detalles del empleado
 	return <EmployeeDetails employee={currentEmployee} />
 }

@@ -8,6 +8,7 @@ interface EmployeeState {
     currentEmployee: Employee | null;
     isLoading: boolean;
     error: string | null;
+    isInitialLoading: boolean;
 
     // Acciones para la lista de empleados
     getEmployees: () => Promise<void>;
@@ -28,12 +29,13 @@ interface EmployeeState {
 export const useEmployeeStore = create<EmployeeState>((set, get) => ({
     employees: [],
     currentEmployee: null,
-    isLoading: false,
+    isLoading: true,
+    isInitialLoading: true,
     error: null,
 
     setLoading: (loading) => set({ isLoading: loading }),
     setError: (error) => set({ error }),
-    clearCurrentEmployee: () => set({ currentEmployee: null }),
+    clearCurrentEmployee: () => set({ currentEmployee: null, error: null, isLoading: true, isInitialLoading: true }),
 
     getEmployees: async () => {
         try {
@@ -82,31 +84,31 @@ export const useEmployeeStore = create<EmployeeState>((set, get) => ({
     },
 
     getEmployeeById: async (id) => {
+        if (!id) return;
+
         try {
-            set({ isLoading: true, error: null, currentEmployee: null });
-            console.log('Fetching employee by ID:', id);
-            
+            // Asegurar que isLoading está true desde el inicio
+            set(state => ({
+                ...state,
+                isLoading: true,
+                isInitialLoading: true,
+                error: null,
+                currentEmployee: null
+            }));
+
             const response = await fetch(`http://127.0.0.1:8000/employee/id/${id}`);
-            console.log('API Response status:', response.status);
-            
-            if (!response.ok) {
-                throw new Error('No se encontró el empleado');
-            }
-            
             const responseData = await response.json();
-            console.log('Employee data received:', responseData);
             
-            if (!responseData.data) {
+            if (!response.ok || !responseData.data) {
                 throw new Error('No se encontró el empleado');
             }
             
-            // Asegurarse de que los datos del empleado son válidos
             const employeeData = responseData.data;
-            if (!employeeData.id_empleado || !employeeData.nombre) {
+            
+            if (!employeeData || !employeeData.id_empleado) {
                 throw new Error('Datos del empleado incompletos');
             }
-            
-            // Asegurarse de que las fechas están en el formato correcto
+
             const formattedEmployee = {
                 ...employeeData,
                 fecha_contratacion: employeeData.fecha_contratacion ? {
@@ -126,16 +128,19 @@ export const useEmployeeStore = create<EmployeeState>((set, get) => ({
                 } : null
             };
             
-            console.log('Setting formatted employee data:', formattedEmployee);
-            set({ currentEmployee: formattedEmployee, isLoading: false, error: null });
+            set({ 
+                currentEmployee: formattedEmployee, 
+                isLoading: false, 
+                isInitialLoading: false,
+                error: null 
+            });
         } catch (error) {
-            console.error('Error al obtener el empleado:', error);
             set({ 
                 currentEmployee: null, 
-                error: (error as Error).message || 'Error al obtener el empleado',
-                isLoading: false 
+                error: (error as Error).message,
+                isLoading: false,
+                isInitialLoading: false
             });
-            throw error;
         }
     },
 

@@ -27,7 +27,7 @@ export default function EmployeeDetails({ employee }: EmployeeDetailsProps) {
 
 	if (!employee) {
 		return (
-			<div className='flex justify-center items-center min-h-[200px] md:row-start-2 md:row-end-4 xl:col-start-2 '>
+			<div className='flex justify-center items-center min-h-[200px] md:row-start-2 md:row-end-4 xl:col-start-2'>
 				<span className='text-2xl font-bold text-[var(--father-font)]'>
 					No se encontró el empleado
 				</span>
@@ -36,9 +36,9 @@ export default function EmployeeDetails({ employee }: EmployeeDetailsProps) {
 	}
 
 	return (
-		<section className='z-[-1] text-[var(--father-font)] md:row-start-2 md:row-end-4 xl:col-start-2'>
-			<Card className='bg-[var(--bg-card-obscure-200)]'>
-				<CardHeader>
+		<section className='relative text-[var(--father-font)] md:row-start-2 md:row-end-4 xl:col-start-2'>
+			<Card className='w-full bg-[var(--bg-card-obscure)] relative'>
+				<CardHeader className='relative'>
 					<div className='flex flex-col sm:flex-row sm:items-center w-full justify-between gap-4'>
 						<div className='flex gap-3'>
 							<Image
@@ -57,7 +57,7 @@ export default function EmployeeDetails({ employee }: EmployeeDetailsProps) {
 								</p>
 							</div>
 						</div>
-						<div className='flex gap-2 items-center  ml-auto'>
+						<div className='flex gap-2 items-center ml-auto'>
 							<Link
 								href={`/dashboard/empleados/${employee.id_empleado}/editar`}
 								className='bg-[var(--green-dark-500)] inline-flex items-center text-white text-sm px-3 h-7 hover:bg-[var(--green-dark-600)] transition-colors rounded-lg'
