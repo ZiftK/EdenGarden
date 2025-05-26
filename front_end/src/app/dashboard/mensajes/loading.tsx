@@ -1,4 +1,6 @@
-import { Box, Typography } from '@raul_yael/cleangui'
+'use client'
+
+import { Box } from '@raul_yael/cleangui'
 
 export default function Loading() {
 	return (

@@ -17,36 +17,26 @@ class ContactController:
     def get_messages(self) -> List[ContactMessage]:
         """Get all non-deleted contact messages"""
         try:
-            response = self.supabase.table('contact_messages')\
-                .select('*')\
-                .neq('status', 'eliminado')\
-                .order('created_at', desc=True)\
-                .execute()
-            return response.data
+            response = self.supabase.table('contact_messages').select('*').neq('status', 'eliminado').execute()
+            return [ContactMessage(**msg) for msg in response.data]
         except Exception as e:
             raise Exception(f"Error al obtener los mensajes: {str(e)}")
 
-    def mark_as_read(self, message_id: str) -> dict:
+    def mark_as_read(self, id: str) -> dict:
         """Mark a message as read"""
         try:
-            self.supabase.table('contact_messages')\
-                .update({'read': True})\
-                .eq('id', message_id)\
-                .execute()
+            self.supabase.table('contact_messages').update({'read': True}).eq('id', id).execute()
             return {"message": "Mensaje marcado como leído"}
         except Exception as e:
             raise Exception(f"Error al marcar el mensaje como leído: {str(e)}")
 
-    def update_status(self, message_id: str, status: str) -> dict:
+    def update_status(self, id: str, status: str) -> dict:
         """Update message status"""
         if status not in ['nuevo', 'prospecto', 'eliminado']:
             raise Exception("Estado no válido")
         
         try:
-            self.supabase.table('contact_messages')\
-                .update({'status': status})\
-                .eq('id', message_id)\
-                .execute()
+            self.supabase.table('contact_messages').update({'status': status}).eq('id', id).execute()
             return {"message": f"Estado actualizado a {status}"}
         except Exception as e:
             raise Exception(f"Error al actualizar el estado: {str(e)}") 

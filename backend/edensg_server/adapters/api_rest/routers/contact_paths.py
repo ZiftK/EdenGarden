@@ -31,26 +31,26 @@ async def get_messages():
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-@router.patch('/messages/{message_id}/read',
+@router.patch('/messages/{id}/read',
     response_model=dict,
     responses={
         200: {"description": "Mensaje marcado como leído"},
         400: {"description": "Error al marcar el mensaje"}
     })
-async def mark_as_read(message_id: str):
+async def mark_as_read(id: str):
     try:
-        return contact_controller.mark_as_read(message_id)
+        return contact_controller.mark_as_read(id)
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-@router.patch('/messages/{message_id}/status',
+@router.patch('/messages/{id}/status',
     response_model=dict,
     responses={
         200: {"description": "Estado del mensaje actualizado"},
         400: {"description": "Error al actualizar el estado"}
     })
-async def update_status(message_id: str, status: str):
+async def update_status(id: str, status: str):
     try:
-        return contact_controller.update_status(message_id, status)
+        return contact_controller.update_status(id, status)
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e)) 
