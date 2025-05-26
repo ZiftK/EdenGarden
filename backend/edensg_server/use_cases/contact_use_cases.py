@@ -1,6 +1,7 @@
 from typing import List
 from ..domain.entities.contact import ContactMessage, ContactMessageCreate
 from ..database import get_supabase_client
+import uuid
 
 class ContactController:
     def __init__(self):
@@ -9,7 +10,17 @@ class ContactController:
     def create_message(self, message: ContactMessageCreate) -> dict:
         """Create a new contact message"""
         try:
-            response = self.supabase.table('contact_messages').insert(message.dict()).execute()
+            # Aseguramos que todos los campos requeridos estén presentes
+            message_data = {
+                "id": str(uuid.uuid4()),  # Generamos el UUID aquí
+                "name": message.name,
+                "email": message.email,
+                "phone": message.phone,
+                "message": message.message,
+                "status": "nuevo",
+                "read": False
+            }
+            response = self.supabase.table('contact_messages').insert(message_data).execute()
             return {"message": "Mensaje enviado correctamente"}
         except Exception as e:
             raise Exception(f"Error al crear el mensaje: {str(e)}")
