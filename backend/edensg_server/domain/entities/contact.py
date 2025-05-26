@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from datetime import datetime
-from typing import Optional
+from typing import Optional, Literal
 
 class ContactMessageBase(BaseModel):
     name: str
@@ -14,7 +14,7 @@ class ContactMessageCreate(ContactMessageBase):
 class ContactMessage(ContactMessageBase):
     id: str
     created_at: datetime
-    status: str = "nuevo"
+    status: Literal["nuevo", "prospecto", "cliente", "eliminado"] = "nuevo"
     read: bool = False
 
     class Config:

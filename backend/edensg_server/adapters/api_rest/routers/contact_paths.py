@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException, status
-from typing import List
+from typing import List, Literal
 from ....domain.entities.contact import ContactMessage, ContactMessageCreate
 from ....use_cases.contact_use_cases import ContactController
 
@@ -47,9 +47,13 @@ async def mark_as_read(id: str):
     response_model=dict,
     responses={
         200: {"description": "Estado del mensaje actualizado"},
-        400: {"description": "Error al actualizar el estado"}
+        400: {"description": "Error al actualizar el estado"},
+        422: {"description": "Estado no válido"}
     })
-async def update_status(id: str, status: str):
+async def update_status(
+    id: str, 
+    status: Literal["nuevo", "prospecto", "cliente", "eliminado"]
+):
     try:
         return contact_controller.update_status(id, status)
     except Exception as e:

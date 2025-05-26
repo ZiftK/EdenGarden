@@ -1,20 +1,23 @@
 'use client'
 
-import { useEffect } from 'react'
-import { Typography } from '@raul_yael/cleangui'
+import { useEffect, useState } from 'react'
 import { useContactStore } from '@/src/features/Contact/model/contactStore'
-import { EmailIcon } from '@/src/components/landing/atoms/Icons/Icons'
 import {
 	UserIcon,
 	TrashIcon,
 	MarkAsReadIcon,
+	ClientIcon,
 } from '@/src/components/ERP/moleculs/icons/iconst'
 import Title from '@/src/shared/components/atoms/Title'
 import { Card, CardBody, CardHeader, Button, Divider } from '@heroui/react'
+import Loading from './loading'
 
 export default function MessagesPage() {
 	const { messages, loading, getMessages, markAsRead, updateStatus } =
 		useContactStore()
+	const [loadingStates, setLoadingStates] = useState<{
+		[key: string]: boolean
+	}>({})
 
 	useEffect(() => {
 		getMessages()
@@ -24,12 +27,25 @@ export default function MessagesPage() {
 		await markAsRead(id)
 	}
 
-	const handleUpdateStatus = async (id: string, status: 'prospecto') => {
-		await updateStatus(id, status)
+	const handleUpdateStatus = async (
+		id: string,
+		newStatus: 'prospecto' | 'cliente'
+	) => {
+		try {
+			setLoadingStates((prev) => ({ ...prev, [id]: true }))
+			await updateStatus(id, newStatus)
+		} finally {
+			setLoadingStates((prev) => ({ ...prev, [id]: false }))
+		}
 	}
 
 	const handleDelete = async (id: string) => {
-		await updateStatus(id, 'eliminado')
+		try {
+			setLoadingStates((prev) => ({ ...prev, [id]: true }))
+			await updateStatus(id, 'eliminado')
+		} finally {
+			setLoadingStates((prev) => ({ ...prev, [id]: false }))
+		}
 	}
 
 	const handleEmailClick = (email: string) => {
@@ -39,12 +55,7 @@ export default function MessagesPage() {
 	}
 
 	if (loading) {
-		return (
-			<Title
-				title='Mensajes Nuevos'
-				btn={{ active: false, path: '/dashboard/equipos/crear' }}
-			/>
-		)
+		return <Loading />
 	}
 
 	return (
@@ -54,30 +65,32 @@ export default function MessagesPage() {
 				btn={{ active: false, path: '/dashboard/equipos/crear' }}
 			/>
 
-			<div className='grid gap-4'>
-				{messages.map((message) => (
+			{messages.length === 0 ? (
+				<Card className='p-6 text-center'>
+					<p className='text-[var(--father-font)]'>
+						No hay mensajes para mostrar
+					</p>
+				</Card>
+			) : (
+				messages.map((message) => (
 					<Card
 						key={message.id}
-						className={`bg-[var(--bg-card-obscure)] ${message.read ? 'opacity-70' : ''}`}
+						className={`bg-[var(--bg-card-obscure)] mb-4 ${message.read ? 'opacity-70' : ''}`}
 					>
 						<CardHeader className='pb-2'>
 							<div className='w-full flex justify-between items-center'>
 								<div>
-									<Typography className='font-bold text-lg'>
+									<p className='font-bold text-lg'>
 										{message.name}
-									</Typography>
-									<Typography
-										className='text-blue-500 cursor-pointer hover:underline flex items-center gap-2'
+									</p>
+									<div
+										className='text-blue-300 cursor-pointer hover:underline flex items-center gap-2'
 										onClick={() =>
 											handleEmailClick(message.email)
 										}
 									>
-										<EmailIcon
-											h={16}
-											color='var(--green-dark-500)'
-										/>
-										{message.email}
-									</Typography>
+										<p>{message.email}</p>
+									</div>
 								</div>
 								<div className='flex gap-2 ml-auto'>
 									{!message.read && (
@@ -103,10 +116,14 @@ export default function MessagesPage() {
 												'prospecto'
 											)
 										}
-										className={`p-2 ${message.status === 'prospecto' ? 'text-[var(--green-dark-500)]' : 'text-gray-600 hover:text-[var(--green-dark-500)]'}`}
+										className={`p-2 ${message.status === 'prospecto' ? 'text-[var(--green-dark-500)]' : ' hover:text-[var(--green-dark-500)]'}`}
 										title='Marcar como prospecto'
 										variant='ghost'
 										size='sm'
+										isDisabled={
+											loadingStates[message.id] ||
+											message.status === 'cliente'
+										}
 									>
 										<UserIcon
 											h={20}
@@ -118,11 +135,37 @@ export default function MessagesPage() {
 										/>
 									</Button>
 									<Button
+										onPress={() =>
+											handleUpdateStatus(
+												message.id,
+												'cliente'
+											)
+										}
+										className={`p-2 ${message.status === 'cliente' ? 'text-[var(--blue-dark-500)]' : ' hover:text-[var(--blue-dark-500)]'}`}
+										title='Marcar como cliente'
+										variant='ghost'
+										size='sm'
+										isDisabled={
+											loadingStates[message.id] ||
+											message.status === 'eliminado'
+										}
+									>
+										<ClientIcon
+											h={20}
+											color={
+												message.status === 'cliente'
+													? '#00aaff'
+													: 'var(--father-font)'
+											}
+										/>
+									</Button>
+									<Button
 										onPress={() => handleDelete(message.id)}
-										className='p-2 text-gray-600 hover:text-red-600'
+										className='p-2  hover:text-red-600'
 										title='Eliminar'
 										variant='ghost'
 										size='sm'
+										isDisabled={loadingStates[message.id]}
 									>
 										<TrashIcon
 											h={20}
@@ -134,20 +177,22 @@ export default function MessagesPage() {
 						</CardHeader>
 						<Divider />
 						<CardBody className='pt-4'>
-							<Typography className='text-sm text-gray-600 mb-2'>
-								{message.phone}
-							</Typography>
-							<Typography className='text-sm text-gray-700 whitespace-pre-wrap'>
-								{message.message}
-							</Typography>
+							<p className='text-sm  mb-2'>
+								<b>Número de teléfono:</b> {message.phone}
+							</p>
+							<p className='text-sm  whitespace-pre-wrap'>
+								<b>Mensaje:</b> {message.message}
+							</p>
 							<div className='mt-4'>
 								<span
-									className={`px-2 py-1 rounded text-xs font-medium ${
+									className={`px-2 py-1 rounded text-sm font-medium ${
 										message.status === 'nuevo'
 											? 'bg-blue-100 text-blue-800'
 											: message.status === 'prospecto'
 												? 'bg-green-100 text-green-800'
-												: 'bg-gray-100 text-gray-800'
+												: message.status === 'cliente'
+													? 'bg-blue-500 text-white'
+													: 'bg-gray-100 text-gray-800'
 									}`}
 								>
 									{message.status.charAt(0).toUpperCase() +
@@ -156,16 +201,8 @@ export default function MessagesPage() {
 							</div>
 						</CardBody>
 					</Card>
-				))}
-
-				{messages.length === 0 && (
-					<Card className='p-6 text-center'>
-						<Typography className='text-[var(--father-font)]'>
-							No hay mensajes para mostrar
-						</Typography>
-					</Card>
-				)}
-			</div>
+				))
+			)}
 		</div>
 	)
 }

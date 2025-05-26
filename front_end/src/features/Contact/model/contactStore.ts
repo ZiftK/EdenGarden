@@ -1,6 +1,24 @@
 import { create } from 'zustand'
 import { fetcher } from '@/src/shared/api/httpClient'
 
+type ApiErrorDetail = {
+    type: string;
+    loc: string[];
+    msg: string;
+    input: unknown;
+};
+
+type ApiError = {
+    response?: {
+        data?: {
+            detail?: ApiErrorDetail[];
+        };
+    };
+    message?: string;
+    status?: number;
+    statusText?: string;
+};
+
 export interface ContactMessage {
     id: string
     name: string
@@ -8,7 +26,7 @@ export interface ContactMessage {
     phone: string
     message: string
     created_at: string
-    status: 'nuevo' | 'prospecto' | 'eliminado'
+    status: 'nuevo' | 'prospecto' | 'cliente' | 'eliminado'
     read: boolean
 }
 
@@ -19,7 +37,7 @@ interface ContactState {
     getMessages: () => Promise<void>
     createMessage: (message: Omit<ContactMessage, 'id' | 'created_at' | 'status' | 'read'>) => Promise<void>
     markAsRead: (id: string) => Promise<void>
-    updateStatus: (id: string, status: 'nuevo' | 'prospecto' | 'eliminado') => Promise<void>
+    updateStatus: (id: string, status: 'nuevo' | 'prospecto' | 'cliente' | 'eliminado') => Promise<void>
 }
 
 export const useContactStore = create<ContactState>((set) => ({
@@ -46,7 +64,7 @@ export const useContactStore = create<ContactState>((set) => ({
         } catch (error) {
             console.error('Error creating message:', error)
             set({ error: 'Error al enviar el mensaje', loading: false })
-            throw error // Re-throw to handle in the UI
+            throw error
         }
     },
 
@@ -54,7 +72,6 @@ export const useContactStore = create<ContactState>((set) => ({
         try {
             set({ loading: true, error: null })
             await fetcher.patch(`/contact/messages/${id}/read`, {})
-            // Refresh messages after marking as read
             const response = await fetcher.get<ContactMessage[]>('/contact/messages')
             set({ messages: response, loading: false })
         } catch (error) {
@@ -65,14 +82,24 @@ export const useContactStore = create<ContactState>((set) => ({
 
     updateStatus: async (id, status) => {
         try {
-            set({ loading: true, error: null })
-            await fetcher.patch(`/contact/messages/${id}/status`, { status })
-            // Refresh messages after status update
-            const response = await fetcher.get<ContactMessage[]>('/contact/messages')
-            set({ messages: response, loading: false })
+            set({ error: null })
+            // Send status as a query parameter
+            const response = await fetcher.patch(`/contact/messages/${id}/status?status=${status}`, {})
+
+            if (!response) {
+                throw new Error('No response received from server')
+            }
+
+            // Only fetch messages if the status update was successful
+            const updatedMessages = await fetcher.get<ContactMessage[]>('/contact/messages')
+            set({ messages: updatedMessages })
         } catch (error) {
-            console.error('Error updating status:', error)
-            set({ error: 'Error al actualizar el estado', loading: false })
+            const apiError = error as ApiError
+            console.error('Error updating status:', apiError)
+            set({ 
+                error: apiError?.response?.data?.detail?.[0]?.msg || 'Error al actualizar el estado'
+            })
+            throw error
         }
     }
 })) 

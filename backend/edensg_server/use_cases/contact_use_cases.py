@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Literal
 from ..domain.entities.contact import ContactMessage, ContactMessageCreate
 from ..database import get_supabase_client
 import uuid
@@ -41,10 +41,11 @@ class ContactController:
         except Exception as e:
             raise Exception(f"Error al marcar el mensaje como leído: {str(e)}")
 
-    def update_status(self, id: str, status: str) -> dict:
+    def update_status(self, id: str, status: Literal["nuevo", "prospecto", "cliente", "eliminado"]) -> dict:
         """Update message status"""
-        if status not in ['nuevo', 'prospecto', 'eliminado']:
-            raise Exception("Estado no válido")
+        valid_statuses = ["nuevo", "prospecto", "cliente", "eliminado"]
+        if status not in valid_statuses:
+            raise Exception(f"Estado no válido. Los estados válidos son: {', '.join(valid_statuses)}")
         
         try:
             self.supabase.table('contact_messages').update({'status': status}).eq('id', id).execute()
