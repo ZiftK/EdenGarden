@@ -5,6 +5,7 @@ import { Box, Typography } from '@raul_yael/cleangui'
 import { useContactStore } from '@/src/features/Contact/model/contactStore'
 import { EmailIcon } from '@/src/components/landing/atoms/Icons/Icons'
 import { UserIcon, TrashIcon } from '@/src/components/ERP/moleculs/icons/iconst'
+import Title from '@/src/shared/components/atoms/Title'
 
 export default function MessagesPage() {
 	const { messages, loading, getMessages, markAsRead, updateStatus } =
@@ -34,17 +35,19 @@ export default function MessagesPage() {
 
 	if (loading) {
 		return (
-			<Box className='flex items-center justify-center h-screen'>
-				<Typography>Cargando mensajes...</Typography>
-			</Box>
+			<Title
+				title='Mensajes Nuevos'
+				btn={{ active: false, path: '/dashboard/equipos/crear' }}
+			/>
 		)
 	}
 
 	return (
-		<Box className='p-6'>
-			<Typography as='h1' className='text-2xl font-bold mb-6'>
-				Gestión de Mensajes
-			</Typography>
+		<Box className='p-6 md:row-start-2 md:row-end-4 xl:col-start-2'>
+			<Title
+				title='Mensajes Nuevos'
+				btn={{ active: false, path: '/dashboard/equipos/crear' }}
+			/>
 
 			<div className='grid gap-4'>
 				{messages.map((message) => (
@@ -138,8 +141,10 @@ export default function MessagesPage() {
 				))}
 
 				{messages.length === 0 && (
-					<Box className='p-4 text-center'>
-						<Typography>No hay mensajes para mostrar</Typography>
+					<Box className='p-0'>
+						<p className='text-[var(--father-font)]'>
+							No hay mensajes para mostrar
+						</p>
 					</Box>
 				)}
 			</div>

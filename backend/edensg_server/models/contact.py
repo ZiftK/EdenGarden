@@ -14,8 +14,8 @@ class ContactMessageCreate(ContactMessageBase):
 class ContactMessage(ContactMessageBase):
     id: str
     created_at: datetime
-    status: str
-    read: bool
+    status: str = 'nuevo'
+    read: bool = False
 
     class Config:
         from_attributes = True 
