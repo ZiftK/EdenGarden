@@ -82,11 +82,11 @@ export function HomePage() {
 							outline:
 								'.7px solid var(--"var(--green-dark-transparent-100))',
 						}}
-						onClick={() => scrollToSection('servicios')}
+						onClick={() => scrollToSection('about_us')}
 					/>
 					<BtnFilled
 						text='Contactanos'
-						onClick={() => scrollToSection('contacto')}
+						onClick={() => scrollToSection('contact_form')}
 						$bg='var(--white-peristance-color)'
 						col='#557C2B'
 					/>

@@ -1,5 +1,197 @@
-import DashboardShell from "@/src/features/auth/dashboard/DashboardShell";
+'use client'
 
-export default async function DashboardPage() {
-    return <DashboardShell />
+import { Card, CardBody, CardHeader } from '@heroui/react'
+import { useEffect, useState } from 'react'
+import { getTeams } from '@/src/features/Teams/api/getTeams'
+import getProjects from '@/src/features/Projets/api/getProjects'
+import { useEmployeeStore } from '@/src/features/Employees/model/employeeStore'
+import { useContactStore } from '@/src/features/Contact/model/contactStore'
+import {
+	GroupIcon,
+	MessageIcon,
+	CertifiedIcon,
+} from '@/src/components/landing/atoms/Icons/Icons'
+import {
+	TableRowsIcon,
+	AlertDiamondIcon,
+} from '@/src/components/ERP/moleculs/icons/iconst'
+import Link from 'next/link'
+import Title from '@/src/shared/components/atoms/Title'
+import DataProyectContract from '@/src/components/ERP/moleculs/DataProyectContract'
+import ChartTeams from '@/src/components/ERP/moleculs/ChartTeams'
+import TableEmployees from '@/src/components/ERP/moleculs/TableEmployees'
+import { ShortTeam } from '@/src/shared/types'
+import { Project } from '@/src/features/Projets/types'
+import { customDateToDateString } from '@/src/shared/hooks/useDatesCustoms'
+
+export default function DashboardPage() {
+	const [teams, setTeams] = useState<ShortTeam[]>([])
+	const [projects, setProjects] = useState<Project[]>([])
+	const { employees, getEmployees } = useEmployeeStore()
+	const { messages, getMessages } = useContactStore()
+
+	useEffect(() => {
+		const fetchData = async () => {
+			try {
+				const [teamsData, projectsData] = await Promise.all([
+					getTeams(),
+					getProjects(),
+				])
+				setTeams(teamsData)
+				setProjects(projectsData)
+				await getEmployees()
+				await getMessages()
+			} catch (error) {
+				console.error('Error fetching data:', error)
+			}
+		}
+		fetchData()
+	}, [getEmployees, getMessages])
+
+	const colorIcons = 'var(--father-font)'
+	const unreadMessages = messages?.filter((m) => !m.read).length || 0
+	const activeProjects = projects.filter((p) => p.estado === 'ACTIVO').length
+	const projectsWithIssues = projects.filter(
+		(p) => p.estado === 'CON_PROBLEMAS'
+	).length
+
+	const projectsForDisplay = projects.map((project) => ({
+		name: project.nombre,
+		price: project.costo,
+		startDate: project.calendario?.fecha_inicio
+			? customDateToDateString(project.calendario.fecha_inicio)
+			: '',
+		endDate: project.calendario?.fecha_fin
+			? customDateToDateString(project.calendario.fecha_fin)
+			: '',
+		teem: project.equipo?.nombre || 'Sin equipo',
+	}))
+
+	return (
+		<section className='mt-4 text-[var(--father-font)] md:row-start-2 md:row-span-3 md:row-end-4 xl:mx-auto xl:w-full xl:col-start-2 max-h-[calc(100vh-4rem)] overflow-y-auto scrollbar-thin-custom'>
+			<Title title='Panel de Control' btn={{ active: false, path: '' }} />
+
+			<div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 mb-6'>
+				{/* Card de Proyectos */}
+				<Link href='/dashboard/proyectos'>
+					<Card className='bg-[var(--bg-card-obscure)] hover:bg-[var(--bg-card-obscure-200)] transition-colors'>
+						<CardBody>
+							<div className='flex justify-between items-center mb-2'>
+								<h3 className='text-lg font-bold'>
+									{activeProjects} Proyectos
+								</h3>
+								<div className='p-3 rounded-full bg-[var(--green-dark-500)]'>
+									<CertifiedIcon h={24} color={colorIcons} />
+								</div>
+							</div>
+							<p className='text-sm text-[var(--children-font)]'>
+								{projectsWithIssues} con incidencias
+							</p>
+						</CardBody>
+					</Card>
+				</Link>
+
+				{/* Card de Equipos */}
+				<Link href='/dashboard/equipos'>
+					<Card className='bg-[var(--bg-card-obscure)] hover:bg-[var(--bg-card-obscure-200)] transition-colors'>
+						<CardBody>
+							<div className='flex justify-between items-center mb-2'>
+								<h3 className='text-lg font-bold'>
+									{teams.length} Equipos
+								</h3>
+								<div className='p-3 rounded-full bg-[var(--green-dark-500)]'>
+									<GroupIcon h={24} color={colorIcons} />
+								</div>
+							</div>
+							<p className='text-sm text-[var(--children-font)]'>
+								{employees.length} empleados activos
+							</p>
+						</CardBody>
+					</Card>
+				</Link>
+
+				{/* Card de Mensajes */}
+				<Link href='/dashboard/mensajes'>
+					<Card className='bg-[var(--bg-card-obscure)] hover:bg-[var(--bg-card-obscure-200)] transition-colors'>
+						<CardBody>
+							<div className='flex justify-between items-center mb-2'>
+								<h3 className='text-lg font-bold'>
+									{unreadMessages} Mensajes
+								</h3>
+								<div className='p-3 rounded-full bg-[var(--green-dark-500)]'>
+									<MessageIcon h={24} color={colorIcons} />
+								</div>
+							</div>
+							<p className='text-sm text-[var(--children-font)]'>
+								sin leer
+							</p>
+						</CardBody>
+					</Card>
+				</Link>
+			</div>
+
+			<div className='grid grid-cols-1 xl:grid-cols-[2fr_1fr] gap-4'>
+				{/* Primera fila */}
+				<Card className='bg-[var(--bg-card-obscure)]'>
+					<CardHeader>
+						<h3 className='text-lg font-bold'>
+							Proyectos en Curso
+						</h3>
+					</CardHeader>
+					<CardBody>
+						<DataProyectContract data={projectsForDisplay} />
+					</CardBody>
+				</Card>
+
+				<Card className='bg-[var(--bg-card-obscure)]'>
+					<CardHeader>
+						<h3 className='text-lg font-bold'>
+							Distribución de Equipos
+						</h3>
+					</CardHeader>
+					<CardBody>
+						<ChartTeams />
+					</CardBody>
+				</Card>
+
+				{/* Segunda fila */}
+				<Card className='bg-[var(--bg-card-obscure)]'>
+					<CardHeader>
+						<h3 className='text-lg font-bold'>Empleados Activos</h3>
+					</CardHeader>
+					<CardBody>
+						<TableEmployees />
+					</CardBody>
+				</Card>
+
+				<Card className='bg-[var(--bg-card-obscure)]'>
+					<CardHeader>
+						<h3 className='text-lg font-bold'>Últimos Mensajes</h3>
+					</CardHeader>
+					<CardBody>
+						<div className='space-y-4'>
+							{messages?.slice(0, 3).map((message) => (
+								<div
+									key={message.id}
+									className='flex items-start gap-3 p-2 rounded hover:bg-[var(--bg-card-obscure-200)]'
+								>
+									<div
+										className={`w-2 h-2 rounded-full mt-2 ${message.read ? 'bg-gray-400' : 'bg-green-500'}`}
+									/>
+									<div>
+										<h4 className='font-medium'>
+											{message.name}
+										</h4>
+										<p className='text-sm text-[var(--children-font)] line-clamp-1'>
+											{message.message}
+										</p>
+									</div>
+								</div>
+							))}
+						</div>
+					</CardBody>
+				</Card>
+			</div>
+		</section>
+	)
 }
