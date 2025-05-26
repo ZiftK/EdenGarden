@@ -258,3 +258,26 @@ export const TrashIcon = ({
 		/>
 	</svg>
 )
+
+export const MarkAsReadIcon = ({
+	h = 24,
+	color = '#EAF2E7',
+}: {
+	h?: number
+	color?: string
+}) => (
+	<svg
+		xmlns='http://www.w3.org/2000/svg'
+		width={h}
+		height={h}
+		viewBox='0 0 24 24'
+		fill='none'
+		stroke={color}
+		strokeWidth='2'
+		strokeLinecap='round'
+		strokeLinejoin='round'
+	>
+		<path d='M9 12l2 2 4-4' />
+		<path d='M12 3a9 9 0 1 0 9 9' />
+	</svg>
+)

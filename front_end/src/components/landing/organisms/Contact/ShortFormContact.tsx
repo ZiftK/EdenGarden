@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Typography } from '@raul_yael/cleangui'
+import { Typography, Box, Card } from '@raul_yael/cleangui'
 import { Input } from '@raul_yael/cleangui'
 import { useContactStore } from '@/src/features/Contact/model/contactStore'
 import { BtnOutlined } from '@/src/shared/components/atoms/Button'
@@ -37,7 +37,6 @@ export function ShortFormContact() {
 				message: `Servicio: ${formData.service}\n${formData.message}`,
 			})
 
-			// Solo limpiamos el formulario si no hubo errores
 			if (!error) {
 				setFormData({
 					name: '',
@@ -53,114 +52,117 @@ export function ShortFormContact() {
 	}
 
 	return (
-		<form
-			onSubmit={handleSubmit}
-			className='w-full max-w-4xl mx-auto mt-24 p-6 bg-background rounded-lg shadow-sm'
-		>
-			<div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
-				<Typography
-					as='h2'
-					className='col-span-full text-center text-father-font text-lg mb-6'
-				>
-					<span>Contáctenos</span>
-				</Typography>
+		<Box className=' mx-auto px-4 my-80'>
+			<Card className='w-full bg-white shadow-lg rounded-lg'>
+				<Box className='px-6 py-6'>
+					<Typography
+						as='h4'
+						className='text-center text-father-font text-sm font-semibold mb-8'
+					>
+						Contáctenos
+					</Typography>
+				</Box>
 
-				<div className='space-y-4 md:space-y-0 md:grid md:grid-cols-2 md:gap-6 col-span-full'>
-					<Input
-						$variant='default'
-						$bg='#00000000'
-						$colorNoFocus='#00000000'
-						$color='#8e988a98'
-						$lightnessFactor={100}
-						label='Nombre'
-						$width='100%'
-						$sxText={0.875}
-						name='name'
-						value={formData.name}
-						onChange={handleChange}
-						required
-					/>
+				<form onSubmit={handleSubmit} className='px-6 pb-6'>
+					<Box className='flex flex-col gap-6'>
+						<div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+							<Input
+								$variant='default'
+								$bg='#00000000'
+								$colorNoFocus='#00000000'
+								$color='#8e988a98'
+								$lightnessFactor={100}
+								label='Nombre'
+								$width='100%'
+								$sxText={0.875}
+								name='name'
+								value={formData.name}
+								onChange={handleChange}
+								required
+							/>
 
-					<Input
-						$color='#8e988a98'
-						$bg='#00000000'
-						$colorNoFocus='#00000000'
-						$variant='default'
-						$lightnessFactor={40}
-						label='Telefono'
-						$width='100%'
-						$sxText={0.875}
-						name='phone'
-						value={formData.phone}
-						onChange={handleChange}
-						required
-					/>
-				</div>
+							<Input
+								$color='#8e988a98'
+								$bg='#00000000'
+								$colorNoFocus='#00000000'
+								$variant='default'
+								$lightnessFactor={40}
+								label='Teléfono'
+								$width='100%'
+								$sxText={0.875}
+								name='phone'
+								value={formData.phone}
+								onChange={handleChange}
+								required
+							/>
+						</div>
 
-				<div className='space-y-4 md:space-y-0 md:grid md:grid-cols-2 md:gap-6 col-span-full'>
-					<Input
-						$color='#8e988a98'
-						$variant='default'
-						$bg='#00000000'
-						$colorNoFocus='#00000000'
-						$lightnessFactor={40}
-						label='Email'
-						$width='100%'
-						$sxText={0.875}
-						name='email'
-						value={formData.email}
-						onChange={handleChange}
-						type='email'
-						required
-					/>
+						<div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+							<Input
+								$color='#8e988a98'
+								$variant='default'
+								$bg='#00000000'
+								$colorNoFocus='#00000000'
+								$lightnessFactor={40}
+								label='Email'
+								$width='100%'
+								$sxText={0.875}
+								name='email'
+								value={formData.email}
+								onChange={handleChange}
+								type='email'
+								required
+							/>
 
-					<Input
-						$color='#8e988a98'
-						$variant='default'
-						$bg='#00000000'
-						$colorNoFocus='#00000000'
-						$lightnessFactor={60}
-						label='Tipo de servicio'
-						$width='100%'
-						$sxText={0.875}
-						name='service'
-						value={formData.service}
-						onChange={handleChange}
-						required
-					/>
-				</div>
+							<Input
+								$color='#8e988a98'
+								$variant='default'
+								$bg='#00000000'
+								$colorNoFocus='#00000000'
+								$lightnessFactor={60}
+								label='Tipo de servicio'
+								$width='100%'
+								$sxText={0.875}
+								name='service'
+								value={formData.service}
+								onChange={handleChange}
+								required
+							/>
+						</div>
 
-				<div className='col-span-full'>
-					<Input
-						$variant='default'
-						$color='#8e988a98'
-						$bg='#00000000'
-						$colorNoFocus='#00000000'
-						$lightnessFactor={0}
-						label='Mensaje...'
-						$width='100%'
-						$sxText={0.875}
-						className='min-h-[120px]'
-						name='message'
-						value={formData.message}
-						onChange={handleChange}
-						required
-					/>
-				</div>
+						<Input
+							$variant='default'
+							$color='#8e988a98'
+							$bg='#00000000'
+							$colorNoFocus='#00000000'
+							$lightnessFactor={0}
+							label='Mensaje...'
+							$width='100%'
+							$sxText={0.875}
+							className='min-h-[120px]'
+							name='message'
+							value={formData.message}
+							onChange={handleChange}
+							required
+						/>
 
-				{error && (
-					<p className='col-span-full text-red-500 text-center'>
-						{error}
-					</p>
-				)}
+						{error && (
+							<p className='text-red-500 text-center text-sm'>
+								{error}
+							</p>
+						)}
+					</Box>
 
-				<div className='col-span-full flex justify-end mt-4'>
-					<BtnOutlined
-						text={loading ? 'Enviando...' : 'Enviar mensaje'}
-						className={`text-xs px-4 py-2 h-8 w-32 transition-opacity ${loading ? 'opacity-50 pointer-events-none' : ''}`}
-					/>
-				</div>
-			</div>
-		</form>
+					<Box className='flex justify-end mt-8'>
+						<BtnOutlined
+							text={loading ? 'Enviando...' : 'Enviar mensaje'}
+							className={`text-sm px-4 py-1 h-8 transition-opacity ${
+								loading ? 'opacity-50 pointer-events-none' : ''
+							}`}
+						/>
+					</Box>
+				</form>
+			</Card>
+		</Box>
 	)
 }
