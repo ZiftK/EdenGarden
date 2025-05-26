@@ -1,7 +1,10 @@
+'use client'
+
 import {
 	HouseIcon,
 	GroupIcon,
 	CertifiedIcon,
+	MessageIcon,
 } from '../../landing/atoms/Icons/Icons'
 import { UserIcon } from '../moleculs/icons/iconst'
 import DesktopMenu from './DesktopMenu'
@@ -38,6 +41,14 @@ const menuItems = [
 		label: 'Empleados',
 		link: '/dashboard/empleados',
 		icon: UserIcon({
+			color: colorIcons,
+			h: 20,
+		}),
+	},
+	{
+		label: 'Mensajes',
+		link: '/dashboard/mensajes',
+		icon: MessageIcon({
 			color: colorIcons,
 			h: 20,
 		}),
