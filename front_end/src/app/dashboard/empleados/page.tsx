@@ -15,6 +15,7 @@ import {
 } from '@heroui/react'
 import { useCallback, useEffect, useState, useMemo } from 'react'
 import { useEmployeeStore } from '@/src/features/Employees/model/employeeStore'
+import Loading from './loading'
 
 type ColumnKey = keyof Employee | 'actions'
 
@@ -46,7 +47,10 @@ export default function Page() {
 		)
 	}, [employees, searchTerm])
 
-	if (isLoading) return <div>Cargando...</div>
+	if (isLoading) {
+		return <Loading />
+	}
+
 	if (error) return <div className='text-red-500'>{error}</div>
 
 	return (
@@ -109,7 +113,10 @@ export default function Page() {
 							</TableColumn>
 						)}
 					</TableHeader>
-					<TableBody items={filteredEmployees}>
+					<TableBody
+						items={filteredEmployees}
+						emptyContent='No se encontraron empleados'
+					>
 						{(item) => (
 							<TableRow key={item.id_empleado}>
 								{(columnKey) => (

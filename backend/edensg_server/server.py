@@ -1,10 +1,12 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from adapters.api_rest.routers.team_paths import router as team_router
-from adapters.api_rest.routers.project_paths import router as project_router
-from adapters.api_rest.routers.employee_paths import router as employee_router
-from adapters.api_rest.routers.client_paths import router as client_router
+from .adapters.api_rest.routers.team_paths import router as team_router
+from .adapters.api_rest.routers.project_paths import router as project_router
+from .adapters.api_rest.routers.employee_paths import router as employee_router
+from .adapters.api_rest.routers.client_paths import router as client_router
+from .adapters.api_rest.routers.contact_paths import router as contact_router
+
 class Message(BaseModel):
     message: str
 
@@ -26,6 +28,7 @@ app.include_router(team_router)
 app.include_router(project_router)
 app.include_router(employee_router)
 app.include_router(client_router)
+app.include_router(contact_router)
 
 
 @app.get('/')

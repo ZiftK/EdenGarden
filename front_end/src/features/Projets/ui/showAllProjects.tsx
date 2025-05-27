@@ -42,15 +42,50 @@ export default function ShowAllProjects() {
 	}, [])
 
 	if (loading) {
-		return <div>Cargando proyectos...</div>
+		return (
+			<>
+				{[1, 2].map((index) => (
+					<div key={index} className='animate-pulse'>
+						<Card className='z-0 flex flex-col justify-between bg-[var(--bg-card-obscure-200)] text-[var(--father-font)] xl:h-56'>
+							<CardHeader className='flex justify-between items-center'>
+								<div className='flex flex-col gap-2'>
+									<div className='w-48 h-6 bg-white/30 rounded' />
+									<div className='w-32 h-4 bg-white/30 rounded' />
+									<div className='w-24 h-4 bg-white/30 rounded' />
+								</div>
+								<div className='w-24 h-8 bg-white/30 rounded-lg' />
+							</CardHeader>
+							<CardBody>
+								<div className='hidden md:flex flex-col gap-3 text-[var(--children-font)] text-xs mt-auto'>
+									<div className='w-full h-4 bg-white/30 rounded' />
+									<div className='w-full h-4 bg-white/30 rounded' />
+									<div className='w-full h-4 bg-white/30 rounded' />
+								</div>
+								<div className='flex mt-auto items-center gap-1 bg-[var(--bg-card-obscure-300)] rounded-md p-1.5'>
+									<div className='w-24 h-4 bg-white/30 rounded' />
+								</div>
+							</CardBody>
+						</Card>
+					</div>
+				))}
+			</>
+		)
 	}
 
 	if (error) {
-		return <div className='text-red-500'>{error}</div>
+		return (
+			<div className='flex items-center justify-center h-full text-[var(--father-font)]'>
+				{error}
+			</div>
+		)
 	}
 
 	if (!projects.length) {
-		return <div>No hay proyectos disponibles</div>
+		return (
+			<div className='flex items-center justify-center h-full text-[var(--father-font)]'>
+				No hay proyectos disponibles
+			</div>
+		)
 	}
 
 	return (
@@ -76,21 +111,21 @@ export default function ShowAllProjects() {
 								{project.nombre}
 							</Link>
 							<span className='font-normal text-md'>
-								{project.equipo.lider.nombre}
+								{project.equipo?.lider?.nombre ||
+									'Sin líder asignado'}
 							</span>
 							<span className='font-light text-sm text-[var(--children-font)]'>
-								ID 189053
+								ID {project.id_proyecto}
 							</span>
 						</div>
 						<PriceChip price={String(project.costo)} />
 					</CardHeader>
-					<CardBody className='flex flex-row justify-between mb-auto '>
+					<CardBody>
 						<div className='hidden md:flex flex-col gap-1 text-[var(--children-font)] text-xs mt-auto'>
 							<span className='flex items-center gap-1'>
 								<GroupIcon h={15} color={colorIcons} />
-								Conformado por {
-									project.equipo.empleados.length
-								}{' '}
+								Conformado por{' '}
+								{project.equipo?.empleados?.length || 0}{' '}
 								miembros
 							</span>
 							<span className='flex items-center gap-1'>

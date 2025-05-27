@@ -4,21 +4,17 @@ export type DateFormat = {
     anno: number;
 }
 
-export type Employee = {
-    id_empleado: number;
+export interface Employee {
+    id_empleado?: number;
+    expediente: string;
     nombre: string;
+    apellido_paterno: string;
+    apellido_materno: string;
     direccion: string;
     telefono: string;
     email: string;
-    fecha_recontratacion: DateFormat;
-    fecha_contratacion: DateFormat;
-    fecha_salida: DateFormat;
-    clave: string;
-    rol: 'user' | 'admin' | 'leader';
-    puesto: string;
-    img: string;
-    salario: number;
-    fk_equipo?: number | null;
+    rol: string;
+    img?: string | null;
 }
 
 export type AuthState = {
@@ -26,7 +22,7 @@ export type AuthState = {
     loading: boolean
     error: string | null
     validateSession: () => Promise<void>
-    login: (id: string, password: string) => Promise<void>
+    login: (expediente: string, clave: string) => Promise<void>
     logout: () => Promise<void>
 }
 

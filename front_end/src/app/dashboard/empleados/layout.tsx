@@ -1,11 +1,10 @@
-export default function DashboardLayout({
-    children
-}: Readonly<{
-    children: React.ReactNode
-}>){
-    return(        
-        <>
-            {children}
-        </>
-    )
+import { Suspense } from 'react'
+import Loading from './loading'
+
+export default function EmployeesLayout({
+	children,
+}: {
+	children: React.ReactNode
+}) {
+	return <Suspense fallback={<Loading />}>{children}</Suspense>
 }

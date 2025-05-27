@@ -1,7 +1,10 @@
+'use client'
+
 import ShowAllProjects from '@/src/features/Projets/ui/showAllProjects'
 import Title from '@/src/shared/components/atoms/Title'
+import { Suspense } from 'react'
 
-export default async function page() {
+export default function Page() {
 	return (
 		<section
 			aria-labelledby='dashboard-section-title'
@@ -13,7 +16,9 @@ export default async function page() {
 			/>
 
 			<div className='flex flex-col gap-4 xl:grid xl:grid-cols-2'>
-				<ShowAllProjects />
+				<Suspense>
+					<ShowAllProjects />
+				</Suspense>
 			</div>
 		</section>
 	)
