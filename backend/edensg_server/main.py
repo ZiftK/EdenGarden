@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .middleware.loading import LoadingMiddleware
-from .routes import auth
+from .routes import auth, attendance, employees, teams, projects
 from .config import settings
 from .database import engine, Base
 from .models import empleado, equipo
@@ -25,5 +25,11 @@ app.add_middleware(LoadingMiddleware)
 
 # Incluir las rutas de autenticación
 app.include_router(auth.router, prefix="/auth", tags=["auth"])
+
+# Include routers
+app.include_router(attendance.router, tags=["attendance"])
+app.include_router(employees.router, tags=["employees"])
+app.include_router(teams.router, tags=["teams"])
+app.include_router(projects.router, tags=["projects"])
 
 # ... rest of your FastAPI setup ... 
