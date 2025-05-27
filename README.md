@@ -2,6 +2,9 @@
 
 EdenGarden ERP is a comprehensive Enterprise Resource Planning system designed to manage business operations efficiently. The system includes modules for employee management, team organization, and resource planning.
 
+## Ejecución
+Se debe tener Python instalado y ejecutar el script de shell simple-activate.ps1
+
 ## Features
 
 -   👥 Employee Management
