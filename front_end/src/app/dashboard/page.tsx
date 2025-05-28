@@ -17,14 +17,15 @@ import Title from '@/src/shared/components/atoms/Title'
 import DataProyectContract from '@/src/components/ERP/moleculs/DataProyectContract'
 import ChartTeams from '@/src/components/ERP/moleculs/ChartTeams'
 import TableEmployees from '@/src/components/ERP/moleculs/TableEmployees'
-import AttendanceTable from '@/src/features/Attendance/components/AttendanceTable'
 import { ShortTeam } from '@/src/shared/types'
 import { Project } from '@/src/features/Projets/types'
 import { customDateToDateString } from '@/src/shared/hooks/useDatesCustoms'
+import ViewInitialNoAdmin from '@/src/features/Employees/ui/organisms/ViewInitialNoAdmin'
 
 export default function DashboardPage() {
 	const [teams, setTeams] = useState<ShortTeam[]>([])
 	const [projects, setProjects] = useState<Project[]>([])
+
 	const { employees, getEmployees } = useEmployeeStore()
 	const { messages, getMessages } = useContactStore()
 	const { user } = useAuthStore()
@@ -105,7 +106,7 @@ export default function DashboardPage() {
 			<Title title='Panel de Control' btn={{ active: false, path: '' }} />
 
 			{/* Only show top cards for admin and leader roles */}
-			{user?.rol !== 'user' && (
+			{user?.rol === 'admin' && (
 				<div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 mb-6'>
 					{/* Card de Proyectos */}
 					<Link href='/dashboard/proyectos'>
@@ -173,15 +174,9 @@ export default function DashboardPage() {
 			)}
 
 			<div className='grid grid-cols-1 xl:grid-cols-[2fr_1fr] gap-4'>
-				{/* Attendance Table - Show for admin and leader roles */}
-				{user?.rol !== 'user' && (
-					<AttendanceTable />
-				)}
-
-				{/* Projects and Teams info - Show based on role */}
-				{user?.rol !== 'user' && (
+				{user?.rol === 'admin' ? (
 					<>
-						<Card className='bg-[var(--bg-card-obscure)]'>
+						<Card className='bg-[var(--bg-card-obscure)] xl:row-start-1 xl:row-end-3'>
 							<CardHeader>
 								<h3 className='text-lg font-bold'>
 									Proyectos en Curso
@@ -194,7 +189,7 @@ export default function DashboardPage() {
 							</CardBody>
 						</Card>
 
-						<Card className='bg-[var(--bg-card-obscure)]'>
+						<Card className='bg-[var(--bg-card-obscure)] xl:col-start-2'>
 							<CardHeader>
 								<h3 className='text-lg font-bold'>
 									Distribución de Equipos
@@ -205,7 +200,7 @@ export default function DashboardPage() {
 							</CardBody>
 						</Card>
 
-						<Card className='bg-[var(--bg-card-obscure)]'>
+						<Card className='bg-[var(--bg-card-obscure)] xl:col-start-2'>
 							<CardHeader>
 								<h3 className='text-lg font-bold'>
 									Empleados Activos
@@ -215,6 +210,13 @@ export default function DashboardPage() {
 								<TableEmployees />
 							</CardBody>
 						</Card>
+					</>
+				) : (
+					<>
+						<ViewInitialNoAdmin
+							team={teams[0]!}
+							project={projects[0]!}
+						/>
 					</>
 				)}
 			</div>

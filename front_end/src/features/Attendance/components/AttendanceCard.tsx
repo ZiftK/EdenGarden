@@ -5,99 +5,121 @@ import { useAttendanceStore } from '@/src/features/Attendance/model/attendanceSt
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
 import { useAuthStore } from '../../auth/model/useAuthStore'
-import PayrollCard from '../../Payroll/components/PayrollCard'
 
 export default function AttendanceCard() {
-  const { user } = useAuthStore()
-  const { teamMembers, attendance, getTeamAttendance, markAttendance } = useAttendanceStore()
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [showAttendance, setShowAttendance] = useState(false)
+	const { user } = useAuthStore()
+	const { teamMembers, attendance, getTeamAttendance, markAttendance } =
+		useAttendanceStore()
+	const [isSubmitting, setIsSubmitting] = useState(false)
+	const [showAttendance, setShowAttendance] = useState(false)
 
-  useEffect(() => {
-    const fetchAttendance = async () => {
-      if (user?.rol === 'lider' && user) {
-        await getTeamAttendance(user.fk_equipo!)
-      }
-    }
-    fetchAttendance()
-  }, [user?.rol, user?.fk_equipo, getTeamAttendance])
+	useEffect(() => {
+		const fetchAttendance = async () => {
+			if (user?.rol === 'lider' && user) {
+				await getTeamAttendance(user.fk_equipo!)
+			}
+		}
+		fetchAttendance()
+	}, [user?.rol, user?.fk_equipo, getTeamAttendance])
 
-  const handleMarkAttendance = async (employeeId: number) => {
-    try {
-      setIsSubmitting(true)
-      await markAttendance(employeeId)
-      // Refresh attendance data
-      if (user?.rol === 'lider' && user.fk_equipo) {
-        await getTeamAttendance(user.fk_equipo)
-      }
-    } catch (error) {
-      console.error('Error marking attendance:', error)
-    } finally {
-      setIsSubmitting(false)
-    }
-  }
+	const handleMarkAttendance = async (employeeId: number) => {
+		try {
+			setIsSubmitting(true)
+			await markAttendance(employeeId)
+			// Refresh attendance data
+			if (user?.rol === 'lider' && user.fk_equipo) {
+				await getTeamAttendance(user.fk_equipo)
+			}
+		} catch (error) {
+			console.error('Error marking attendance:', error)
+		} finally {
+			setIsSubmitting(false)
+		}
+	}
 
-  const hasAttendanceToday = (employeeId: number): boolean => {
-    const today = new Date()
-    const todayAttendance = attendance.find(
-      a => 
-        a.fk_empleado === employeeId && 
-        new Date(a.fecha).toDateString() === today.toDateString()
-    )
-    return !!todayAttendance
-  }
+	const hasAttendanceToday = (employeeId: number): boolean => {
+		const today = new Date()
+		const todayAttendance = attendance.find(
+			(a) =>
+				a.fk_empleado === employeeId &&
+				new Date(a.fecha).toDateString() === today.toDateString()
+		)
+		return !!todayAttendance
+	}
 
-  if (!user?.rol || user.rol !== 'lider') {
-    return null
-  }
+	if (!user?.rol || user.rol !== 'lider') {
+		return null
+	}
 
-  return (
-    <div className="space-y-4">
-      <Card className='bg-[var(--bg-card-obscure)]'>
-        <CardHeader>
-          <h3 className="text-lg font-bold">Pasar Lista</h3>
-        </CardHeader>
-        <CardBody>
-          <div className='space-y-4'>
-            <div className='flex justify-between items-center'>
-              <button
-                onClick={() => setShowAttendance(!showAttendance)}
-                className='px-4 py-2 bg-[var(--green-dark-500)] text-white rounded-md hover:bg-[var(--green-dark-600)] transition-colors'
-              >
-                {showAttendance ? 'Ocultar Lista' : 'Mostrar Lista'}
-              </button>
-              <p className='text-sm'>
-                {format(new Date(), 'EEEE d MMMM', { locale: es })}
-              </p>
-            </div>
+	return (
+		<div className='space-y-4'>
+			<Card className='bg-[var(--bg-card-obscure)]'>
+				<CardHeader>
+					<h3 className='text-lg font-bold'>Pasar Lista</h3>
+				</CardHeader>
+				<CardBody>
+					<div className='space-y-4'>
+						<div className='flex justify-between items-center'>
+							<button
+								onClick={() =>
+									setShowAttendance(!showAttendance)
+								}
+								className='px-4 py-2 bg-[var(--green-dark-500)] text-white rounded-md hover:bg-[var(--green-dark-600)] transition-colors'
+							>
+								{showAttendance
+									? 'Ocultar Lista'
+									: 'Mostrar Lista'}
+							</button>
+							<p className='text-sm'>
+								{format(new Date(), 'EEEE d MMMM', {
+									locale: es,
+								})}
+							</p>
+						</div>
 
-            {showAttendance && (
-              <div className='space-y-2'>
-                {teamMembers.map((member) => (
-                  <div
-                    key={member.id_empleado}
-                    className='flex items-center justify-between p-3 bg-[var(--bg-card-obscure-200)] rounded-md'
-                  >
-                    <span className='font-medium'>{member.nombre}</span>
-                    <button
-                      onClick={() => handleMarkAttendance(member.id_empleado)}
-                      disabled={isSubmitting || hasAttendanceToday(member.id_empleado)}
-                      className={`px-4 py-2 rounded-md transition-colors ${
-                        hasAttendanceToday(member.id_empleado)
-                          ? 'bg-gray-500 text-white'
-                          : 'bg-[var(--green-dark-500)] text-white hover:bg-[var(--green-dark-600)]'
-                      }`}
-                    >
-                      {hasAttendanceToday(member.id_empleado) ? '✓' : 'Marcar'}
-                    </button>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        </CardBody>
-      </Card>
-      <PayrollCard />
-    </div>
-  )
+						{showAttendance && (
+							<div className='space-y-2'>
+								{teamMembers.map((member) => (
+									<div
+										key={member.id_empleado}
+										className='flex items-center justify-between p-3 bg-[var(--bg-card-obscure-200)] rounded-md'
+									>
+										<span className='font-medium'>
+											{member.nombre}
+										</span>
+										<button
+											onClick={() =>
+												handleMarkAttendance(
+													member.id_empleado
+												)
+											}
+											disabled={
+												isSubmitting ||
+												hasAttendanceToday(
+													member.id_empleado
+												)
+											}
+											className={`px-4 py-2 rounded-md transition-colors ${
+												hasAttendanceToday(
+													member.id_empleado
+												)
+													? 'bg-gray-500 text-white'
+													: 'bg-[var(--green-dark-500)] text-white hover:bg-[var(--green-dark-600)]'
+											}`}
+										>
+											{hasAttendanceToday(
+												member.id_empleado
+											)
+												? '✓'
+												: 'Marcar'}
+										</button>
+									</div>
+								))}
+							</div>
+						)}
+					</div>
+				</CardBody>
+			</Card>
+		</div>
+	)
 }
