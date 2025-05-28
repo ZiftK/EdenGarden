@@ -53,5 +53,6 @@ if ($env:VIRTUAL_ENV) {
 
 # Ejecutar el servidor con uvicorn
 Write-Output "Iniciando el servidor..."
-uvicorn main:app --reload --host 127.0.0.1 --port 8000
+cd $BASE_DIR/backend/edensg_server
+uvicorn server:app --reload --host 127.0.0.1 --port 8000
 
