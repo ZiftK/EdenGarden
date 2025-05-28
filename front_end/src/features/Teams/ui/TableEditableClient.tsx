@@ -64,7 +64,7 @@ export default function TableEditableClient({
 	}
 
 	return (
-		<div className='space-y-6'>
+		<div className='space-y-6 w-full'>
 			{/* Título del equipo */}
 			<div className='flex items-center justify-between'>
 				{data.isEditing ? (
@@ -99,7 +99,7 @@ export default function TableEditableClient({
 												isEditing: true,
 											})
 										}
-										className='cursor-pointer text-[var(--green-dark-500)] border-b-2 text-md'
+										className='cursor-pointer text-[var(--green-dark-500)] bg-transparent text-md'
 									>
 										Editar
 									</Button>

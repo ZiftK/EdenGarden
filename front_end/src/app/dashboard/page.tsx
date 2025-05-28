@@ -83,7 +83,7 @@ export default function DashboardPage() {
 
 	const colorIcons = 'var(--father-font)'
 	const unreadMessages = messages?.filter((m) => !m.read).length || 0
-	const activeProjects = projects.filter((p) => p.estado === 'ACTIVO').length
+	const activeProjects = projects.filter((p) => p.estado === 'activo').length
 	const projectsWithIssues = projects.filter(
 		(p) => p.estado === 'CON_PROBLEMAS'
 	).length
@@ -173,8 +173,10 @@ export default function DashboardPage() {
 			)}
 
 			<div className='grid grid-cols-1 xl:grid-cols-[2fr_1fr] gap-4'>
-				{/* Attendance Table - Show for all roles */}
-				<AttendanceTable />
+				{/* Attendance Table - Show for admin and leader roles */}
+				{user?.rol !== 'user' && (
+					<AttendanceTable />
+				)}
 
 				{/* Projects and Teams info - Show based on role */}
 				{user?.rol !== 'user' && (
