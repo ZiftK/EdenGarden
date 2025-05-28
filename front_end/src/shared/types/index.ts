@@ -15,6 +15,9 @@ export interface Employee {
     email: string;
     rol: string;
     img?: string | null;
+    puesto?: string;
+    salario?: number;
+    equipo?: number | null;
 }
 
 export type AuthState = {

@@ -4,6 +4,7 @@ import {
 } from '@/src/components/landing/atoms/Icons/Icons'
 import CopyButton from '@/src/components/ERP/atoms/CopyButton'
 import { TeamMemberRowProps } from '../../types/types'
+import Image from 'next/image'
 
 export const TeamMemberRow: React.FC<TeamMemberRowProps> = ({
 	user,
@@ -14,44 +15,61 @@ export const TeamMemberRow: React.FC<TeamMemberRowProps> = ({
 }) => {
 	return (
 		<div
-			className={`grid grid-cols-[1fr_1fr_2fr_1fr_1fr] items-center text-center py-2 ${
+			className={`flex items-center gap-4 p-3 ${
 				index % 2 === 0
 					? 'bg-transparent'
-					: 'bg-[var(--father-font-transparent-200)]'
-			}`}
+					: 'bg-[var(--father-font-transparent-100)]'
+			} rounded-lg hover:bg-[var(--father-font-transparent-200)] transition-colors`}
 		>
-			<div className='col-span-3 w-full grid grid-cols-[1fr_1fr_2fr]'>
-				<span className='text-sm'>{user.position}</span>
-				<span className='text-sm'>{user.id}</span>
-				<span className='text-sm'>{user.name}</span>
-			</div>
-
-			<div className='flex items-center justify-center gap-2'>
-				<CopyButton
-					text={user.email}
-					icon={EmailIcon({
-						color: 'var(--father-font)',
-						h: 12,
-					})}
-				/>
-				<CopyButton
-					text={user.phone_number}
-					icon={PhoneIcon({
-						color: 'var(--father-font)',
-						h: 12,
-					})}
-				/>
-			</div>
-
-			{isEditing ? (
+			{isEditing && (
 				<input
 					type='checkbox'
 					checked={isIncluded}
 					className='accent-[var(--father-font)] cursor-pointer'
 					onChange={(e) => onToggle(e.target.checked)}
 				/>
-			) : (
-				<span className='text-sm'>{user.salary}</span>
+			)}
+
+			<div className='w-12 h-12 relative rounded-full overflow-hidden flex-shrink-0'>
+				<Image
+					src={user.img || 'https://via.placeholder.com/150'}
+					alt={user.nombre}
+					fill
+					className='object-cover'
+				/>
+			</div>
+
+			<div className='flex-1 min-w-0'>
+				<div className='flex items-center gap-2'>
+					<h4 className='text-[var(--father-font)] font-medium truncate'>
+						{user.nombre}
+					</h4>
+					<span className='text-sm text-[var(--father-font-transparent-800)] truncate'>
+						{user.puesto}
+					</span>
+				</div>
+				<div className='flex items-center gap-4 mt-1'>
+					<CopyButton
+						text={user.email}
+						icon={EmailIcon({
+							color: 'var(--father-font)',
+							h: 14,
+						})}
+					/>
+					<CopyButton
+						text={user.telefono}
+						icon={PhoneIcon({
+							color: 'var(--father-font)',
+							h: 14,
+						})}
+					/>
+				</div>
+			</div>
+
+			{!isEditing && (
+				<span className='text-sm text-[var(--father-font-transparent-800)]'>
+					{user.salario ? `$${user.salario}` : 'No definido'}
+				</span>
 			)}
 		</div>
 	)

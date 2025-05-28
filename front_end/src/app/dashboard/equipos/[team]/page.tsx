@@ -19,8 +19,6 @@ export default async function TeamPage({
 				/ {decodeURIComponent(team!.nombre)}
 			</h2>
 
-			<h3 className='text-lg font-bold'>Distribucion del equipo</h3>
-
 			<TableEditableClient team={team} />
 		</section>
 	)

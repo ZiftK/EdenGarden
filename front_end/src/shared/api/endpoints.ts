@@ -4,6 +4,9 @@ export const endpoints ={
     
     teams: '/team/all',
     team: '/team/id', 
+    teamUpdateName: '/team/update_name',
+    teamUpdateLeader: '/team/update_leader',
+    teamUpdateMembers: '/team/update_members',
 
     employeeCreate: '/employee/create',
     employees: '/employee/all', 

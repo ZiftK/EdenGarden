@@ -2,10 +2,20 @@ from fastapi import APIRouter, HTTPException, status
 from backend.edensg_server.domain.entities.team import Team, TeamToCreate
 from backend.edensg_server.use_cases.team_use_cases import TeamController
 from typing import List
+from pydantic import BaseModel
 
 router = APIRouter(prefix='/team' , tags=['Team'])
 
 team_controller = TeamController()
+
+class TeamMembersUpdate(BaseModel):
+    empleados_ids: List[int]
+
+class TeamNameUpdate(BaseModel):
+    nombre: str
+
+class TeamLeaderUpdate(BaseModel):
+    lider_id: int
 
 @router.post('/create', 
     response_model=dict,
@@ -50,11 +60,15 @@ async def get_team_by_name(team_name: str):
         200: {"description": "Nombre del equipo actualizado exitosamente", "content": {"application/json": {"example": {"message": "Nombre del equipo actualizado correctamente"}}}},
         404: {"description": "Equipo no encontrado"}
     })
-async def update_team_name(team_id: int, new_name: str):
+async def update_team_name(team_id: int, data: TeamNameUpdate):
+    """
+    Actualiza el nombre de un equipo.
+    """
     try:
-        return team_controller.update_team_name(team_id, new_name)
+        result = team_controller.update_team_name(team_id, data.nombre)
+        return result
     except Exception as e:
-        raise HTTPException(status_code=404, detail=f"Equipo no encontrado: {str(e)}")
+        raise HTTPException(status_code=400, detail=str(e))
 
 @router.put('/update_leader/{team_id}',
     response_model=dict,
@@ -62,11 +76,15 @@ async def update_team_name(team_id: int, new_name: str):
         200: {"description": "Líder del equipo actualizado exitosamente", "content": {"application/json": {"example": {"message": "Líder del equipo actualizado correctamente"}}}},
         404: {"description": "Equipo no encontrado"}
     })
-async def update_team_leader(team_id: int, new_leader_id: int):
+async def update_team_leader(team_id: int, data: TeamLeaderUpdate):
+    """
+    Actualiza el líder de un equipo.
+    """
     try:
-        return team_controller.update_team_leader(team_id, new_leader_id)
+        result = team_controller.update_team_leader(team_id, data.lider_id)
+        return result
     except Exception as e:
-        raise HTTPException(status_code=404, detail=f"Equipo no encontrado: {str(e)}")
+        raise HTTPException(status_code=400, detail=str(e))
 
 @router.delete('/delete/{team_id}',
     response_model=dict,
@@ -92,16 +110,20 @@ async def get_all_teams():
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-@router.post('/register_employees/{team_id}',
+@router.put('/update_members/{team_id}',
     response_model=dict,
     responses={
         200: {"description": "Empleados registrados exitosamente", "content": {"application/json": {"example": {"message": "Empleados registrados correctamente"}}}},
         400: {"description": "Error al registrar empleados"},
         404: {"description": "Equipo no encontrado"}
     })
-async def register_team_employees(team_id: int, employee_ids: list[int]):
+async def update_team_members(team_id: int, data: TeamMembersUpdate):
+    """
+    Actualiza los miembros de un equipo.
+    """
     try:
-        return team_controller.register_team_employees(team_id, employee_ids)
+        result = team_controller.register_team_employees(team_id, data.empleados_ids)
+        return result
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 

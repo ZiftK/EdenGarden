@@ -4,9 +4,12 @@ import { Employee } from "@/src/shared/types"
 
 export async function getLeaders(): Promise<Employee[]> {
     try {
-		const dataLeaders: Employee[] = await fetcher.get<Employee[]>(`${endpoints.employees}`)
-		if (!dataLeaders) throw new Error('No se encontraron empleados')
-		const leaders = dataLeaders.filter((employee) => employee.rol === 'leader')
+		const response = await fetcher.get<{message: string, data: Employee[]}>(`${endpoints.employees}`)
+		if (!response || !response.data) {
+			throw new Error('No se encontraron empleados')
+		}
+		const leaders = response.data.filter((employee) => employee.rol === 'lider')
+		console.log('Leaders found:', leaders)
 		return leaders
 	} catch (error) {
 		console.error('Error al obtener los empleados:', error)
