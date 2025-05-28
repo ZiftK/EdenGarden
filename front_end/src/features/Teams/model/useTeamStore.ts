@@ -34,7 +34,7 @@ export const useTeamStore = create<TeamsState>((set) => ({
         try{
             await fetcher.delete(`/teams/${teamId}`)
             set((state) => ({
-                teams: state.teams.filter((team) => team.id !== teamId),
+                teams: state.teams.filter((team) => team.id_equipo.toString() !== teamId),
                 loading: false,
             }))
         } catch{

@@ -1,7 +1,7 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { Employee, DateFormat } from '@/src/shared/types'
+import { use, useEffect, useState } from 'react'
+import { Employee } from '@/src/shared/types'
 import { useEmployeeStore } from '@/src/features/Employees/model/employeeStore'
 import {
 	Card,
@@ -19,11 +19,16 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { employeeFormStyles } from '@/src/features/Employees/ui/styles/employeeForm'
 
-export default function EditEmployeePage({
-	params,
-}: {
-	params: { empleado: string }
-}) {
+interface PageProps {
+	params: Promise<{ empleado: string }>
+}
+
+export default function Page({ params }: PageProps) {
+	// Usar React's use() hook para resolver la Promise
+	const resolvedParams = use(params)
+
+	const empleadoId = resolvedParams.empleado
+
 	const {
 		currentEmployee,
 		isLoading,
@@ -37,11 +42,11 @@ export default function EditEmployeePage({
 	const router = useRouter()
 
 	useEffect(() => {
-		getEmployeeById(params.empleado)
+		getEmployeeById(empleadoId)
 		return () => {
 			clearCurrentEmployee()
 		}
-	}, [params.empleado, getEmployeeById, clearCurrentEmployee])
+	}, [empleadoId, getEmployeeById, clearCurrentEmployee])
 
 	useEffect(() => {
 		if (currentEmployee) {
@@ -87,7 +92,7 @@ export default function EditEmployeePage({
 			await updateEmployee(editedEmployee.id_empleado, editedEmployee)
 			router.push(`/dashboard/empleados/${editedEmployee.id_empleado}`)
 			router.refresh()
-		} catch (error) {
+		} catch {
 			setError('Error al actualizar el empleado')
 		}
 	}

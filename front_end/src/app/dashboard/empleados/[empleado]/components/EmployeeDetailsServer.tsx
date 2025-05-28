@@ -17,5 +17,5 @@ export default function EmployeeDetailsServer({
 
 	if (isLoading) return null // El loading.tsx se encargará de mostrar el estado de carga
 
-	return <EmployeeDetails employee={currentEmployee} isServer={false} />
+	return <EmployeeDetails employee={currentEmployee} />
 }

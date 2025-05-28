@@ -9,16 +9,17 @@ import { dataTeam } from "../types/types"
 
 export function useEditableTeam({initialTeam, isNewTeam = false}:{initialTeam: ShortTeam, isNewTeam?: boolean}) {
   const defaultTeam: ShortTeam = {		
-      id_equipo: '',
+      id_equipo: 0,
       nombre: '',
       lider: {
         nombre: '',
-        id_empleado: '',
+        id_empleado: 0,
         email: '',
         telefono: '',
-        rol: "leader" as 'leader',
+        rol: "lider",
         puesto: '',
         salario: 0,
+        img: ''
       },
       empleados: [],
     }
@@ -27,7 +28,7 @@ export function useEditableTeam({initialTeam, isNewTeam = false}:{initialTeam: S
     currentTeam: initialTeam,
     isEditing: isNewTeam,
     teamShowed: initialTeam,
-    teamChanged: defaultTeam
+    teamChanged: isNewTeam ? defaultTeam : initialTeam
   })
 
   const reset = () => {
@@ -35,7 +36,7 @@ export function useEditableTeam({initialTeam, isNewTeam = false}:{initialTeam: S
       ...prev,
       isEditing: false,
       teamShowed: prev.currentTeam,
-      teamChanged: defaultTeam,
+      teamChanged: prev.currentTeam,
     }))
   }
 

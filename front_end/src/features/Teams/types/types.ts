@@ -8,11 +8,12 @@ export interface dataTeam  {
 }
 
 export interface TeamMemberRowProps {
-	user: Pick<Employee, 'email' | 'id_empleado' | 'nombre' | 'telefono' | 'rol' | 'puesto' | 'salario' | 'equipo' | 'img' >
+	user: Pick<Employee, 'email' | 'id_empleado' | 'nombre' | 'telefono' | 'rol' | 'puesto' | 'salario' | 'img' | 'fk_equipo' >
 	index: number
 	isEditing: boolean
 	isIncluded: boolean
 	onToggle: (checked: boolean) => void
+	onDelete?: () => void
 }
 
 export interface TeamsState {

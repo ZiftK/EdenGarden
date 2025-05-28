@@ -6,10 +6,7 @@ interface ApiResponse {
     project_id: number;
 }
 
-interface ImageApiResponse {
-    message: string;
-    url: string;
-}
+
 
 export const createProject = async (project: ProjectToCreate): Promise<number> => {
     const response = await fetcher.post<ApiResponse>('/project', project)
@@ -24,7 +21,7 @@ export const deleteProject = async (projectId: number): Promise<void> => {
     await fetcher.delete(`/project/${projectId}`)
 }
 
-export const createProjectCalendar = async (projectId: number, calendar: any): Promise<void> => {
+export const createProjectCalendar = async (projectId: number, calendar: unknown): Promise<void> => {
     await fetcher.post(`/project/${projectId}/calendar/create`, calendar)
 }
 

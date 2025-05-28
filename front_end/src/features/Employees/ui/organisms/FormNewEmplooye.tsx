@@ -1,6 +1,6 @@
 'use client'
 
-import { Employee, ShortTeam, DateFormat } from '@/src/shared/types'
+import { Employee } from '@/src/shared/types'
 import {
 	Input,
 	Button,
@@ -15,7 +15,7 @@ import {
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useEmployeeStore } from '../../model/employeeStore'
 import { parseDateStringToCustomDate } from '@/src/shared/hooks/useDatesCustoms'
 
@@ -26,7 +26,6 @@ type EmployeeToCreate = Omit<Employee, 'equipo'> & {
 export default function FormNewEmplooye() {
 	const router = useRouter()
 	const { createEmployee, isLoading, error, setError } = useEmployeeStore()
-	const [teams, setTeams] = useState<ShortTeam[]>([])
 	const [newEmployee, setNewEmployee] = useState<EmployeeToCreate>({
 		id_empleado: 0,
 		nombre: '',
@@ -146,7 +145,7 @@ export default function FormNewEmplooye() {
 
 			// Create a copy of the employee data without the equipo field
 			const { equipo, ...employeeData } = newEmployee
-
+			console.log(equipo)
 			await createEmployee(employeeData)
 			router.push('/dashboard/empleados')
 		} catch (error) {

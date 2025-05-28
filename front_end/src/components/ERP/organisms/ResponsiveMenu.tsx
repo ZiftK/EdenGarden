@@ -1,7 +1,6 @@
 'use client'
 
 import {
-	HouseIcon,
 	GroupIcon,
 	CertifiedIcon,
 	MessageIcon,
@@ -13,14 +12,6 @@ import MobileMenu from './MobileMenu'
 const colorIcons = 'var(--father-font)'
 
 const menuItems = [
-	{
-		label: 'Inicio',
-		link: '/dashboard',
-		icon: HouseIcon({
-			color: colorIcons,
-			h: 20,
-		}),
-	},
 	{
 		label: 'Proyectos',
 		link: '/dashboard/proyectos',

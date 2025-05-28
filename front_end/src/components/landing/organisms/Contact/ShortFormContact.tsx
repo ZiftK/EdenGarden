@@ -5,6 +5,7 @@ import { Typography, Box, Card } from '@raul_yael/cleangui'
 import { Input } from '@raul_yael/cleangui'
 import { useContactStore } from '@/src/features/Contact/model/contactStore'
 import { BtnOutlined } from '@/src/shared/components/atoms/Button'
+import './ShortForm.css'
 
 export function ShortFormContact() {
 	const [formData, setFormData] = useState({
@@ -52,19 +53,29 @@ export function ShortFormContact() {
 	}
 
 	return (
-		<Box className=' mx-auto px-4 my-80'>
-			<Card className='w-full bg-white shadow-lg rounded-lg'>
+		<Box
+			as='section'
+			id='contact_form'
+			className=' mx-auto px-4 my-80 bg-transparen'
+		>
+			<Card className='bg-transparent'>
 				<Box className='px-6 py-6'>
 					<Typography
-						as='h4'
-						className='text-center text-father-font text-sm font-semibold mb-8'
+						as='h2'
+						style={{
+							fontSize: 'var(--font-lg)',
+							color: 'var(--father-font)',
+						}}
 					>
-						Contáctenos
+						<span>Ubicación</span>
 					</Typography>
 				</Box>
 
-				<form onSubmit={handleSubmit} className='px-6 pb-6'>
-					<Box className='flex flex-col gap-6'>
+				<form
+					onSubmit={handleSubmit}
+					className='px-6 pb-6 bg-transparent'
+				>
+					<Box className='flex flex-col gap-6 bg-transparent'>
 						<div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
 							<Input
 								$variant='default'
@@ -153,7 +164,7 @@ export function ShortFormContact() {
 						)}
 					</Box>
 
-					<Box className='flex justify-end mt-8'>
+					<Box className='w-full mt-8 bg-transparent'>
 						<BtnOutlined
 							text={loading ? 'Enviando...' : 'Enviar mensaje'}
 							className={`text-sm px-4 py-1 h-8 transition-opacity ${

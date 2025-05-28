@@ -5,16 +5,20 @@ export type DateFormat = {
 }
 
 export interface Employee {
-    id_empleado?: number;
-    expediente: string;
+    id_empleado: number;
     nombre: string;
-    apellido_paterno: string;
-    apellido_materno: string;
     direccion: string;
     telefono: string;
     email: string;
+    fecha_contratacion: DateFormat;
+    fecha_salida?: DateFormat;
+    fecha_recontratacion?: DateFormat;
+    clave: string;
     rol: string;
-    img?: string | null;
+    puesto: string;
+    salario: number;
+    img?: string;
+    fk_equipo?: number
 }
 
 export type AuthState = {
@@ -29,8 +33,8 @@ export type AuthState = {
 export type ShortTeam = {
     id_equipo: number;
     nombre: string;
-    lider: Pick<Employee, 'email' | 'id_empleado' | 'nombre' | 'telefono' | 'rol' | 'puesto' | 'salario' | 'img'>
-    empleados: Pick<Employee, 'email' | 'id_empleado' | 'nombre' | 'telefono' | 'rol' | 'puesto' | 'salario' | 'img'>[];
+    lider: Pick<Employee, 'email' | 'id_empleado' | 'nombre' | 'telefono' | 'rol' | 'puesto' | 'salario' | 'img' | 'fk_equipo'>;
+    empleados: Pick<Employee, 'email' | 'id_empleado' | 'nombre' | 'telefono' | 'rol' | 'puesto' | 'salario' | 'img' | 'fk_equipo'>[];
 }
 
 export type Team = {
@@ -45,4 +49,3 @@ export type TeamCreate = {
     lider_id: number;
     empleados_ids: number[];
 }
-

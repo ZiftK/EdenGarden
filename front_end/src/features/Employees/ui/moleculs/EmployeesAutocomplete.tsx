@@ -2,15 +2,17 @@ import { Autocomplete, AutocompleteItem } from '@heroui/react'
 import { getEmployees } from '../../api/getEmployees'
 import { Employee } from '@/src/shared/types'
 
-export default function EmployeesAutocomplete({
+export default async function EmployeesAutocomplete({
 	value,
 	onChange,
 }: {
 	value: string
 	onChange: (employee: Employee) => void
 }) {
-	const employees = getEmployees()
-	const emplooyesWithoutTeam = employees.filter((employee) => !employee.teams)
+	const employees = await getEmployees()
+	const employeesWithoutTeam = employees.filter(
+		(employee) => !employee.fk_equipo
+	)
 
 	return (
 		<Autocomplete
@@ -21,21 +23,21 @@ export default function EmployeesAutocomplete({
 			variant='underlined'
 			selectedKey={value}
 			onSelectionChange={(key) => {
-				const selectedEmployee = emplooyesWithoutTeam.find(
-					(leader) => leader.id === key
+				const selectedEmployee = employeesWithoutTeam.find(
+					(leader) => leader.id_empleado === key
 				)
 
 				if (!selectedEmployee) return
 				onChange(selectedEmployee)
 			}}
 		>
-			{emplooyesWithoutTeam.map((leader) => (
+			{employeesWithoutTeam.map((leader) => (
 				<AutocompleteItem
-					textValue={leader.name}
-					key={leader.id}
+					textValue={leader.nombre}
+					key={leader.id_empleado}
 					className=' text-stone-800'
 				>
-					{leader.name}
+					{leader.nombre}
 				</AutocompleteItem>
 			))}
 		</Autocomplete>

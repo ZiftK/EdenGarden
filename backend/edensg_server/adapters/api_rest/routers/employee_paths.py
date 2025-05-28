@@ -134,3 +134,19 @@ async def search_employees(search_term: str):
         return employee_controller.search_employees(search_term)
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
+
+@router.put('/update_role/{old_role}/{new_role}',
+    response_model=dict,
+    responses={
+        200: {"description": "Roles actualizados exitosamente"},
+        400: {"description": "Error al actualizar roles"}
+    })
+async def update_employee_roles(old_role: str, new_role: str):
+    """
+    Actualiza el rol de todos los empleados que tengan old_role a new_role.
+    """
+    try:
+        employee_controller.update_employee_roles(old_role, new_role)
+        return {"message": f"Roles actualizados de {old_role} a {new_role}"}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))

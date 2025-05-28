@@ -1,6 +1,5 @@
 'use client'
 
-import { getEmployees } from '@/src/features/Employees/api/getEmployees'
 import { renderCell } from '@/src/features/Employees/ui/moleculs/renderCell'
 import Title from '@/src/shared/components/atoms/Title'
 import { Employee } from '@/src/shared/types'

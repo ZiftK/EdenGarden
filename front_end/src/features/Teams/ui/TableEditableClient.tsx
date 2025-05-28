@@ -11,7 +11,11 @@ import {
 } from '@/src/components/landing/atoms/Icons/Icons'
 import CopyButton from '@/src/components/ERP/atoms/CopyButton'
 import ModalNewMember from './moleculs/ModalNewMember'
-import { Button } from '@heroui/react'
+import { Button, Input } from '@heroui/react'
+import Image from 'next/image'
+import { useAuthStore } from '@/src/features/auth/model/useAuthStore'
+import { fetcher } from '@/src/shared/api/httpClient'
+import { useTeamStore } from '../model/teamStore'
 
 export default function TableEditableClient({
 	team,
@@ -20,62 +24,148 @@ export default function TableEditableClient({
 	team: ShortTeam
 	isNewTeam?: boolean
 }) {
-	const { data, setData, reset, handleSave, handleToggleRemove } =
-		useEditableTeam({ initialTeam: team, isNewTeam })
+	const { data, setData, reset, handleSave } = useEditableTeam({
+		initialTeam: team,
+		isNewTeam,
+	})
+	const { user } = useAuthStore()
+	const { deleteTeamMember } = useTeamStore()
+	const isAdmin = user?.rol === 'admin'
 
 	const currentLeader = data?.currentTeam?.lider
+	const displayedLeader = data.isEditing
+		? data.teamChanged?.lider
+		: currentLeader
+
+	const handleDeleteMember = async (memberId: number) => {
+		if (!data.teamChanged || !data.teamChanged.id_equipo) return
+
+		try {
+			// Make API call to delete member from database
+			await deleteTeamMember(data.teamChanged.id_equipo, memberId)
+
+			// Update local state after successful deletion
+			setData((prev) => ({
+				...prev,
+				teamShowed: {
+					...prev.teamShowed,
+					empleados: prev.teamShowed.empleados.filter(
+						(emp) => emp.id_empleado !== memberId
+					),
+				},
+				teamChanged: {
+					...prev.teamChanged!,
+					empleados: prev.teamChanged!.empleados.filter(
+						(emp) => emp.id_empleado !== memberId
+					),
+				},
+			}))
+		} catch (error) {
+			console.error('Error al eliminar miembro:', error)
+		}
+	}
+
+	const handleDeleteTeam = async () => {
+		try {
+			await fetcher.delete(`/team/delete/${team.id_equipo}`)
+			// Redirect to teams list or handle success
+			window.location.href = '/teams'
+		} catch (error) {
+			console.error('Error al eliminar el equipo:', error)
+		}
+	}
 
 	return (
-		<>
-			{/* Header y resto del código como estaba */}
-			<div className='w-full font-light text-sm overflow-x-auto'>
-				{/* Header */}
-				<div className='grid grid-cols-[1fr_1fr_2fr_1fr_1fr] min-w-[450px] bg-transparent text-center py-2 mb-2 font-medium border-b border-[#bec8a6]'>
-					<span className='text-sm'>Puesto</span>
-					<span className='text-sm'>Expediente</span>
-					<span className='text-sm'>Nombre</span>
-					<span className='text-sm'>Contacto</span>
-					{data.isEditing ? (
-						<button
-							onClick={() => handleToggleRemove()}
-							className='text-sm text-blue-400 cursor-pointer border-b-2 w-fit m-auto'
-						>
-							Eliminar
-						</button>
-					) : (
-						<span className='text-sm'>Salario</span>
-					)}
-				</div>
+		<div className='space-y-6 w-full'>
+			{/* Título del equipo */}
+			<div className='flex items-center justify-between'>
+				{data.isEditing ? (
+					<Input
+						value={data.teamChanged?.nombre || ''}
+						onChange={(e) => {
+							if (!data.teamChanged) return
+							setData((prev) => ({
+								...prev,
+								teamChanged: {
+									...prev.teamChanged!,
+									nombre: e.target.value,
+								},
+							}))
+						}}
+						placeholder='Nombre del equipo'
+						className='text-2xl font-bold !text-[var(--father-font)] !bg-transparent'
+						variant='underlined'
+					/>
+				) : (
+					<div className='flex items-center justify-between w-full'>
+						<h2 className='text-2xl font-bold text-[var(--father-font)]'>
+							{data.currentTeam.nombre}
+						</h2>
+						<div className='flex gap-2'>
+							{isAdmin && !isNewTeam && !data.isEditing && (
+								<>
+									<Button
+										onPress={() =>
+											setData({
+												...data,
+												isEditing: true,
+											})
+										}
+										className='cursor-pointer text-[var(--green-dark-500)] bg-transparent text-md'
+									>
+										Editar
+									</Button>
+									<Button
+										color='danger'
+										variant='light'
+										onPress={handleDeleteTeam}
+										className='!text-[var(--father-font)]'
+									>
+										Eliminar Equipo
+									</Button>
+								</>
+							)}
+						</div>
+					</div>
+				)}
+			</div>
 
-				{/*Leader*/}
-				{data.currentTeam?.lider && (
-					<div className='grid grid-cols-[1fr_1fr_2fr_1fr_1fr] min-w-[450px] items-center text-center py-2 bg-[var(--father-font-transparent-200)]'>
-						<span>{currentLeader.puesto}</span>
-						<span>{currentLeader.id_empleado}</span>
-
+			{/* Líder del equipo */}
+			<div className='bg-[var(--father-font-transparent-200)] p-4 rounded-lg'>
+				<h3 className='text-lg font-semibold mb-4 text-[var(--father-font)]'>
+					Líder del Equipo
+				</h3>
+				<div className='flex items-center gap-6'>
+					<div className='w-16 h-16 relative rounded-full overflow-hidden'>
+						<Image
+							src={
+								displayedLeader?.img ||
+								'https://via.placeholder.com/150'
+							}
+							alt={displayedLeader?.nombre || 'Líder'}
+							fill
+							className='object-cover'
+						/>
+					</div>
+					<div className='flex-1 space-y-2'>
 						{data.isEditing ? (
 							<LeaderAutocomplete
-								value={String(
-									data.teamChanged!.lider?.id_empleado ||
-										currentLeader.id_empleado
-								)}
+								value={String(displayedLeader?.id_empleado)}
 								onChange={(leader) => {
+									if (!data.teamChanged) return
 									setData((prev) => ({
 										...prev,
-										teamShowed: {
-											...prev.teamShowed,
-											leader: {
-												...prev.teamShowed.lider,
-												name: leader.nombre,
-												id: leader.id_empleado,
-											},
-										},
 										teamChanged: {
 											...prev.teamChanged!,
-											leader: {
-												...prev.teamChanged!.lider,
-												name: leader.nombre,
-												id: leader.id_empleado,
+											lider: {
+												nombre: leader.nombre,
+												id_empleado: leader.id_empleado,
+												email: leader.email,
+												telefono: leader.telefono,
+												rol: leader.rol,
+												puesto: leader.puesto || '',
+												salario: leader.salario || 0,
+												img: leader.img,
 											},
 										},
 									}))
@@ -83,33 +173,42 @@ export default function TableEditableClient({
 							/>
 						) : (
 							<>
-								<span>{currentLeader.nombre}</span>
-
-								<div className='flex items-center justify-center gap-2'>
+								<p className='text-lg font-medium text-[var(--father-font)]'>
+									{displayedLeader?.nombre}
+								</p>
+								<p className='text-sm text-[var(--father-font-transparent-800)]'>
+									{displayedLeader?.puesto}
+								</p>
+								<div className='flex items-center gap-4'>
 									<CopyButton
-										text={currentLeader.email}
+										text={displayedLeader?.email || ''}
 										icon={EmailIcon({
 											color: 'var(--father-font)',
-											h: 12,
+											h: 16,
 										})}
 									/>
 									<CopyButton
-										text={currentLeader.telefono}
+										text={displayedLeader?.telefono || ''}
 										icon={PhoneIcon({
 											color: 'var(--father-font)',
-											h: 12,
+											h: 16,
 										})}
 									/>
 								</div>
-
-								<span>{currentLeader.salario}</span>
 							</>
 						)}
 					</div>
-				)}
+				</div>
+			</div>
 
-				{/* Body */}
-				<div className='divide-y min-w-[450px] divide-[#2b2f22] h-[100px] overflow-y-auto text-xs scrollbar-thin-custom xl:h-48'>
+			{/* Miembros del equipo */}
+			<div className='bg-[var(--father-font-transparent-200)] p-4 rounded-lg'>
+				<div className='flex items-center justify-between mb-4'>
+					<h3 className='text-lg font-semibold text-[var(--father-font)]'>
+						Miembros del Equipo
+					</h3>
+				</div>
+				<div className='space-y-4 max-h-[400px] overflow-y-auto scrollbar-thin-custom'>
 					{data.teamShowed?.empleados.map((user, i) => (
 						<TeamMemberRow
 							key={i}
@@ -130,16 +229,25 @@ export default function TableEditableClient({
 									return updatedData
 								})
 							}}
+							onDelete={
+								user.id_empleado
+									? () =>
+											handleDeleteMember(
+												user.id_empleado!
+											)
+									: undefined
+							}
 						/>
 					))}
 					{(data.isEditing || isNewTeam) && (
 						<ModalNewMember
 							onChange={(employee) => {
+								if (!data.teamChanged) return
 								setData((prev) => ({
 									...prev,
 									teamShowed: {
 										...prev.teamShowed,
-										members: [
+										empleados: [
 											...prev.teamShowed?.empleados,
 											...(Array.isArray(employee)
 												? employee
@@ -148,7 +256,7 @@ export default function TableEditableClient({
 									},
 									teamChanged: {
 										...prev.teamChanged!,
-										members: [
+										empleados: [
 											...prev.teamChanged!.empleados,
 											...(Array.isArray(employee)
 												? employee
@@ -157,51 +265,38 @@ export default function TableEditableClient({
 									},
 								}))
 							}}
+							teamLeaderId={currentLeader.id_empleado}
 						/>
 					)}
 				</div>
 			</div>
 
 			{/* Botones de acción */}
-			{!isNewTeam ? (
-				!data.isEditing ? (
-					<button
-						onClick={() => setData({ ...data, isEditing: true })}
-						className='cursor-pointer text-[var(--green-dark-500)] border-b-2 text-md place-self-end text-center'
+			{(data.isEditing || isNewTeam) && (
+				<div className='flex gap-4 justify-end'>
+					<Button
+						color='danger'
+						variant='light'
+						onPress={() => {
+							reset()
+							setData((prev) => ({
+								...prev,
+								isEditing: false,
+							}))
+						}}
+						className='!text-[var(--father-font)]'
 					>
-						Editar
-					</button>
-				) : (
-					<div className='flex gap-2 justify-end mt-4'>
-						<button
-							onClick={handleSave}
-							className='cursor-pointer text-md'
-						>
-							Guardar
-						</button>
-						<button
-							onClick={() => {
-								reset()
-								setData((prev) => ({
-									...prev,
-									isEditing: false,
-								}))
-							}}
-							className='cursor-pointer text-md'
-						>
-							Cancelar
-						</button>
-					</div>
-				)
-			) : (
-				<Button
-					className='bg-[var(--green-dark-500)] text-white mr-auto'
-					onPress={handleSave}
-					size='sm'
-				>
-					Crear nuevo equipo
-				</Button>
+						Cancelar
+					</Button>
+					<Button
+						color='primary'
+						onPress={handleSave}
+						className='!bg-[var(--green-dark-500)] !text-white'
+					>
+						{isNewTeam ? 'Crear Equipo' : 'Guardar Cambios'}
+					</Button>
+				</div>
 			)}
-		</>
+		</div>
 	)
 }

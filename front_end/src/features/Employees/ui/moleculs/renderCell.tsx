@@ -20,7 +20,13 @@ export function renderCell(
 		case 'id_empleado':
 			return (
 				<div className='flex flex-col'>
-					<p className='text-bold text-sm'>{cellValue}</p>
+					<p className='text-bold text-sm'>
+						{cellValue !== undefined && cellValue !== null
+							? typeof cellValue === 'object'
+								? JSON.stringify(cellValue)
+								: String(cellValue)
+							: ''}
+					</p>
 				</div>
 			)
 		case 'nombre':
@@ -36,7 +42,13 @@ export function renderCell(
 		case 'rol':
 			return (
 				<div className='flex flex-col'>
-					<p className='text-bold text-sm capitalize'>{cellValue}</p>
+					<p className='text-bold text-sm capitalize'>
+						{cellValue !== undefined && cellValue !== null
+							? typeof cellValue === 'object'
+								? JSON.stringify(cellValue)
+								: String(cellValue)
+							: ''}
+					</p>
 				</div>
 			)
 		case 'fecha_contratacion':
@@ -70,7 +82,7 @@ export function renderCell(
 					</Tooltip>
 
 					<ModalDeleteEmployee
-						employeeId={user.id_empleado}
+						employeeId={user.id_empleado.toString()}
 						employeeName={user.nombre}
 					/>
 				</div>

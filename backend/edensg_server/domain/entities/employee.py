@@ -16,6 +16,7 @@ class Employee(BaseModel):
     puesto: str
     salario: float
     img: Optional[str] = None
+    fk_equipo: Optional[int] = None
 
 class Attendance(BaseModel):
     id_asistencia: Optional[int] = None

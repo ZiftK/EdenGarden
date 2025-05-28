@@ -4,8 +4,6 @@ import { ShortTeam } from '@/src/shared/types'
 import {
 	Input,
 	Button,
-	Select,
-	SelectItem,
 	Textarea,
 	Card,
 	CardBody,
@@ -17,13 +15,12 @@ import { redirect } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
-import { ProjectSendToAPI } from '../../types'
+
 import { ClientToCreate } from '../../types/client'
 import { ProjectCalendarToCreate } from '../../types/calendario'
 import { isClientComplete } from '../../model/client.utils'
 import { getTeams } from '@/src/features/Teams/api/getTeams'
 import {
-	createNewProject,
 	createNewProjectWithImage,
 	CreateProjectData,
 } from '../../model/project.service'
@@ -31,7 +28,7 @@ import {
 	parseDateStringToCustomDate,
 	customDateToDateString,
 } from '@/src/shared/hooks/useDatesCustoms'
-import { uploadProjectImage } from '../../api/createProject'
+
 import { EnumMonths } from '../../types/time_enums'
 
 interface FormProject {
@@ -46,7 +43,7 @@ interface FormProject {
 		fecha_fin: ProjectCalendarToCreate['fecha_fin']
 	}
 	img?: string
-	[key: string]: any
+	[key: string]: unknown
 }
 
 export default function FormNewProject() {
@@ -66,7 +63,7 @@ export default function FormNewProject() {
 			id_equipo: 0,
 			nombre: '',
 			lider: {
-				id_empleado: '',
+				id_empleado: 0,
 				nombre: '',
 				email: '',
 				telefono: '',
@@ -92,10 +89,6 @@ export default function FormNewProject() {
 		img: '',
 	})
 
-	const [selectedTeamKey, setSelectedTeamKey] = useState<Set<string>>(
-		new Set([])
-	)
-
 	useEffect(() => {
 		const fetchTeams = async () => {
 			const teams = await getTeams()
@@ -104,15 +97,6 @@ export default function FormNewProject() {
 
 		fetchTeams()
 	}, [])
-
-	// Agregar efecto para actualizar la selección cuando cambia el equipo
-	useEffect(() => {
-		if (newProject.equipo?.id_equipo) {
-			setSelectedTeamKey(new Set([String(newProject.equipo.id_equipo)]))
-		} else {
-			setSelectedTeamKey(new Set([]))
-		}
-	}, [newProject.equipo?.id_equipo])
 
 	const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = e.target
@@ -123,7 +107,10 @@ export default function FormNewProject() {
 			setNewProject((prev) => ({
 				...prev,
 				[parent]: {
-					...prev[parent],
+					...(typeof prev[parent] === 'object' &&
+					prev[parent] !== null
+						? prev[parent]
+						: {}),
 					[child]: dateValue,
 				},
 			}))

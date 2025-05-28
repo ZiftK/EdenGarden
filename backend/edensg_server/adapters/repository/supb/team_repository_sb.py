@@ -82,8 +82,8 @@ class TeamRepositorySB(TeamRepository):
         """Verifica si los empleados están en otros equipos y devuelve las IDs de los que sí lo están."""
         result = []
         for employee_id in ids:
-            response = self.client.table(self.employee_base_table).select('id_empleado').eq('id_empleado', employee_id).is_('fk_equipo', 'not.null').execute()
-            if response.data:
+            response = self.client.table(self.employee_base_table).select('id_empleado, fk_equipo').eq('id_empleado', employee_id).execute()
+            if response.data and response.data[0].get('fk_equipo') is not None:
                 result.append(employee_id)
         return result
     
@@ -176,12 +176,53 @@ class TeamRepositorySB(TeamRepository):
         }
         self.client.table(self.table).update(update_data).eq('id_equipo', id).execute()
 
+    def update_members(self, team_id: int, member_ids: list[int]) -> None:
+        """Actualiza los miembros de un equipo."""
+        # First, unregister all current members
+        current_members = self.get_team_members(team_id)
+        current_member_ids = [emp.id_empleado for emp in current_members]
+        
+        # Members to remove
+        members_to_remove = [emp_id for emp_id in current_member_ids if emp_id not in member_ids]
+        if members_to_remove:
+            self.unregister_team_employees(team_id, members_to_remove)
+        
+        # Members to add
+        members_to_add = [emp_id for emp_id in member_ids if emp_id not in current_member_ids]
+        if members_to_add:
+            self.register_team_employees(team_id, members_to_add)
+
+    def remove_member(self, team_id: int, member_id: int) -> None:
+        """Elimina un miembro de un equipo."""
+        # Get current members
+        current_members = self.get_team_members(team_id)
+        current_member_ids = [emp.id_empleado for emp in current_members]
+        
+        # Verify if member exists in team
+        if member_id not in current_member_ids:
+            raise ValueError(f"Member {member_id} is not in team {team_id}")
+            
+        # Remove member
+        self.unregister_team_employees(team_id, [member_id])
+
     def delete_team_data(self, id: int) -> None:
         """Elimina un equipo de la base de datos."""
         # First remove all employee associations
         self.client.table(self.employee_base_table).update({'fk_equipo': None}).eq('fk_equipo', id).execute()
         # Then delete the team
         self.client.table(self.table).delete().eq('id_equipo', id).execute()
+
+    def get_team_members(self, team_id: int) -> list:
+        """Obtiene los miembros de un equipo."""
+        response = self.client.table(self.employee_base_table).select('*').eq('fk_equipo', team_id).execute()
+        employees = []
+        for emp_data in response.data:
+            try:
+                emp = format_employee(emp_data)
+                employees.append(emp)
+            except Exception:
+                continue
+        return employees
 
 repository_sb = TeamRepositorySB()
 

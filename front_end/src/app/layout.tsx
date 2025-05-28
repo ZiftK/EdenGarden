@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import { Montserrat } from 'next/font/google'
 import './globals.css'
-import ThemeScript from './ThemeScript'
 import img from '@/public/assets/icons/Logo_Eden_Icon.png'
 import LoadingOverlay from '@/src/components/ERP/atoms/LoadingOverlay/LoadingOverlay'
 
@@ -23,13 +22,12 @@ export default function RootLayout({
 	children: React.ReactNode
 }>) {
 	return (
-		<html lang='es' suppressHydrationWarning={true}>
+		<html lang='es' className='dark' suppressHydrationWarning={true}>
 			<head>
 				<link rel='icon' href={img.src} />
-				<meta name='color-scheme' content='light dark' />
+				<meta name='color-scheme' content='dark' />
 			</head>
 			<body className={montSains.className}>
-				<ThemeScript />
 				<LoadingOverlay />
 				{children}
 			</body>

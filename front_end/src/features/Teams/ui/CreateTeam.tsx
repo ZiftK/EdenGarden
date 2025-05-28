@@ -20,13 +20,12 @@ export default function CreateTeam({}) {
 		id_equipo: 0,
 		lider: {
 			nombre: '',
-			id_empleado: '',
 			email: '',
 			telefono: '',
-			rol: 'leader',
+			rol: 'lider',
 			puesto: '',
 			salario: 0,
-			equipo: undefined,
+			id_empleado: 0
 		},
 		empleados: [],
 	}
@@ -40,7 +39,7 @@ export default function CreateTeam({}) {
 			alert('El nombre del equipo no puede estar vacio')
 			return
 		}
-		if (data.teamChanged?.lider.id_empleado === '') {
+		if (!data.teamChanged?.lider.id_empleado) {
 			alert('El lider no puede estar vacio')
 			return
 		}
@@ -82,7 +81,7 @@ export default function CreateTeam({}) {
 							leader: prev.teamChanged?.lider || {
 								id: '',
 								name: '',
-								role: 'leader',
+								role: 'lider',
 								email: '',
 								phone_number: '',
 								position: '',
@@ -197,6 +196,7 @@ export default function CreateTeam({}) {
 									toggleTeamMember(prev, user, checked)
 								)
 							}}
+							data={data}
 						/>
 					))}
 					{data.isEditing && (

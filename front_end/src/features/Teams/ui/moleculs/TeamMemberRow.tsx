@@ -1,57 +1,101 @@
 import {
 	EmailIcon,
 	PhoneIcon,
+	TrashIcon,
 } from '@/src/components/landing/atoms/Icons/Icons'
 import CopyButton from '@/src/components/ERP/atoms/CopyButton'
 import { TeamMemberRowProps } from '../../types/types'
+import Image from 'next/image'
+import { Button } from '@heroui/react'
+import { useAuthStore } from '@/src/features/auth/model/useAuthStore'
+import { useTeamStore } from '@/src/features/Teams/model/teamStore'
 
-export const TeamMemberRow: React.FC<TeamMemberRowProps> = ({
+export function TeamMemberRow({
 	user,
-	index,
 	isEditing,
-	isIncluded,
-	onToggle,
-}) => {
+
+	onDelete,
+}: TeamMemberRowProps & {
+	onDelete?: () => void
+	data?: unknown
+}) {
+	const { user: currentUser } = useAuthStore()
+	const { deleteTeamMember } = useTeamStore()
+	const isAdmin = currentUser?.rol === 'admin'
+
+	const canManageTeam = isAdmin
+
+	const handleDelete = async () => {
+		if (!onDelete || !user.id_empleado) return
+		if (
+			!window.confirm(
+				'¿Estás seguro de que deseas eliminar este miembro del equipo?'
+			)
+		)
+			return
+
+		try {
+			await deleteTeamMember(user.fk_equipo!, user.id_empleado)
+			onDelete()
+		} catch (error) {
+			console.error('Error al eliminar miembro:', error)
+		}
+	}
+
 	return (
 		<div
-			className={`grid grid-cols-[1fr_1fr_2fr_1fr_1fr] items-center text-center py-2 ${
-				index % 2 === 0
-					? 'bg-transparent'
-					: 'bg-[var(--father-font-transparent-200)]'
-			}`}
+			className={`flex items-center gap-4 p-3 bg-transparent rounded-lg hover:bg-[var(--father-font-transparent-200)] transition-colors`}
 		>
-			<div className='col-span-3 w-full grid grid-cols-[1fr_1fr_2fr]'>
-				<span className='text-sm'>{user.position}</span>
-				<span className='text-sm'>{user.id}</span>
-				<span className='text-sm'>{user.name}</span>
-			</div>
-
-			<div className='flex items-center justify-center gap-2'>
-				<CopyButton
-					text={user.email}
-					icon={EmailIcon({
-						color: 'var(--father-font)',
-						h: 12,
-					})}
-				/>
-				<CopyButton
-					text={user.phone_number}
-					icon={PhoneIcon({
-						color: 'var(--father-font)',
-						h: 12,
-					})}
+			<div className='w-12 h-12 relative rounded-full overflow-hidden flex-shrink-0'>
+				<Image
+					src={user.img || 'https://via.placeholder.com/150'}
+					alt={user.nombre}
+					fill
+					className='object-cover'
 				/>
 			</div>
 
-			{isEditing ? (
-				<input
-					type='checkbox'
-					checked={isIncluded}
-					className='accent-[var(--father-font)] cursor-pointer'
-					onChange={(e) => onToggle(e.target.checked)}
-				/>
-			) : (
-				<span className='text-sm'>{user.salary}</span>
+			<div className='flex-1 min-w-0'>
+				<div className='flex items-center gap-2'>
+					<h4 className='text-[var(--father-font)] font-medium truncate'>
+						{user.nombre}
+					</h4>
+				</div>
+				<div className='flex items-center gap-4 mt-1'>
+					<CopyButton
+						text={user.email}
+						icon={EmailIcon({
+							color: 'var(--father-font)',
+							h: 14,
+						})}
+					/>
+					<CopyButton
+						text={user.telefono}
+						icon={PhoneIcon({
+							color: 'var(--father-font)',
+							h: 14,
+						})}
+					/>
+				</div>
+			</div>
+
+			{!isEditing && (
+				<span className='text-sm text-[var(--father-font-transparent-800)]'>
+					{user.salario ? `$${user.salario}` : 'No definido'}
+				</span>
+			)}
+
+			{canManageTeam && (
+				<Button
+					size='sm'
+					color='danger'
+					variant='light'
+					onPress={handleDelete}
+					className='!text-[var(--father-font)]'
+				>
+					Eliminar
+					<TrashIcon color='var(--father-font)' h={14} />
+				</Button>
 			)}
 		</div>
 	)
