@@ -53,7 +53,11 @@ export function ShortFormContact() {
 	}
 
 	return (
-		<Box as='section' id='contact_form' className=' mx-auto px-4 my-80'>
+		<Box
+			as='section'
+			id='contact_form'
+			className=' mx-auto px-4 my-80 bg-transparen'
+		>
 			<Card className='bg-transparent'>
 				<Box className='px-6 py-6'>
 					<Typography
