@@ -13,6 +13,8 @@ import CopyButton from '@/src/components/ERP/atoms/CopyButton'
 import ModalNewMember from './moleculs/ModalNewMember'
 import { Button, Input } from '@heroui/react'
 import Image from 'next/image'
+import { useAuthStore } from '@/src/features/auth/model/useAuthStore'
+import { fetcher } from '@/src/shared/api/httpClient'
 
 export default function TableEditableClient({
 	team,
@@ -23,11 +25,43 @@ export default function TableEditableClient({
 }) {
 	const { data, setData, reset, handleSave, handleToggleRemove } =
 		useEditableTeam({ initialTeam: team, isNewTeam })
+	const { user } = useAuthStore()
+	const isAdmin = user?.rol === 'admin'
 
 	const currentLeader = data?.currentTeam?.lider
 	const displayedLeader = data.isEditing
 		? data.teamChanged?.lider
 		: currentLeader
+
+	const handleDeleteMember = (memberId: number) => {
+		if (!data.teamChanged) return
+
+		setData((prev) => ({
+			...prev,
+			teamShowed: {
+				...prev.teamShowed,
+				empleados: prev.teamShowed.empleados.filter(
+					(emp) => emp.id_empleado !== memberId
+				),
+			},
+			teamChanged: {
+				...prev.teamChanged!,
+				empleados: prev.teamChanged!.empleados.filter(
+					(emp) => emp.id_empleado !== memberId
+				),
+			},
+		}))
+	}
+
+	const handleDeleteTeam = async () => {
+		try {
+			await fetcher.delete(`/team/delete/${team.id_equipo}`)
+			// Redirect to teams list or handle success
+			window.location.href = '/teams'
+		} catch (error) {
+			console.error('Error al eliminar el equipo:', error)
+		}
+	}
 
 	return (
 		<div className='space-y-6'>
@@ -35,8 +69,9 @@ export default function TableEditableClient({
 			<div className='flex items-center justify-between'>
 				{data.isEditing ? (
 					<Input
-						value={data.teamChanged.nombre}
+						value={data.teamChanged?.nombre || ''}
 						onChange={(e) => {
+							if (!data.teamChanged) return
 							setData((prev) => ({
 								...prev,
 								teamChanged: {
@@ -50,18 +85,36 @@ export default function TableEditableClient({
 						variant='underlined'
 					/>
 				) : (
-					<h2 className='text-2xl font-bold text-[var(--father-font)]'>
-						{data.currentTeam.nombre}
-					</h2>
-				)}
-
-				{!isNewTeam && !data.isEditing && (
-					<button
-						onClick={() => setData({ ...data, isEditing: true })}
-						className='cursor-pointer text-[var(--green-dark-500)] border-b-2 text-md'
-					>
-						Editar
-					</button>
+					<div className='flex items-center justify-between w-full'>
+						<h2 className='text-2xl font-bold text-[var(--father-font)]'>
+							{data.currentTeam.nombre}
+						</h2>
+						<div className='flex gap-2'>
+							{isAdmin && !isNewTeam && !data.isEditing && (
+								<>
+									<Button
+										onPress={() =>
+											setData({
+												...data,
+												isEditing: true,
+											})
+										}
+										className='cursor-pointer text-[var(--green-dark-500)] border-b-2 text-md'
+									>
+										Editar
+									</Button>
+									<Button
+										color='danger'
+										variant='light'
+										onPress={handleDeleteTeam}
+										className='!text-[var(--father-font)]'
+									>
+										Eliminar Equipo
+									</Button>
+								</>
+							)}
+						</div>
+					</div>
 				)}
 			</div>
 
@@ -87,6 +140,7 @@ export default function TableEditableClient({
 							<LeaderAutocomplete
 								value={String(displayedLeader?.id_empleado)}
 								onChange={(leader) => {
+									if (!data.teamChanged) return
 									setData((prev) => ({
 										...prev,
 										teamChanged: {
@@ -171,11 +225,20 @@ export default function TableEditableClient({
 									return updatedData
 								})
 							}}
+							onDelete={
+								user.id_empleado
+									? () =>
+											handleDeleteMember(
+												user.id_empleado!
+											)
+									: undefined
+							}
 						/>
 					))}
 					{(data.isEditing || isNewTeam) && (
 						<ModalNewMember
 							onChange={(employee) => {
+								if (!data.teamChanged) return
 								setData((prev) => ({
 									...prev,
 									teamShowed: {

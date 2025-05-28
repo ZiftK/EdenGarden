@@ -5,14 +5,22 @@ import {
 import CopyButton from '@/src/components/ERP/atoms/CopyButton'
 import { TeamMemberRowProps } from '../../types/types'
 import Image from 'next/image'
+import { Button, Checkbox } from '@heroui/react'
+import { useAuthStore } from '@/src/features/auth/model/useAuthStore'
 
-export const TeamMemberRow: React.FC<TeamMemberRowProps> = ({
+export function TeamMemberRow({
 	user,
 	index,
 	isEditing,
 	isIncluded,
 	onToggle,
-}) => {
+	onDelete,
+}: TeamMemberRowProps & { onDelete?: () => void }) {
+	const { user: currentUser } = useAuthStore()
+	const isAdmin = currentUser?.rol === 'admin'
+	const isLeader = currentUser?.rol === 'lider'
+	const canManageTeam = isAdmin || isLeader
+
 	return (
 		<div
 			className={`flex items-center gap-4 p-3 ${
@@ -70,6 +78,18 @@ export const TeamMemberRow: React.FC<TeamMemberRowProps> = ({
 				<span className='text-sm text-[var(--father-font-transparent-800)]'>
 					{user.salario ? `$${user.salario}` : 'No definido'}
 				</span>
+			)}
+
+			{canManageTeam && !isEditing && onDelete && (
+				<Button
+					size='sm'
+					color='danger'
+					variant='light'
+					onPress={onDelete}
+					className='!text-[var(--father-font)]'
+				>
+					Eliminar
+				</Button>
 			)}
 		</div>
 	)

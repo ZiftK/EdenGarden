@@ -13,6 +13,7 @@ export interface TeamMemberRowProps {
 	isEditing: boolean
 	isIncluded: boolean
 	onToggle: (checked: boolean) => void
+	onDelete?: () => void
 }
 
 export interface TeamsState {
