@@ -1,5 +1,4 @@
 import { create } from 'zustand'
-import { Employee } from '@/src/shared/types'
 
 interface PayrollState {
   isLoading: boolean

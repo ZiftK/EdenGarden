@@ -71,7 +71,7 @@ export const useEmployeeStore = create<EmployeeState>((set, get) => ({
             const responseData = await response.json();
             const allEmployees = Array.isArray(responseData.data) ? responseData.data : [];
             const leaders = allEmployees.filter((emp: Employee) => 
-                emp.rol === 'lider' && !emp.equipo
+                emp.rol === 'lider' && !emp.fk_equipo
             );
             return leaders;
         } catch (error) {

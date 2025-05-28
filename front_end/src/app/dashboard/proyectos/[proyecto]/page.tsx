@@ -3,13 +3,14 @@ import { getProjectById } from '@/src/features/Projets/api/getProjectById'
 import Link from 'next/link'
 import ShowProject from '@/src/features/Projets/ui/ShowProject'
 
-export default async function Page({
-	params,
-}: {
-	params: { proyecto: string }
-}) {
+interface PageProps {
+	params: Promise<{ proyecto: string }>
+}
+
+export default async function Page({ params }: PageProps) {
 	try {
-		const project = await getProjectById(params.proyecto)
+		const { proyecto } = await params
+		const project = await getProjectById(proyecto)
 
 		if (!project) {
 			return <div>Proyecto no encontrado</div>

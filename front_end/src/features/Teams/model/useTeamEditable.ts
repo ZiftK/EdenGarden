@@ -19,7 +19,7 @@ export function useEditableTeam({initialTeam, isNewTeam = false}:{initialTeam: S
         rol: "lider",
         puesto: '',
         salario: 0,
-        img: null
+        img: ''
       },
       empleados: [],
     }

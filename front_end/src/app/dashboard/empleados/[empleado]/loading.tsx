@@ -1,7 +1,5 @@
 'use client'
 
-import { Card, CardBody, CardHeader, Divider, Skeleton } from '@heroui/react'
-
 export default function Loading() {
 	return (
 		<section className='relative text-[var(--father-font)] md:row-start-2 md:row-end-4 xl:col-start-2'>

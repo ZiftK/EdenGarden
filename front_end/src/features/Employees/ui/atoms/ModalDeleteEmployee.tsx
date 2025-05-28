@@ -24,7 +24,7 @@ export default function ModalDeleteEmployee({
 
 	const onDelete = async (id: string) => {
 		try {
-			await deleteEmployee(id)
+			await deleteEmployee(+id)
 			onClose()
 			router.push('/dashboard/empleados')
 			router.refresh()
@@ -57,7 +57,7 @@ export default function ModalDeleteEmployee({
 				className='bg-[var(--bg-card-obscure)]'
 			>
 				<ModalContent>
-					{(onClose) => (
+					{() => (
 						<>
 							<ModalHeader className='flex flex-col gap-1'>
 								<div>

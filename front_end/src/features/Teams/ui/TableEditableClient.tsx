@@ -24,8 +24,10 @@ export default function TableEditableClient({
 	team: ShortTeam
 	isNewTeam?: boolean
 }) {
-	const { data, setData, reset, handleSave, handleToggleRemove } =
-		useEditableTeam({ initialTeam: team, isNewTeam })
+	const { data, setData, reset, handleSave } = useEditableTeam({
+		initialTeam: team,
+		isNewTeam,
+	})
 	const { user } = useAuthStore()
 	const { deleteTeamMember } = useTeamStore()
 	const isAdmin = user?.rol === 'admin'
@@ -41,7 +43,7 @@ export default function TableEditableClient({
 		try {
 			// Make API call to delete member from database
 			await deleteTeamMember(data.teamChanged.id_equipo, memberId)
-			
+
 			// Update local state after successful deletion
 			setData((prev) => ({
 				...prev,
@@ -205,7 +207,6 @@ export default function TableEditableClient({
 					<h3 className='text-lg font-semibold text-[var(--father-font)]'>
 						Miembros del Equipo
 					</h3>
-
 				</div>
 				<div className='space-y-4 max-h-[400px] overflow-y-auto scrollbar-thin-custom'>
 					{data.teamShowed?.empleados.map((user, i) => (

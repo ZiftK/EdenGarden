@@ -8,7 +8,8 @@ import { Card, CardBody, CardHeader } from '@heroui/react'
 
 export default function AttendanceCard() {
 	const { user } = useAuthStore()
-	const { teamMembers, attendance, getTeamAttendance, markAttendance } = useAttendanceStore()
+	const { attendance, getTeamAttendance, markAttendance } =
+		useAttendanceStore()
 	const { teams, isLoading } = useTeamStore()
 	const [isSubmitting, setIsSubmitting] = useState(false)
 	const [showAttendance, setShowAttendance] = useState(false)
@@ -50,12 +51,14 @@ export default function AttendanceCard() {
 	if (!user?.rol || user.rol !== 'lider' || isLoading) {
 		return (
 			<div className='flex items-center justify-center p-4'>
-				{isLoading ? 'Cargando...' : 'No tienes acceso a esta funcionalidad'}
+				{isLoading
+					? 'Cargando...'
+					: 'No tienes acceso a esta funcionalidad'}
 			</div>
 		)
 	}
 
-	const userTeam = teams?.find(team => team.id_equipo === user.fk_equipo)
+	const userTeam = teams?.find((team) => team.id_equipo === user.fk_equipo)
 
 	return (
 		<div className='space-y-4'>

@@ -16,7 +16,6 @@ export default function PayrollCard() {
 		usePayrollStore()
 	const [isGenerating, setIsGenerating] = useState(false)
 	const [isDownloading, setIsDownloading] = useState(false)
-	const [downloadUrl, setDownloadUrl] = useState<string | null>(null)
 
 	const handleGeneratePayroll = async () => {
 		if (!user?.id_empleado) return
@@ -42,7 +41,7 @@ export default function PayrollCard() {
 					type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
 				})
 				const url = window.URL.createObjectURL(blob)
-				setDownloadUrl(url)
+				// setDownloadUrl(url)
 
 				// Create temporary link and trigger download
 				const a = document.createElement('a')

@@ -66,13 +66,13 @@ export default function FormNewTeam() {
 
 	const availableEmployees = Array.isArray(employees)
 		? employees.filter(
-				(emp: Employee) => emp.rol !== 'admin' && !emp.equipo
+				(emp: Employee) => emp.rol !== 'admin' && !emp.fk_equipo
 			)
 		: []
 
 	const leaderEmployees = Array.isArray(employees)
 		? employees.filter(
-				(emp: Employee) => emp.rol === 'lider' && !emp.equipo
+				(emp: Employee) => emp.rol === 'lider' && !emp.fk_equipo
 			)
 		: []
 
@@ -147,12 +147,12 @@ export default function FormNewTeam() {
 								classNames={employeeFormStyles.select}
 								isRequired
 							>
-								{leaderEmployees.map((employee, index) => (
+								{leaderEmployees.map((employee) => (
 									<SelectItem
-										key={index}
-										value={String(
-											employee?.id_empleado || ''
-										)}
+										key={
+											employee.id_empleado?.toString() ||
+											''
+										}
 									>
 										{employee.nombre} - {employee.puesto}
 									</SelectItem>

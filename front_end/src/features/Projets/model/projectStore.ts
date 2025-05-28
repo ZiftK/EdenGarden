@@ -4,7 +4,7 @@ import { Project, ProjectFromAPI } from '../types'
 import { endpoints } from '@/src/shared/api/endpoints'
 import { Team } from '../../Teams/types/teamFromAPI'
 import { ShortTeam } from '@/src/shared/types'
-import { ClientToCreate } from '../types/client'
+
 
 const mapTeamToShortTeam = (team: Team): ShortTeam => ({
     id_equipo: team.id_equipo,
@@ -17,7 +17,7 @@ const mapTeamToShortTeam = (team: Team): ShortTeam => ({
         rol: team.lider.rol,
         puesto: team.lider.puesto,
         salario: team.lider.salario,
-        equipo: team.lider.equipo,
+        fk_equipo: team.lider.fk_equipo,
         img: team.lider.img,
     },
     empleados: team.empleados.map(emp => ({
@@ -28,7 +28,7 @@ const mapTeamToShortTeam = (team: Team): ShortTeam => ({
         rol: emp.rol,
         puesto: emp.puesto,
         salario: emp.salario,
-        equipo: emp.equipo,
+        equipo: emp.fk_equipo,
         img: emp.img,
     })),
 })

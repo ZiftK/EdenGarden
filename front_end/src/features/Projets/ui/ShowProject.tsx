@@ -64,7 +64,7 @@ export default function ShowProject({ project }: { project: Project }) {
 							miembros
 						</span>
 
-						<TableTeams team={project?.equipo} />
+						<TableTeams team={project!.equipo!} />
 					</div>
 
 					<div>

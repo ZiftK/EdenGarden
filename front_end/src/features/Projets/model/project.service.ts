@@ -10,7 +10,6 @@ import {
     uploadProjectImage,
     deleteProjectImage
 } from '../api/createProject'
-import { fetcher } from '@/src/shared/api/httpClient'
 
 export interface CreateProjectData {
     cliente: ClientToCreate;

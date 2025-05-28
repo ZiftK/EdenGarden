@@ -6,10 +6,9 @@ import {
 import CopyButton from '@/src/components/ERP/atoms/CopyButton'
 import { TeamMemberRowProps } from '../../types/types'
 import Image from 'next/image'
-import { Button, Checkbox } from '@heroui/react'
+import { Button } from '@heroui/react'
 import { useAuthStore } from '@/src/features/auth/model/useAuthStore'
 import { useTeamStore } from '@/src/features/Teams/model/teamStore'
-import { toggleTeamMember } from '@/src/features/Teams/handlers/toogleTeamMember'
 
 export function TeamMemberRow({
 	user,
@@ -18,7 +17,7 @@ export function TeamMemberRow({
 	onDelete,
 }: TeamMemberRowProps & {
 	onDelete?: () => void
-	data?: any
+	data?: unknown
 }) {
 	const { user: currentUser } = useAuthStore()
 	const { deleteTeamMember } = useTeamStore()

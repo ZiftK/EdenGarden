@@ -9,7 +9,7 @@ export async function getLeaders(): Promise<Employee[]> {
 			throw new Error('No se encontraron empleados')
 		}
 		const leaders = response.data.filter((employee) => 
-			employee.rol === 'lider' && !employee.equipo
+			employee.rol === 'lider' && !employee.fk_equipo
 		)
 		console.log('Leaders found:', leaders)
 		return leaders

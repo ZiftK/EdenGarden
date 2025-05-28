@@ -8,7 +8,7 @@ export async function getProjectById(id: string): Promise<Project> {
         console.log('dataProjects', dataProjects)
         if (!dataProjects) throw new Error('No se encontraron proyectos')
         
-        return dataProjects.proyecto
+        return dataProjects
     } catch (error) {
         console.error('Error al obtener los proyectos:', error)
         throw new Error('Error al obtener los proyectos')

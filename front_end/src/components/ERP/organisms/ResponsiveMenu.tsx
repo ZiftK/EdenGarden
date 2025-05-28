@@ -1,7 +1,6 @@
 'use client'
 
 import {
-	HouseIcon,
 	GroupIcon,
 	CertifiedIcon,
 	MessageIcon,

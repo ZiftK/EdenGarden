@@ -2,28 +2,28 @@ import { dataTeam } from "../types/types"
 
 
 export const handleToggleRemove = (data: dataTeam): dataTeam => {
-    const idToRemove = new Set(data.teamChanged?.members.map((m) => m.id))
-    const updatedMembers = data.teamShowed.members.filter((m) => !idToRemove.has(m.id))
+    const idToRemove = new Set(data.teamChanged?.empleados.map((m) => m.id_empleado))
+    const updatedMembers = data.teamShowed.empleados.filter((m) => !idToRemove.has(m.id_empleado))
 
     return {
         ...data,
         teamShowed: {
             ...data.teamShowed,
-            members: updatedMembers,
+            empleados: updatedMembers,
         },
         teamChanged: {
-            name: '',
-            id: '',
-            leader: {
-                name: '',
-                id: '',
+            nombre: '',
+            id_equipo: 0,
+            lider: {
+                nombre: '',
+                id_empleado: 0,
                 email: '',
-                phone_number: '',
-                role: 'leader',
-                position: '',
-                salary: 0,
+                telefono: '',
+                rol: 'leader',
+                puesto: '',
+                salario: 0,
             },
-            members: [],
+            empleados: [],
         },
     }
 }

@@ -33,8 +33,8 @@ export type AuthState = {
 export type ShortTeam = {
     id_equipo: number;
     nombre: string;
-    lider: Pick<Employee, 'email' | 'id_empleado' | 'nombre' | 'telefono' | 'rol' | 'puesto' | 'salario' | 'img'>
-    empleados: Pick<Employee, 'email' | 'id_empleado' | 'nombre' | 'telefono' | 'rol' | 'puesto' | 'salario' | 'img'>[];
+    lider: Pick<Employee, 'email' | 'id_empleado' | 'nombre' | 'telefono' | 'rol' | 'puesto' | 'salario' | 'img' | 'fk_equipo'>;
+    empleados: Pick<Employee, 'email' | 'id_empleado' | 'nombre' | 'telefono' | 'rol' | 'puesto' | 'salario' | 'img' | 'fk_equipo'>[];
 }
 
 export type Team = {
