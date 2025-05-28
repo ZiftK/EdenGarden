@@ -82,7 +82,8 @@ export const useTeamStore = create<TeamState>((set) => ({
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
-                }
+                },
+                body: JSON.stringify({teamId: teamId, member_id: memberId})
             })
             
             if (!response.ok) {

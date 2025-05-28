@@ -49,11 +49,7 @@ export function TeamMemberRow({
 
 	return (
 		<div
-			className={`flex items-center gap-4 p-3 ${
-				index % 2 === 0
-					? 'bg-transparent'
-					: 'bg-[var(--father-font-transparent-100)]'
-				} rounded-lg hover:bg-[var(--father-font-transparent-200)] transition-colors`}
+			className={`flex items-center gap-4 p-3 bg-transparent rounded-lg hover:bg-[var(--father-font-transparent-200)] transition-colors`}
 		>
 			<div className='w-12 h-12 relative rounded-full overflow-hidden flex-shrink-0'>
 				<Image
@@ -96,13 +92,6 @@ export function TeamMemberRow({
 			)}
 
 			{canManageTeam && (
-				isEditing ? (
-					<Checkbox
-						checked={isIncluded}
-						onChange={(e) => handleToggle(e.target.checked)}
-						className='!text-[var(--father-font)]'
-					/>
-				) : onDelete ? (
 					<Button
 						size='sm'
 						color='danger'
@@ -113,7 +102,7 @@ export function TeamMemberRow({
 						Eliminar
 						<TrashIcon color='var(--father-font)' h={14} />
 					</Button>
-				) : null
+				
 			)}
 		</div>
 	)

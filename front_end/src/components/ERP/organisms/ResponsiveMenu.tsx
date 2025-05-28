@@ -14,14 +14,6 @@ const colorIcons = 'var(--father-font)'
 
 const menuItems = [
 	{
-		label: 'Inicio',
-		link: '/dashboard',
-		icon: HouseIcon({
-			color: colorIcons,
-			h: 20,
-		}),
-	},
-	{
 		label: 'Proyectos',
 		link: '/dashboard/proyectos',
 		icon: CertifiedIcon({

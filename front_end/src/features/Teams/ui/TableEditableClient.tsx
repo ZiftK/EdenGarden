@@ -264,6 +264,7 @@ export default function TableEditableClient({
 									},
 								}))
 							}}
+							teamLeaderId={currentLeader.id_empleado}
 						/>
 					)}
 				</div>
