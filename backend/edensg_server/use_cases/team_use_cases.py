@@ -88,29 +88,57 @@ class TeamController:
         except Exception as e:
             raise Exception(str(e))
 
-    def unregister_team_employees(self, id: int, employee_ids: list[int]) -> dict:
-        # Primero verificamos que el equipo exista
-        team = self.team_repository.find_team_by_id(id)
+    def unregister_team_employees(self, team_id: int, employee_ids: list[int]) -> dict:
+        """
+        Elimina varios empleados de un equipo.
+        """
+        try:
+            # Check if employees exist
+            non_existent = self.team_repository.check_employee_exists(employee_ids)
+            if non_existent:
+                raise Exception(f"Los siguientes empleados no existen: {', '.join(map(str, non_existent))}")
+            
+            # Check if employees are in the team
+            team = self.team_repository.find_team_by_id(team_id)
+            current_members = [emp.id_empleado for emp in team.empleados]
+            
+            for emp_id in employee_ids:
+                if emp_id not in current_members:
+                    raise Exception(f"El empleado {emp_id} no está en el equipo")
+            
+            # Remove employees
+            self.team_repository.unregister_team_employees(team_id, employee_ids)
+            return {"message": "Empleados eliminados exitosamente"}
+        except Exception as e:
+            raise Exception(f"Error al eliminar empleados: {str(e)}")
+
+    def remove_team_member(self, team_id: int, member_id: int) -> dict:
+        """
+        Elimina un miembro individual de un equipo.
         
-        # Verificamos que los empleados existan
-        non_existent_employees = self.team_repository.check_employee_exists(employee_ids)
-        if non_existent_employees:
-            raise Exception(f"Los siguientes empleados no existen: {', '.join(map(str, non_existent_employees))}")
+        Args:
+            team_id (int): ID del equipo
+            member_id (int): ID del miembro a eliminar
         
-        # Verificamos que los empleados pertenezcan al equipo
-        team_employees = [emp.id_empleado for emp in team.empleados]
-        employees_not_in_team = [emp_id for emp_id in employee_ids if emp_id not in team_employees]
-        if employees_not_in_team:
-            raise Exception(f"Los siguientes empleados no pertenecen a este equipo: {', '.join(map(str, employees_not_in_team))}")
-        
-        # Verificamos que ninguno de los empleados sea el líder
-        if team.lider.id_empleado in employee_ids:
-            raise Exception(f"El empleado con id {team.lider.id_empleado} es el líder del equipo y no puede ser removido")
-        
-        self.team_repository.unregister_team_employees(id, employee_ids)
-        return {
-            'message': 'Empleados desregistrados correctamente'
-        }
+        Returns:
+            dict: Mensaje de éxito
+        """
+        try:
+            # Check if employee exists
+            if not self.team_repository.employee_repo.find_employee_by_id(member_id):
+                raise Exception(f"El empleado {member_id} no existe")
+            
+            # Check if employee is in team
+            team = self.team_repository.find_team_by_id(team_id)
+            current_members = [emp.id_empleado for emp in team.empleados]
+            if member_id not in current_members:
+                raise Exception(f"El empleado {member_id} no está en el equipo")
+            
+            # Remove member
+            self.team_repository.unregister_team_employees(team_id, [member_id])
+            return {"message": "Miembro eliminado exitosamente"}
+        except Exception as e:
+            raise Exception(f"Error al eliminar el miembro: {str(e)}")
 
     def update_team_name(self, id: int, new_name: str) -> dict:
         """Actualiza el nombre de un equipo."""

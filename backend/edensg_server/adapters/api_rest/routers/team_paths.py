@@ -126,15 +126,6 @@ async def update_team_members(team_id: int, data: TeamMembersUpdate):
         return result
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
-async def update_team_members(team_id: int, data: TeamMembersUpdate):
-    """
-    Actualiza los miembros de un equipo.
-    """
-    try:
-        result = team_controller.register_team_employees(team_id, data.empleados_ids)
-        return result
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
 
 @router.post('/unregister_employees/{team_id}',
     response_model=dict,
@@ -149,7 +140,28 @@ async def unregister_team_employees(team_id: int, employee_ids: list[int]):
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-
-
-
-
+@router.delete('/remove-member/{team_id}/{member_id}',
+    responses={
+        200: {"description": "Miembro eliminado exitosamente"},
+        404: {"description": "Equipo o miembro no encontrado"},
+        400: {"description": "Error al eliminar el miembro"}
+    })
+async def remove_team_member(team_id: int, member_id: int):
+    """
+    Elimina un miembro de un equipo.
+    
+    Args:
+        team_id (int): ID del equipo
+        member_id (int): ID del miembro a eliminar
+    
+    Returns:
+        dict: Mensaje de éxito
+    """
+    try:
+        # Call repository method
+        team_controller.remove_team_member(team_id, member_id)
+        return {"message": "Miembro eliminado exitosamente"}
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))

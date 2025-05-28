@@ -5,6 +5,7 @@ from .routes import auth, attendance, employees, teams, projects, payroll
 from .config import settings
 from .database import engine, Base
 from .models import empleado, equipo
+from .adapters.repository.supb.team_repository_sb import team_repository
 
 # Crear las tablas
 Base.metadata.create_all(bind=engine)
@@ -14,10 +15,10 @@ app = FastAPI()
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.CORS_ORIGINS,
-    allow_credentials=settings.CORS_CREDENTIALS,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_origins=["*"],  # Allow all origins
+    allow_credentials=True,
+    allow_methods=["*"],  # Allow all methods
+    allow_headers=["*"],  # Allow all headers
 )
 
 # Add loading middleware
@@ -33,4 +34,5 @@ app.include_router(teams.router, tags=["teams"])
 app.include_router(projects.router, tags=["projects"])
 app.include_router(payroll.router, prefix="/payroll", tags=["payroll"])
 
-# ... rest of your FastAPI setup ... 
+# Initialize team repository
+team_repository = team_repository
