@@ -161,7 +161,7 @@ export default async function Page({
 											h={15}
 											color={colorIcons}
 										/>
-										<span className='text-sm'>
+										<span className='text-sm w-fit'>
 											2 Problemas
 										</span>
 									</div>

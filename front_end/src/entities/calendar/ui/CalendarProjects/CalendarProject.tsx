@@ -1,5 +1,5 @@
 'use client'
-import { Button, Tooltip } from '@heroui/react'
+import {  Tooltip } from '@heroui/react'
 import { format, addMonths, addWeeks } from 'date-fns'
 import { es } from 'date-fns/locale'
 import { useMemo } from 'react'
@@ -155,13 +155,6 @@ export default function CalendarProject({
 						</span>
 					</div>
 				</div>
-				<Button
-					className='text-[var(--green-dark-500)] bg-transparent ml-auto'
-					variant='flat'
-					size='sm'
-				>
-					Edtar Calendario
-				</Button>
 			</div>
 		</>
 	)

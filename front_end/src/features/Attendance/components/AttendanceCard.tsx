@@ -14,20 +14,20 @@ export default function AttendanceCard() {
 
   useEffect(() => {
     const fetchAttendance = async () => {
-      if (user?.rol === 'lider' && user.equipo) {
-        await getTeamAttendance(user.equipo)
+      if (user?.rol === 'lider' && user) {
+        await getTeamAttendance(user.fk_equipo!)
       }
     }
     fetchAttendance()
-  }, [user?.rol, user?.equipo, getTeamAttendance])
+  }, [user?.rol, user?.fk_equipo, getTeamAttendance])
 
   const handleMarkAttendance = async (employeeId: number) => {
     try {
       setIsSubmitting(true)
       await markAttendance(employeeId)
       // Refresh attendance data
-      if (user?.rol === 'lider' && user.equipo) {
-        await getTeamAttendance(user.equipo)
+      if (user?.rol === 'lider' && user.fk_equipo) {
+        await getTeamAttendance(user.fk_equipo)
       }
     } catch (error) {
       console.error('Error marking attendance:', error)

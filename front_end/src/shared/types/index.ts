@@ -18,6 +18,7 @@ export interface Employee {
     puesto: string;
     salario: number;
     img?: string;
+    fk_equipo?: number
 }
 
 export type AuthState = {
