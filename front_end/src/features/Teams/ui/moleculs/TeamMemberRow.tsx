@@ -13,38 +13,34 @@ import { toggleTeamMember } from '@/src/features/Teams/handlers/toogleTeamMember
 
 export function TeamMemberRow({
 	user,
-	index,
 	isEditing,
-	isIncluded,
-	onToggle,
+
 	onDelete,
-	data,
-}: TeamMemberRowProps & { 
-	onDelete?: () => void 
-	data?: any 
+}: TeamMemberRowProps & {
+	onDelete?: () => void
+	data?: any
 }) {
 	const { user: currentUser } = useAuthStore()
 	const { deleteTeamMember } = useTeamStore()
 	const isAdmin = currentUser?.rol === 'admin'
-	const isLeader = currentUser?.rol === 'lider'
-	const canManageTeam = isAdmin || isLeader
+
+	const canManageTeam = isAdmin
 
 	const handleDelete = async () => {
 		if (!onDelete || !user.id_empleado) return
-		if (!window.confirm('¿Estás seguro de que deseas eliminar este miembro del equipo?')) return
-		
+		if (
+			!window.confirm(
+				'¿Estás seguro de que deseas eliminar este miembro del equipo?'
+			)
+		)
+			return
+
 		try {
 			await deleteTeamMember(user.fk_equipo!, user.id_empleado)
 			onDelete()
 		} catch (error) {
 			console.error('Error al eliminar miembro:', error)
 		}
-	}
-
-	const handleToggle = (checked: boolean) => {
-		if (!data || !onToggle) return
-		const newData = toggleTeamMember(data, user, checked)
-		onToggle(newData)
 	}
 
 	return (
@@ -65,7 +61,6 @@ export function TeamMemberRow({
 					<h4 className='text-[var(--father-font)] font-medium truncate'>
 						{user.nombre}
 					</h4>
-					
 				</div>
 				<div className='flex items-center gap-4 mt-1'>
 					<CopyButton
@@ -92,17 +87,16 @@ export function TeamMemberRow({
 			)}
 
 			{canManageTeam && (
-					<Button
-						size='sm'
-						color='danger'
-						variant='light'
-						onPress={handleDelete}
-						className='!text-[var(--father-font)]'
-					>
-						Eliminar
-						<TrashIcon color='var(--father-font)' h={14} />
-					</Button>
-				
+				<Button
+					size='sm'
+					color='danger'
+					variant='light'
+					onPress={handleDelete}
+					className='!text-[var(--father-font)]'
+				>
+					Eliminar
+					<TrashIcon color='var(--father-font)' h={14} />
+				</Button>
 			)}
 		</div>
 	)

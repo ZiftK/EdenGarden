@@ -1,15 +1,15 @@
-import { Card, CardBody, CardHeader } from '@heroui/react'
-import { useEffect, useState } from 'react'
-
 import { useAttendanceStore } from '@/src/features/Attendance/model/attendanceStore'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
 import { useAuthStore } from '../../auth/model/useAuthStore'
+import { useTeamStore } from '@/src/features/Teams/model/teamStore'
+import { useEffect, useState } from 'react'
+import { Card, CardBody, CardHeader } from '@heroui/react'
 
 export default function AttendanceCard() {
 	const { user } = useAuthStore()
-	const { teamMembers, attendance, getTeamAttendance, markAttendance } =
-		useAttendanceStore()
+	const { teamMembers, attendance, getTeamAttendance, markAttendance } = useAttendanceStore()
+	const { teams, isLoading } = useTeamStore()
 	const [isSubmitting, setIsSubmitting] = useState(false)
 	const [showAttendance, setShowAttendance] = useState(false)
 
@@ -47,9 +47,15 @@ export default function AttendanceCard() {
 		return !!todayAttendance
 	}
 
-	if (!user?.rol || user.rol !== 'lider') {
-		return null
+	if (!user?.rol || user.rol !== 'lider' || isLoading) {
+		return (
+			<div className='flex items-center justify-center p-4'>
+				{isLoading ? 'Cargando...' : 'No tienes acceso a esta funcionalidad'}
+			</div>
+		)
 	}
+
+	const userTeam = teams?.find(team => team.id_equipo === user.fk_equipo)
 
 	return (
 		<div className='space-y-4'>
@@ -77,9 +83,9 @@ export default function AttendanceCard() {
 							</p>
 						</div>
 
-						{showAttendance && (
+						{showAttendance && userTeam && (
 							<div className='space-y-2'>
-								{teamMembers.map((member) => (
+								{userTeam.empleados?.map((member) => (
 									<div
 										key={member.id_empleado}
 										className='flex items-center justify-between p-3 bg-[var(--bg-card-obscure-200)] rounded-md'
