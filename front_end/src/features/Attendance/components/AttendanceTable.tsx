@@ -43,10 +43,10 @@ export default function AttendanceTable() {
 
 	useEffect(() => {
 		const fetchData = async () => {
-			if (user?.rol === 'leader' && user.fk_equipo) {
+			if (user?.rol === 'lider' && user.equipo) {
 				await Promise.all([
-					getTeamMembers(user.fk_equipo),
-					getTeamAttendance(user.fk_equipo),
+					getTeamMembers(user.equipo),
+					getTeamAttendance(user.equipo),
 				])
 			} else if (user?.rol === 'user' && user.id_empleado) {
 				await getEmployeeAttendance(user.id_empleado)
@@ -66,12 +66,12 @@ export default function AttendanceTable() {
 
 	// Filter columns based on user role
 	const visibleColumns =
-		user?.rol === 'leader'
+		user?.rol === 'lider'
 			? columns
 			: columns.filter((col) => col.key !== 'actions')
 
 	const renderActionCell = (record: AttendanceRecord) => {
-		if (user?.rol !== 'leader') return <TableCell>-</TableCell>
+		if (user?.rol !== 'lider') return <TableCell>-</TableCell>
 
 		return (
 			<TableCell>
@@ -100,7 +100,7 @@ export default function AttendanceTable() {
 		<Card className='w-full bg-[var(--bg-card-obscure)]'>
 			<CardHeader>
 				<h3 className='text-lg font-bold'>
-					{user?.rol === 'leader'
+					{user?.rol === 'lider'
 						? 'Asistencia del Equipo'
 						: 'Mi Asistencia'}
 				</h3>

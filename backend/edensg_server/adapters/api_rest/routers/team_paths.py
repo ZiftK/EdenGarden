@@ -126,6 +126,15 @@ async def update_team_members(team_id: int, data: TeamMembersUpdate):
         return result
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
+async def update_team_members(team_id: int, data: TeamMembersUpdate):
+    """
+    Actualiza los miembros de un equipo.
+    """
+    try:
+        result = team_controller.register_team_employees(team_id, data.empleados_ids)
+        return result
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
 @router.post('/unregister_employees/{team_id}',
     response_model=dict,

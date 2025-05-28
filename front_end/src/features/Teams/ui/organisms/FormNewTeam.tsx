@@ -16,6 +16,7 @@ import {
 	Spinner,
 } from '@heroui/react'
 import { useEmployeeStore } from '@/src/features/Employees/model/employeeStore'
+import { Employee } from '@/src/shared/types'
 import Link from 'next/link'
 import { employeeFormStyles } from '@/src/features/Employees/ui/styles/employeeForm'
 
@@ -64,11 +65,15 @@ export default function FormNewTeam() {
 	}
 
 	const availableEmployees = Array.isArray(employees)
-		? employees.filter((emp) => emp.rol !== 'admin' && !emp.fk_equipo)
+		? employees.filter(
+				(emp: Employee) => emp.rol !== 'admin' && !emp.equipo
+			)
 		: []
 
 	const leaderEmployees = Array.isArray(employees)
-		? employees.filter((emp) => emp.rol === 'leader' && !emp.fk_equipo)
+		? employees.filter(
+				(emp: Employee) => emp.rol === 'lider' && !emp.equipo
+			)
 		: []
 
 	console.log('Filtered employees:', {
@@ -142,9 +147,12 @@ export default function FormNewTeam() {
 								classNames={employeeFormStyles.select}
 								isRequired
 							>
-								{leaderEmployees.map((employee) => (
+								{leaderEmployees.map((employee, index) => (
 									<SelectItem
-										key={employee.id_empleado.toString()}
+										key={index}
+										value={String(
+											employee?.id_empleado || ''
+										)}
 									>
 										{employee.nombre} - {employee.puesto}
 									</SelectItem>

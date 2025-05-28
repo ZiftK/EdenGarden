@@ -240,6 +240,15 @@ class EmployeeController:
         except Exception as e:
             raise Exception(f"Error al obtener los empleados: {str(e)}")
 
+    def update_employee_roles(self, old_role: str, new_role: str) -> None:
+        """
+        Actualiza el rol de todos los empleados que tengan old_role a new_role.
+        """
+        try:
+            self.employee_repository.update_employee_roles(old_role, new_role)
+        except Exception as e:
+            raise Exception(f"Error al actualizar roles: {str(e)}")
+
     def search_employees(self, search_term: str) -> dict:
         """Busca empleados por expediente (ID)."""
         try:

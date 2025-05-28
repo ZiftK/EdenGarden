@@ -32,7 +32,7 @@ export default function DashboardPage() {
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				if (user?.rol === 'leader') {
+				if (user?.rol === 'lider') {
 					// For leaders, only fetch their team and related projects
 					const teamsData = await getTeams()
 					const userTeam = teamsData.find(

@@ -82,8 +82,8 @@ class TeamRepositorySB(TeamRepository):
         """Verifica si los empleados están en otros equipos y devuelve las IDs de los que sí lo están."""
         result = []
         for employee_id in ids:
-            response = self.client.table(self.employee_base_table).select('id_empleado').eq('id_empleado', employee_id).is_('fk_equipo', 'not.null').execute()
-            if response.data:
+            response = self.client.table(self.employee_base_table).select('id_empleado, fk_equipo').eq('id_empleado', employee_id).execute()
+            if response.data and response.data[0].get('fk_equipo') is not None:
                 result.append(employee_id)
         return result
     

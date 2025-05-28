@@ -36,10 +36,25 @@ class EmployeeRepositorySB(EmployeeRepository):
 
     def find_employee_by_id(self, id: int) -> Employee:
         """Busca un empleado por su ID."""
-        response = self.client.table(self.table).select('*').eq('id_empleado', id).execute()
-        if not response.data:
-            return None
-        return format_employee(response.data[0])
+        try:
+            response = self.client.table(self.table).select('*').eq('id_empleado', id).execute()
+            if not response.data:
+                raise Exception(f"No se encontró el empleado con ID {id}")
+            
+            employee_data = response.data[0]
+            print(f"Datos del empleado encontrado: {employee_data}")  # Debug log
+            
+            # Asegurarnos de que los campos requeridos existan
+            required_fields = ['nombre', 'direccion', 'telefono', 'fecha_contratacion', 'clave', 'rol', 'puesto', 'salario']
+            missing_fields = [field for field in required_fields if field not in employee_data]
+            
+            if missing_fields:
+                raise Exception(f"Faltan campos requeridos en el empleado: {', '.join(missing_fields)}")
+            
+            return format_employee(employee_data)
+        except Exception as e:
+            print(f"Error al buscar empleado con ID {id}: {str(e)}")  # Debug log
+            raise Exception(f"Error al buscar empleado con ID {id}: {str(e)}")
 
     def find_employees_by_ids(self, ids: list[int]) -> list[Employee]:
         """Busca empleados por ids."""
@@ -96,6 +111,15 @@ class EmployeeRepositorySB(EmployeeRepository):
         """Busca empleados por coincidencia parcial de ID."""
         response = self.client.table(self.table).select('*').ilike('id_empleado', f'%{id_pattern}%').execute()
         return [format_employee(employee) for employee in response.data]
+
+    def update_employee_roles(self, old_role: str, new_role: str) -> None:
+        """
+        Actualiza el rol de todos los empleados que tengan old_role a new_role.
+        """
+        try:
+            self.client.table(self.table).update({'rol': new_role}).eq('rol', old_role).execute()
+        except Exception as e:
+            raise Exception(f"Error al actualizar roles en la base de datos: {str(e)}")
 
 def main():
     repo = EmployeeRepositorySB()

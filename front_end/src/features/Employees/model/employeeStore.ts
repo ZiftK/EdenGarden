@@ -1,7 +1,5 @@
-import { endpoints } from "@/src/shared/api/endpoints"
-import { fetcher } from "@/src/shared/api/httpClient"
-import { Employee } from "@/src/shared/types"
 import { create } from "zustand"
+import { Employee } from "@/src/shared/types"
 
 interface EmployeeState {
     employees: Employee[];
@@ -72,7 +70,9 @@ export const useEmployeeStore = create<EmployeeState>((set, get) => ({
             }
             const responseData = await response.json();
             const allEmployees = Array.isArray(responseData.data) ? responseData.data : [];
-            const leaders = allEmployees.filter((emp: Employee) => emp.rol === 'leader');
+            const leaders = allEmployees.filter((emp: Employee) => 
+                emp.rol === 'lider' && !emp.equipo
+            );
             return leaders;
         } catch (error) {
             console.error('Error al obtener los líderes:', error);
