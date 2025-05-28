@@ -19,12 +19,13 @@ export default function CreateTeam({}) {
 		nombre: '',
 		id_equipo: 0,
 		lider: {
-			nombre: '',			
+			nombre: '',
 			email: '',
 			telefono: '',
 			rol: 'lider',
 			puesto: '',
 			salario: 0,
+			id_empleado: 0
 		},
 		empleados: [],
 	}

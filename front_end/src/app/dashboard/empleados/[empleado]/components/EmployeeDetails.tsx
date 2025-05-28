@@ -65,7 +65,7 @@ export default function EmployeeDetails({ employee }: EmployeeDetailsProps) {
 								Editar
 							</Link>
 							<ModalDeleteEmployee
-								employeeId={employee.id_empleado.toString()}
+								employeeId={employee.id_empleado!.toString()}
 								employeeName={employee.nombre}
 							/>
 						</div>
