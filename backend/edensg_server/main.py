@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .middleware.loading import LoadingMiddleware
-from .routes import auth, attendance, employees, teams, projects
+from .routes import auth, attendance, employees, teams, projects, payroll
 from .config import settings
 from .database import engine, Base
 from .models import empleado, equipo
@@ -31,5 +31,6 @@ app.include_router(attendance.router, tags=["attendance"])
 app.include_router(employees.router, tags=["employees"])
 app.include_router(teams.router, tags=["teams"])
 app.include_router(projects.router, tags=["projects"])
+app.include_router(payroll.router, prefix="/payroll", tags=["payroll"])
 
 # ... rest of your FastAPI setup ... 

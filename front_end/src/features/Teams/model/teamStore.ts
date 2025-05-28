@@ -8,6 +8,7 @@ interface TeamState {
     getTeams: () => Promise<void>
     createTeam: (team: TeamCreate) => Promise<void>
     updateTeam: (id: number, team: Partial<Team>) => Promise<void>
+    deleteTeamMember: (teamId: number, memberId: number) => Promise<void>
 }
 
 export const useTeamStore = create<TeamState>((set) => ({
@@ -72,4 +73,25 @@ export const useTeamStore = create<TeamState>((set) => ({
             set({ error: (error as Error).message, isLoading: false })
         }
     },
-})) 
+
+    deleteTeamMember: async (teamId, memberId) => {
+        try {
+            set({ isLoading: true, error: null })
+            const response = await fetch(`http://127.0.0.1:8000/team/remove-member/${teamId}/${memberId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+            if (!response.ok) {
+                throw new Error('Error al eliminar el miembro del equipo')
+            }
+            // Refresh teams list after deletion
+            const getTeamsResponse = await fetch('http://127.0.0.1:8000/team/all')
+            const data = await getTeamsResponse.json()
+            set({ teams: data, isLoading: false })
+        } catch (error) {
+            set({ error: (error as Error).message, isLoading: false })
+        }
+    }
+}))

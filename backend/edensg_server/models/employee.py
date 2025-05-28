@@ -22,4 +22,5 @@ class Employee(Base):
 
     # Relationships
     equipo = relationship("Team", back_populates="empleados")
-    asistencias = relationship("Attendance", back_populates="empleado") 
+    asistencias = relationship("Attendance", back_populates="empleado")
+    nominas = relationship("Payroll", back_populates="empleado")

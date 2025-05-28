@@ -1,12 +1,14 @@
 import {
 	EmailIcon,
 	PhoneIcon,
+	TrashIcon,
 } from '@/src/components/landing/atoms/Icons/Icons'
 import CopyButton from '@/src/components/ERP/atoms/CopyButton'
 import { TeamMemberRowProps } from '../../types/types'
 import Image from 'next/image'
 import { Button, Checkbox } from '@heroui/react'
 import { useAuthStore } from '@/src/features/auth/model/useAuthStore'
+import { useTeamStore } from '@/src/features/Teams/model/teamStore'
 
 export function TeamMemberRow({
 	user,
@@ -17,9 +19,22 @@ export function TeamMemberRow({
 	onDelete,
 }: TeamMemberRowProps & { onDelete?: () => void }) {
 	const { user: currentUser } = useAuthStore()
+	const { deleteTeamMember } = useTeamStore()
 	const isAdmin = currentUser?.rol === 'admin'
 	const isLeader = currentUser?.rol === 'lider'
 	const canManageTeam = isAdmin || isLeader
+
+	const handleDelete = async () => {
+		if (!onDelete || !user.id_empleado) return
+		if (!window.confirm('¿Estás seguro de que deseas eliminar este miembro del equipo?')) return
+		
+		try {
+			await deleteTeamMember(user.fk_equipo!, user.id_empleado)
+			onDelete()
+		} catch (error) {
+			console.error('Error al eliminar miembro:', error)
+		}
+	}
 
 	return (
 		<div
@@ -27,7 +42,7 @@ export function TeamMemberRow({
 				index % 2 === 0
 					? 'bg-transparent'
 					: 'bg-[var(--father-font-transparent-100)]'
-			} rounded-lg hover:bg-[var(--father-font-transparent-200)] transition-colors`}
+				} rounded-lg hover:bg-[var(--father-font-transparent-200)] transition-colors`}
 		>
 			{isEditing && (
 				<input
@@ -52,9 +67,16 @@ export function TeamMemberRow({
 					<h4 className='text-[var(--father-font)] font-medium truncate'>
 						{user.nombre}
 					</h4>
-					<span className='text-sm text-[var(--father-font-transparent-800)] truncate'>
-						{user.puesto}
-					</span>
+					{canManageTeam && (
+						<Button
+							color='danger'
+							variant='flat'
+							size='sm'
+							onClick={handleDelete}
+						>
+							<TrashIcon 	color='var(--father-font)' h= {14} />
+						</Button>
+					)}
 				</div>
 				<div className='flex items-center gap-4 mt-1'>
 					<CopyButton

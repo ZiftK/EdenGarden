@@ -11,5 +11,5 @@ export default async function TeamPage({
   
   const teamData = await getTeamById(teamId);
 
-  return <TeamPageClient team={ teamData} />
+  return <TeamPageClient team={ await teamData} />
 }

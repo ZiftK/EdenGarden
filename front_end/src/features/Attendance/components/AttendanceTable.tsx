@@ -43,10 +43,10 @@ export default function AttendanceTable() {
 
 	useEffect(() => {
 		const fetchData = async () => {
-			if (user?.rol === 'lider' && user.equipo) {
+			if (user?.rol === 'lider' && user.fk_equipo) {
 				await Promise.all([
-					getTeamMembers(user.equipo),
-					getTeamAttendance(user.equipo),
+					getTeamMembers(user.fk_equipo),
+					getTeamAttendance(user.fk_equipo),
 				])
 			} else if (user?.rol === 'user' && user.id_empleado) {
 				await getEmployeeAttendance(user.id_empleado)
