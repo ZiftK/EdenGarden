@@ -9,6 +9,7 @@ import Image from 'next/image'
 import { Button, Checkbox } from '@heroui/react'
 import { useAuthStore } from '@/src/features/auth/model/useAuthStore'
 import { useTeamStore } from '@/src/features/Teams/model/teamStore'
+import { toggleTeamMember } from '@/src/features/Teams/handlers/toogleTeamMember'
 
 export function TeamMemberRow({
 	user,
@@ -17,7 +18,11 @@ export function TeamMemberRow({
 	isIncluded,
 	onToggle,
 	onDelete,
-}: TeamMemberRowProps & { onDelete?: () => void }) {
+	data,
+}: TeamMemberRowProps & { 
+	onDelete?: () => void 
+	data?: any 
+}) {
 	const { user: currentUser } = useAuthStore()
 	const { deleteTeamMember } = useTeamStore()
 	const isAdmin = currentUser?.rol === 'admin'
@@ -36,6 +41,12 @@ export function TeamMemberRow({
 		}
 	}
 
+	const handleToggle = (checked: boolean) => {
+		if (!data || !onToggle) return
+		const newData = toggleTeamMember(data, user, checked)
+		onToggle(newData)
+	}
+
 	return (
 		<div
 			className={`flex items-center gap-4 p-3 ${
@@ -44,15 +55,6 @@ export function TeamMemberRow({
 					: 'bg-[var(--father-font-transparent-100)]'
 				} rounded-lg hover:bg-[var(--father-font-transparent-200)] transition-colors`}
 		>
-			{isEditing && (
-				<input
-					type='checkbox'
-					checked={isIncluded}
-					className='accent-[var(--father-font)] cursor-pointer'
-					onChange={(e) => onToggle(e.target.checked)}
-				/>
-			)}
-
 			<div className='w-12 h-12 relative rounded-full overflow-hidden flex-shrink-0'>
 				<Image
 					src={user.img || 'https://via.placeholder.com/150'}
@@ -67,16 +69,7 @@ export function TeamMemberRow({
 					<h4 className='text-[var(--father-font)] font-medium truncate'>
 						{user.nombre}
 					</h4>
-					{canManageTeam && (
-						<Button
-							color='danger'
-							variant='flat'
-							size='sm'
-							onClick={handleDelete}
-						>
-							<TrashIcon 	color='var(--father-font)' h= {14} />
-						</Button>
-					)}
+					
 				</div>
 				<div className='flex items-center gap-4 mt-1'>
 					<CopyButton
@@ -102,16 +95,25 @@ export function TeamMemberRow({
 				</span>
 			)}
 
-			{canManageTeam && !isEditing && onDelete && (
-				<Button
-					size='sm'
-					color='danger'
-					variant='light'
-					onPress={onDelete}
-					className='!text-[var(--father-font)]'
-				>
-					Eliminar
-				</Button>
+			{canManageTeam && (
+				isEditing ? (
+					<Checkbox
+						checked={isIncluded}
+						onChange={(e) => handleToggle(e.target.checked)}
+						className='!text-[var(--father-font)]'
+					/>
+				) : onDelete ? (
+					<Button
+						size='sm'
+						color='danger'
+						variant='light'
+						onPress={handleDelete}
+						className='!text-[var(--father-font)]'
+					>
+						Eliminar
+						<TrashIcon color='var(--father-font)' h={14} />
+					</Button>
+				) : null
 			)}
 		</div>
 	)

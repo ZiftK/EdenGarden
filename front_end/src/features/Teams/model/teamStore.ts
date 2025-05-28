@@ -74,18 +74,21 @@ export const useTeamStore = create<TeamState>((set) => ({
         }
     },
 
-    deleteTeamMember: async (teamId, memberId) => {
+    deleteTeamMember: async (teamId: number, memberId: number) => {
         try {
             set({ isLoading: true, error: null })
+            
             const response = await fetch(`http://127.0.0.1:8000/team/remove-member/${teamId}/${memberId}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
-                },
+                }
             })
+            
             if (!response.ok) {
                 throw new Error('Error al eliminar el miembro del equipo')
             }
+            
             // Refresh teams list after deletion
             const getTeamsResponse = await fetch('http://127.0.0.1:8000/team/all')
             const data = await getTeamsResponse.json()
@@ -93,5 +96,5 @@ export const useTeamStore = create<TeamState>((set) => ({
         } catch (error) {
             set({ error: (error as Error).message, isLoading: false })
         }
-    }
+    },
 }))

@@ -196,6 +196,7 @@ export default function CreateTeam({}) {
 									toggleTeamMember(prev, user, checked)
 								)
 							}}
+							data={data}
 						/>
 					))}
 					{data.isEditing && (

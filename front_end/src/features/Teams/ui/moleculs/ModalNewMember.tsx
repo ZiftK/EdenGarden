@@ -17,8 +17,10 @@ import { useState, useEffect } from 'react'
 
 export default function ModalNewMember({
 	onChange,
+	teamLeaderId,
 }: {
 	onChange: (employee: Employee) => void
+	teamLeaderId?: number
 }) {
 	const { isOpen, onOpen, onClose } = useDisclosure()
 	const [members, setMembers] = useState<Employee[]>([])
@@ -32,8 +34,12 @@ export default function ModalNewMember({
 				const fetchedMembers = await getEmployees()
 				setMembers(fetchedMembers)
 				// Filter members that are not leaders and don't have a team assigned
+				// Also exclude the current team's leader
 				const availableMembers = fetchedMembers.filter(
-					(member) => member.rol !== 'lider' && !member.equipo
+					(member) =>
+						member.rol !== 'lider' &&
+						!member.fk_equipo &&
+						(!teamLeaderId || member.id_empleado !== teamLeaderId)
 				)
 				setMembersWithoutTeam(availableMembers)
 				console.log('Available members:', availableMembers)
@@ -44,7 +50,7 @@ export default function ModalNewMember({
 			}
 		}
 		fetchMembers()
-	}, [])
+	}, [teamLeaderId])
 
 	const [idNewMember, setIdNewMember] = useState<string>('')
 	const [alreadyAddedIds, setAlreadyAddedIds] = useState<string[]>([])

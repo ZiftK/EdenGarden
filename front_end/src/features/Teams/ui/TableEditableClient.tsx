@@ -15,6 +15,7 @@ import { Button, Input } from '@heroui/react'
 import Image from 'next/image'
 import { useAuthStore } from '@/src/features/auth/model/useAuthStore'
 import { fetcher } from '@/src/shared/api/httpClient'
+import { useTeamStore } from '../model/teamStore'
 
 export default function TableEditableClient({
 	team,
@@ -26,6 +27,7 @@ export default function TableEditableClient({
 	const { data, setData, reset, handleSave, handleToggleRemove } =
 		useEditableTeam({ initialTeam: team, isNewTeam })
 	const { user } = useAuthStore()
+	const { deleteTeamMember } = useTeamStore()
 	const isAdmin = user?.rol === 'admin'
 
 	const currentLeader = data?.currentTeam?.lider
@@ -33,24 +35,32 @@ export default function TableEditableClient({
 		? data.teamChanged?.lider
 		: currentLeader
 
-	const handleDeleteMember = (memberId: number) => {
-		if (!data.teamChanged) return
+	const handleDeleteMember = async (memberId: number) => {
+		if (!data.teamChanged || !data.teamChanged.id_equipo) return
 
-		setData((prev) => ({
-			...prev,
-			teamShowed: {
-				...prev.teamShowed,
-				empleados: prev.teamShowed.empleados.filter(
-					(emp) => emp.id_empleado !== memberId
-				),
-			},
-			teamChanged: {
-				...prev.teamChanged!,
-				empleados: prev.teamChanged!.empleados.filter(
-					(emp) => emp.id_empleado !== memberId
-				),
-			},
-		}))
+		try {
+			// Make API call to delete member from database
+			await deleteTeamMember(data.teamChanged.id_equipo, memberId)
+			
+			// Update local state after successful deletion
+			setData((prev) => ({
+				...prev,
+				teamShowed: {
+					...prev.teamShowed,
+					empleados: prev.teamShowed.empleados.filter(
+						(emp) => emp.id_empleado !== memberId
+					),
+				},
+				teamChanged: {
+					...prev.teamChanged!,
+					empleados: prev.teamChanged!.empleados.filter(
+						(emp) => emp.id_empleado !== memberId
+					),
+				},
+			}))
+		} catch (error) {
+			console.error('Error al eliminar miembro:', error)
+		}
 	}
 
 	const handleDeleteTeam = async () => {
@@ -195,14 +205,7 @@ export default function TableEditableClient({
 					<h3 className='text-lg font-semibold text-[var(--father-font)]'>
 						Miembros del Equipo
 					</h3>
-					{data.isEditing && (
-						<button
-							onClick={handleToggleRemove}
-							className='text-sm text-blue-400 cursor-pointer border-b-2'
-						>
-							Eliminar
-						</button>
-					)}
+
 				</div>
 				<div className='space-y-4 max-h-[400px] overflow-y-auto scrollbar-thin-custom'>
 					{data.teamShowed?.empleados.map((user, i) => (
